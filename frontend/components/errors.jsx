@@ -16,9 +16,10 @@ const Errors  = React.createClass({
   },
 
   render: function() {
-
+    let className = (this.state.error_message === "" || 
+      ErrorStore.currentError().length === 0) ? 'empty' : 'present';
     return (
-      <div className="errors">
+      <div className={`errors ${className}`}>
         {this.state.error_message}
       </div>
     );

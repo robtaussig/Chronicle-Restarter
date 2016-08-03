@@ -119,10 +119,33 @@ body {
 }
 
 .errors {
-  height: 20px;
-  width: 200px;
-  margin: 15px auto;
-  border: 1px solid black;
+  height: 30px;
+  width: 400px;
+  margin: 12px auto;
+  color: red;
+  font-size: 16px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 30px;
+}
+
+.errors.empty {
+}
+
+.errors.present {
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+
+#email.email {
+  border: 1px solid red;
+  transition: 0.5s;
+}
+
+#password.password {
+  border: 1px solid red;
+  transition: 0.5s;
 }
 
 .search img {

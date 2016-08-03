@@ -8,7 +8,7 @@ const ErrorActions = {
     AppDispatcher.dispatch({
       actionType:ErrorConstants.SIGNUP_ERROR_RECEIVED,
       form: 'signup',
-      message: "Your email and password don't match"
+      message: "Neither your email nor your password match"
     });
   },
 

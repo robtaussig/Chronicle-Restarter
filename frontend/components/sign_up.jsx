@@ -3,17 +3,23 @@ const SessionStore = require('../stores/session_store.js');
 const SessionActions = require('../actions/session_actions.js');
 const ErrorActions = require('../actions/error_actions.js');
 const Link = require('react-router').Link;
+const ErrorStore = require('../stores/error_store.js');
 import { hashHistory } from 'react-router';
 
 const SignUp = React.createClass({
 
   getInitialState () {
-    return ({form: "signup", id: "", username: "", email: "", confirmEmail: "", password: "", confirmPassword: "", logged_in: false});
+    return ({
+      form: "signup", id: "", username: "", email: "", confirmEmail: "",
+      password: "", confirmPassword: "", logged_in: false, errors: []
+    });
   },
 
   componentDidMount () {
+    this.errors = [];
     this.redirectIfLoggedIn();
     this.sessionListener = SessionStore.addListener(this._onChange);
+    ErrorStore.addListener(this._handleError);
   },
 
   componentWillUnmount() {
@@ -25,6 +31,10 @@ const SignUp = React.createClass({
       console.log('logged in');
       hashHistory.push('/');
     }
+  },
+
+  _handleError () {
+    this.setState({errors: this.errors});
   },
 
   _onChange () {
@@ -77,15 +87,20 @@ const SignUp = React.createClass({
   _handleMisMatch() {
     if (!this._compareEmails() && !this._comparePasswords()) {
       ErrorActions.mismatchedBoth();
+      this.errors.push('password email');
     } else if (this._compareEmails()) {
       ErrorActions.mismatchedPasswords();
+      this.errors.push('password');
     } else {
       ErrorActions.mismatchedEmails();
+      this.errors.push('email');
+      this.forceUpdate();
     }
   },
 
   _handleSubmit (event) {
     event.preventDefault();
+    this.errors = [];
     if (this._checkSyncedForms()) {
       SessionActions.signUp(this.state.form,{
           username: this.state.username,
@@ -98,21 +113,27 @@ const SignUp = React.createClass({
   },
 
   render: function() {
+    let errors = this.errors;
     return (
       <div className="sign-up-form group">
         <h2>Sign up</h2>
         <form>
           <input type="text" placeholder="Name" onChange={this._setName}/>
           <br></br>
-          <input type="text" placeholder="Email" onChange={this._setEmail}/>
+          <input type="text" id="email" className={this.state.errors}
+            placeholder="Email" onChange={this._setEmail}/>
           <br></br>
-          <input type="text" placeholder="Re-enter email" onChange={this._confirmEmail}/>
+          <input type="text" id="email" className={this.state.errors}
+            placeholder="Re-enter email" onChange={this._confirmEmail}/>
           <br></br>
-          <input type="password" placeholder="Password" onChange={this._setPassword}/>
+          <input type="password" id="password" className={this.state.errors}
+            placeholder="Password" onChange={this._setPassword}/>
           <br></br>
-          <input type="password" placeholder="Re-enter password" onChange={this._confirmPassword}/>
+          <input type="password" id="password" className={this.state.errors}
+            placeholder="Re-enter password" onChange={this._confirmPassword}/>
           <br></br>
-          <button className="sign-up-button" onClick={this._handleSubmit}>Sign me up!</button>
+          <button className="sign-up-button" onClick={this._handleSubmit}>
+            Sign me up!</button>
           <br></br>
         </form>
         <p>

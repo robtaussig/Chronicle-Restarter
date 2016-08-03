@@ -27243,16 +27243,22 @@
 	var SessionActions = __webpack_require__(264);
 	var ErrorActions = __webpack_require__(274);
 	var Link = __webpack_require__(1).Link;
+	var ErrorStore = __webpack_require__(272);
 	
 	
 	var SignUp = React.createClass({
 	  displayName: 'SignUp',
 	  getInitialState: function getInitialState() {
-	    return { form: "signup", id: "", username: "", email: "", confirmEmail: "", password: "", confirmPassword: "", logged_in: false };
+	    return {
+	      form: "signup", id: "", username: "", email: "", confirmEmail: "",
+	      password: "", confirmPassword: "", logged_in: false, errors: []
+	    };
 	  },
 	  componentDidMount: function componentDidMount() {
+	    this.errors = [];
 	    this.redirectIfLoggedIn();
 	    this.sessionListener = SessionStore.addListener(this._onChange);
+	    ErrorStore.addListener(this._handleError);
 	  },
 	  componentWillUnmount: function componentWillUnmount() {
 	    this.sessionListener.remove();
@@ -27262,6 +27268,9 @@
 	      console.log('logged in');
 	      _reactRouter.hashHistory.push('/');
 	    }
+	  },
+	  _handleError: function _handleError() {
+	    this.setState({ errors: this.errors });
 	  },
 	  _onChange: function _onChange() {
 	    var user = SessionStore.currentUser();
@@ -27304,14 +27313,19 @@
 	  _handleMisMatch: function _handleMisMatch() {
 	    if (!this._compareEmails() && !this._comparePasswords()) {
 	      ErrorActions.mismatchedBoth();
+	      this.errors.push('password email');
 	    } else if (this._compareEmails()) {
 	      ErrorActions.mismatchedPasswords();
+	      this.errors.push('password');
 	    } else {
 	      ErrorActions.mismatchedEmails();
+	      this.errors.push('email');
+	      this.forceUpdate();
 	    }
 	  },
 	  _handleSubmit: function _handleSubmit(event) {
 	    event.preventDefault();
+	    this.errors = [];
 	    if (this._checkSyncedForms()) {
 	      SessionActions.signUp(this.state.form, {
 	        username: this.state.username,
@@ -27325,6 +27339,7 @@
 	
 	
 	  render: function render() {
+	    var errors = this.errors;
 	    return React.createElement(
 	      'div',
 	      { className: 'sign-up-form group' },
@@ -27338,13 +27353,17 @@
 	        null,
 	        React.createElement('input', { type: 'text', placeholder: 'Name', onChange: this._setName }),
 	        React.createElement('br', null),
-	        React.createElement('input', { type: 'text', placeholder: 'Email', onChange: this._setEmail }),
+	        React.createElement('input', { type: 'text', id: 'email', className: this.state.errors,
+	          placeholder: 'Email', onChange: this._setEmail }),
 	        React.createElement('br', null),
-	        React.createElement('input', { type: 'text', placeholder: 'Re-enter email', onChange: this._confirmEmail }),
+	        React.createElement('input', { type: 'text', id: 'email', className: this.state.errors,
+	          placeholder: 'Re-enter email', onChange: this._confirmEmail }),
 	        React.createElement('br', null),
-	        React.createElement('input', { type: 'password', placeholder: 'Password', onChange: this._setPassword }),
+	        React.createElement('input', { type: 'password', id: 'password', className: this.state.errors,
+	          placeholder: 'Password', onChange: this._setPassword }),
 	        React.createElement('br', null),
-	        React.createElement('input', { type: 'password', placeholder: 'Re-enter password', onChange: this._confirmPassword }),
+	        React.createElement('input', { type: 'password', id: 'password', className: this.state.errors,
+	          placeholder: 'Re-enter password', onChange: this._confirmPassword }),
 	        React.createElement('br', null),
 	        React.createElement(
 	          'button',
@@ -34487,10 +34506,10 @@
 	
 	
 	  render: function render() {
-	
+	    var className = this.state.error_message === "" || ErrorStore.currentError().length === 0 ? 'empty' : 'present';
 	    return React.createElement(
 	      'div',
-	      { className: 'errors' },
+	      { className: 'errors ' + className },
 	      this.state.error_message
 	    );
 	  }
@@ -34573,7 +34592,7 @@
 	    AppDispatcher.dispatch({
 	      actionType: ErrorConstants.SIGNUP_ERROR_RECEIVED,
 	      form: 'signup',
-	      message: "Your email and password don't match"
+	      message: "Neither your email nor your password match"
 	    });
 	  },
 	  mismatchedPasswords: function mismatchedPasswords() {
