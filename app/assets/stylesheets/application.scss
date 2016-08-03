@@ -86,7 +86,7 @@ body {
 }
 
 .nav-bar a {
-  padding-bottom: 23px;
+  padding-bottom: 19px;
 }
 
 .nav-bar a:hover {
@@ -200,6 +200,7 @@ body {
   background-color: rgb(0, 230, 115);
   border-radius: 5px;
   font-size: 14px;
+  font-weight: 700;
   color: white;
   margin: 12px 17px;
   width: 90%;
@@ -224,15 +225,15 @@ body {
 /* ProjectStart view */
 
 .start-project {
-  height: 400px;
+  height: 600px;
   width: auto;
   position: relative;
-  background-image: url("splash.jpeg");
+  background-image: url("splash2.jpeg");
   background-size: cover;
   top: -54px;
 }
 .start-project ul:first-child {
-  padding-top:20px;
+  padding-top:40px;
 }
 
 .start-project h1 {
@@ -246,9 +247,10 @@ body {
   border-radius: 5px;
   font-size: 16px;
   color: white;
+  font-weight: 700;
   position: absolute;
   left: 50%;
-  top: 175px;
+  top: 225px;
   transform: perspective(1px) translate(-50%, -50%);
   width: 150px;
   height: 40px;
@@ -259,11 +261,13 @@ body {
 }
 
 /* Select-era */
+
 .select-era {
   height: 600px;
   width: auto;
   position: relative;
-  // background-image: url("splash2.png");
+  background-image: url("splash2.jpeg");
+  border-bottom: 1px solid #ccc;
   background-size: cover;
   top: -54px;
 }
@@ -302,8 +306,13 @@ body {
   cursor: pointer;
 }
 
+.select-era .display-cat:hover {
+  border: 1px solid blue;
+  transition: 0.5s;
+}
+
 .select-era input {
-  top: 288px;
+  top: 300px;
   width: 700px;
   font-weight: 300;
   color: darkgreen;
@@ -318,14 +327,13 @@ body {
 
 button.submit-button {
   position: absolute;
-  top: 400px;
-  background-color: rgb(0, 230, 115);
+  top: 420px;
+  background-color: rebeccapurple;
   border-radius: 10px;
-  // box-shadow: 1px 3px 2px black;
   left: 60%;
   font-size: 22px;
   font-weight: 700;
-  color: darkslateblue;
+  color: white;
   width: 150px;
   height: 40px;
   padding: 5px;
