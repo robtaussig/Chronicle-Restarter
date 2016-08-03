@@ -55,6 +55,8 @@
 	var LogIn = __webpack_require__(266);
 	var UserProfile = __webpack_require__(268);
 	var SetupApp = __webpack_require__(269);
+	var StartProject = __webpack_require__(275);
+	var CreateProject = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./components/create_project\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	
 	
 	var routes = React.createElement(
@@ -62,7 +64,9 @@
 	  { path: '/', component: App },
 	  React.createElement(_reactRouter.Route, { path: 'api/signUp', component: SignUp }),
 	  React.createElement(_reactRouter.Route, { path: 'api/logIn', component: LogIn }),
-	  React.createElement(_reactRouter.Route, { path: 'api/userProfile', component: UserProfile })
+	  React.createElement(_reactRouter.Route, { path: 'api/userProfile', component: UserProfile }),
+	  React.createElement(_reactRouter.Route, { path: 'api/startProject', component: StartProject }),
+	  React.createElement(_reactRouter.Route, { path: 'api/createProject', component: CreateProject })
 	);
 	
 	var router = React.createElement(
@@ -27194,7 +27198,7 @@
 	            null,
 	            React.createElement(
 	              Link,
-	              { className: 'nav-link', to: 'api/start' },
+	              { className: 'nav-link', to: 'api/startProject' },
 	              'Start a project'
 	            )
 	          ),
@@ -34619,6 +34623,57 @@
 	};
 	
 	module.exports = ErrorActions;
+
+/***/ },
+/* 275 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(3);
+	var Link = __webpack_require__(1).Link;
+	
+	var StartProject = React.createClass({
+	  displayName: 'StartProject',
+	
+	
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      { className: 'start-project' },
+	      React.createElement(
+	        'ul',
+	        { className: 'start-headers' },
+	        React.createElement(
+	          'li',
+	          null,
+	          React.createElement(
+	            'h1',
+	            null,
+	            'Change history with'
+	          )
+	        ),
+	        React.createElement(
+	          'li',
+	          null,
+	          React.createElement(
+	            'h1',
+	            null,
+	            'a few more clicks.'
+	          )
+	        )
+	      ),
+	      React.createElement(
+	        Link,
+	        { to: 'api/createProject' },
+	        'Start a project'
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = StartProject;
 
 /***/ }
 /******/ ]);

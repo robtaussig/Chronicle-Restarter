@@ -65,13 +65,16 @@ body {
   background-color: rgba(226, 224, 210, 0.31);
 }
 
+/* clearfix */
 .group:after {
   content: "";
   display: block;
   clear: both;
 }
 
+/* Nav-bar */
 .nav-bar {
+  z-index: 1;
   position: relative;
   padding-top: 22px;
   padding-bottom: 22px;
@@ -118,6 +121,7 @@ body {
   padding-right: 30px;
 }
 
+/* error box */
 .errors {
   height: 30px;
   width: 400px;
@@ -148,6 +152,8 @@ body {
   transition: 0.5s;
 }
 
+/* Search */
+
 .search img {
   height: 20px;
   width: auto;
@@ -155,6 +161,8 @@ body {
 
 .search img:hover {
 }
+
+/* login/signup */
 
 .sign-up-form, .login-form {
   width: 400px;
@@ -167,8 +175,10 @@ body {
   background-color: white;
 }
 
+
 .login-form {
   height: 325px;
+  top: 277px;
 }
 
 .sign-up-form input, .login-form input  {
@@ -210,4 +220,41 @@ body {
   color: #2c2c48;
   font-size: 14px;
   font-weight: 300;
+}
+
+/* ProjectStart view */
+
+.start-project {
+  height: 400px;
+  width: auto;
+  position: relative;
+  background-image: url("splash.jpeg");
+  background-size: cover;
+  top: -54px;
+}
+.start-project ul:first-child {
+  padding-top:20px;
+}
+
+.start-project h1 {
+  font-weight: 300;
+  font-size: 40px;
+  text-align: center;
+}
+
+.start-project a {
+  background-color: rgb(0, 230, 115);
+  border-radius: 5px;
+  font-size: 16px;
+  color: white;
+  position: absolute;
+  left: 50%;
+  top: 175px;
+  transform: perspective(1px) translate(-50%, -50%);
+  width: 150px;
+  height: 40px;
+  padding: 5px;
+  padding-top: 20px;
+  vertical-align: middle;
+  text-align: center;
 }

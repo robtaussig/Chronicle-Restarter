@@ -1,9 +1,26 @@
+# == Schema Information
+#
+# Table name: api_users
+#
+#  id              :integer          not null, primary key
+#  username        :string           not null
+#  password_digest :string           not null
+#  session_token   :string           not null
+#  email           :string
+#  pic_url         :string
+#  home            :string
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#
+
 class Api::User < ActiveRecord::Base
 
   validates :username, :password_digest, :session_token, :email, presence: true
   validates :password, length: {minimum: 6, allow_nil: true}
   attr_reader :password
   after_initialize :ensure_session_token
+
+  has_many :projects
 
   def self.generate_session_token
     SecureRandom::urlsafe_base64(16)

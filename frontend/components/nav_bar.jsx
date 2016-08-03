@@ -42,7 +42,7 @@ const NavBar = React.createClass({
         <div className="site-nav-left" >
           <ul className="nav-bar-items">
             <li><Link className="nav-link" to='api/discover'>Discover</Link></li>
-            <li><Link className="nav-link" to='api/start'>Start a project</Link></li>
+            <li><Link className="nav-link" to='api/startProject'>Start a project</Link></li>
             <li><Link className="nav-link" to='api/about'>About us</Link></li>
           </ul>
         </div>

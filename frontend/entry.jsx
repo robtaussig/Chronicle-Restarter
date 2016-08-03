@@ -5,6 +5,8 @@ const SignUp = require('./components/sign_up.jsx');
 const LogIn = require('./components/log_in.jsx');
 const UserProfile = require('./components/user_profile.jsx');
 const SetupApp = require('./setup_app.js');
+const StartProject = require('./components/start_project.jsx');
+const CreateProject = require('./components/create_project');
 import { Router, Route, hashHistory, IndexRoute } from 'react-router';
 
 const routes = (
@@ -12,6 +14,9 @@ const routes = (
     <Route path="api/signUp" component={SignUp} />
     <Route path="api/logIn" component={LogIn} />
     <Route path="api/userProfile" component={UserProfile} />
+    <Route path="api/startProject" component={StartProject} />
+    <Route path="api/createProject" component={CreateProject} />
+
   </Route>
 );
 
