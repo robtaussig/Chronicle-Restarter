@@ -1,0 +1,190 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+ html, body, header, nav, h1, a,
+ul, li, strong, main, button, i,
+section, img, div, h2, p, form,
+fieldset, label, input, textarea,
+span, article, footer, time, small {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  text-decoration: inherit;
+  vertical-align: inherit;
+  box-sizing: inherit;
+  background: transparent;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
+    Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-weight: 700;
+  -webkit-font-smoothing: antialiased;
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+input[type="password"],
+input[type="email"],
+input[type="text"],
+input[type="submit"],
+textarea,
+button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+button,
+input[type="submit"] {
+  cursor: pointer;
+}
+
+body {
+  background-color: rgba(226, 224, 210, 0.31);
+}
+
+.group:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.nav-bar {
+  position: relative;
+  padding-top: 22px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid #eee;
+  font-family: helvetica;
+  font-size: 14px;
+  font-weight: bold;
+  background-color: white;
+  box-shadow: 0px 3px 20px #ccc;
+}
+
+.nav-bar a {
+  padding-bottom: 23px;
+}
+
+.nav-bar a:hover {
+  border-bottom: 4px solid rgb(0, 230, 115);
+}
+
+.site-nav-left li {
+  display: inline-block;
+  float: left;
+  margin-left: 20px;
+  padding-right: 30px;
+  width: auto;
+  padding: auto;
+}
+
+.site-nav-middle {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: perspective(1px) translate(-50%, -50%);
+}
+
+.site-nav-middle img {
+  height: 20px;
+  width: auto;
+}
+
+.site-nav-right li {
+  display: block;
+  float: right;
+  padding-right: 30px;
+}
+
+.errors {
+  height: 20px;
+  width: 200px;
+  margin: 15px auto;
+  border: 1px solid black;
+}
+
+.search img {
+  height: 20px;
+  width: auto;
+}
+
+.search img:hover {
+}
+
+.sign-up-form, .login-form {
+  width: 400px;
+  height: 520px;
+  position: absolute;
+  left: 50%;
+  top: 375px;
+  transform: perspective(1px) translate(-50%, -50%);
+  border: 0.5px solid #ccc;
+  background-color: white;
+}
+
+.login-form {
+  height: 325px;
+}
+
+.sign-up-form input, .login-form input  {
+  margin: 12px 17px;
+  border: 1px solid #ccc;
+  width: 90%;
+  height: 40px;
+  font-size: 14px;
+  border-radius: 5px;
+  text-indent: 10px;
+  font-weight: 300;
+}
+
+.sign-up-form input:focus, .login-form input:focus {
+  border: 1px solid blue;
+  transition: 0.5s;
+}
+
+.sign-up-form button, .login-form button {
+  background-color: rgb(0, 230, 115);
+  border-radius: 5px;
+  font-size: 14px;
+  color: white;
+  margin: 12px 17px;
+  width: 90%;
+  height: 40px;
+  text-align: center;
+}
+
+.sign-up-form h2, .login-form h2 {
+  -webkit-font-smoothing: antialiased;
+  padding: 20px;
+  font-size: 30px;
+}
+
+.sign-up-form p, .login-form p {
+  margin: 12px;
+  text-align: center;
+  color: #2c2c48;
+  font-size: 14px;
+  font-weight: 300;
+}
