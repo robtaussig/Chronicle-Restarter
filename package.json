@@ -8,7 +8,7 @@
     "test": "test"
   },
   "scripts": {
-    "postinstall": "./node_modules/.bin/webpack"
+    "webpack": "webpack --watch"
   },
   "repository": {
     "type": "git",
@@ -31,9 +31,6 @@
     "react-dom": "^15.3.0",
     "react-router": "^2.6.1",
     "webpack": "^1.13.1"
-  },
-  "scripts": {
-    "webpack": "webpack --watch"
   },
   "engines": {
     "node": "5.1.0",

@@ -32,7 +32,6 @@ span, article, footer, time, small {
   background: transparent;
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
     Helvetica, Arial, "Lucida Grande", sans-serif;
-  font-weight: 700;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -255,6 +254,83 @@ body {
   height: 40px;
   padding: 5px;
   padding-top: 20px;
+  vertical-align: middle;
+  text-align: center;
+}
+
+/* Select-era */
+.select-era {
+  height: 600px;
+  width: auto;
+  position: relative;
+  // background-image: url("splash2.png");
+  background-size: cover;
+  top: -54px;
+}
+
+.select-era *:not(li) {
+  position: absolute;
+  left: 50%;
+  transform: perspective(1px) translate(-50%, -50%);
+  text-align: center;
+}
+
+.select-era h2 {
+  top: 112px;
+  font-weight: 300;
+  font-size: 44px;
+  color: black;
+}
+
+.select-era ul {
+  top: 215px;
+  font-weight: 300;
+  font-size: 36px;
+  color: black;
+
+}
+.select-era ul > li {
+  float:left;
+}
+
+.select-era .display-cat {
+  margin: 0 10px;
+  width: 220px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.select-era input {
+  top: 288px;
+  width: 700px;
+  font-weight: 300;
+  color: darkgreen;
+  line-height: 32px;
+  font-size: 28px;
+  border-bottom: 2px solid black;
+  text-align: left;
+}
+.select-era ::-webkit-input-placeholder {
+   color: darkgreen;
+}
+
+button.submit-button {
+  position: absolute;
+  top: 400px;
+  background-color: rgb(0, 230, 115);
+  border-radius: 10px;
+  // box-shadow: 1px 3px 2px black;
+  left: 60%;
+  font-size: 22px;
+  font-weight: 700;
+  color: darkslateblue;
+  width: 150px;
+  height: 40px;
+  padding: 5px;
+  padding-top: 20px;
+  padding-bottom: 20px;
   vertical-align: middle;
   text-align: center;
 }

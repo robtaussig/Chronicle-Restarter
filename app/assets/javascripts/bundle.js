@@ -56,7 +56,7 @@
 	var UserProfile = __webpack_require__(268);
 	var SetupApp = __webpack_require__(269);
 	var StartProject = __webpack_require__(275);
-	var CreateProject = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./components/create_project\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var CreateProject = __webpack_require__(276);
 	
 	
 	var routes = React.createElement(
@@ -34674,6 +34674,606 @@
 	});
 	
 	module.exports = StartProject;
+
+/***/ },
+/* 276 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(3);
+	var SelectPopover = __webpack_require__(277);
+	
+	var CreateProject = React.createClass({
+	  displayName: "CreateProject",
+	  getInitialState: function getInitialState() {
+	    return { category: "", title: "", display_cat: "", display_counter: 0 };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    this.options = [{ label: 'Category1', value: 'Cat1' }, { label: 'Category2', value: 'Cat2' }, { label: 'Category3', value: 'Cat3' }, { label: 'Category4', value: 'Cat4' }, { label: 'Category5', value: 'Cat5' }];
+	    this.setState({ display_counter: 0 });
+	    this.setState({ display_cat: this.options[this.state.display_counter].value });
+	    //SetInterval to cycle through
+	  },
+	  _onChange: function _onChange(obj) {},
+	  _handleClick: function _handleClick() {},
+	
+	
+	  render: function render() {
+	    return React.createElement(
+	      "div",
+	      null,
+	      React.createElement(
+	        "form",
+	        { className: "select-era" },
+	        React.createElement(
+	          "h2",
+	          null,
+	          "In which era will your project exist?"
+	        ),
+	        React.createElement(
+	          "ul",
+	          { className: "create-category-select group" },
+	          React.createElement(
+	            "li",
+	            null,
+	            "I want to start a"
+	          ),
+	          React.createElement(
+	            "li",
+	            { className: "display-cat" },
+	            this.state.display_cat
+	          ),
+	          React.createElement(
+	            "li",
+	            null,
+	            "project called"
+	          )
+	        ),
+	        React.createElement("input", { className: "project-title-input", type: "text", placeholder: "title...", onChange: this._onChange })
+	      ),
+	      React.createElement(
+	        "button",
+	        { className: "submit-button", onClick: this._handleSubmit },
+	        "Start"
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = CreateProject;
+
+/***/ },
+/* 277 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var HiddenSelectField   = __webpack_require__(278),
+	    SelectBox           = __webpack_require__(279),
+	    Popover             = __webpack_require__(284),
+	    React               = __webpack_require__(3);
+	
+	
+	var SelectPopover = React.createClass({displayName: "SelectPopover",
+	  propTypes: {
+	    options             : React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
+	    name                : React.PropTypes.string,
+	    selectPlaceholder   : React.PropTypes.string,
+	    componentClassNames : React.PropTypes.arrayOf(React.PropTypes.string),
+	    selectBoxClassNames : React.PropTypes.arrayOf(React.PropTypes.string),
+	    popoverClassNames   : React.PropTypes.arrayOf(React.PropTypes.string),
+	    onChange            : React.PropTypes.func
+	  },
+	
+	  getDefaultProps: function() {
+	    return {
+	        options             : [],
+	        name                : "react-select-popover",
+	        selectPlaceholder   : "Choose some options",
+	        componentClassNames : ["react-select-popover"],
+	        selectBoxClassNames : ["select-input"],
+	        popoverClassNames   : ["popover", "arrow-top"],
+	    }
+	  },
+	
+	  getInitialState: function() {
+	    return {
+	      searchTerm        : "",
+	      selectedValues    : [],
+	      focus             : "out"
+	    }
+	  },
+	
+	  selectValue: function(selectedObj) {  
+	    var selectedValues = this.state.selectedValues;
+	    selectedValues.push(selectedObj);
+	    
+	    this.setState({
+	      selectedValues: selectedValues,
+	      searchTerm: ""
+	    });
+	
+	    this.triggerOnChange({
+	      event: "added",
+	      item: selectedObj,
+	      value: this.state.selectedValues
+	    });
+	
+	  },
+	  
+	  unselectValue: function(objToUnselect) {
+	    var selectedValues = this.state.selectedValues;
+	
+	    if(!objToUnselect) {
+	      var last = selectedValues[selectedValues.length - 1];
+	      objToUnselect = last ? last : null;
+	    }
+	
+	    var selected = this.isInSelectedValues(objToUnselect);
+	    if(selected) {
+	      var index = selectedValues.indexOf(selected);
+	      selectedValues.splice(index, 1);
+	    
+	      this.setState({
+	        selectedValues: selectedValues
+	      });
+	
+	      this.triggerOnChange({
+	        event: "removed",
+	        item: selected,
+	        value: this.state.selectedValues
+	      });
+	
+	    }
+	  },
+	
+	  isInSelectedValues: function(object) {
+	    if(!object) return;
+	
+	    var result = this.state.selectedValues.filter(function(obj) {
+	      return obj.label == object.label && obj.value == object.value;
+	    });
+	
+	    return result ? result[0] : null;
+	  },
+	  
+	  handleSearch: function(term) {
+	    this.setState({
+	      searchTerm: term
+	    });
+	  },
+	  
+	  focusIn: function() {
+	    this.setState({
+	      focus: "in"
+	    });
+	  },
+	  
+	  focusOut: function() {
+	    this.setState({
+	      focus: "out",
+	      searchTerm: ""
+	    });
+	  },
+	  
+	  triggerOnChange: function(eventObject) {
+	    if(this.props.onChange) {
+	      this.props.onChange(eventObject);
+	    }
+	  },
+	  
+	  render: function() {
+	    return (
+	      React.createElement("div", {className: "react-select-popover"}, 
+	        React.createElement(HiddenSelectField, {
+	            selectedValues: this.state.selectedValues, 
+	            name: this.props.name, 
+	            options: this.props.options, 
+	            isInSelectedValues: this.isInSelectedValues}
+	
+	        ), 
+	        
+	        React.createElement(SelectBox, {
+	            selectedValues: this.state.selectedValues, 
+	            unselectValue: this.unselectValue, 
+	            handleSearch: this.handleSearch, 
+	            searchTerm: this.state.searchTerm, 
+	            focusIn: this.focusIn, 
+	            focus: this.state.focus, 
+	            focusOut: this.focusOut, 
+	            selectPlaceholder: this.props.selectPlaceholder, 
+	            selectBoxClassNames: this.props.selectBoxClassNames}
+	        ), 
+	        
+	        React.createElement(Popover, {
+	            options: this.props.options, 
+	            selectedValues: this.state.selectedValues, 
+	            selectValue: this.selectValue, 
+	            searchTerm: this.state.searchTerm, 
+	            focus: this.state.focus, 
+	            popoverClassNames: this.props.popoverClassNames, 
+	            isInSelectedValues: this.isInSelectedValues}
+	        )
+	        
+	      )
+	    )
+	  }
+	});
+	
+	module.exports = SelectPopover;
+
+/***/ },
+/* 278 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(3);
+	
+	var HiddenSelectField = React.createClass({displayName: "HiddenSelectField",
+	  render: function() {
+	    var options = [];
+	    
+	    this.props.options.map(function(option, index) {
+	      var label = option.label,
+	          value = option.value;
+	
+	        options.push(React.createElement("option", {key: index, value: value}, label));
+	    });
+	
+	    var values = this.props.selectedValues.map(function(option) {
+	      return option.value;
+	    });
+	
+	    return (
+	      React.createElement("select", {ref: "hiddenSelectBox", defaultValue: values, name: this.props.name, className: "hidden-select-box", multiple: "true"}, 
+	        options
+	      )
+	    )
+	  }
+	});
+	
+	module.exports = HiddenSelectField;
+
+/***/ },
+/* 279 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var SelectBoxItem   = __webpack_require__(280),
+	    SelectInput     = __webpack_require__(281),
+	    React           = __webpack_require__(3);
+	
+	var SelectBox = React.createClass({displayName: "SelectBox",
+	  mixins: [
+	    __webpack_require__(283)
+	  ],
+	 
+	  handleClickOutside: function(evt) {
+	    this.props.focusOut();
+	  },
+	
+	  handleClick: function() {
+	    this.props.focusIn();
+	  },
+	
+	  
+	  render: function() {
+	    var selectedItems = this.props.selectedValues.map(function(item, index) {
+	      var label = item.label,
+	          value = item.value;
+	
+	      return (
+	        React.createElement(SelectBoxItem, {label: label, value: value, key: index, unselectValue: this.props.unselectValue})
+	      )
+	    }, this);
+	    
+	    var classNames = this.props.selectBoxClassNames;
+	
+	    if(!selectedItems.length && this.props.focus != "in") {
+	        selectedItems = React.createElement("p", {className: "empty-list"}, this.props.selectPlaceholder)
+	    }
+	    
+	    return (
+	      React.createElement("div", {className: classNames.join(" ") + (this.props.focus == "in" ? " active" : ""), onClick: this.handleClick}, 
+	
+	        selectedItems, 
+	        
+	        React.createElement(SelectInput, {
+	            focus: this.props.focus, 
+	            searchTerm: this.props.searchTerm, 
+	            handleSearch: this.props.handleSearch, 
+	            unselectValue: this.props.unselectValue}
+	        )
+	        
+	      )
+	    )
+	  }
+	});
+	
+	
+	module.exports = SelectBox;
+
+/***/ },
+/* 280 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(3);
+	
+	var SelectBoxItem = React.createClass({displayName: "SelectBoxItem",
+	  handleRemove: function(e) {
+	    e.preventDefault();
+	    var objToUnselect = {
+	      label: this.props.label,
+	      value: this.props.value
+	    }
+	    this.props.unselectValue(objToUnselect);
+	  },
+	  render: function() {
+	    return (
+	      React.createElement("span", {className: "tag"}, 
+	        React.createElement("button", {onClick: this.handleRemove}, "×"), 
+	        this.props.label
+	      )
+	    )
+	  }
+	});
+	
+	module.exports = SelectBoxItem;
+
+/***/ },
+/* 281 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(3),
+	    ReactDOM = __webpack_require__(282);
+	
+	var SelectInput = React.createClass({displayName: "SelectInput",
+	
+	  handleSearch: function(e) {
+	    var searchInput = ReactDOM.findDOMNode(this.refs.searchInput);
+	    this.props.handleSearch(searchInput.value);
+	  },
+	
+	  handleBackspace: function(e) {
+	    if(this.props.searchTerm.length == 0 && (e.keyCode == 8 || e.keyCode == 46)) {
+	      this.props.unselectValue();
+	    }
+	  },
+	
+	  componentDidUpdate: function() {
+	    var input = ReactDOM.findDOMNode(this.refs.searchInput);
+	    if(this.props.focus == "in") {
+	      input.focus();
+	    } else {
+	      input.blur();
+	    }
+	  },
+	
+	  render: function() {
+	    return (
+	      React.createElement("input", {type: "text", 
+	              className: "search-input", 
+	              ref: "searchInput", 
+	              onKeyDown: this.handleBackspace, 
+	              value: this.props.searchTerm, 
+	              onChange: this.handleSearch}
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = SelectInput;
+
+
+/***/ },
+/* 282 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	module.exports = __webpack_require__(99);
+
+
+/***/ },
+/* 283 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+	 * A mixin for handling (effectively) onClickOutside for React components.
+	 * Note that we're not intercepting any events in this approach, and we're
+	 * not using double events for capturing and discarding in layers or wrappers.
+	 *
+	 * The idea is that components define function
+	 *
+	 *   handleClickOutside: function() { ... }
+	 *
+	 * If no such function is defined, an error will be thrown, as this means
+	 * either it still needs to be written, or the component should not be using
+	 * this mixing since it will not exhibit onClickOutside behaviour.
+	 *
+	 */
+	(function (root, factory) {
+	  if (true) {
+	    // AMD. Register as an anonymous module.
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(98)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	  } else if (typeof exports === 'object') {
+	    // Node. Note that this does not work with strict
+	    // CommonJS, but only CommonJS-like environments
+	    // that support module.exports
+	    module.exports = factory(require('react-dom'));
+	  } else {
+	    // Browser globals (root is window)
+	    root.OnClickOutside = factory(ReactDOM);
+	  }
+	}(this, function (ReactDOM) {
+	  "use strict";
+	
+	  // Use a parallel array because we can't use
+	  // objects as keys, they get toString-coerced
+	  var registeredComponents = [];
+	  var handlers = [];
+	
+	  var IGNORE_CLASS = 'ignore-react-onclickoutside';
+	
+	  var isSourceFound = function(source, localNode) {
+	    if (source === localNode) {
+	      return true;
+	    }
+	    // SVG <use/> elements do not technically reside in the rendered DOM, so
+	    // they do not have classList directly, but they offer a link to their
+	    // corresponding element, which can have classList. This extra check is for
+	    // that case.
+	    // See: http://www.w3.org/TR/SVG11/struct.html#InterfaceSVGUseElement
+	    // Discussion: https://github.com/Pomax/react-onclickoutside/pull/17
+	    if (source.correspondingElement) {
+	      return source.correspondingElement.classList.contains(IGNORE_CLASS);
+	    }
+	    return source.classList.contains(IGNORE_CLASS);
+	  };
+	
+	  return {
+	    componentDidMount: function() {
+	      if(typeof this.handleClickOutside !== "function")
+	        throw new Error("Component lacks a handleClickOutside(event) function for processing outside click events.");
+	
+	      var fn = this.__outsideClickHandler = (function(localNode, eventHandler) {
+	        return function(evt) {
+	          evt.stopPropagation();
+	          var source = evt.target;
+	          var found = false;
+	          // If source=local then this event came from "somewhere"
+	          // inside and should be ignored. We could handle this with
+	          // a layered approach, too, but that requires going back to
+	          // thinking in terms of Dom node nesting, running counter
+	          // to React's "you shouldn't care about the DOM" philosophy.
+	          while(source.parentNode) {
+	            found = isSourceFound(source, localNode);
+	            if(found) return;
+	            source = source.parentNode;
+	          }
+	          eventHandler(evt);
+	        }
+	      }(ReactDOM.findDOMNode(this), this.handleClickOutside));
+	
+	      var pos = registeredComponents.length;
+	      registeredComponents.push(this);
+	      handlers[pos] = fn;
+	
+	      // If there is a truthy disableOnClickOutside property for this
+	      // component, don't immediately start listening for outside events.
+	      if (!this.props.disableOnClickOutside) {
+	        this.enableOnClickOutside();
+	      }
+	    },
+	
+	    componentWillUnmount: function() {
+	      this.disableOnClickOutside();
+	      this.__outsideClickHandler = false;
+	      var pos = registeredComponents.indexOf(this);
+	      if( pos>-1) {
+	        if (handlers[pos]) {
+	          // clean up so we don't leak memory
+	          handlers.splice(pos, 1);
+	          registeredComponents.splice(pos, 1);
+	        }
+	      }
+	    },
+	
+	    /**
+	     * Can be called to explicitly enable event listening
+	     * for clicks and touches outside of this element.
+	     */
+	    enableOnClickOutside: function() {
+	      var fn = this.__outsideClickHandler;
+	      document.addEventListener("mousedown", fn);
+	      document.addEventListener("touchstart", fn);
+	    },
+	
+	    /**
+	     * Can be called to explicitly disable event listening
+	     * for clicks and touches outside of this element.
+	     */
+	    disableOnClickOutside: function() {
+	      var fn = this.__outsideClickHandler;
+	      document.removeEventListener("mousedown", fn);
+	      document.removeEventListener("touchstart", fn);
+	    }
+	  };
+	
+	}));
+
+
+/***/ },
+/* 284 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var PopoverItem = __webpack_require__(285),
+	    React       = __webpack_require__(3);
+	
+	var Popover = React.createClass({displayName: "Popover",
+	  render: function() {
+	    var tags = [];
+	    var searchTerm = this.props.searchTerm.toString().toLowerCase();
+	
+	    this.props.options.forEach(function(option, index) {
+	      var label = option.label,
+	          value = option.value,
+	          labelSlug = label.toString().toLowerCase();
+	
+	      var opt = this.props.isInSelectedValues(option);
+	
+	      if(opt && this.props.selectedValues.indexOf(opt) >= 0 || (searchTerm && labelSlug.indexOf(searchTerm) == -1 ) ) return;
+	
+	      tags.push(React.createElement(PopoverItem, {key: index, label: label, value: value, selectValue: this.props.selectValue}));
+	    }, this);
+	    
+	    if(!tags.length) {
+	      tags.push(React.createElement("span", {key: "none", className: "empty-list"}, "No Options to show"));
+	    }
+	    
+	    var classNames = this.props.popoverClassNames;
+	    if(classNames.indexOf("ignore-react-onclickoutside") == -1) {
+	      classNames.push("ignore-react-onclickoutside");
+	    }
+	
+	    var style = {
+	      display: (this.props.focus == "in" ? "block" : "none")
+	    };
+	    
+	    return (
+	      React.createElement("div", {className: classNames.join(" "), style: style}, 
+	        tags
+	      )
+	    )
+	  }
+	});
+	
+	module.exports = Popover;
+
+/***/ },
+/* 285 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(3);
+	
+	var PopoverItem = React.createClass({displayName: "PopoverItem",
+	  handleClick: function(e) {
+	    e.preventDefault();
+	    var selectedObj = {
+	      label: this.props.label,
+	      value: this.props.value
+	    }
+	    this.props.selectValue(selectedObj);
+	  },
+	  render: function() {
+	    return (
+	      React.createElement("span", {className: "tag ignore-react-onclickoutside", onClick: this.handleClick}, 
+	        this.props.label
+	      )
+	    );
+	  }
+	});
+	
+	
+	module.exports = PopoverItem;
 
 /***/ }
 /******/ ]);
