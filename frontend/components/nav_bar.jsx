@@ -26,7 +26,7 @@ const NavBar = React.createClass({
     SessionActions.logOut();
   },
 
-  render: function() {
+  render () {
     let navContent = (this.state.user.hasOwnProperty('id')) ?
       [<li key="user"><Link className="user-link"
         to='api/userProfile'>{this.state.user.email}</Link></li>,

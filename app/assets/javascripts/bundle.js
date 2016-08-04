@@ -27091,8 +27091,6 @@
 	
 	var App = React.createClass({
 	  displayName: 'App',
-	
-	
 	  render: function render() {
 	    return React.createElement(
 	      'div',
@@ -27102,7 +27100,6 @@
 	      this.props.children
 	    );
 	  }
-	
 	});
 	
 	module.exports = App;
@@ -27137,8 +27134,6 @@
 	    window.myApp = {};
 	    SessionActions.logOut();
 	  },
-	
-	
 	  render: function render() {
 	    var navContent = this.state.user.hasOwnProperty('id') ? [React.createElement(
 	      'li',
@@ -27232,7 +27227,6 @@
 	      )
 	    );
 	  }
-	
 	});
 	
 	module.exports = NavBar;
@@ -27346,8 +27340,6 @@
 	      this._handleMisMatch();
 	    }
 	  },
-	
-	
 	  render: function render() {
 	    var errors = this.errors;
 	    return React.createElement(
@@ -27398,7 +27390,6 @@
 	      )
 	    );
 	  }
-	
 	});
 	
 	module.exports = SignUp;
@@ -34495,8 +34486,6 @@
 	      email: this.state.email
 	    });
 	  },
-	
-	
 	  render: function render() {
 	    return React.createElement(
 	      'div',
@@ -34535,7 +34524,6 @@
 	      )
 	    );
 	  }
-	
 	});
 	
 	module.exports = LogIn;
@@ -34551,8 +34539,6 @@
 	
 	var Search = React.createClass({
 	  displayName: 'Search',
-	
-	
 	  render: function render() {
 	    return React.createElement(
 	      'div',
@@ -34564,7 +34550,6 @@
 	      )
 	    );
 	  }
-	
 	});
 	
 	module.exports = Search;
@@ -34589,8 +34574,6 @@
 	  componentDidMount: function componentDidMount() {
 	    ErrorStore.addListener(this._onChange);
 	  },
-	
-	
 	  render: function render() {
 	    var className = this.state.error_message === "" || ErrorStore.currentError().length === 0 ? 'empty' : 'present';
 	    return React.createElement(
@@ -34599,7 +34582,6 @@
 	      this.state.error_message
 	    );
 	  }
-	
 	});
 	
 	module.exports = Errors;
@@ -34614,12 +34596,9 @@
 	
 	var UserProfile = React.createClass({
 	  displayName: 'UserProfile',
-	
-	
 	  render: function render() {
 	    return React.createElement('div', null);
 	  }
-	
 	});
 	
 	module.exports = UserProfile;
@@ -34650,8 +34629,6 @@
 	
 	var StartProject = React.createClass({
 	  displayName: 'StartProject',
-	
-	
 	  render: function render() {
 	    return React.createElement(
 	      'div',
@@ -34685,7 +34662,6 @@
 	      )
 	    );
 	  }
-	
 	});
 	
 	module.exports = StartProject;
@@ -34790,8 +34766,6 @@
 	    window.myApp.category = this.state.category;
 	    _reactRouter.hashHistory.push('api/finalizeProject');
 	  },
-	
-	
 	  render: function render() {
 	    return React.createElement(
 	      'div',
@@ -34838,7 +34812,6 @@
 	      )
 	    );
 	  }
-	
 	});
 	
 	module.exports = CreateProject;
@@ -34853,6 +34826,12 @@
 	var ProjectStore = __webpack_require__(277);
 	var ErrorStore = __webpack_require__(268);
 	var ProjectNavBar = __webpack_require__(279);
+	var Basics = __webpack_require__(280);
+	var Rewards = __webpack_require__(281);
+	var Story = __webpack_require__(282);
+	var AboutYou = __webpack_require__(283);
+	var Account = __webpack_require__(284);
+	var Preview = __webpack_require__(285);
 	
 	var FinalizeProject = React.createClass({
 	  displayName: 'FinalizeProject',
@@ -34860,6 +34839,7 @@
 	    return { title: "", category: "", shortBlurb: "", location: "", duration: 0, goal: 0 };
 	  },
 	  componentDidMount: function componentDidMount() {
+	    this.pages = [React.createElement(Basics, null), React.createElement(Rewards, null), React.createElement(Story, null), React.createElement(AboutYou, null), React.createElement(Account, null), React.createElement(Preview, null)];
 	    // ProjectStore.addListener(this._onChange);
 	    // ErrorStore.addListener(this._handleError);
 	    this._checkPrefilledInputs();
@@ -34901,17 +34881,15 @@
 	    }
 	  },
 	  _onChange: function _onChange() {},
-	
-	
+	  _changePage: function _changePage(page) {},
 	  render: function render() {
 	    return React.createElement(
 	      'div',
 	      null,
-	      '\'hello\'',
-	      console.log(this.state)
+	      React.createElement(ProjectNavBar, { changePage: this._changePage }),
+	      this.currentPage
 	    );
 	  }
-	
 	});
 	
 	module.exports = FinalizeProject;
@@ -34992,12 +34970,67 @@
 /* 279 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	var React = __webpack_require__(3);
 	
 	var ProjectNavBar = React.createClass({
-	  displayName: 'ProjectNavBar',
+	  displayName: "ProjectNavBar",
+	  render: function render() {
+	    return React.createElement(
+	      "ul",
+	      { className: "project-nav-bar" },
+	      React.createElement(
+	        "li",
+	        { className: "attached-button" },
+	        "Basics"
+	      ),
+	      React.createElement(
+	        "li",
+	        { className: "attached-button" },
+	        "Rewards"
+	      ),
+	      React.createElement(
+	        "li",
+	        { className: "attached-button" },
+	        "Story"
+	      ),
+	      React.createElement(
+	        "li",
+	        { className: "attached-button" },
+	        "About You"
+	      ),
+	      React.createElement(
+	        "li",
+	        { className: "attached-button" },
+	        "Account"
+	      ),
+	      React.createElement(
+	        "li",
+	        { className: "preview-button" },
+	        "Preview"
+	      ),
+	      React.createElement(
+	        "li",
+	        { className: "submit-project-butotn" },
+	        "Submit for review"
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = ProjectNavBar;
+
+/***/ },
+/* 280 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(3);
+	
+	var Basics = React.createClass({
+	  displayName: 'Basics',
 	
 	
 	  render: function render() {
@@ -35006,7 +35039,107 @@
 	
 	});
 	
-	module.exports = ProjectNavBar;
+	module.exports = Basics;
+
+/***/ },
+/* 281 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(3);
+	
+	var Rewards = React.createClass({
+	  displayName: 'Rewards',
+	
+	
+	  render: function render() {
+	    return React.createElement('div', null);
+	  }
+	
+	});
+	
+	module.exports = Rewards;
+
+/***/ },
+/* 282 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(3);
+	
+	var Story = React.createClass({
+	  displayName: 'Story',
+	
+	
+	  render: function render() {
+	    return React.createElement('div', null);
+	  }
+	
+	});
+	
+	module.exports = Story;
+
+/***/ },
+/* 283 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(3);
+	
+	var AboutYou = React.createClass({
+	  displayName: 'AboutYou',
+	
+	
+	  render: function render() {
+	    return React.createElement('div', null);
+	  }
+	
+	});
+	
+	module.exports = AboutYou;
+
+/***/ },
+/* 284 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(3);
+	
+	var Account = React.createClass({
+	  displayName: 'Account',
+	
+	
+	  render: function render() {
+	    return React.createElement('div', null);
+	  }
+	
+	});
+	
+	module.exports = Account;
+
+/***/ },
+/* 285 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(3);
+	
+	var Preview = React.createClass({
+	  displayName: 'Preview',
+	
+	
+	  render: function render() {
+	    return React.createElement('div', null);
+	  }
+	
+	});
+	
+	module.exports = Preview;
 
 /***/ }
 /******/ ]);

@@ -15,8 +15,8 @@ const Errors  = React.createClass({
     ErrorStore.addListener(this._onChange);
   },
 
-  render: function() {
-    let className = (this.state.error_message === "" || 
+  render () {
+    let className = (this.state.error_message === "" ||
       ErrorStore.currentError().length === 0) ? 'empty' : 'present';
     return (
       <div className={`errors ${className}`}>

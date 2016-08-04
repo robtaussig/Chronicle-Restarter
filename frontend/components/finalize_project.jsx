@@ -2,6 +2,13 @@ const React = require('react');
 const ProjectStore = require('../stores/project_store.js');
 const ErrorStore = require('../stores/error_store.js');
 const ProjectNavBar = require('./project_nav_bar.jsx');
+const Basics = require('./basics.jsx');
+const Rewards = require('./rewards.jsx');
+const Story = require('./story.jsx');
+const AboutYou = require('./about_you.jsx');
+const Account = require('./account.jsx');
+const Preview = require('./preview.jsx');
+
 
 const FinalizeProject = React.createClass({
 
@@ -10,6 +17,14 @@ const FinalizeProject = React.createClass({
   },
 
   componentDidMount () {
+    this.pages = [
+      <Basics />,
+      <Rewards />,
+      <Story />,
+      <AboutYou />,
+      <Account />,
+      <Preview />,
+    ];
     // ProjectStore.addListener(this._onChange);
     // ErrorStore.addListener(this._handleError);
     this._checkPrefilledInputs();
@@ -56,11 +71,15 @@ const FinalizeProject = React.createClass({
 
   },
 
-  render: function() {
+  _changePage (page) {
+
+  },
+
+  render () {
     return (
       <div>
-        'hello'
-        {console.log(this.state)}
+        <ProjectNavBar changePage={this._changePage} />
+        {this.currentPage}
       </div>
     );
   }

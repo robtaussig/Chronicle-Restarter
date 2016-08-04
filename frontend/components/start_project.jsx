@@ -3,7 +3,7 @@ const Link = require('react-router').Link;
 
 const StartProject = React.createClass({
 
-  render: function() {
+  render () {
     return (
       <div className="start-project">
         <ul className="start-headers">

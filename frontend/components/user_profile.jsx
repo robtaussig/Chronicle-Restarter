@@ -2,7 +2,7 @@ const React = require('react');
 
 const UserProfile = React.createClass({
 
-  render: function() {
+  render () {
     return (
       <div />
     );

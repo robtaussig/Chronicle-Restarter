@@ -59,7 +59,7 @@ const LogIn = React.createClass({
     });
   },
 
-  render: function() {
+  render () {
     return (
       <div className="login-form">
         <h2>Log In</h2>

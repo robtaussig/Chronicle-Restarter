@@ -115,7 +115,7 @@ const SignUp = React.createClass({
     }
   },
 
-  render: function() {
+  render () {
     let errors = this.errors;
     return (
       <div className="sign-up-form group">

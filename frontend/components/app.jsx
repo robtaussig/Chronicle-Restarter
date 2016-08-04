@@ -4,7 +4,7 @@ const Errors = require('./errors.jsx');
 
 const App = React.createClass({
 
-  render: function() {
+  render () {
     return (
       <div>
         <NavBar/>

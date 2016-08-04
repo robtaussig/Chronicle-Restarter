@@ -90,7 +90,7 @@ const CreateProject = React.createClass({
     hashHistory.push('api/finalizeProject');
   },
 
-  render: function() {
+  render () {
     return (
       <div>
         <form className="select-era">
