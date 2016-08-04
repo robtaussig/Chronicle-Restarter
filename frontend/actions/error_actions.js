@@ -20,6 +20,14 @@ const ErrorActions = {
     });
   },
 
+  mustBeSignedIn () {
+    AppDispatcher.dispatch({
+      actionType:ErrorConstants.SIGNUP_ERROR_RECEIVED,
+      form: 'signup',
+      message: "Please sign in to continue your project"
+    });
+  },
+
   mismatchedEmails () {
     AppDispatcher.dispatch({
       actionType:ErrorConstants.SIGNUP_ERROR_RECEIVED,

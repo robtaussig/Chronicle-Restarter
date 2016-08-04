@@ -19,16 +19,18 @@ const SignUp = React.createClass({
     this.errors = [];
     this.redirectIfLoggedIn();
     this.sessionListener = SessionStore.addListener(this._onChange);
-    ErrorStore.addListener(this._handleError);
+    this.errorListener = ErrorStore.addListener(this._handleError);
   },
 
   componentWillUnmount() {
     this.sessionListener.remove();
+    this.errorListener.remove();
   },
 
   redirectIfLoggedIn () {
-    if (this.state.logged_in) {
-      console.log('logged in');
+    if (typeof window.myApp.pendingAction !== "undefined" && this.state.logged_in) {
+      hashHistory.push(`api/${window.myApp.pendingAction}`);
+    } else if (this.state.logged_in) {
       hashHistory.push('/');
     }
   },
@@ -48,6 +50,7 @@ const SignUp = React.createClass({
         password: user.password,
         logged_in: true
       });
+      window.myApp.loggedIn = true;
     }
     this.redirectIfLoggedIn();
   },

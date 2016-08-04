@@ -52,11 +52,11 @@
 	var ReactDOM = __webpack_require__(98);
 	var App = __webpack_require__(238);
 	var SignUp = __webpack_require__(240);
-	var LogIn = __webpack_require__(266);
-	var UserProfile = __webpack_require__(268);
-	var SetupApp = __webpack_require__(269);
-	var StartProject = __webpack_require__(275);
-	var CreateProject = __webpack_require__(276);
+	var LogIn = __webpack_require__(269);
+	var UserProfile = __webpack_require__(272);
+	var SetupApp = __webpack_require__(273);
+	var StartProject = __webpack_require__(274);
+	var CreateProject = __webpack_require__(275);
 	
 	
 	var routes = React.createElement(
@@ -27113,8 +27113,8 @@
 	
 	var React = __webpack_require__(3);
 	var SignUp = __webpack_require__(240);
-	var LogIn = __webpack_require__(266);
-	var Search = __webpack_require__(267);
+	var LogIn = __webpack_require__(269);
+	var Search = __webpack_require__(270);
 	var SessionStore = __webpack_require__(241);
 	var SessionActions = __webpack_require__(264);
 	var Link = __webpack_require__(1).Link;
@@ -27132,6 +27132,7 @@
 	  },
 	  _logOut: function _logOut(e) {
 	    e.preventDefault();
+	    window.myApp = {};
 	    SessionActions.logOut();
 	  },
 	
@@ -27245,9 +27246,9 @@
 	var React = __webpack_require__(3);
 	var SessionStore = __webpack_require__(241);
 	var SessionActions = __webpack_require__(264);
-	var ErrorActions = __webpack_require__(274);
+	var ErrorActions = __webpack_require__(267);
 	var Link = __webpack_require__(1).Link;
-	var ErrorStore = __webpack_require__(272);
+	var ErrorStore = __webpack_require__(268);
 	
 	
 	var SignUp = React.createClass({
@@ -27262,14 +27263,16 @@
 	    this.errors = [];
 	    this.redirectIfLoggedIn();
 	    this.sessionListener = SessionStore.addListener(this._onChange);
-	    ErrorStore.addListener(this._handleError);
+	    this.errorListener = ErrorStore.addListener(this._handleError);
 	  },
 	  componentWillUnmount: function componentWillUnmount() {
 	    this.sessionListener.remove();
+	    this.errorListener.remove();
 	  },
 	  redirectIfLoggedIn: function redirectIfLoggedIn() {
-	    if (this.state.logged_in) {
-	      console.log('logged in');
+	    if (typeof window.myApp.pendingAction !== "undefined" && this.state.logged_in) {
+	      _reactRouter.hashHistory.push('api/' + window.myApp.pendingAction);
+	    } else if (this.state.logged_in) {
 	      _reactRouter.hashHistory.push('/');
 	    }
 	  },
@@ -27287,6 +27290,7 @@
 	        password: user.password,
 	        logged_in: true
 	      });
+	      window.myApp.loggedIn = true;
 	    }
 	    this.redirectIfLoggedIn();
 	  },
@@ -34225,8 +34229,8 @@
 	var AppDispatcher = __webpack_require__(260);
 	var SessionConstants = __webpack_require__(263);
 	var ApiUtil = __webpack_require__(265);
-	var ErrorConstants = __webpack_require__(273);
-	var ErrorActions = __webpack_require__(274);
+	var ErrorConstants = __webpack_require__(266);
+	var ErrorActions = __webpack_require__(267);
 	
 	var SessionActions = {
 	  logIn: function logIn(form, userInfo) {
@@ -34321,6 +34325,115 @@
 
 /***/ },
 /* 266 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	module.exports = {
+	  ERROR_RECEIVED: 'ERROR_RECEIVED',
+	  SIGNUP_ERROR_RECEIVED: 'SIGNUP_ERROR_RECEIVED'
+	};
+
+/***/ },
+/* 267 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var AppDispatcher = __webpack_require__(260);
+	var ApiUtil = __webpack_require__(265);
+	var ErrorConstants = __webpack_require__(266);
+	
+	var ErrorActions = {
+	  mismatchedBoth: function mismatchedBoth() {
+	    AppDispatcher.dispatch({
+	      actionType: ErrorConstants.SIGNUP_ERROR_RECEIVED,
+	      form: 'signup',
+	      message: "Neither your email nor your password match"
+	    });
+	  },
+	  mismatchedPasswords: function mismatchedPasswords() {
+	    AppDispatcher.dispatch({
+	      actionType: ErrorConstants.SIGNUP_ERROR_RECEIVED,
+	      form: 'signup',
+	      message: "Your password doesn't match"
+	    });
+	  },
+	  mustBeSignedIn: function mustBeSignedIn() {
+	    AppDispatcher.dispatch({
+	      actionType: ErrorConstants.SIGNUP_ERROR_RECEIVED,
+	      form: 'signup',
+	      message: "Please sign in to continue your project"
+	    });
+	  },
+	  mismatchedEmails: function mismatchedEmails() {
+	    AppDispatcher.dispatch({
+	      actionType: ErrorConstants.SIGNUP_ERROR_RECEIVED,
+	      form: 'signup',
+	      message: "Your email doesn't match"
+	    });
+	  },
+	  receiveError: function receiveError(form, data) {
+	    AppDispatcher.dispatch({
+	      actionType: ErrorConstants.ERROR_RECEIVED,
+	      form: form,
+	      data: data
+	    });
+	  }
+	};
+	
+	module.exports = ErrorActions;
+
+/***/ },
+/* 268 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var Store = __webpack_require__(242).Store;
+	var AppDispatcher = __webpack_require__(260);
+	var ErrorConstants = __webpack_require__(266);
+	var ErrorStore = new Store(AppDispatcher);
+	
+	var _errors = [];
+	
+	ErrorStore.currentError = function () {
+	  return _errors;
+	};
+	
+	function _resetError(form, errorInfo) {
+	  var message = errorInfo.responseJSON[0];
+	  _errors = [form, message];
+	  ErrorStore.__emitChange();
+	}
+	
+	function _clearErrors() {
+	  _errors = [];
+	  ErrorStore.__emitChange();
+	}
+	
+	function _handleSignUpError(form, message) {
+	  _errors = [form, message];
+	  ErrorStore.__emitChange();
+	}
+	
+	ErrorStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case ErrorConstants.ERROR_RECEIVED:
+	      _resetError(payload.form, payload.data);
+	      break;
+	    case ErrorConstants.SIGNUP_ERROR_RECEIVED:
+	      _handleSignUpError(payload.form, payload.message);
+	      break;
+	    default:
+	      _clearErrors();
+	  }
+	};
+	
+	module.exports = ErrorStore;
+
+/***/ },
+/* 269 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34348,6 +34461,7 @@
 	        password: user.password,
 	        logged_in: true
 	      });
+	      window.myApp.loggedIn = true;
 	    }
 	    this.redirectIfLoggedIn();
 	  },
@@ -34356,7 +34470,9 @@
 	    this.redirectIfLoggedIn();
 	  },
 	  redirectIfLoggedIn: function redirectIfLoggedIn() {
-	    if (this.state.logged_in) {
+	    if (typeof window.myApp.pendingAction !== "undefined" && this.state.logged_in) {
+	      _reactRouter.hashHistory.push('api/' + window.myApp.pendingAction);
+	    } else if (this.state.logged_in) {
 	      _reactRouter.hashHistory.push('/');
 	    }
 	  },
@@ -34423,7 +34539,7 @@
 	module.exports = LogIn;
 
 /***/ },
-/* 267 */
+/* 270 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34452,49 +34568,13 @@
 	module.exports = Search;
 
 /***/ },
-/* 268 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var React = __webpack_require__(3);
-	
-	var UserProfile = React.createClass({
-	  displayName: 'UserProfile',
-	
-	
-	  render: function render() {
-	    return React.createElement('div', null);
-	  }
-	
-	});
-	
-	module.exports = UserProfile;
-
-/***/ },
-/* 269 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	var SessionActions = __webpack_require__(264);
-	
-	module.exports = function () {
-	  var user = window.myApp.user;
-	  if (typeof user !== "undefined") {
-	    SessionActions.receiveCurrentUser(user);
-	  }
-	};
-
-/***/ },
-/* 270 */,
 /* 271 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(3);
-	var ErrorStore = __webpack_require__(272);
+	var ErrorStore = __webpack_require__(268);
 	
 	var Errors = React.createClass({
 	  displayName: 'Errors',
@@ -34528,104 +34608,37 @@
 
 	'use strict';
 	
-	var Store = __webpack_require__(242).Store;
-	var AppDispatcher = __webpack_require__(260);
-	var ErrorConstants = __webpack_require__(273);
-	var ErrorStore = new Store(AppDispatcher);
+	var React = __webpack_require__(3);
 	
-	var _errors = [];
+	var UserProfile = React.createClass({
+	  displayName: 'UserProfile',
 	
-	ErrorStore.currentError = function () {
-	  return _errors;
-	};
 	
-	function _resetError(form, errorInfo) {
-	  var message = errorInfo.responseJSON[0];
-	  _errors = [form, message];
-	  ErrorStore.__emitChange();
-	}
-	
-	function _clearErrors() {
-	  _errors = [];
-	  ErrorStore.__emitChange();
-	}
-	
-	function _handleSignUpError(form, message) {
-	  _errors = [form, message];
-	  ErrorStore.__emitChange();
-	}
-	
-	ErrorStore.__onDispatch = function (payload) {
-	  switch (payload.actionType) {
-	    case ErrorConstants.ERROR_RECEIVED:
-	      _resetError(payload.form, payload.data);
-	      break;
-	    case ErrorConstants.SIGNUP_ERROR_RECEIVED:
-	      _handleSignUpError(payload.form, payload.message);
-	      break;
-	    default:
-	      _clearErrors();
+	  render: function render() {
+	    return React.createElement('div', null);
 	  }
-	};
 	
-	module.exports = ErrorStore;
+	});
+	
+	module.exports = UserProfile;
 
 /***/ },
 /* 273 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
-	module.exports = {
-	  ERROR_RECEIVED: 'ERROR_RECEIVED',
-	  SIGNUP_ERROR_RECEIVED: 'SIGNUP_ERROR_RECEIVED'
+	var SessionActions = __webpack_require__(264);
+	
+	module.exports = function () {
+	  var user = window.myApp.user;
+	  if (typeof user !== "undefined") {
+	    SessionActions.receiveCurrentUser(user);
+	  }
 	};
 
 /***/ },
 /* 274 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var AppDispatcher = __webpack_require__(260);
-	var ApiUtil = __webpack_require__(265);
-	var ErrorConstants = __webpack_require__(273);
-	
-	var ErrorActions = {
-	  mismatchedBoth: function mismatchedBoth() {
-	    AppDispatcher.dispatch({
-	      actionType: ErrorConstants.SIGNUP_ERROR_RECEIVED,
-	      form: 'signup',
-	      message: "Neither your email nor your password match"
-	    });
-	  },
-	  mismatchedPasswords: function mismatchedPasswords() {
-	    AppDispatcher.dispatch({
-	      actionType: ErrorConstants.SIGNUP_ERROR_RECEIVED,
-	      form: 'signup',
-	      message: "Your password doesn't match"
-	    });
-	  },
-	  mismatchedEmails: function mismatchedEmails() {
-	    AppDispatcher.dispatch({
-	      actionType: ErrorConstants.SIGNUP_ERROR_RECEIVED,
-	      form: 'signup',
-	      message: "Your email doesn't match"
-	    });
-	  },
-	  receiveError: function receiveError(form, data) {
-	    AppDispatcher.dispatch({
-	      actionType: ErrorConstants.ERROR_RECEIVED,
-	      form: form,
-	      data: data
-	    });
-	  }
-	};
-	
-	module.exports = ErrorActions;
-
-/***/ },
-/* 275 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34676,15 +34689,19 @@
 	module.exports = StartProject;
 
 /***/ },
-/* 276 */
+/* 275 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
+	
+	var _reactRouter = __webpack_require__(1);
 	
 	var React = __webpack_require__(3);
 	
+	var ErrorActions = __webpack_require__(267);
+	
 	var CreateProject = React.createClass({
-	  displayName: "CreateProject",
+	  displayName: 'CreateProject',
 	  getInitialState: function getInitialState() {
 	    return {
 	      category: "", title: "", displayCat: "", displayCounter: 0,
@@ -34703,10 +34720,12 @@
 	      _this._incrementDisplayCat();
 	    }, 2000);
 	  },
+	  componentWillUnmount: function componentWillUnmount() {
+	    clearInterval(this.intervalId);
+	  },
 	  _incrementDisplayCat: function _incrementDisplayCat() {
 	    var currentCount = this.state.displayCounter;
 	    currentCount = currentCount === this.options.length - 1 ? 0 : currentCount + 1;
-	    console.log(currentCount);
 	    this.setState({ displayCounter: currentCount });
 	    this.setState({ displayCat: this.options[this.state.displayCounter].label });
 	  },
@@ -34715,19 +34734,19 @@
 	
 	    var _firstHalf = this.options.slice(0, this.options.length / 2).map(function (cat) {
 	      return React.createElement(
-	        "li",
+	        'li',
 	        { onClick: function onClick(event) {
 	            return _this2._selectCat(cat, event);
-	          }, className: "cats-first-half", key: cat.value },
+	          }, className: 'cats-first-half', key: cat.value },
 	        cat.label
 	      );
 	    });
 	    var _secondHalf = this.options.slice(this.options.length / 2).map(function (cat) {
 	      return React.createElement(
-	        "li",
+	        'li',
 	        { onClick: function onClick(event) {
 	            return _this2._selectCat(cat, event);
-	          }, className: "cats-second-half", key: cat.value },
+	          }, className: 'cats-second-half', key: cat.value },
 	        cat.label
 	      );
 	    });
@@ -34752,51 +34771,66 @@
 	  _onChange: function _onChange(e) {
 	    this.setState({ title: e.currentTarget.value });
 	  },
+	  _handleSubmit: function _handleSubmit() {
+	    var user = window.myApp.user;
+	    if (window.myApp.loggedIn || typeof user !== "undefined") {
+	      this._advanceToProjectCreation();
+	    } else {
+	      window.myApp.pendingAction = 'finalizeProject';
+	      window.myApp.projecTitle = this.state.title;
+	      window.myApp.projectCategory = this.state.category;
+	      ErrorActions.mustBeSignedIn();
+	      _reactRouter.hashHistory.push('api/signUp');
+	    }
+	  },
+	  _advanceToProjectCreation: function _advanceToProjectCreation() {
+	    console.log('success!');
+	  },
 	
 	
 	  render: function render() {
 	    return React.createElement(
-	      "div",
+	      'div',
 	      null,
 	      React.createElement(
-	        "form",
-	        { className: "select-era" },
+	        'form',
+	        { className: 'select-era' },
 	        React.createElement(
-	          "h2",
+	          'h2',
 	          null,
-	          "In which era will your project exist?"
+	          'In which era will your project exist?'
 	        ),
 	        React.createElement(
-	          "ul",
-	          { className: "create-category-select group" },
+	          'ul',
+	          { className: 'create-category-select group' },
 	          React.createElement(
-	            "li",
+	            'li',
 	            null,
-	            "I want to start a"
+	            'I want to start a'
 	          ),
 	          React.createElement(
-	            "li",
-	            { className: "display-cat", onClick: this._displayCats },
+	            'li',
+	            { className: 'display-cat', onClick: this._displayCats },
 	            this.state.displayCat
 	          ),
 	          React.createElement(
-	            "li",
+	            'li',
 	            null,
-	            "project called"
+	            'project called'
 	          )
 	        ),
 	        React.createElement(
-	          "ul",
-	          { id: "drop-down-ul", onMouseLeave: this._hideCats, className: "" + this.state.status },
+	          'ul',
+	          { id: 'drop-down-ul', onMouseLeave: this._hideCats, className: '' + this.state.status },
 	          this.state.firstHalf,
 	          this.state.secondHalf
 	        ),
-	        React.createElement("input", { className: "project-title-input", type: "text", placeholder: "title...", onChange: this._onChange })
+	        React.createElement('input', { className: 'project-title-input', type: 'text', placeholder: 'title...', onChange: this._onChange })
 	      ),
 	      React.createElement(
-	        "button",
-	        { className: "submit-button", onClick: this._handleSubmit },
-	        "Start"
+	        'button',
+	        { className: 'submit-button', onClick: this._handleSubmit },
+	        'Start'
 	      )
 	    );
 	  }

@@ -22,6 +22,7 @@ const NavBar = React.createClass({
 
   _logOut (e) {
     e.preventDefault();
+    window.myApp = {};
     SessionActions.logOut();
   },
 

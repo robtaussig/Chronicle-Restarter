@@ -20,6 +20,7 @@ const LogIn = React.createClass({
         password: user.password,
         logged_in: true
       });
+      window.myApp.loggedIn = true;
     }
     this.redirectIfLoggedIn();
   },
@@ -30,7 +31,9 @@ const LogIn = React.createClass({
   },
 
   redirectIfLoggedIn () {
-    if (this.state.logged_in) {
+    if (typeof window.myApp.pendingAction !== "undefined" && this.state.logged_in) {
+      hashHistory.push(`api/${window.myApp.pendingAction}`);
+    } else if (this.state.logged_in) {
       hashHistory.push('/');
     }
   },

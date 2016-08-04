@@ -1,4 +1,6 @@
 const React = require('react');
+import { hashHistory } from 'react-router';
+const ErrorActions = require('../actions/error_actions.js');
 
 const CreateProject = React.createClass({
 
@@ -25,10 +27,13 @@ const CreateProject = React.createClass({
     }, 2000);
   },
 
+  componentWillUnmount () {
+    clearInterval(this.intervalId);
+  },
+
   _incrementDisplayCat () {
     let currentCount = this.state.displayCounter;
     currentCount = currentCount === this.options.length - 1 ? 0 : currentCount + 1;
-    console.log(currentCount);
     this.setState({displayCounter: currentCount});
     this.setState({displayCat: this.options[this.state.displayCounter].label});
   },
@@ -64,6 +69,23 @@ const CreateProject = React.createClass({
 
   _onChange (e) {
     this.setState({title: e.currentTarget.value});
+  },
+
+  _handleSubmit () {
+    let user = window.myApp.user;
+    if (window.myApp.loggedIn || typeof user !== "undefined") {
+      this._advanceToProjectCreation();
+    } else {
+      window.myApp.pendingAction = 'finalizeProject';
+      window.myApp.projecTitle = this.state.title;
+      window.myApp.projectCategory = this.state.category;
+      ErrorActions.mustBeSignedIn();
+      hashHistory.push('api/signUp');
+    }
+  },
+
+  _advanceToProjectCreation () {
+    console.log('success!');
   },
 
   render: function() {
