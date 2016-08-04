@@ -4,7 +4,9 @@ const Rewards = React.createClass({
 
   render: function() {
     return (
-      <div />
+      <div>
+        Rewards
+      </div>
     );
   }
 

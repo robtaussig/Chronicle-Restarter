@@ -4,7 +4,9 @@ const AboutYou = React.createClass({
 
   render: function() {
     return (
-      <div />
+      <div>
+        AboutYou
+      </div>
     );
   }
 

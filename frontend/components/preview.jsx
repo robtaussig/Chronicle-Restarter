@@ -4,7 +4,9 @@ const Preview = React.createClass({
 
   render: function() {
     return (
-      <div />
+      <div>
+        Preview
+      </div>
     );
   }
 

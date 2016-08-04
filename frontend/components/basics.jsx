@@ -4,7 +4,9 @@ const Basics = React.createClass({
 
   render: function() {
     return (
-      <div />
+      <div>
+        Basics
+      </div>
     );
   }
 

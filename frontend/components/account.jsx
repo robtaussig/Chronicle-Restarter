@@ -4,7 +4,9 @@ const Account = React.createClass({
 
   render: function() {
     return (
-      <div />
+      <div>
+        Account
+      </div>
     );
   }
 

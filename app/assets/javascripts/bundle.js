@@ -34840,6 +34840,7 @@
 	  },
 	  componentDidMount: function componentDidMount() {
 	    this.pages = [React.createElement(Basics, null), React.createElement(Rewards, null), React.createElement(Story, null), React.createElement(AboutYou, null), React.createElement(Account, null), React.createElement(Preview, null)];
+	    this.currentPage = this.pages[0];
 	    // ProjectStore.addListener(this._onChange);
 	    // ErrorStore.addListener(this._handleError);
 	    this._checkPrefilledInputs();
@@ -34853,7 +34854,7 @@
 	        }
 	      }
 	    }
-	    console.log(this.state);
+	    this.forceUpdate();
 	  },
 	  _setInput: function _setInput(key) {
 	    if (key !== 'user' && key !== 'loggedIn' && key !== 'pendingAction') {
@@ -34881,12 +34882,29 @@
 	    }
 	  },
 	  _onChange: function _onChange() {},
-	  _changePage: function _changePage(page) {},
+	  _changePage: function _changePage(pageNum) {
+	    this.currentPage = this.pages[pageNum];
+	    this.forceUpdate();
+	  },
 	  render: function render() {
 	    return React.createElement(
 	      'div',
 	      null,
-	      React.createElement(ProjectNavBar, { changePage: this._changePage }),
+	      React.createElement(
+	        'div',
+	        { className: 'nav-bar-box' },
+	        React.createElement(ProjectNavBar, { changePage: this._changePage }),
+	        React.createElement(
+	          'h1',
+	          null,
+	          'Let us get started.'
+	        ),
+	        React.createElement(
+	          'h2',
+	          null,
+	          'The title of your project will impact its position in history. Pick a title, image, goal, campaign duration, and category.'
+	        )
+	      ),
 	      this.currentPage
 	    );
 	  }
@@ -34898,7 +34916,7 @@
 	TODO
 
 	1) Add save functionality (will require saved_project model and new logic to prepopulate info)
-
+	2) Replace 'us' with apostrophe once syntax highlighting is fixed
 
 
 
@@ -34970,50 +34988,53 @@
 /* 279 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	var React = __webpack_require__(3);
 	
 	var ProjectNavBar = React.createClass({
-	  displayName: "ProjectNavBar",
+	  displayName: 'ProjectNavBar',
+	  _handleClick: function _handleClick(e) {
+	    this.props.changePage(e.target.id);
+	  },
 	  render: function render() {
 	    return React.createElement(
-	      "ul",
-	      { className: "project-nav-bar" },
+	      'ul',
+	      { onClick: this._handleClick, className: 'project-nav-bar' },
 	      React.createElement(
-	        "li",
-	        { className: "attached-button" },
-	        "Basics"
+	        'li',
+	        { id: '0', className: 'attached-button' },
+	        'Basics'
 	      ),
 	      React.createElement(
-	        "li",
-	        { className: "attached-button" },
-	        "Rewards"
+	        'li',
+	        { id: '1', className: 'attached-button' },
+	        'Rewards'
 	      ),
 	      React.createElement(
-	        "li",
-	        { className: "attached-button" },
-	        "Story"
+	        'li',
+	        { id: '2', className: 'attached-button' },
+	        'Story'
 	      ),
 	      React.createElement(
-	        "li",
-	        { className: "attached-button" },
-	        "About You"
+	        'li',
+	        { id: '3', className: 'attached-button' },
+	        'About You'
 	      ),
 	      React.createElement(
-	        "li",
-	        { className: "attached-button" },
-	        "Account"
+	        'li',
+	        { id: '4', className: 'attached-button' },
+	        'Account'
 	      ),
 	      React.createElement(
-	        "li",
-	        { className: "preview-button" },
-	        "Preview"
+	        'li',
+	        { id: '5', className: 'preview-button' },
+	        'Preview'
 	      ),
 	      React.createElement(
-	        "li",
-	        { className: "submit-project-butotn" },
-	        "Submit for review"
+	        'li',
+	        { id: '6', className: 'submit-project-butotn' },
+	        'Submit for review'
 	      )
 	    );
 	  }
@@ -35034,7 +35055,11 @@
 	
 	
 	  render: function render() {
-	    return React.createElement('div', null);
+	    return React.createElement(
+	      'div',
+	      null,
+	      'Basics'
+	    );
 	  }
 	
 	});
@@ -35054,7 +35079,11 @@
 	
 	
 	  render: function render() {
-	    return React.createElement('div', null);
+	    return React.createElement(
+	      'div',
+	      null,
+	      'Rewards'
+	    );
 	  }
 	
 	});
@@ -35074,7 +35103,11 @@
 	
 	
 	  render: function render() {
-	    return React.createElement('div', null);
+	    return React.createElement(
+	      'div',
+	      null,
+	      'Story'
+	    );
 	  }
 	
 	});
@@ -35094,7 +35127,11 @@
 	
 	
 	  render: function render() {
-	    return React.createElement('div', null);
+	    return React.createElement(
+	      'div',
+	      null,
+	      'AboutYou'
+	    );
 	  }
 	
 	});
@@ -35114,7 +35151,11 @@
 	
 	
 	  render: function render() {
-	    return React.createElement('div', null);
+	    return React.createElement(
+	      'div',
+	      null,
+	      'Account'
+	    );
 	  }
 	
 	});
@@ -35134,7 +35175,11 @@
 	
 	
 	  render: function render() {
-	    return React.createElement('div', null);
+	    return React.createElement(
+	      'div',
+	      null,
+	      'Preview'
+	    );
 	  }
 	
 	});

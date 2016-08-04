@@ -25,6 +25,7 @@ const FinalizeProject = React.createClass({
       <Account />,
       <Preview />,
     ];
+    this.currentPage = this.pages[0];
     // ProjectStore.addListener(this._onChange);
     // ErrorStore.addListener(this._handleError);
     this._checkPrefilledInputs();
@@ -38,7 +39,7 @@ const FinalizeProject = React.createClass({
         }
       }
     }
-    console.log(this.state);
+    this.forceUpdate();
   },
 
   _setInput (key) {
@@ -71,14 +72,20 @@ const FinalizeProject = React.createClass({
 
   },
 
-  _changePage (page) {
-
+  _changePage (pageNum) {
+    this.currentPage = this.pages[pageNum];
+    this.forceUpdate();
   },
 
   render () {
     return (
       <div>
-        <ProjectNavBar changePage={this._changePage} />
+        <div className="nav-bar-box">
+          <ProjectNavBar changePage={this._changePage} />
+          <h1>Let us get started.</h1>
+          <h2>The title of your project will impact its position in history.
+            Pick a title, image, goal, campaign duration, and category.</h2>
+        </div>
         {this.currentPage}
       </div>
     );
@@ -93,7 +100,7 @@ module.exports = FinalizeProject;
 TODO
 
 1) Add save functionality (will require saved_project model and new logic to prepopulate info)
-
+2) Replace 'us' with apostrophe once syntax highlighting is fixed
 
 
 
