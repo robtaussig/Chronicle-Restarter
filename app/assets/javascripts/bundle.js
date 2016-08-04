@@ -57,6 +57,7 @@
 	var SetupApp = __webpack_require__(273);
 	var StartProject = __webpack_require__(274);
 	var CreateProject = __webpack_require__(275);
+	var FinalizeProject = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./components/finalize_project.jsx\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	
 	
 	var routes = React.createElement(
@@ -66,7 +67,8 @@
 	  React.createElement(_reactRouter.Route, { path: 'api/logIn', component: LogIn }),
 	  React.createElement(_reactRouter.Route, { path: 'api/userProfile', component: UserProfile }),
 	  React.createElement(_reactRouter.Route, { path: 'api/startProject', component: StartProject }),
-	  React.createElement(_reactRouter.Route, { path: 'api/createProject', component: CreateProject })
+	  React.createElement(_reactRouter.Route, { path: 'api/createProject', component: CreateProject }),
+	  React.createElement(_reactRouter.Route, { path: 'api/finalizeProject', component: FinalizeProject })
 	);
 	
 	var router = React.createElement(
@@ -34783,9 +34785,7 @@
 	      _reactRouter.hashHistory.push('api/signUp');
 	    }
 	  },
-	  _advanceToProjectCreation: function _advanceToProjectCreation() {
-	    console.log('success!');
-	  },
+	  _advanceToProjectCreation: function _advanceToProjectCreation() {},
 	
 	
 	  render: function render() {

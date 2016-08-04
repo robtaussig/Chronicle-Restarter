@@ -85,7 +85,7 @@ const CreateProject = React.createClass({
   },
 
   _advanceToProjectCreation () {
-    console.log('success!');
+    
   },
 
   render: function() {
