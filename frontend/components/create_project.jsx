@@ -1,31 +1,69 @@
 const React = require('react');
-const SelectPopover = require("react-select-popover");
 
 const CreateProject = React.createClass({
 
   getInitialState () {
-    return ({category: "", title: "", display_cat: "", display_counter: 0});
+    return ({
+      category: "", title: "", displayCat: "", displayCounter: 0,
+      firstHalf: [], secondHalf: [], status: 'inactive-drop-down'
+    });
   },
 
   componentDidMount () {
-    this.options = [
-      {label: 'Category1', value: 'Cat1'},
-      {label: 'Category2', value: 'Cat2'},
-      {label: 'Category3', value: 'Cat3'},
-      {label: 'Category4', value: 'Cat4'},
-      {label: 'Category5', value: 'Cat5'},
+    this.options = [  //To replace once categories are created
+      {label: 'Before Time', value: 'Cat1'},
+      {label: 'Stone Age', value: 'Cat2'},
+      {label: 'Middle Ages', value: 'Cat3'},
+      {label: 'Present', value: 'Cat4'},
+      {label: 'Future', value: 'Cat5'},
     ];
-    this.setState({display_counter: 0});
-    this.setState({display_cat: this.options[this.state.display_counter].value});
-    //SetInterval to cycle through
+    this.setState({displayCounter: 0});
+    this.setState({displayCat: this.options[this.state.displayCounter].label});
+    this._setCategories();
+    this.intervalId = setInterval(() => {
+      this._incrementDisplayCat();
+    }, 2000);
   },
 
-  _onChange (obj) {
-
+  _incrementDisplayCat () {
+    let currentCount = this.state.displayCounter;
+    currentCount = currentCount === this.options.length - 1 ? 0 : currentCount + 1;
+    console.log(currentCount);
+    this.setState({displayCounter: currentCount});
+    this.setState({displayCat: this.options[this.state.displayCounter].label});
   },
 
-  _handleClick () {
+  _setCategories () {
+    let _firstHalf = this.options.slice(0,this.options.length / 2).map(cat=> {
+      return <li onClick={(event) => this._selectCat(cat, event)} className="cats-first-half" key={cat.value}>{cat.label}</li>;
+    });
+    let _secondHalf = this.options.slice(this.options.length / 2).map(cat=> {
+      return <li onClick={(event) => this._selectCat(cat, event)} className="cats-second-half" key={cat.value}>{cat.label}</li>;
+    });
 
+    this.setState({firstHalf: _firstHalf});
+    this.setState({secondHalf: _secondHalf});
+  },
+
+  _displayCats (e) {
+    this.setState({status: "active-drop-down"});
+    this.forceUpdate();
+  },
+
+  _hideCats (e) {
+    this.setState({status: "inactive-drop-down"});
+    this.forceUpdate();
+  },
+
+  _selectCat (cat,event) {
+    this.setState({displayCat: cat.label});
+    this.setState({category: cat.label});
+    this._hideCats();
+    clearInterval(this.intervalId);
+  },
+
+  _onChange (e) {
+    this.setState({title: e.currentTarget.value});
   },
 
   render: function() {
@@ -35,8 +73,12 @@ const CreateProject = React.createClass({
           <h2>In which era will your project exist?</h2>
           <ul className="create-category-select group">
             <li>I want to start a</li>
-            <li className ="display-cat">{this.state.display_cat}</li>
+            <li className ="display-cat" onClick={this._displayCats}>{this.state.displayCat}</li>
             <li>project called</li>
+          </ul>
+          <ul id="drop-down-ul" onMouseLeave={this._hideCats} className={`${this.state.status}`}>
+            {this.state.firstHalf}
+            {this.state.secondHalf}
           </ul>
           <input className="project-title-input" type="text" placeholder='title...' onChange={this._onChange} />
         </form>
