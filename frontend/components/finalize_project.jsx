@@ -13,59 +13,31 @@ const Preview = require('./preview.jsx');
 const FinalizeProject = React.createClass({
 
   getInitialState () {
-    return ({title: "", category: "", shortBlurb: "", location: "", duration: 0, goal: 0});
+    return ({
+      title: window.myApp.title ? window.myApp.title : "",
+      category: window.myApp.category ? window.myApp.category : "",
+      shortBlurb: window.myApp.shortBlurb ? window.myApp.shortBlurb : "",
+      location: window.myApp.location ? window.myApp.location : "",
+      duration: window.myApp.duration ? window.myApp.duration : "",
+      goal: window.myApp.goal ? window.myApp.goal : "",
+      saved: window.myApp.saved ? window.myApp.saved : "",
+      currentPage: 0
+    });
   },
 
   componentDidMount () {
     this.pages = [
-      <Basics />,
+      <Basics data={this.state} onSave={this._saveChanges}/>,
       <Rewards />,
       <Story />,
       <AboutYou />,
       <Account />,
       <Preview />,
     ];
-    this.currentPage = this.pages[0];
+    this.currentPage = this.pages[this.state.currentPage];
+    this.forceUpdate();
     // ProjectStore.addListener(this._onChange);
     // ErrorStore.addListener(this._handleError);
-    this._checkPrefilledInputs();
-  },
-
-  _checkPrefilledInputs () {  //Also check for saved project
-    if (window.myApp.pendingAction === 'finalizeProject') {
-      for (let key in window.myApp) {
-        if (window.myApp.hasOwnProperty(key)) {
-          this._setInput(key);
-        }
-      }
-    }
-    this.forceUpdate();
-  },
-
-  _setInput (key) {
-    if (key !== 'user' && key !== 'loggedIn' && key !== 'pendingAction') {
-      let value = window.myApp[`${key}`];
-      switch (key) {
-        case 'title':
-          this.setState({title: value});
-          break;
-        case 'category':
-          this.setState({category: value});
-          break;
-        case 'shortBlurb':
-          this.setState({shortBlurb: value});
-          break;
-        case 'location':
-          this.setState({location: value});
-          break;
-        case 'duration':
-          this.setState({duration: value});
-          break;
-        case 'goal':
-          this.setState({goal: value});
-          break;
-      }
-    }
   },
 
   _onChange () {
@@ -99,8 +71,14 @@ const FinalizeProject = React.createClass({
 
   _changePage (pageNum) {
     let num = this._parseNum(pageNum);
-    this.currentPage = this.pages[num];
+    this.setState({currentPage: num});
+    this.currentPage = this.pages[this.state.currentPage];
     this.forceUpdate();
+  },
+
+  _saveChanges (savedData) {
+    this.setState({savedData});
+    this.setState({saved: true});
   },
 
   render () {

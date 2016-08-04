@@ -34762,6 +34762,7 @@
 	    }
 	  },
 	  _advanceToProjectCreation: function _advanceToProjectCreation() {
+	    window.myApp.pendingAction = 'finalizeProject';
 	    window.myApp.title = this.state.title;
 	    window.myApp.category = this.state.category;
 	    _reactRouter.hashHistory.push('api/finalizeProject');
@@ -34836,50 +34837,23 @@
 	var FinalizeProject = React.createClass({
 	  displayName: 'FinalizeProject',
 	  getInitialState: function getInitialState() {
-	    return { title: "", category: "", shortBlurb: "", location: "", duration: 0, goal: 0 };
+	    return {
+	      title: window.myApp.title ? window.myApp.title : "",
+	      category: window.myApp.category ? window.myApp.category : "",
+	      shortBlurb: window.myApp.shortBlurb ? window.myApp.shortBlurb : "",
+	      location: window.myApp.location ? window.myApp.location : "",
+	      duration: window.myApp.duration ? window.myApp.duration : "",
+	      goal: window.myApp.goal ? window.myApp.goal : "",
+	      saved: window.myApp.saved ? window.myApp.saved : "",
+	      currentPage: 0
+	    };
 	  },
 	  componentDidMount: function componentDidMount() {
-	    this.pages = [React.createElement(Basics, null), React.createElement(Rewards, null), React.createElement(Story, null), React.createElement(AboutYou, null), React.createElement(Account, null), React.createElement(Preview, null)];
-	    this.currentPage = this.pages[0];
+	    this.pages = [React.createElement(Basics, { data: this.state, onSave: this._saveChanges }), React.createElement(Rewards, null), React.createElement(Story, null), React.createElement(AboutYou, null), React.createElement(Account, null), React.createElement(Preview, null)];
+	    this.currentPage = this.pages[this.state.currentPage];
+	    this.forceUpdate();
 	    // ProjectStore.addListener(this._onChange);
 	    // ErrorStore.addListener(this._handleError);
-	    this._checkPrefilledInputs();
-	  },
-	  _checkPrefilledInputs: function _checkPrefilledInputs() {
-	    //Also check for saved project
-	    if (window.myApp.pendingAction === 'finalizeProject') {
-	      for (var key in window.myApp) {
-	        if (window.myApp.hasOwnProperty(key)) {
-	          this._setInput(key);
-	        }
-	      }
-	    }
-	    this.forceUpdate();
-	  },
-	  _setInput: function _setInput(key) {
-	    if (key !== 'user' && key !== 'loggedIn' && key !== 'pendingAction') {
-	      var value = window.myApp['' + key];
-	      switch (key) {
-	        case 'title':
-	          this.setState({ title: value });
-	          break;
-	        case 'category':
-	          this.setState({ category: value });
-	          break;
-	        case 'shortBlurb':
-	          this.setState({ shortBlurb: value });
-	          break;
-	        case 'location':
-	          this.setState({ location: value });
-	          break;
-	        case 'duration':
-	          this.setState({ duration: value });
-	          break;
-	        case 'goal':
-	          this.setState({ goal: value });
-	          break;
-	      }
-	    }
 	  },
 	  _onChange: function _onChange() {},
 	  _parseNum: function _parseNum(num) {
@@ -34908,8 +34882,13 @@
 	  },
 	  _changePage: function _changePage(pageNum) {
 	    var num = this._parseNum(pageNum);
-	    this.currentPage = this.pages[num];
+	    this.setState({ currentPage: num });
+	    this.currentPage = this.pages[this.state.currentPage];
 	    this.forceUpdate();
+	  },
+	  _saveChanges: function _saveChanges(savedData) {
+	    this.setState({ savedData: savedData });
+	    this.setState({ saved: true });
 	  },
 	  render: function render() {
 	    var lets = "Let's";
@@ -35139,12 +35118,44 @@
 	
 	var Basics = React.createClass({
 	  displayName: "Basics",
+	  getInitialState: function getInitialState() {
+	    return {
+	      image: {},
+	      title: "",
+	      blurb: "",
+	      category: "",
+	      location: "",
+	      duration: 0,
+	      goal: 0,
+	      saved: false
+	    };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    this._setPrefilledData();
+	  },
+	  componentWillUnmount: function componentWillUnmount() {},
+	  _onChange: function _onChange() {},
+	  _setTitle: function _setTitle() {},
+	  _setImage: function _setImage() {},
+	  _setBlurb: function _setBlurb() {},
+	  _setCategory: function _setCategory() {},
+	  _setLocation: function _setLocation() {},
+	  _setDuration: function _setDuration() {},
+	  _setDurationRadio: function _setDurationRadio() {},
+	  _setGoal: function _setGoal() {},
+	  _setPrefilledData: function _setPrefilledData() {
+	    this.setState(this.props.data);
+	  },
+	  _savechange: function _savechange() {
+	    this.props.onSave(this.state);
+	  },
 	
 	
 	  render: function render() {
+	    var rows = 3;
 	    return React.createElement(
 	      "div",
-	      null,
+	      { className: "wrapper" },
 	      React.createElement(
 	        "div",
 	        { className: "project-basic-form" },
@@ -35184,7 +35195,12 @@
 	            React.createElement(
 	              "div",
 	              { className: "grey-field" },
-	              React.createElement("div", { className: "field-wrapper" })
+	              React.createElement(
+	                "div",
+	                { className: "field-wrapper" },
+	                React.createElement("input", { type: "text", className: "title",
+	                  onChange: this._setTitle, placeholder: this.state.title })
+	              )
 	            )
 	          ),
 	          React.createElement(
@@ -35198,7 +35214,12 @@
 	            React.createElement(
 	              "div",
 	              { className: "grey-field" },
-	              React.createElement("div", { className: "field-wrapper" })
+	              React.createElement(
+	                "div",
+	                { className: "field-wrapper" },
+	                React.createElement("textarea", { rows: "3", wrap: "hard", className: "short-blurb-field",
+	                  onChange: this._setBlurb })
+	              )
 	            )
 	          ),
 	          React.createElement(
@@ -35212,7 +35233,16 @@
 	            React.createElement(
 	              "div",
 	              { className: "grey-field" },
-	              React.createElement("div", { className: "field-wrapper" })
+	              React.createElement(
+	                "div",
+	                { className: "field-wrapper" },
+	                React.createElement(
+	                  "button",
+	                  { className: "category-button",
+	                    onClick: this._setCategory },
+	                  this.state.category
+	                )
+	              )
 	            )
 	          ),
 	          React.createElement(
@@ -35226,7 +35256,13 @@
 	            React.createElement(
 	              "div",
 	              { className: "grey-field" },
-	              React.createElement("div", { className: "field-wrapper" })
+	              React.createElement(
+	                "div",
+	                { className: "field-wrapper" },
+	                React.createElement("input", { type: "text", className: "location",
+	                  onChange: this._setLocation,
+	                  placeholder: this.state.location })
+	              )
 	            )
 	          ),
 	          React.createElement(
@@ -35240,7 +35276,53 @@
 	            React.createElement(
 	              "div",
 	              { className: "grey-field" },
-	              React.createElement("div", { className: "field-wrapper" })
+	              React.createElement(
+	                "div",
+	                { className: "field-wrapper" },
+	                React.createElement(
+	                  "div",
+	                  { className: "num-days" },
+	                  React.createElement(
+	                    "ul",
+	                    null,
+	                    React.createElement(
+	                      "li",
+	                      null,
+	                      React.createElement("input", { name: "duration", onClick: this._setDurationRadio,
+	                        type: "radio" })
+	                    ),
+	                    React.createElement(
+	                      "li",
+	                      null,
+	                      React.createElement("input", { className: "duration-field", type: "text",
+	                        onChange: this._setDuration })
+	                    )
+	                  )
+	                ),
+	                React.createElement(
+	                  "div",
+	                  { className: "end-date-calendar" },
+	                  React.createElement(
+	                    "ul",
+	                    null,
+	                    React.createElement(
+	                      "li",
+	                      null,
+	                      React.createElement("input", { name: "duration", onClick: this._openCalendar,
+	                        type: "radio" })
+	                    ),
+	                    React.createElement(
+	                      "li",
+	                      null,
+	                      React.createElement(
+	                        "div",
+	                        null,
+	                        "Calendar here"
+	                      )
+	                    )
+	                  )
+	                )
+	              )
 	            )
 	          ),
 	          React.createElement(
@@ -35254,11 +35336,18 @@
 	            React.createElement(
 	              "div",
 	              { className: "grey-field" },
-	              React.createElement("div", { className: "field-wrapper" })
+	              React.createElement(
+	                "div",
+	                { className: "field-wrapper" },
+	                React.createElement("input", { type: "text", className: "goal",
+	                  onChange: this._setGoal,
+	                  placeholder: "$0 USD" })
+	              )
 	            )
 	          )
 	        )
-	      )
+	      ),
+	      React.createElement("div", null)
 	    );
 	  }
 	

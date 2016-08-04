@@ -85,6 +85,7 @@ const CreateProject = React.createClass({
   },
 
   _advanceToProjectCreation () {
+    window.myApp.pendingAction = 'finalizeProject';
     window.myApp.title = this.state.title;
     window.myApp.category = this.state.category;
     hashHistory.push('api/finalizeProject');
