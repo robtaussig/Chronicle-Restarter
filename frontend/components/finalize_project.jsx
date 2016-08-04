@@ -111,8 +111,9 @@ const FinalizeProject = React.createClass({
           <ProjectNavBar changePage={this._changePage} />
           <br></br>
           <div className="nav-bar-top-text">{lets} get started.</div>
-          <div className="nav-bar-bottom-text">The title of your project will impact its position in history.
-            Pick a title, image, goal, campaign duration, and category.</div>
+          <div className="nav-bar-bottom-text">The title of your project will
+            impact its place in history. Pick a title, image, goal, campaign
+            duration, and category.</div>
         </div>
         <div className="project-create-subpage">
           {this.currentPage}

@@ -72,7 +72,7 @@ const CreateProject = React.createClass({
   },
 
   _handleSubmit () {
-    let user = window.myApp.user;
+    let user = window.myApp.username;
     if (window.myApp.loggedIn || typeof user !== "undefined") {
       this._advanceToProjectCreation();
     } else {

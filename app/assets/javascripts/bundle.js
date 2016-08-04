@@ -27146,12 +27146,12 @@
 	      )
 	    ), React.createElement(
 	      'li',
-	      { key: 'logOut' },
-	      React.createElement(
-	        'button',
-	        { onClick: this._logOut },
-	        'Log Out'
-	      )
+	      { onClick: this._logOut, className: 'log-out-button', key: 'logOut' },
+	      React.createElement('img', { id: 'log-out-icon', src: window.logout })
+	    ), React.createElement(
+	      'li',
+	      { key: 'search' },
+	      React.createElement(Search, null)
 	    )] : [React.createElement(
 	      'li',
 	      { key: 'signup' },
@@ -34612,7 +34612,7 @@
 	var SessionActions = __webpack_require__(264);
 	
 	module.exports = function () {
-	  var user = window.myApp.user;
+	  var user = window.myApp;
 	  if (typeof user !== "undefined") {
 	    SessionActions.receiveCurrentUser(user);
 	  }
@@ -34750,7 +34750,7 @@
 	    this.setState({ title: e.currentTarget.value });
 	  },
 	  _handleSubmit: function _handleSubmit() {
-	    var user = window.myApp.user;
+	    var user = window.myApp.username;
 	    if (window.myApp.loggedIn || typeof user !== "undefined") {
 	      this._advanceToProjectCreation();
 	    } else {
@@ -34930,7 +34930,7 @@
 	        React.createElement(
 	          'div',
 	          { className: 'nav-bar-bottom-text' },
-	          'The title of your project will impact its position in history. Pick a title, image, goal, campaign duration, and category.'
+	          'The title of your project will impact its place in history. Pick a title, image, goal, campaign duration, and category.'
 	        )
 	      ),
 	      React.createElement(
@@ -35133,19 +35133,132 @@
 /* 280 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	var React = __webpack_require__(3);
 	
 	var Basics = React.createClass({
-	  displayName: 'Basics',
+	  displayName: "Basics",
 	
 	
 	  render: function render() {
 	    return React.createElement(
-	      'div',
+	      "div",
 	      null,
-	      'Basics'
+	      React.createElement(
+	        "div",
+	        { className: "project-basic-form" },
+	        React.createElement(
+	          "ul",
+	          null,
+	          React.createElement(
+	            "li",
+	            { className: "project-image" },
+	            React.createElement(
+	              "h3",
+	              null,
+	              "Project image"
+	            ),
+	            React.createElement(
+	              "div",
+	              { className: "grey-field" },
+	              React.createElement(
+	                "div",
+	                { className: "field-wrapper" },
+	                React.createElement(
+	                  "p",
+	                  null,
+	                  "Choose an image from your computer"
+	                )
+	              )
+	            )
+	          ),
+	          React.createElement(
+	            "li",
+	            { className: "project-title" },
+	            React.createElement(
+	              "h3",
+	              null,
+	              "Project title"
+	            ),
+	            React.createElement(
+	              "div",
+	              { className: "grey-field" },
+	              React.createElement("div", { className: "field-wrapper" })
+	            )
+	          ),
+	          React.createElement(
+	            "li",
+	            { className: "project-shortBlurb" },
+	            React.createElement(
+	              "h3",
+	              null,
+	              "Short blurb"
+	            ),
+	            React.createElement(
+	              "div",
+	              { className: "grey-field" },
+	              React.createElement("div", { className: "field-wrapper" })
+	            )
+	          ),
+	          React.createElement(
+	            "li",
+	            { className: "project-category" },
+	            React.createElement(
+	              "h3",
+	              null,
+	              "Category"
+	            ),
+	            React.createElement(
+	              "div",
+	              { className: "grey-field" },
+	              React.createElement("div", { className: "field-wrapper" })
+	            )
+	          ),
+	          React.createElement(
+	            "li",
+	            { className: "project-location" },
+	            React.createElement(
+	              "h3",
+	              null,
+	              "Project location"
+	            ),
+	            React.createElement(
+	              "div",
+	              { className: "grey-field" },
+	              React.createElement("div", { className: "field-wrapper" })
+	            )
+	          ),
+	          React.createElement(
+	            "li",
+	            { className: "project-duration" },
+	            React.createElement(
+	              "h3",
+	              null,
+	              "Funding duration"
+	            ),
+	            React.createElement(
+	              "div",
+	              { className: "grey-field" },
+	              React.createElement("div", { className: "field-wrapper" })
+	            )
+	          ),
+	          React.createElement(
+	            "li",
+	            { className: "project-goal" },
+	            React.createElement(
+	              "h3",
+	              null,
+	              "Funding goal"
+	            ),
+	            React.createElement(
+	              "div",
+	              { className: "grey-field" },
+	              React.createElement("div", { className: "field-wrapper" })
+	            )
+	          )
+	        )
+	      )
 	    );
 	  }
 	

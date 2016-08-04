@@ -30,7 +30,10 @@ const NavBar = React.createClass({
     let navContent = (this.state.user.hasOwnProperty('id')) ?
       [<li key="user"><Link className="user-link"
         to='api/userProfile'>{this.state.user.email}</Link></li>,
-      <li key="logOut"><button onClick={this._logOut}>Log Out</button></li>] :
+      <li onClick={this._logOut} className="log-out-button" key="logOut">
+        <img id="log-out-icon" src={window.logout}></img>
+      </li>,
+      <li key="search"><Search/></li>] :
         [
           <li key="signup">
             <Link className="session-link" to='api/signUp'>Sign Up</Link></li>,
