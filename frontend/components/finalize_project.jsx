@@ -72,21 +72,51 @@ const FinalizeProject = React.createClass({
 
   },
 
+  _parseNum (num) {
+    let result;
+    switch (num) {
+      case 'zero':
+        result = 0;
+        break;
+      case 'one':
+        result = 1;
+        break;
+      case 'two':
+        result = 2;
+        break;
+      case 'three':
+        result = 3;
+        break;
+      case 'four':
+        result = 4;
+        break;
+      case 'five':
+        result = 5;
+        break;
+    }
+    return result;
+  },
+
   _changePage (pageNum) {
-    this.currentPage = this.pages[pageNum];
+    let num = this._parseNum(pageNum);
+    this.currentPage = this.pages[num];
     this.forceUpdate();
   },
 
   render () {
+    let lets = "Let's";
     return (
       <div>
         <div className="nav-bar-box">
           <ProjectNavBar changePage={this._changePage} />
-          <h1>Let us get started.</h1>
-          <h2>The title of your project will impact its position in history.
-            Pick a title, image, goal, campaign duration, and category.</h2>
+          <br></br>
+          <div className="nav-bar-top-text">{lets} get started.</div>
+          <div className="nav-bar-bottom-text">The title of your project will impact its position in history.
+            Pick a title, image, goal, campaign duration, and category.</div>
         </div>
-        {this.currentPage}
+        <div className="project-create-subpage">
+          {this.currentPage}
+        </div>
       </div>
     );
   }

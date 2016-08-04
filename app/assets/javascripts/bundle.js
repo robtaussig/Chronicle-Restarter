@@ -34882,11 +34882,37 @@
 	    }
 	  },
 	  _onChange: function _onChange() {},
+	  _parseNum: function _parseNum(num) {
+	    var result = void 0;
+	    switch (num) {
+	      case 'zero':
+	        result = 0;
+	        break;
+	      case 'one':
+	        result = 1;
+	        break;
+	      case 'two':
+	        result = 2;
+	        break;
+	      case 'three':
+	        result = 3;
+	        break;
+	      case 'four':
+	        result = 4;
+	        break;
+	      case 'five':
+	        result = 5;
+	        break;
+	    }
+	    return result;
+	  },
 	  _changePage: function _changePage(pageNum) {
-	    this.currentPage = this.pages[pageNum];
+	    var num = this._parseNum(pageNum);
+	    this.currentPage = this.pages[num];
 	    this.forceUpdate();
 	  },
 	  render: function render() {
+	    var lets = "Let's";
 	    return React.createElement(
 	      'div',
 	      null,
@@ -34894,18 +34920,24 @@
 	        'div',
 	        { className: 'nav-bar-box' },
 	        React.createElement(ProjectNavBar, { changePage: this._changePage }),
+	        React.createElement('br', null),
 	        React.createElement(
-	          'h1',
-	          null,
-	          'Let us get started.'
+	          'div',
+	          { className: 'nav-bar-top-text' },
+	          lets,
+	          ' get started.'
 	        ),
 	        React.createElement(
-	          'h2',
-	          null,
+	          'div',
+	          { className: 'nav-bar-bottom-text' },
 	          'The title of your project will impact its position in history. Pick a title, image, goal, campaign duration, and category.'
 	        )
 	      ),
-	      this.currentPage
+	      React.createElement(
+	        'div',
+	        { className: 'project-create-subpage' },
+	        this.currentPage
+	      )
 	    );
 	  }
 	});
@@ -34994,53 +35026,108 @@
 	
 	var ProjectNavBar = React.createClass({
 	  displayName: 'ProjectNavBar',
+	  getInitialState: function getInitialState() {
+	    return { selected: '' };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    this.setState({ selected: 'zero' });
+	  },
 	  _handleClick: function _handleClick(e) {
+	    this.setState({ selected: e.target.id });
 	    this.props.changePage(e.target.id);
 	  },
 	  render: function render() {
 	    return React.createElement(
-	      'ul',
-	      { onClick: this._handleClick, className: 'project-nav-bar' },
+	      'div',
+	      { className: 'project-nav-bar' },
 	      React.createElement(
-	        'li',
-	        { id: '0', className: 'attached-button' },
-	        'Basics'
-	      ),
-	      React.createElement(
-	        'li',
-	        { id: '1', className: 'attached-button' },
-	        'Rewards'
-	      ),
-	      React.createElement(
-	        'li',
-	        { id: '2', className: 'attached-button' },
-	        'Story'
-	      ),
-	      React.createElement(
-	        'li',
-	        { id: '3', className: 'attached-button' },
-	        'About You'
-	      ),
-	      React.createElement(
-	        'li',
-	        { id: '4', className: 'attached-button' },
-	        'Account'
-	      ),
-	      React.createElement(
-	        'li',
-	        { id: '5', className: 'preview-button' },
-	        'Preview'
-	      ),
-	      React.createElement(
-	        'li',
-	        { id: '6', className: 'submit-project-butotn' },
-	        'Submit for review'
+	        'ul',
+	        null,
+	        React.createElement(
+	          'li',
+	          null,
+	          React.createElement(
+	            'span',
+	            { id: 'zero', className: this.state.selected,
+	              onClick: this._handleClick },
+	            'Basics'
+	          )
+	        ),
+	        React.createElement(
+	          'li',
+	          null,
+	          React.createElement(
+	            'span',
+	            { id: 'one', className: this.state.selected,
+	              onClick: this._handleClick },
+	            'Rewards'
+	          )
+	        ),
+	        React.createElement(
+	          'li',
+	          null,
+	          React.createElement(
+	            'span',
+	            { id: 'two', className: this.state.selected,
+	              onClick: this._handleClick },
+	            'Story'
+	          )
+	        ),
+	        React.createElement(
+	          'li',
+	          null,
+	          React.createElement(
+	            'span',
+	            { id: 'three', className: this.state.selected,
+	              onClick: this._handleClick },
+	            'About You'
+	          )
+	        ),
+	        React.createElement(
+	          'li',
+	          { className: 'act-li' },
+	          React.createElement(
+	            'span',
+	            { id: 'four', className: 'act ' + this.state.selected,
+	              onClick: this._handleClick },
+	            'Account'
+	          )
+	        ),
+	        React.createElement(
+	          'li',
+	          { className: 'prev-li' },
+	          React.createElement(
+	            'span',
+	            { id: 'five', className: 'prev ' + this.state.selected,
+	              onClick: this._handleClick },
+	            'Preview'
+	          )
+	        ),
+	        React.createElement(
+	          'li',
+	          { className: 'submit-li' },
+	          React.createElement(
+	            'span',
+	            { id: 'six', className: 'submit-span',
+	              onClick: this._handleClick },
+	            'Submit for review'
+	          )
+	        )
 	      )
 	    );
 	  }
 	});
 	
 	module.exports = ProjectNavBar;
+	
+	/* TODO
+	
+	1) Submit hover color should be red until mandatory fields are complete.
+
+
+
+
+	*/
 
 /***/ },
 /* 280 */
