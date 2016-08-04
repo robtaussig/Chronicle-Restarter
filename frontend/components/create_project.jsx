@@ -77,15 +77,17 @@ const CreateProject = React.createClass({
       this._advanceToProjectCreation();
     } else {
       window.myApp.pendingAction = 'finalizeProject';
-      window.myApp.projecTitle = this.state.title;
-      window.myApp.projectCategory = this.state.category;
+      window.myApp.title = this.state.title;
+      window.myApp.category = this.state.category;
       ErrorActions.mustBeSignedIn();
       hashHistory.push('api/signUp');
     }
   },
 
   _advanceToProjectCreation () {
-    
+    window.myApp.title = this.state.title;
+    window.myApp.category = this.state.category;
+    hashHistory.push('api/finalizeProject');
   },
 
   render: function() {

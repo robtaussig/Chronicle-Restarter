@@ -57,7 +57,7 @@
 	var SetupApp = __webpack_require__(273);
 	var StartProject = __webpack_require__(274);
 	var CreateProject = __webpack_require__(275);
-	var FinalizeProject = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./components/finalize_project.jsx\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var FinalizeProject = __webpack_require__(276);
 	
 	
 	var routes = React.createElement(
@@ -34779,13 +34779,17 @@
 	      this._advanceToProjectCreation();
 	    } else {
 	      window.myApp.pendingAction = 'finalizeProject';
-	      window.myApp.projecTitle = this.state.title;
-	      window.myApp.projectCategory = this.state.category;
+	      window.myApp.title = this.state.title;
+	      window.myApp.category = this.state.category;
 	      ErrorActions.mustBeSignedIn();
 	      _reactRouter.hashHistory.push('api/signUp');
 	    }
 	  },
-	  _advanceToProjectCreation: function _advanceToProjectCreation() {},
+	  _advanceToProjectCreation: function _advanceToProjectCreation() {
+	    window.myApp.title = this.state.title;
+	    window.myApp.category = this.state.category;
+	    _reactRouter.hashHistory.push('api/finalizeProject');
+	  },
 	
 	
 	  render: function render() {
@@ -34838,6 +34842,171 @@
 	});
 	
 	module.exports = CreateProject;
+
+/***/ },
+/* 276 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(3);
+	var ProjectStore = __webpack_require__(277);
+	var ErrorStore = __webpack_require__(268);
+	var ProjectNavBar = __webpack_require__(279);
+	
+	var FinalizeProject = React.createClass({
+	  displayName: 'FinalizeProject',
+	  getInitialState: function getInitialState() {
+	    return { title: "", category: "", shortBlurb: "", location: "", duration: 0, goal: 0 };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    // ProjectStore.addListener(this._onChange);
+	    // ErrorStore.addListener(this._handleError);
+	    this._checkPrefilledInputs();
+	  },
+	  _checkPrefilledInputs: function _checkPrefilledInputs() {
+	    //Also check for saved project
+	    if (window.myApp.pendingAction === 'finalizeProject') {
+	      for (var key in window.myApp) {
+	        if (window.myApp.hasOwnProperty(key)) {
+	          this._setInput(key);
+	        }
+	      }
+	    }
+	    console.log(this.state);
+	  },
+	  _setInput: function _setInput(key) {
+	    if (key !== 'user' && key !== 'loggedIn' && key !== 'pendingAction') {
+	      var value = window.myApp['' + key];
+	      switch (key) {
+	        case 'title':
+	          this.setState({ title: value });
+	          break;
+	        case 'category':
+	          this.setState({ category: value });
+	          break;
+	        case 'shortBlurb':
+	          this.setState({ shortBlurb: value });
+	          break;
+	        case 'location':
+	          this.setState({ location: value });
+	          break;
+	        case 'duration':
+	          this.setState({ duration: value });
+	          break;
+	        case 'goal':
+	          this.setState({ goal: value });
+	          break;
+	      }
+	    }
+	  },
+	  _onChange: function _onChange() {},
+	
+	
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      null,
+	      '\'hello\'',
+	      console.log(this.state)
+	    );
+	  }
+	
+	});
+	
+	module.exports = FinalizeProject;
+	
+	/*
+	TODO
+
+	1) Add save functionality (will require saved_project model and new logic to prepopulate info)
+
+
+
+
+
+
+
+
+	*/
+
+/***/ },
+/* 277 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var Store = __webpack_require__(242).Store;
+	var AppDispatcher = __webpack_require__(260);
+	var ProjectConstants = __webpack_require__(278);
+	var ProjectStore = new Store(AppDispatcher);
+	
+	var _currentUser = {};
+	
+	function _logIn(user) {
+	  _currentUser = user;
+	  ProjectStore.__emitChange();
+	}
+	
+	function _logOut() {
+	  _currentUser = {};
+	  ProjectStore.__emitChange();
+	}
+	
+	ProjectStore.currentUser = function () {
+	  return _currentUser;
+	};
+	
+	ProjectStore.isUserLoggedIn = function (id) {
+	  return _currentUser.id === id;
+	};
+	
+	ProjectStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case ProjectConstants.USER_RECEIVED:
+	      _logIn(payload.user);
+	      break;
+	    case ProjectConstants.USER_REMOVED:
+	      _logOut();
+	      break;
+	    case ProjectConstants.SESSION_STOPPED:
+	      _logOut();
+	      break;
+	  }
+	};
+	
+	module.exports = ProjectStore;
+
+/***/ },
+/* 278 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	module.exports = {
+	  PROJECT_RECEIVED: 'PROJECT_RECEIVED',
+	  PROJECT_REMOVED: 'PROJECT_REMOVED'
+	};
+
+/***/ },
+/* 279 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(3);
+	
+	var ProjectNavBar = React.createClass({
+	  displayName: 'ProjectNavBar',
+	
+	
+	  render: function render() {
+	    return React.createElement('div', null);
+	  }
+	
+	});
+	
+	module.exports = ProjectNavBar;
 
 /***/ }
 /******/ ]);
