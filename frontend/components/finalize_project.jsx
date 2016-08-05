@@ -1,5 +1,6 @@
 const React = require('react');
 const ProjectStore = require('../stores/project_store.js');
+const ErrorActions = require('../actions/error_actions.js');
 const ErrorStore = require('../stores/error_store.js');
 const ProjectNavBar = require('./project_nav_bar.jsx');
 const Basics = require('./basics.jsx');
@@ -8,6 +9,8 @@ const Story = require('./story.jsx');
 const AboutYou = require('./about_you.jsx');
 const Account = require('./account.jsx');
 const Preview = require('./preview.jsx');
+const SessionStore = require('../stores/session_store.js');
+import { hashHistory } from 'react-router';
 
 
 const FinalizeProject = React.createClass({
@@ -34,9 +37,23 @@ const FinalizeProject = React.createClass({
       <Preview />,
     ];
     this.currentPage = this.pages[0];
+    this.sessionToken = SessionStore.addListener(this._handleLogin);
+    this._handleLogin();
     this.forceUpdate();
     // ProjectStore.addListener(this._onChange);
     // ErrorStore.addListener(this._handleError);
+  },
+
+  componentWillUnmount () {
+    this.sessionToken.remove();
+  },
+
+  _handleLogin () {
+    if (SessionStore.currentUser().hasOwnProperty('id')) {
+      return;
+    } else {
+      hashHistory.push('/api/login');
+    }
   },
 
   _onChange () {

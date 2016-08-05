@@ -34356,7 +34356,7 @@
 	    AppDispatcher.dispatch({
 	      actionType: ErrorConstants.SIGNUP_ERROR_RECEIVED,
 	      form: 'signup',
-	      message: "Please sign in to continue your project"
+	      message: "Please sign up (or log in) to continue your project"
 	    });
 	  },
 	  mismatchedEmails: function mismatchedEmails() {
@@ -34823,8 +34823,11 @@
 
 	'use strict';
 	
+	var _reactRouter = __webpack_require__(1);
+	
 	var React = __webpack_require__(3);
 	var ProjectStore = __webpack_require__(277);
+	var ErrorActions = __webpack_require__(267);
 	var ErrorStore = __webpack_require__(268);
 	var ProjectNavBar = __webpack_require__(279);
 	var Basics = __webpack_require__(280);
@@ -34833,6 +34836,8 @@
 	var AboutYou = __webpack_require__(283);
 	var Account = __webpack_require__(284);
 	var Preview = __webpack_require__(285);
+	var SessionStore = __webpack_require__(241);
+	
 	
 	var FinalizeProject = React.createClass({
 	  displayName: 'FinalizeProject',
@@ -34850,9 +34855,21 @@
 	  componentDidMount: function componentDidMount() {
 	    this.pages = [React.createElement(Basics, { data: this.state, onSave: this._saveChanges }), React.createElement(Rewards, null), React.createElement(Story, null), React.createElement(AboutYou, null), React.createElement(Account, null), React.createElement(Preview, null)];
 	    this.currentPage = this.pages[0];
+	    this.sessionToken = SessionStore.addListener(this._handleLogin);
+	    this._handleLogin();
 	    this.forceUpdate();
 	    // ProjectStore.addListener(this._onChange);
 	    // ErrorStore.addListener(this._handleError);
+	  },
+	  componentWillUnmount: function componentWillUnmount() {
+	    this.sessionToken.remove();
+	  },
+	  _handleLogin: function _handleLogin() {
+	    if (SessionStore.currentUser().hasOwnProperty('id')) {
+	      return;
+	    } else {
+	      _reactRouter.hashHistory.push('/api/login');
+	    }
 	  },
 	  _onChange: function _onChange() {},
 	  _parseNum: function _parseNum(num) {
@@ -35197,7 +35214,7 @@
 	                "div",
 	                { className: "field-wrapper" },
 	                React.createElement("input", { type: "text", className: "title",
-	                  onChange: this._setTitle, placeholder: this.state.title })
+	                  onChange: this._setTitle, value: this.state.title })
 	              )
 	            )
 	          ),
@@ -35280,45 +35297,8 @@
 	                React.createElement(
 	                  "div",
 	                  { className: "num-days" },
-	                  React.createElement(
-	                    "ul",
-	                    null,
-	                    React.createElement(
-	                      "li",
-	                      null,
-	                      React.createElement("input", { name: "duration", onClick: this._setDurationRadio,
-	                        type: "radio" })
-	                    ),
-	                    React.createElement(
-	                      "li",
-	                      null,
-	                      React.createElement("input", { className: "duration-field", type: "text",
-	                        onChange: this._setDuration })
-	                    )
-	                  )
-	                ),
-	                React.createElement(
-	                  "div",
-	                  { className: "end-date-calendar" },
-	                  React.createElement(
-	                    "ul",
-	                    null,
-	                    React.createElement(
-	                      "li",
-	                      null,
-	                      React.createElement("input", { name: "duration", onClick: this._openCalendar,
-	                        type: "radio" })
-	                    ),
-	                    React.createElement(
-	                      "li",
-	                      null,
-	                      React.createElement(
-	                        "div",
-	                        null,
-	                        "Calendar here"
-	                      )
-	                    )
-	                  )
+	                  React.createElement("input", { className: "duration-field", type: "text",
+	                    onChange: this._setDuration })
 	                )
 	              )
 	            )

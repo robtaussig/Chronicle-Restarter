@@ -86,7 +86,7 @@ const Basics = React.createClass({
                 <div className="attribute-field">Project title</div>
                 <div className="field-wrapper">
                   <input type="text" className="title"
-                    onChange={this._setTitle} placeholder={this.state.title}/>
+                    onChange={this._setTitle} value={this.state.title}/>
                 </div>
               </div>
             </li>
@@ -123,27 +123,8 @@ const Basics = React.createClass({
                 <div className="attribute-field">Funding duration</div>
                 <div className="field-wrapper">
                   <div className="num-days">
-                    <ul>
-                      <li>
-                        <input name="duration" onClick={this._setDurationRadio}
-                          type="radio"/>
-                      </li>
-                      <li>
-                        <input className="duration-field" type="text"
-                          onChange={this._setDuration} />
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="end-date-calendar">
-                    <ul>
-                      <li>
-                        <input name="duration" onClick={this._openCalendar}
-                          type="radio"/>
-                      </li>
-                      <li>
-                        <div>Calendar here</div>
-                      </li>
-                    </ul>
+                    <input className="duration-field" type="text"
+                      onChange={this._setDuration} />
                   </div>
                 </div>
               </div>

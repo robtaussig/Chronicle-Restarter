@@ -533,72 +533,83 @@ button.submit-button {
   position: relative;
 }
 
-/* Project Create Form */
-// .fixed-save-footer {
-//   position: relative;
-//   bottom: 0%;
-//   width: 100%;
-//   height: 60px;   /* Height of the footer */
-//   background: #6cf;
-// }
-
-html,
-.project-basic-form {
-   margin:0;
-   padding:0;
-   height:100%;
-}
 .wrapper {
-   min-height:100%;
    position:relative;
+   height: 100%;
 }
 
 .project-basic-form {
-   padding:10px;
-   padding-bottom:60px;   /* Height of the footer */
+   padding:15px;
+   height: 100%;
 }
 
 div.attribute-field  {
-  float: left;
+  position: absolute;
   width: auto;
   margin-left: 25px;
-  margin-top: 25px;
   font-weight: 700;
 }
 
 div.grey-field {
-  height: 200px;
+  height: 155px;
   width: 100%;
+  line-height: 155px;
   position: relative;
+  margin: 10px;
+  background-color: aliceblue;
 }
 
 div.field-wrapper {
+  position: relative;
   float: right;
   width: 700px;
-  height: 200px;
+  height: 155px;
 }
 
-input.title {
-  border: 1px solid black;
-  margin-top: 25px;
+div.field-wrapper input {
+  position: absolute;
+  top: 77px;
+  transform: translateY(-50%);
+  border: 1px solid #ccc;
   margin-right: 25px;
-  width: 100%;
+  width: 680px;
   height: 45px;
   line-height: 45px;
   font-size: 24px;
   border-radius: 5px;
+  background-color: white;
+  text-indent: 15px;
 }
 
 textarea.short-blurb-field {
-  border: 1px solid black;
-  margin-top: 25px;
+  position: absolute;
+  top: 77px;
+  transform: translateY(-50%);
+  border: 1px solid #ccc;
   margin-right: 25px;
-  width: 100%;
+  width: 680px;
   height: 75px;
   line-height: 25px;
   font-size: 20px;
   border-radius: 5px;
   resize: none;
+  background-color: white;
+}
+
+button.category-button {
+  float: right;
+  position: absolute;
+  top: 77px;
+  transform: translateY(-50%);
+  border: 1px solid #ccc;
+  margin-right: -6px;
+  width: 680px;
+  height: 45px;
+  line-height: 45px;
+  font-size: 24px;
+  border-radius: 5px;
+  text-indent: 15px;
+  background-color: white;
 }
 
 #save-box {
@@ -606,7 +617,7 @@ textarea.short-blurb-field {
    top: 50%;
    right: 0;
    width: 150px;
-   height:60px;   /* Height of the footer */
+   height:60px;
    background: #217198;
    border: 1px solid #ccc;
    border-top-left-radius: 5px;

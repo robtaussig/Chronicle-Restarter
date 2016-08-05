@@ -24,7 +24,7 @@ const ErrorActions = {
     AppDispatcher.dispatch({
       actionType:ErrorConstants.SIGNUP_ERROR_RECEIVED,
       form: 'signup',
-      message: "Please sign in to continue your project"
+      message: "Please sign up (or log in) to continue your project"
     });
   },
 
