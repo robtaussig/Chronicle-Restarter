@@ -14,7 +14,7 @@ const Basics = React.createClass({
       location: "",
       duration: 0,
       goal: 0,
-      saved: false,
+      saved: 'saved',
       errorMessage: ""
     });
   },
@@ -23,6 +23,7 @@ const Basics = React.createClass({
     this.listener = SavedProjectStore.addListener(this._onChange);
     this.setState(SavedProjectStore.currentProject());
     this.displayCategory = ProjectCategories[0].label;
+    this.forceUpdate();
   },
 
   componentWillUnmount () {
@@ -32,6 +33,7 @@ const Basics = React.createClass({
   _onChange () {
     this.setState(SavedProjectStore.currentProject());
     this.displayCategory = this._updateDisplayCategory();
+    this.forceUpdate();
   },
 
   _updateDisplayCategory () {
@@ -39,8 +41,7 @@ const Basics = React.createClass({
   },
 
   _resetSavedStatus () {
-    this.setState({saved: false});
-    this.setState({errorMessage: ""});
+    this.setState({saved: 'unsaved', errorMessage: ""});
   },
 
   _setTitle (e) {
@@ -79,22 +80,21 @@ const Basics = React.createClass({
 
   _handleSave () {
     console.log(this.state);
-    if (this.state.saved) {
+    if (this.state.saved === 'saved') {
       this.setState({errorMessage: "Your project is already up-to-date"});
     } else {
-      this.setState({errorMessage: ""});
-      this.setState({saved: true});
+      this.setState({errorMessage: "", saved: 'saved'});
       this._saveProject();
     }
   },
 
   _saveProject () {
-
+    SavedProjectActions.updateSavedProject('basics', this.state);
   },
 
   render: function() {
     let rows = 3;
-    let saved = this.state.saved ? 'saved' : 'unsaved';
+
     return (
       <div className="wrapper">
         <div className="project-basic-form">
@@ -120,7 +120,7 @@ const Basics = React.createClass({
               <div className="grey-field">
                 <div className="attribute-field">Short blurb</div>
                 <div className="field-wrapper">
-                  <textarea rows="3" wrap="hard" className="short-blurb-field"
+                  <textarea rows="3" value={this.state.blurb} wrap="hard" className="short-blurb-field"
                     onChange={this._setBlurb} />
                 </div>
               </div>
@@ -142,7 +142,7 @@ const Basics = React.createClass({
                 <div className="field-wrapper">
                   <input type="text" className="location"
                     onChange={this._setLocation}
-                    placeholder={this.state.location}/>
+                    value={this.state.location}/>
                 </div>
               </div>
             </li>
@@ -151,7 +151,7 @@ const Basics = React.createClass({
                 <div className="attribute-field">Funding duration</div>
                 <div className="field-wrapper">
                   <div className="num-days">
-                    <input className="duration-field" type="text"
+                    <input value={this.state.duration} className="duration-field" type="text"
                       onChange={this._setDuration} />
                   </div>
                 </div>
@@ -161,16 +161,17 @@ const Basics = React.createClass({
               <div className="grey-field">
                 <div className="attribute-field">Funding goal</div>
                 <div className="field-wrapper">
-                  <input type="text" className="goal"
+                  $<input type="text" className="goal"
                     onChange={this._setGoal}
-                    placeholder="$0 USD"/>
+                    value={this.state.goal}
+                    placeholder="0"/>USD
                 </div>
               </div>
             </li>
           </ul>
         </div>
-        <div id="save-box" className={saved}>
-          <button className={saved} onClick={this._handleSave}>Save Changes</button>
+        <div id="save-box" className={this.state.saved}>
+          <button className={this.state.saved} onClick={this._handleSave}>Save Changes</button>
           <p>{this.state.errorMessage}</p>
         </div>
       </div>

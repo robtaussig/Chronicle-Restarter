@@ -34871,6 +34871,9 @@
 	  submitSavedProject: function submitSavedProject(form, projectInfo) {
 	    ProjectApiUtil.saveProject(form, projectInfo, this.receiveSavedProject, ErrorActions.receiveError);
 	  },
+	  updateSavedProject: function updateSavedProject(form, projectInfo) {
+	    ProjectApiUtil.updateProject(form, projectInfo, this.receiveSavedProject, ErrorActions.receiveError);
+	  },
 	  deleteSavedProject: function deleteSavedProject(form, projectInfo) {
 	    ProjectApiUtil.removeSavedProject(form, projectInfo.id, this.removeSavedProject, ErrorActions.receiveError);
 	  },
@@ -34901,6 +34904,19 @@
 	    $.ajax({
 	      url: 'api/saved_projects',
 	      type: 'POST',
+	      data: { saved_project: data },
+	      success: function success(resp) {
+	        successCB(resp);
+	      },
+	      error: function error(resp) {
+	        errorCB(form, resp);
+	      }
+	    });
+	  },
+	  updateProject: function updateProject(form, data, successCB, errorCB) {
+	    $.ajax({
+	      url: 'api/saved_projects/' + data.id,
+	      type: 'PATCH',
 	      data: { saved_project: data },
 	      success: function success(resp) {
 	        successCB(resp);
@@ -34956,7 +34972,7 @@
 	      location: "",
 	      duration: 0,
 	      goal: 0,
-	      saved: false,
+	      saved: 'saved',
 	      errorMessage: ""
 	    };
 	  },
@@ -34964,6 +34980,7 @@
 	    this.listener = SavedProjectStore.addListener(this._onChange);
 	    this.setState(SavedProjectStore.currentProject());
 	    this.displayCategory = ProjectCategories[0].label;
+	    this.forceUpdate();
 	  },
 	  componentWillUnmount: function componentWillUnmount() {
 	    this.listener.remove();
@@ -34971,13 +34988,13 @@
 	  _onChange: function _onChange() {
 	    this.setState(SavedProjectStore.currentProject());
 	    this.displayCategory = this._updateDisplayCategory();
+	    this.forceUpdate();
 	  },
 	  _updateDisplayCategory: function _updateDisplayCategory() {
 	    return ProjectCategories[this.state.category_id].label;
 	  },
 	  _resetSavedStatus: function _resetSavedStatus() {
-	    this.setState({ saved: false });
-	    this.setState({ errorMessage: "" });
+	    this.setState({ saved: 'unsaved', errorMessage: "" });
 	  },
 	  _setTitle: function _setTitle(e) {
 	    this.setState({ title: e.target.value });
@@ -35006,20 +35023,21 @@
 	  },
 	  _handleSave: function _handleSave() {
 	    console.log(this.state);
-	    if (this.state.saved) {
+	    if (this.state.saved === 'saved') {
 	      this.setState({ errorMessage: "Your project is already up-to-date" });
 	    } else {
-	      this.setState({ errorMessage: "" });
-	      this.setState({ saved: true });
+	      this.setState({ errorMessage: "", saved: 'saved' });
 	      this._saveProject();
 	    }
 	  },
-	  _saveProject: function _saveProject() {},
+	  _saveProject: function _saveProject() {
+	    SavedProjectActions.updateSavedProject('basics', this.state);
+	  },
 	
 	
 	  render: function render() {
 	    var rows = 3;
-	    var saved = this.state.saved ? 'saved' : 'unsaved';
+	
 	    return React.createElement(
 	      'div',
 	      { className: 'wrapper' },
@@ -35084,7 +35102,7 @@
 	              React.createElement(
 	                'div',
 	                { className: 'field-wrapper' },
-	                React.createElement('textarea', { rows: '3', wrap: 'hard', className: 'short-blurb-field',
+	                React.createElement('textarea', { rows: '3', value: this.state.blurb, wrap: 'hard', className: 'short-blurb-field',
 	                  onChange: this._setBlurb })
 	              )
 	            )
@@ -35128,7 +35146,7 @@
 	                { className: 'field-wrapper' },
 	                React.createElement('input', { type: 'text', className: 'location',
 	                  onChange: this._setLocation,
-	                  placeholder: this.state.location })
+	                  value: this.state.location })
 	              )
 	            )
 	          ),
@@ -35149,7 +35167,7 @@
 	                React.createElement(
 	                  'div',
 	                  { className: 'num-days' },
-	                  React.createElement('input', { className: 'duration-field', type: 'text',
+	                  React.createElement('input', { value: this.state.duration, className: 'duration-field', type: 'text',
 	                    onChange: this._setDuration })
 	                )
 	              )
@@ -35169,9 +35187,12 @@
 	              React.createElement(
 	                'div',
 	                { className: 'field-wrapper' },
+	                '$',
 	                React.createElement('input', { type: 'text', className: 'goal',
 	                  onChange: this._setGoal,
-	                  placeholder: '$0 USD' })
+	                  value: this.state.goal,
+	                  placeholder: '0' }),
+	                'USD'
 	              )
 	            )
 	          )
@@ -35179,10 +35200,10 @@
 	      ),
 	      React.createElement(
 	        'div',
-	        { id: 'save-box', className: saved },
+	        { id: 'save-box', className: this.state.saved },
 	        React.createElement(
 	          'button',
-	          { className: saved, onClick: this._handleSave },
+	          { className: this.state.saved, onClick: this._handleSave },
 	          'Save Changes'
 	        ),
 	        React.createElement(
@@ -35216,7 +35237,7 @@
 	  location: "",
 	  duration: 0,
 	  goal: 0,
-	  saved: false,
+	  saved: 'saved',
 	  errorMessage: ""
 	};
 	

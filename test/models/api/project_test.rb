@@ -9,9 +9,11 @@
 #  category_id      :integer
 #  goal             :integer
 #  project_img_urls :string
-#  project_due_date :date
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  blurb            :text
+#  duration         :integer
+#  location         :string
 #
 
 require 'test_helper'

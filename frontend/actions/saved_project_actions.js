@@ -10,6 +10,11 @@ const SavedProjectActions = {
       ErrorActions.receiveError);
   },
 
+  updateSavedProject (form, projectInfo) {
+    ProjectApiUtil.updateProject(form, projectInfo, this.receiveSavedProject,
+      ErrorActions.receiveError);
+  },
+
   deleteSavedProject (form, projectInfo) {
     ProjectApiUtil.removeSavedProject(form, projectInfo.id,
       this.removeSavedProject, ErrorActions.receiveError);
