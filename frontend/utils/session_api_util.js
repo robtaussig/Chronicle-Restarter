@@ -2,7 +2,7 @@ const SessionApiUtil = {
 
   logIn (form, data, successCB, errorCB) {
     $.ajax({
-      url: 'api/session',
+      url: '/api/session',
       type: 'POST',
       data: {user: data},
       success: (resp) => {
@@ -16,7 +16,7 @@ const SessionApiUtil = {
 
   logOut (currentUser, success, error) {
     $.ajax({
-      url: 'api/session',
+      url: '/api/session',
       type: 'DELETE',
       data: {currentUser},
       success,
@@ -26,7 +26,7 @@ const SessionApiUtil = {
 
   deleteUser (userId, success, error) {
     $.ajax({
-      url: 'api/users/' + userId,
+      url: '/api/users/' + userId,
       type: 'DELETE',
       data: {params: userId},
       success,
@@ -37,7 +37,7 @@ const SessionApiUtil = {
   signUp (form, data, successCB, errorCB) {
 
     $.ajax({
-      url: 'api/users',
+      url: '/api/users',
       type: 'POST',
       data: {user: data},
       success: (resp) => {

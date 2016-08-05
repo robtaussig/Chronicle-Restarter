@@ -2,7 +2,7 @@ const ProjectApiUtil = {
 
   saveProject (form, data, successCB, errorCB) {
     $.ajax({
-      url: 'api/saved_projects',
+      url: '/api/saved_projects',
       type: 'POST',
       data: {saved_project: data},
       success: (resp) => {
@@ -16,7 +16,7 @@ const ProjectApiUtil = {
 
   updateProject (form, data, successCB, errorCB) {
     $.ajax({
-      url: 'api/saved_projects/' + data.id,
+      url: '/api/saved_projects/' + data.id,
       type: 'PATCH',
       data: {saved_project: data},
       success: (resp) => {
@@ -30,7 +30,7 @@ const ProjectApiUtil = {
 
   removeSavedProject (form, id, successCB, errorCB) {
     $.ajax({
-      url: 'api/saved_projects/' + id,
+      url: '/api/saved_projects/' + id,
       type: 'DELETE',
       data: {params: id},
       success,

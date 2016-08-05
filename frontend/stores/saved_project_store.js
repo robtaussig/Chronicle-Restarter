@@ -24,6 +24,11 @@ SavedProjectStore.currentProject = () => {
   return _savedProject;
 };
 
+function _resetSavedProject (project) {
+  _savedProject = project;
+  SavedProjectStore.__emitChange();
+}
+
 function _updateSavedProject (project) {
   for (let item in project) {
     if (project.hasOwnProperty(item)) {
@@ -40,11 +45,14 @@ function _removeSavedProject () {
 
 SavedProjectStore.__onDispatch = (payload) => {
   switch (payload.actionType) {
-    case SavedProjectConstants.SAVED_PROJECT_RECEIVED:
+    case SavedProjectConstants.SAVED_PROJECT_UPDATED:
       _updateSavedProject(payload.data);
     break;
     case SavedProjectConstants.SAVED_PROJECT_REMOVED:
       _removeSavedProject();
+    break;
+    case SavedProjectConstants.SAVED_PROJECT_RECEIVED:
+      _resetSavedProject(payload.data);
     break;
   }
 };

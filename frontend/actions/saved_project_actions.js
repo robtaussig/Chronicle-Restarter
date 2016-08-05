@@ -11,7 +11,7 @@ const SavedProjectActions = {
   },
 
   updateSavedProject (form, projectInfo) {
-    ProjectApiUtil.updateProject(form, projectInfo, this.receiveSavedProject,
+    ProjectApiUtil.updateProject(form, projectInfo, this.receiveUpdatedProject,
       ErrorActions.receiveError);
   },
 
@@ -23,6 +23,13 @@ const SavedProjectActions = {
   receiveSavedProject (data) {
     AppDispatcher.dispatch({
       actionType: SavedProjectConstants.SAVED_PROJECT_RECEIVED,
+      data: data
+    });
+  },
+
+  receiveUpdatedProject (data) {
+    AppDispatcher.dispatch({
+      actionType: SavedProjectConstants.SAVED_PROJECT_UPDATED,
       data: data
     });
   },

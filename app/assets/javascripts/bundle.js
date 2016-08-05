@@ -57,13 +57,13 @@
 	var SetupApp = __webpack_require__(273);
 	var StartProject = __webpack_require__(274);
 	var CreateProject = __webpack_require__(275);
-	var Basics = __webpack_require__(279);
-	var Rewards = __webpack_require__(281);
-	var Story = __webpack_require__(282);
-	var AboutYou = __webpack_require__(283);
-	var Account = __webpack_require__(284);
-	var Preview = __webpack_require__(285);
-	var FinalizeProject = __webpack_require__(286);
+	var Basics = __webpack_require__(280);
+	var Rewards = __webpack_require__(282);
+	var Story = __webpack_require__(283);
+	var AboutYou = __webpack_require__(284);
+	var Account = __webpack_require__(285);
+	var Preview = __webpack_require__(286);
+	var FinalizeProject = __webpack_require__(287);
 	
 	
 	var routes = React.createElement(
@@ -34290,7 +34290,7 @@
 	var SessionApiUtil = {
 	  logIn: function logIn(form, data, successCB, errorCB) {
 	    $.ajax({
-	      url: 'api/session',
+	      url: '/api/session',
 	      type: 'POST',
 	      data: { user: data },
 	      success: function success(resp) {
@@ -34303,7 +34303,7 @@
 	  },
 	  logOut: function logOut(currentUser, success, error) {
 	    $.ajax({
-	      url: 'api/session',
+	      url: '/api/session',
 	      type: 'DELETE',
 	      data: { currentUser: currentUser },
 	      success: success,
@@ -34312,7 +34312,7 @@
 	  },
 	  deleteUser: function deleteUser(userId, success, error) {
 	    $.ajax({
-	      url: 'api/users/' + userId,
+	      url: '/api/users/' + userId,
 	      type: 'DELETE',
 	      data: { params: userId },
 	      success: success,
@@ -34322,7 +34322,7 @@
 	  signUp: function signUp(form, data, successCB, errorCB) {
 	
 	    $.ajax({
-	      url: 'api/users',
+	      url: '/api/users',
 	      type: 'POST',
 	      data: { user: data },
 	      success: function success(resp) {
@@ -34710,7 +34710,7 @@
 	
 	var ErrorActions = __webpack_require__(267);
 	var SavedProjectActions = __webpack_require__(276);
-	var ProjectCategories = __webpack_require__(290);
+	var ProjectCategories = __webpack_require__(279);
 	
 	var CreateProject = React.createClass({
 	  displayName: 'CreateProject',
@@ -34872,7 +34872,7 @@
 	    ProjectApiUtil.saveProject(form, projectInfo, this.receiveSavedProject, ErrorActions.receiveError);
 	  },
 	  updateSavedProject: function updateSavedProject(form, projectInfo) {
-	    ProjectApiUtil.updateProject(form, projectInfo, this.receiveSavedProject, ErrorActions.receiveError);
+	    ProjectApiUtil.updateProject(form, projectInfo, this.receiveUpdatedProject, ErrorActions.receiveError);
 	  },
 	  deleteSavedProject: function deleteSavedProject(form, projectInfo) {
 	    ProjectApiUtil.removeSavedProject(form, projectInfo.id, this.removeSavedProject, ErrorActions.receiveError);
@@ -34880,6 +34880,12 @@
 	  receiveSavedProject: function receiveSavedProject(data) {
 	    AppDispatcher.dispatch({
 	      actionType: SavedProjectConstants.SAVED_PROJECT_RECEIVED,
+	      data: data
+	    });
+	  },
+	  receiveUpdatedProject: function receiveUpdatedProject(data) {
+	    AppDispatcher.dispatch({
+	      actionType: SavedProjectConstants.SAVED_PROJECT_UPDATED,
 	      data: data
 	    });
 	  },
@@ -34902,7 +34908,7 @@
 	var ProjectApiUtil = {
 	  saveProject: function saveProject(form, data, successCB, errorCB) {
 	    $.ajax({
-	      url: 'api/saved_projects',
+	      url: '/api/saved_projects',
 	      type: 'POST',
 	      data: { saved_project: data },
 	      success: function success(resp) {
@@ -34915,7 +34921,7 @@
 	  },
 	  updateProject: function updateProject(form, data, successCB, errorCB) {
 	    $.ajax({
-	      url: 'api/saved_projects/' + data.id,
+	      url: '/api/saved_projects/' + data.id,
 	      type: 'PATCH',
 	      data: { saved_project: data },
 	      success: function success(resp) {
@@ -34928,7 +34934,7 @@
 	  },
 	  removeSavedProject: function removeSavedProject(form, id, successCB, errorCB) {
 	    $.ajax({
-	      url: 'api/saved_projects/' + id,
+	      url: '/api/saved_projects/' + id,
 	      type: 'DELETE',
 	      data: { params: id },
 	      success: success,
@@ -34947,19 +34953,28 @@
 	
 	module.exports = {
 	  SAVED_PROJECT_RECEIVED: 'SAVED_PROJECT_RECEIVED',
-	  SAVED_PROJECT_REMOVED: 'SAVED_PROJECT_REMOVED'
+	  SAVED_PROJECT_REMOVED: 'SAVED_PROJECT_REMOVED',
+	  SAVED_PROJECT_UPDATED: 'SAVED_PROJECT_UPDATED'
 	};
 
 /***/ },
 /* 279 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	module.exports = [{ label: 'Before Time', value: 1 }, { label: 'Stone Age', value: 2 }, { label: 'Middle Ages', value: 3 }, { label: 'Present', value: 4 }, { label: 'Future', value: 5 }];
+
+/***/ },
+/* 280 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(3);
 	var SavedProjectActions = __webpack_require__(276);
-	var SavedProjectStore = __webpack_require__(280);
-	var ProjectCategories = __webpack_require__(290);
+	var SavedProjectStore = __webpack_require__(281);
+	var ProjectCategories = __webpack_require__(279);
 	
 	var Basics = React.createClass({
 	  displayName: 'Basics',
@@ -34980,7 +34995,6 @@
 	    this.listener = SavedProjectStore.addListener(this._onChange);
 	    this.setState(SavedProjectStore.currentProject());
 	    this.displayCategory = ProjectCategories[0].label;
-	    this.forceUpdate();
 	  },
 	  componentWillUnmount: function componentWillUnmount() {
 	    this.listener.remove();
@@ -35036,7 +35050,6 @@
 	
 	
 	  render: function render() {
-	    var rows = 3;
 	
 	    return React.createElement(
 	      'div',
@@ -35218,9 +35231,13 @@
 	});
 	
 	module.exports = Basics;
+	
+	/* TODO
+	1) Create a delete button (discard changes)
+	 */
 
 /***/ },
-/* 280 */
+/* 281 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35249,6 +35266,11 @@
 	  return _savedProject;
 	};
 	
+	function _resetSavedProject(project) {
+	  _savedProject = project;
+	  SavedProjectStore.__emitChange();
+	}
+	
 	function _updateSavedProject(project) {
 	  for (var item in project) {
 	    if (project.hasOwnProperty(item)) {
@@ -35265,11 +35287,14 @@
 	
 	SavedProjectStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
-	    case SavedProjectConstants.SAVED_PROJECT_RECEIVED:
+	    case SavedProjectConstants.SAVED_PROJECT_UPDATED:
 	      _updateSavedProject(payload.data);
 	      break;
 	    case SavedProjectConstants.SAVED_PROJECT_REMOVED:
 	      _removeSavedProject();
+	      break;
+	    case SavedProjectConstants.SAVED_PROJECT_RECEIVED:
+	      _resetSavedProject(payload.data);
 	      break;
 	  }
 	};
@@ -35277,22 +35302,44 @@
 	module.exports = SavedProjectStore;
 
 /***/ },
-/* 281 */
+/* 282 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(3);
+	var SavedProjectStore = __webpack_require__(281);
 	
 	var Rewards = React.createClass({
 	  displayName: 'Rewards',
+	  getInitialState: function getInitialState() {
+	    return { rewardItems: 1, saved: false };
+	  },
+	  _addReward: function _addReward() {
+	    this.setState({ rewardItems: rewardItems + 1 });
+	  },
+	  _handleSave: function _handleSave() {},
 	
 	
 	  render: function render() {
+	
+	    var _rewards = [];
+	    var _projectId = ProjectStore.currentProject().id ? ProjectStore.currentProject().id : 0;
+	
+	    for (var i = 0; i < this.state.rewardItems.length; i++) {
+	      _rewards.push(React.createElement(RewardItem, { projectId: _projectId,
+	        _toSave: this.state.saved, key: i }));
+	    }
+	
 	    return React.createElement(
 	      'div',
 	      null,
-	      'Rewards'
+	      _rewards,
+	      React.createElement(
+	        'button',
+	        { onClick: this._handleSave },
+	        'Save Rewards'
+	      )
 	    );
 	  }
 	
@@ -35301,7 +35348,7 @@
 	module.exports = Rewards;
 
 /***/ },
-/* 282 */
+/* 283 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35325,7 +35372,7 @@
 	module.exports = Story;
 
 /***/ },
-/* 283 */
+/* 284 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35349,7 +35396,7 @@
 	module.exports = AboutYou;
 
 /***/ },
-/* 284 */
+/* 285 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35373,7 +35420,7 @@
 	module.exports = Account;
 
 /***/ },
-/* 285 */
+/* 286 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35397,7 +35444,7 @@
 	module.exports = Preview;
 
 /***/ },
-/* 286 */
+/* 287 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35405,16 +35452,16 @@
 	var _reactRouter = __webpack_require__(1);
 	
 	var React = __webpack_require__(3);
-	var ProjectStore = __webpack_require__(287);
+	var ProjectStore = __webpack_require__(288);
 	var ErrorActions = __webpack_require__(267);
 	var ErrorStore = __webpack_require__(268);
-	var ProjectNavBar = __webpack_require__(289);
-	var Basics = __webpack_require__(279);
-	var Rewards = __webpack_require__(281);
-	var Story = __webpack_require__(282);
-	var AboutYou = __webpack_require__(283);
-	var Account = __webpack_require__(284);
-	var Preview = __webpack_require__(285);
+	var ProjectNavBar = __webpack_require__(290);
+	var Basics = __webpack_require__(280);
+	var Rewards = __webpack_require__(282);
+	var Story = __webpack_require__(283);
+	var AboutYou = __webpack_require__(284);
+	var Account = __webpack_require__(285);
+	var Preview = __webpack_require__(286);
 	var SessionStore = __webpack_require__(241);
 	
 	
@@ -35495,14 +35542,14 @@
 	*/
 
 /***/ },
-/* 287 */
+/* 288 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var Store = __webpack_require__(242).Store;
 	var AppDispatcher = __webpack_require__(260);
-	var ProjectConstants = __webpack_require__(288);
+	var ProjectConstants = __webpack_require__(289);
 	var ProjectStore = new Store(AppDispatcher);
 	
 	var _currentUser = {};
@@ -35542,7 +35589,7 @@
 	module.exports = ProjectStore;
 
 /***/ },
-/* 288 */
+/* 289 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -35553,7 +35600,7 @@
 	};
 
 /***/ },
-/* 289 */
+/* 290 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35667,14 +35714,6 @@
 
 
 	*/
-
-/***/ },
-/* 290 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	module.exports = [{ label: 'Before Time', value: 1 }, { label: 'Stone Age', value: 2 }, { label: 'Middle Ages', value: 3 }, { label: 'Present', value: 4 }, { label: 'Future', value: 5 }];
 
 /***/ }
 /******/ ]);

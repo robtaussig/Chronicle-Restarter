@@ -23,7 +23,6 @@ const Basics = React.createClass({
     this.listener = SavedProjectStore.addListener(this._onChange);
     this.setState(SavedProjectStore.currentProject());
     this.displayCategory = ProjectCategories[0].label;
-    this.forceUpdate();
   },
 
   componentWillUnmount () {
@@ -93,7 +92,6 @@ const Basics = React.createClass({
   },
 
   render: function() {
-    let rows = 3;
 
     return (
       <div className="wrapper">
@@ -181,3 +179,7 @@ const Basics = React.createClass({
 });
 
 module.exports = Basics;
+
+/* TODO
+1) Create a delete button (discard changes)
+ */
