@@ -142,7 +142,7 @@ const Basics = React.createClass({
           </ul>
         </div>
         <div id="save-box">
-          <button>Save</button>
+          <button>Save Changes</button>
         </div>
       </div>
     );

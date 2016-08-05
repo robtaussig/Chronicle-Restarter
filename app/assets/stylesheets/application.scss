@@ -280,6 +280,11 @@ body {
   top: -54px;
 }
 
+.select-era img {
+  width: 100%;
+  position: absolute;
+}
+
 .select-era *:not(li) {
   position: absolute;
   left: 50%;
@@ -555,7 +560,7 @@ div.attribute-field  {
 
 div.grey-field {
   height: 155px;
-  width: 100%;
+  width: 98%;
   line-height: 155px;
   position: relative;
   margin: 10px;
@@ -569,7 +574,7 @@ div.field-wrapper {
   height: 155px;
 }
 
-div.field-wrapper input {
+div.field-wrapper input, textarea.short-blurb-field {
   position: absolute;
   top: 77px;
   transform: translateY(-50%);
@@ -584,19 +589,17 @@ div.field-wrapper input {
   text-indent: 15px;
 }
 
+div.field-wrapper input:focus, textarea.short-blurb-field:focus {
+  border: 1px solid blue;
+  transition: 0.5s;
+}
+
 textarea.short-blurb-field {
-  position: absolute;
-  top: 77px;
-  transform: translateY(-50%);
-  border: 1px solid #ccc;
-  margin-right: 25px;
-  width: 680px;
   height: 75px;
   line-height: 25px;
   font-size: 20px;
-  border-radius: 5px;
   resize: none;
-  background-color: white;
+  line-indent: 15px;
 }
 
 button.category-button {
@@ -626,7 +629,7 @@ button.category-button {
    border-top-left-radius: 5px;
    border-bottom-left-radius: 5px;
    font-size: 20px;
-   font-weight: 700;
+   font-weight: 500;
    text-align: center;
    color: white;
    line-height: 60px;
