@@ -6,13 +6,13 @@ const ErrorActions = require('./error_actions.js');
 const SavedProjectActions = {
 
   submitSavedProject (form, projectInfo) {
-    ApiUtil.saveProject(form, projectInfo, this.receiveSavedProject,
+    ProjectApiUtil.saveProject(form, projectInfo, this.receiveSavedProject,
       ErrorActions.receiveError);
   },
 
   deleteSavedProject (form, projectInfo) {
-    ApiUtil.removeSavedProject(form, projectInfo.id, this.removeSavedProject,
-      ErrorActions.receiveError);
+    ProjectApiUtil.removeSavedProject(form, projectInfo.id,
+      this.removeSavedProject, ErrorActions.receiveError);
   },
 
   receiveSavedProject (data) {

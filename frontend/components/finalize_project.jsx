@@ -15,28 +15,8 @@ import { browserHistory } from 'react-router';
 
 const FinalizeProject = React.createClass({
 
-  getInitialState () {
-    return ({
-      title: window.myApp.title ? window.myApp.title : "",
-      category: window.myApp.category ? window.myApp.category : "",
-      blurb: "",
-      location: "",
-      duration: "",
-      goal: "",
-      saved: true
-    });
-  },
-
   componentDidMount () {
-    this.pages = [
-      <Basics data={this.state} onSave={this._saveChanges}/>,
-      <Rewards />,
-      <Story />,
-      <AboutYou />,
-      <Account />,
-      <Preview />,
-    ];
-    this.currentPage = this.pages[0];
+
     this.sessionToken = SessionStore.addListener(this._handleLogin);
     this._handleLogin();
     this.forceUpdate();
@@ -54,35 +34,6 @@ const FinalizeProject = React.createClass({
     } else {
       browserHistory.push('/login');
     }
-  },
-
-  _onChange () {
-
-  },
-
-  _parseNum (num) {
-    let result;
-    switch (num) {
-      case 'zero':
-        result = 0;
-        break;
-      case 'one':
-        result = 1;
-        break;
-      case 'two':
-        result = 2;
-        break;
-      case 'three':
-        result = 3;
-        break;
-      case 'four':
-        result = 4;
-        break;
-      case 'five':
-        result = 5;
-        break;
-    }
-    return result;
   },
 
   _changePage (pageNum) {

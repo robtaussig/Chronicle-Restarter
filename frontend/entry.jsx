@@ -24,6 +24,7 @@ const routes = (
     <Route path="startProject" component={StartProject} />
     <Route path="createProject" component={CreateProject} />
     <Route path="finalizeProject" component={FinalizeProject} >
+      <IndexRoute component={Basics} />
       <Route path="basics" component={Basics} />
       <Route path="rewards" component={Rewards} />
       <Route path="story" component={Story} />

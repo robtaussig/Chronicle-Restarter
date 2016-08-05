@@ -1,5 +1,7 @@
 const React = require('react');
 const SavedProjectActions = require('../actions/saved_project_actions.js');
+const SavedProjectStore = require ('../stores/saved_project_store.js');
+const ProjectCategories = require('../constants/project_category_ids.js');
 
 const Basics = React.createClass({
 
@@ -8,7 +10,7 @@ const Basics = React.createClass({
       image: {},
       title: "",
       blurb: "",
-      category: "",
+      category_id: 0,
       location: "",
       duration: 0,
       goal: 0,
@@ -18,15 +20,22 @@ const Basics = React.createClass({
   },
 
   componentDidMount () {
-    this._setPrefilledData();
+    this.listener = SavedProjectStore.addListener(this._onChange);
+    this.setState(SavedProjectStore.currentProject());
+    this.displayCategory = ProjectCategories[0].label;
   },
 
   componentWillUnmount () {
-
+    this.listener.remove();
   },
 
   _onChange () {
+    this.setState(SavedProjectStore.currentProject());
+    this.displayCategory = this._updateDisplayCategory();
+  },
 
+  _updateDisplayCategory () {
+    return ProjectCategories[this.state.category_id].label;
   },
 
   _resetSavedStatus () {
@@ -68,14 +77,6 @@ const Basics = React.createClass({
     this._resetSavedStatus();
   },
 
-  _setPrefilledData () {
-    this.setState(this.props.data);
-  },
-
-  _saveChangeToPage () {
-    this.props.onSave(this.state);
-  },
-
   _handleSave () {
     console.log(this.state);
     if (this.state.saved) {
@@ -83,12 +84,12 @@ const Basics = React.createClass({
     } else {
       this.setState({errorMessage: ""});
       this.setState({saved: true});
-      this._saveChangeToPage ();
+      this._saveProject();
     }
+  },
 
+  _saveProject () {
 
-    // SavedProjectActions.submitSavedProject('basicForm', this.state);
-    // Use modal to show quick preview + confirmation
   },
 
   render: function() {
@@ -129,7 +130,9 @@ const Basics = React.createClass({
                 <div className="attribute-field">Category</div>
                 <div className="field-wrapper">
                   <button className="category-button"
-                    onClick={this._setCategory}>{this.state.category}</button>
+                    onClick={this._setCategory}>
+                    {this.displayCategory}
+                  </button>
                 </div>
               </div>
             </li>

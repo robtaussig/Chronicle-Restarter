@@ -1,6 +1,8 @@
 const React = require('react');
 import { browserHistory } from 'react-router';
 const ErrorActions = require('../actions/error_actions.js');
+const SavedProjectActions = require('../actions/saved_project_actions.js');
+const ProjectCategories = require('../constants/project_category_ids.js');
 
 const CreateProject = React.createClass({
 
@@ -12,15 +14,8 @@ const CreateProject = React.createClass({
   },
 
   componentDidMount () {
-    this.options = [  //To replace once categories are created
-      {label: 'Before Time', value: 'Cat1'},
-      {label: 'Stone Age', value: 'Cat2'},
-      {label: 'Middle Ages', value: 'Cat3'},
-      {label: 'Present', value: 'Cat4'},
-      {label: 'Future', value: 'Cat5'},
-    ];
     this.setState({displayCounter: 0});
-    this.setState({displayCat: this.options[this.state.displayCounter].label});
+    this.setState({displayCat: ProjectCategories[this.state.displayCounter].label});
     this._setCategories();
     this.intervalId = setInterval(() => {
       this._incrementDisplayCat();
@@ -33,16 +28,16 @@ const CreateProject = React.createClass({
 
   _incrementDisplayCat () {
     let currentCount = this.state.displayCounter;
-    currentCount = currentCount === this.options.length - 1 ? 0 : currentCount + 1;
+    currentCount = currentCount === ProjectCategories.length - 1 ? 0 : currentCount + 1;
     this.setState({displayCounter: currentCount});
-    this.setState({displayCat: this.options[this.state.displayCounter].label});
+    this.setState({displayCat: ProjectCategories[this.state.displayCounter].label});
   },
 
   _setCategories () {
-    let _firstHalf = this.options.slice(0,this.options.length / 2).map(cat=> {
+    let _firstHalf = ProjectCategories.slice(0,ProjectCategories.length / 2).map(cat=> {
       return <li onClick={(event) => this._selectCat(cat, event)} className="cats-first-half" key={cat.value}>{cat.label}</li>;
     });
-    let _secondHalf = this.options.slice(this.options.length / 2).map(cat=> {
+    let _secondHalf = ProjectCategories.slice(ProjectCategories.length / 2).map(cat=> {
       return <li onClick={(event) => this._selectCat(cat, event)} className="cats-second-half" key={cat.value}>{cat.label}</li>;
     });
 
@@ -72,32 +67,38 @@ const CreateProject = React.createClass({
   },
 
   _handleSubmit () {
-    let user = window.myApp.username;
-    if (window.myApp.loggedIn || typeof user !== "undefined") {
-      this._advanceToProjectCreation();
+    let userId = window.myApp.id;
+    if (userId > 0 || window.myApp.loggedIn) {
+      this._advanceToProjectCreation(userId);
     } else {
-      window.myApp.pendingAction = 'finalizeProject';
-      window.myApp.title = this.state.title;
-      window.myApp.category = this.state.category;
       ErrorActions.mustBeSignedIn();
       browserHistory.push('signUp');
     }
   },
 
-  _advanceToProjectCreation () {
-    window.myApp.pendingAction = 'finalizeProject';
-    window.myApp.title = this.state.title;
-    window.myApp.category = this.state.category;
+  _getCatId () {
+    let id = ProjectCategories.filter(category => {
+      return category.label === this.state.category;
+    })[0].value;
+
+    return id;
+
+  },
+
+  _advanceToProjectCreation (userId) {
+    let projectInfo = {author_id: userId, title: this.state.title, category_id: this._getCatId()};
+    SavedProjectActions.submitSavedProject ('create', projectInfo);
     browserHistory.push('finalizeProject');
   },
 
   render () {
+    let ill = "I'll";
     return (
       <div>
         <form className="select-era">
           <h2>In which era will your project exist?</h2>
           <ul className="create-category-select group">
-            <li className="first-half-text">I'll start a new</li>
+            <li className="first-half-text">{ill} start a new</li>
             <li className ="display-cat" onClick={this._displayCats}>{this.state.displayCat}</li>
             <li className="second-half-text">project called:</li>
           </ul>

@@ -57,13 +57,13 @@
 	var SetupApp = __webpack_require__(273);
 	var StartProject = __webpack_require__(274);
 	var CreateProject = __webpack_require__(275);
-	var Basics = __webpack_require__(280);
+	var Basics = __webpack_require__(279);
 	var Rewards = __webpack_require__(281);
 	var Story = __webpack_require__(282);
 	var AboutYou = __webpack_require__(283);
 	var Account = __webpack_require__(284);
 	var Preview = __webpack_require__(285);
-	var FinalizeProject = __webpack_require__(276);
+	var FinalizeProject = __webpack_require__(286);
 	
 	
 	var routes = React.createElement(
@@ -77,6 +77,7 @@
 	  React.createElement(
 	    _reactRouter.Route,
 	    { path: 'finalizeProject', component: FinalizeProject },
+	    React.createElement(_reactRouter.IndexRoute, { component: Basics }),
 	    React.createElement(_reactRouter.Route, { path: 'basics', component: Basics }),
 	    React.createElement(_reactRouter.Route, { path: 'rewards', component: Rewards }),
 	    React.createElement(_reactRouter.Route, { path: 'story', component: Story }),
@@ -34708,6 +34709,8 @@
 	var React = __webpack_require__(3);
 	
 	var ErrorActions = __webpack_require__(267);
+	var SavedProjectActions = __webpack_require__(276);
+	var ProjectCategories = __webpack_require__(290);
 	
 	var CreateProject = React.createClass({
 	  displayName: 'CreateProject',
@@ -34720,10 +34723,8 @@
 	  componentDidMount: function componentDidMount() {
 	    var _this = this;
 	
-	    this.options = [//To replace once categories are created
-	    { label: 'Before Time', value: 'Cat1' }, { label: 'Stone Age', value: 'Cat2' }, { label: 'Middle Ages', value: 'Cat3' }, { label: 'Present', value: 'Cat4' }, { label: 'Future', value: 'Cat5' }];
 	    this.setState({ displayCounter: 0 });
-	    this.setState({ displayCat: this.options[this.state.displayCounter].label });
+	    this.setState({ displayCat: ProjectCategories[this.state.displayCounter].label });
 	    this._setCategories();
 	    this.intervalId = setInterval(function () {
 	      _this._incrementDisplayCat();
@@ -34734,14 +34735,14 @@
 	  },
 	  _incrementDisplayCat: function _incrementDisplayCat() {
 	    var currentCount = this.state.displayCounter;
-	    currentCount = currentCount === this.options.length - 1 ? 0 : currentCount + 1;
+	    currentCount = currentCount === ProjectCategories.length - 1 ? 0 : currentCount + 1;
 	    this.setState({ displayCounter: currentCount });
-	    this.setState({ displayCat: this.options[this.state.displayCounter].label });
+	    this.setState({ displayCat: ProjectCategories[this.state.displayCounter].label });
 	  },
 	  _setCategories: function _setCategories() {
 	    var _this2 = this;
 	
-	    var _firstHalf = this.options.slice(0, this.options.length / 2).map(function (cat) {
+	    var _firstHalf = ProjectCategories.slice(0, ProjectCategories.length / 2).map(function (cat) {
 	      return React.createElement(
 	        'li',
 	        { onClick: function onClick(event) {
@@ -34750,7 +34751,7 @@
 	        cat.label
 	      );
 	    });
-	    var _secondHalf = this.options.slice(this.options.length / 2).map(function (cat) {
+	    var _secondHalf = ProjectCategories.slice(ProjectCategories.length / 2).map(function (cat) {
 	      return React.createElement(
 	        'li',
 	        { onClick: function onClick(event) {
@@ -34781,24 +34782,30 @@
 	    this.setState({ title: e.currentTarget.value });
 	  },
 	  _handleSubmit: function _handleSubmit() {
-	    var user = window.myApp.username;
-	    if (window.myApp.loggedIn || typeof user !== "undefined") {
-	      this._advanceToProjectCreation();
+	    var userId = window.myApp.id;
+	    if (userId > 0 || window.myApp.loggedIn) {
+	      this._advanceToProjectCreation(userId);
 	    } else {
-	      window.myApp.pendingAction = 'finalizeProject';
-	      window.myApp.title = this.state.title;
-	      window.myApp.category = this.state.category;
 	      ErrorActions.mustBeSignedIn();
 	      _reactRouter.browserHistory.push('signUp');
 	    }
 	  },
-	  _advanceToProjectCreation: function _advanceToProjectCreation() {
-	    window.myApp.pendingAction = 'finalizeProject';
-	    window.myApp.title = this.state.title;
-	    window.myApp.category = this.state.category;
+	  _getCatId: function _getCatId() {
+	    var _this3 = this;
+	
+	    var id = ProjectCategories.filter(function (category) {
+	      return category.label === _this3.state.category;
+	    })[0].value;
+	
+	    return id;
+	  },
+	  _advanceToProjectCreation: function _advanceToProjectCreation(userId) {
+	    var projectInfo = { author_id: userId, title: this.state.title, category_id: this._getCatId() };
+	    SavedProjectActions.submitSavedProject('create', projectInfo);
 	    _reactRouter.browserHistory.push('finalizeProject');
 	  },
 	  render: function render() {
+	    var ill = "I'll";
 	    return React.createElement(
 	      'div',
 	      null,
@@ -34816,7 +34823,8 @@
 	          React.createElement(
 	            'li',
 	            { className: 'first-half-text' },
-	            'I\'ll start a new'
+	            ill,
+	            ' start a new'
 	          ),
 	          React.createElement(
 	            'li',
@@ -34854,181 +34862,66 @@
 
 	'use strict';
 	
-	var _reactRouter = __webpack_require__(1);
-	
-	var React = __webpack_require__(3);
-	var ProjectStore = __webpack_require__(277);
+	var AppDispatcher = __webpack_require__(260);
+	var ProjectApiUtil = __webpack_require__(277);
+	var SavedProjectConstants = __webpack_require__(278);
 	var ErrorActions = __webpack_require__(267);
-	var ErrorStore = __webpack_require__(268);
-	var ProjectNavBar = __webpack_require__(279);
-	var Basics = __webpack_require__(280);
-	var Rewards = __webpack_require__(281);
-	var Story = __webpack_require__(282);
-	var AboutYou = __webpack_require__(283);
-	var Account = __webpack_require__(284);
-	var Preview = __webpack_require__(285);
-	var SessionStore = __webpack_require__(241);
 	
-	
-	var FinalizeProject = React.createClass({
-	  displayName: 'FinalizeProject',
-	  getInitialState: function getInitialState() {
-	    return {
-	      title: window.myApp.title ? window.myApp.title : "",
-	      category: window.myApp.category ? window.myApp.category : "",
-	      blurb: "",
-	      location: "",
-	      duration: "",
-	      goal: "",
-	      saved: true
-	    };
+	var SavedProjectActions = {
+	  submitSavedProject: function submitSavedProject(form, projectInfo) {
+	    ProjectApiUtil.saveProject(form, projectInfo, this.receiveSavedProject, ErrorActions.receiveError);
 	  },
-	  componentDidMount: function componentDidMount() {
-	    this.pages = [React.createElement(Basics, { data: this.state, onSave: this._saveChanges }), React.createElement(Rewards, null), React.createElement(Story, null), React.createElement(AboutYou, null), React.createElement(Account, null), React.createElement(Preview, null)];
-	    this.currentPage = this.pages[0];
-	    this.sessionToken = SessionStore.addListener(this._handleLogin);
-	    this._handleLogin();
-	    this.forceUpdate();
-	    // ProjectStore.addListener(this._onChange);
-	    // ErrorStore.addListener(this._handleError);
+	  deleteSavedProject: function deleteSavedProject(form, projectInfo) {
+	    ProjectApiUtil.removeSavedProject(form, projectInfo.id, this.removeSavedProject, ErrorActions.receiveError);
 	  },
-	  componentWillUnmount: function componentWillUnmount() {
-	    this.sessionToken.remove();
+	  receiveSavedProject: function receiveSavedProject(data) {
+	    AppDispatcher.dispatch({
+	      actionType: SavedProjectConstants.SAVED_PROJECT_RECEIVED,
+	      data: data
+	    });
 	  },
-	  _handleLogin: function _handleLogin() {
-	    if (SessionStore.currentUser().hasOwnProperty('id')) {
-	      return;
-	    } else {
-	      _reactRouter.browserHistory.push('/login');
-	    }
-	  },
-	  _onChange: function _onChange() {},
-	  _parseNum: function _parseNum(num) {
-	    var result = void 0;
-	    switch (num) {
-	      case 'zero':
-	        result = 0;
-	        break;
-	      case 'one':
-	        result = 1;
-	        break;
-	      case 'two':
-	        result = 2;
-	        break;
-	      case 'three':
-	        result = 3;
-	        break;
-	      case 'four':
-	        result = 4;
-	        break;
-	      case 'five':
-	        result = 5;
-	        break;
-	    }
-	    return result;
-	  },
-	  _changePage: function _changePage(pageNum) {
-	    var num = this._parseNum(pageNum);
-	    this.currentPage = this.pages[num];
-	    this.forceUpdate();
-	  },
-	  _saveChanges: function _saveChanges(savedData) {
-	    this.setState({ savedData: savedData });
-	    this.setState({ saved: true });
-	  },
-	  render: function render() {
-	    var lets = "Let's";
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(
-	        'div',
-	        { className: 'nav-bar-box' },
-	        React.createElement(ProjectNavBar, { changePage: this._changePage }),
-	        React.createElement('br', null),
-	        React.createElement(
-	          'div',
-	          { className: 'nav-bar-top-text' },
-	          lets,
-	          ' get started.'
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'nav-bar-bottom-text' },
-	          'The title of your project will impact its place in history. Pick a title, image, goal, campaign duration, and category.'
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'project-create-subpage' },
-	        this.props.children
-	      )
-	    );
+	  removeSavedProject: function removeSavedProject(data) {
+	    AppDispatcher.dispatch({
+	      actionType: SavedProjectConstants.SAVED_PROJECT_REMOVED,
+	      data: data
+	    });
 	  }
-	});
+	};
 	
-	module.exports = FinalizeProject;
-	
-	/*
-	TODO
-
-	1) Add save functionality (will require saved_project model and new logic to prepopulate info)
-	2) Replace 'us' with apostrophe once syntax highlighting is fixed
-
-
-
-
-
-
-
-	*/
+	module.exports = SavedProjectActions;
 
 /***/ },
 /* 277 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	'use strict';
 	
-	var Store = __webpack_require__(242).Store;
-	var AppDispatcher = __webpack_require__(260);
-	var ProjectConstants = __webpack_require__(278);
-	var ProjectStore = new Store(AppDispatcher);
-	
-	var _currentUser = {};
-	
-	function _logIn(user) {
-	  _currentUser = user;
-	  ProjectStore.__emitChange();
-	}
-	
-	function _logOut() {
-	  _currentUser = {};
-	  ProjectStore.__emitChange();
-	}
-	
-	ProjectStore.currentUser = function () {
-	  return _currentUser;
-	};
-	
-	ProjectStore.isUserLoggedIn = function (id) {
-	  return _currentUser.id === id;
-	};
-	
-	ProjectStore.__onDispatch = function (payload) {
-	  switch (payload.actionType) {
-	    case ProjectConstants.USER_RECEIVED:
-	      _logIn(payload.user);
-	      break;
-	    case ProjectConstants.USER_REMOVED:
-	      _logOut();
-	      break;
-	    case ProjectConstants.SESSION_STOPPED:
-	      _logOut();
-	      break;
+	var ProjectApiUtil = {
+	  saveProject: function saveProject(form, data, successCB, errorCB) {
+	    $.ajax({
+	      url: 'api/saved_projects',
+	      type: 'POST',
+	      data: { saved_project: data },
+	      success: function success(resp) {
+	        successCB(resp);
+	      },
+	      error: function error(resp) {
+	        errorCB(form, resp);
+	      }
+	    });
+	  },
+	  removeSavedProject: function removeSavedProject(form, id, successCB, errorCB) {
+	    $.ajax({
+	      url: 'api/saved_projects/' + id,
+	      type: 'DELETE',
+	      data: { params: id },
+	      success: success,
+	      error: error
+	    });
 	  }
 	};
 	
-	module.exports = ProjectStore;
+	module.exports = ProjectApiUtil;
 
 /***/ },
 /* 278 */
@@ -35037,8 +34930,8 @@
 	'use strict';
 	
 	module.exports = {
-	  PROJECT_RECEIVED: 'PROJECT_RECEIVED',
-	  PROJECT_REMOVED: 'PROJECT_REMOVED'
+	  SAVED_PROJECT_RECEIVED: 'SAVED_PROJECT_RECEIVED',
+	  SAVED_PROJECT_REMOVED: 'SAVED_PROJECT_REMOVED'
 	};
 
 /***/ },
@@ -35047,125 +34940,10 @@
 
 	'use strict';
 	
-	var _reactRouter = __webpack_require__(1);
-	
 	var React = __webpack_require__(3);
-	
-	
-	var ProjectNavBar = React.createClass({
-	  displayName: 'ProjectNavBar',
-	  getInitialState: function getInitialState() {
-	    return { selected: '' };
-	  },
-	  componentDidMount: function componentDidMount() {
-	    this.setState({ selected: 'basics' });
-	  },
-	  _handleClick: function _handleClick(e) {
-	    this.setState({ selected: e.target.id });
-	    _reactRouter.browserHistory.push('/finalizeProject/' + e.target.id);
-	    // this.props.changePage(e.target.id);
-	  },
-	  render: function render() {
-	    return React.createElement(
-	      'div',
-	      { className: 'project-nav-bar' },
-	      React.createElement(
-	        'ul',
-	        null,
-	        React.createElement(
-	          'li',
-	          null,
-	          React.createElement(
-	            'span',
-	            { id: 'basics', className: this.state.selected,
-	              onClick: this._handleClick },
-	            'Basics'
-	          )
-	        ),
-	        React.createElement(
-	          'li',
-	          null,
-	          React.createElement(
-	            'span',
-	            { id: 'rewards', className: this.state.selected,
-	              onClick: this._handleClick },
-	            'Rewards'
-	          )
-	        ),
-	        React.createElement(
-	          'li',
-	          null,
-	          React.createElement(
-	            'span',
-	            { id: 'story', className: this.state.selected,
-	              onClick: this._handleClick },
-	            'Story'
-	          )
-	        ),
-	        React.createElement(
-	          'li',
-	          null,
-	          React.createElement(
-	            'span',
-	            { id: 'about_you', className: this.state.selected,
-	              onClick: this._handleClick },
-	            'About You'
-	          )
-	        ),
-	        React.createElement(
-	          'li',
-	          { className: 'act-li' },
-	          React.createElement(
-	            'span',
-	            { id: 'account', className: 'act ' + this.state.selected,
-	              onClick: this._handleClick },
-	            'Account'
-	          )
-	        ),
-	        React.createElement(
-	          'li',
-	          { className: 'prev-li' },
-	          React.createElement(
-	            'span',
-	            { id: 'preview', className: 'prev ' + this.state.selected,
-	              onClick: this._handleClick },
-	            'Preview'
-	          )
-	        ),
-	        React.createElement(
-	          'li',
-	          { className: 'submit-li' },
-	          React.createElement(
-	            'span',
-	            { id: 'submit', className: 'submit-span',
-	              onClick: this._handleClick },
-	            'Submit for review'
-	          )
-	        )
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = ProjectNavBar;
-	
-	/* TODO
-	
-	1) Submit hover color should be red until mandatory fields are complete.
-
-
-
-
-	*/
-
-/***/ },
-/* 280 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var React = __webpack_require__(3);
-	var SavedProjectActions = __webpack_require__(286);
+	var SavedProjectActions = __webpack_require__(276);
+	var SavedProjectStore = __webpack_require__(280);
+	var ProjectCategories = __webpack_require__(290);
 	
 	var Basics = React.createClass({
 	  displayName: 'Basics',
@@ -35174,7 +34952,7 @@
 	      image: {},
 	      title: "",
 	      blurb: "",
-	      category: "",
+	      category_id: 0,
 	      location: "",
 	      duration: 0,
 	      goal: 0,
@@ -35183,10 +34961,20 @@
 	    };
 	  },
 	  componentDidMount: function componentDidMount() {
-	    this._setPrefilledData();
+	    this.listener = SavedProjectStore.addListener(this._onChange);
+	    this.setState(SavedProjectStore.currentProject());
+	    this.displayCategory = ProjectCategories[0].label;
 	  },
-	  componentWillUnmount: function componentWillUnmount() {},
-	  _onChange: function _onChange() {},
+	  componentWillUnmount: function componentWillUnmount() {
+	    this.listener.remove();
+	  },
+	  _onChange: function _onChange() {
+	    this.setState(SavedProjectStore.currentProject());
+	    this.displayCategory = this._updateDisplayCategory();
+	  },
+	  _updateDisplayCategory: function _updateDisplayCategory() {
+	    return ProjectCategories[this.state.category_id].label;
+	  },
 	  _resetSavedStatus: function _resetSavedStatus() {
 	    this.setState({ saved: false });
 	    this.setState({ errorMessage: "" });
@@ -35216,12 +35004,6 @@
 	    this.setState({ goal: e.target.value });
 	    this._resetSavedStatus();
 	  },
-	  _setPrefilledData: function _setPrefilledData() {
-	    this.setState(this.props.data);
-	  },
-	  _saveChangeToPage: function _saveChangeToPage() {
-	    this.props.onSave(this.state);
-	  },
 	  _handleSave: function _handleSave() {
 	    console.log(this.state);
 	    if (this.state.saved) {
@@ -35229,12 +35011,10 @@
 	    } else {
 	      this.setState({ errorMessage: "" });
 	      this.setState({ saved: true });
-	      this._saveChangeToPage();
+	      this._saveProject();
 	    }
-	
-	    // SavedProjectActions.submitSavedProject('basicForm', this.state);
-	    // Use modal to show quick preview + confirmation
 	  },
+	  _saveProject: function _saveProject() {},
 	
 	
 	  render: function render() {
@@ -35327,7 +35107,7 @@
 	                  'button',
 	                  { className: 'category-button',
 	                    onClick: this._setCategory },
-	                  this.state.category
+	                  this.displayCategory
 	                )
 	              )
 	            )
@@ -35417,6 +35197,63 @@
 	});
 	
 	module.exports = Basics;
+
+/***/ },
+/* 280 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var Store = __webpack_require__(242).Store;
+	var AppDispatcher = __webpack_require__(260);
+	var SavedProjectConstants = __webpack_require__(278);
+	var SavedProjectStore = new Store(AppDispatcher);
+	
+	var _blankProject = {
+	  image: {},
+	  title: "",
+	  blurb: "",
+	  location: "",
+	  duration: 0,
+	  goal: 0,
+	  saved: false,
+	  errorMessage: ""
+	};
+	
+	var _savedProject = _blankProject;
+	
+	SavedProjectStore.find = function (id) {};
+	
+	SavedProjectStore.currentProject = function () {
+	  return _savedProject;
+	};
+	
+	function _updateSavedProject(project) {
+	  for (var item in project) {
+	    if (project.hasOwnProperty(item)) {
+	      _savedProject[item] = project[item];
+	    }
+	  }
+	  SavedProjectStore.__emitChange();
+	}
+	
+	function _removeSavedProject() {
+	  _savedProject = _blankProject;
+	  SavedProjectStore.__emitChange();
+	}
+	
+	SavedProjectStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case SavedProjectConstants.SAVED_PROJECT_RECEIVED:
+	      _updateSavedProject(payload.data);
+	      break;
+	    case SavedProjectConstants.SAVED_PROJECT_REMOVED:
+	      _removeSavedProject();
+	      break;
+	  }
+	};
+	
+	module.exports = SavedProjectStore;
 
 /***/ },
 /* 281 */
@@ -35544,44 +35381,144 @@
 
 	'use strict';
 	
-	var AppDispatcher = __webpack_require__(260);
-	var ProjectApiUtil = __webpack_require__(288);
-	var SavedProjectConstants = __webpack_require__(287);
+	var _reactRouter = __webpack_require__(1);
+	
+	var React = __webpack_require__(3);
+	var ProjectStore = __webpack_require__(287);
 	var ErrorActions = __webpack_require__(267);
+	var ErrorStore = __webpack_require__(268);
+	var ProjectNavBar = __webpack_require__(289);
+	var Basics = __webpack_require__(279);
+	var Rewards = __webpack_require__(281);
+	var Story = __webpack_require__(282);
+	var AboutYou = __webpack_require__(283);
+	var Account = __webpack_require__(284);
+	var Preview = __webpack_require__(285);
+	var SessionStore = __webpack_require__(241);
 	
-	var SavedProjectActions = {
-	  submitSavedProject: function submitSavedProject(form, projectInfo) {
-	    ApiUtil.saveProject(form, projectInfo, this.receiveSavedProject, ErrorActions.receiveError);
+	
+	var FinalizeProject = React.createClass({
+	  displayName: 'FinalizeProject',
+	  componentDidMount: function componentDidMount() {
+	
+	    this.sessionToken = SessionStore.addListener(this._handleLogin);
+	    this._handleLogin();
+	    this.forceUpdate();
+	    // ProjectStore.addListener(this._onChange);
+	    // ErrorStore.addListener(this._handleError);
 	  },
-	  deleteSavedProject: function deleteSavedProject(form, projectInfo) {
-	    ApiUtil.removeSavedProject(form, projectInfo.id, this.removeSavedProject, ErrorActions.receiveError);
+	  componentWillUnmount: function componentWillUnmount() {
+	    this.sessionToken.remove();
 	  },
-	  receiveSavedProject: function receiveSavedProject(data) {
-	    AppDispatcher.dispatch({
-	      actionType: SavedProjectConstants.SAVED_PROJECT_RECEIVED,
-	      data: data
-	    });
+	  _handleLogin: function _handleLogin() {
+	    if (SessionStore.currentUser().hasOwnProperty('id')) {
+	      return;
+	    } else {
+	      _reactRouter.browserHistory.push('/login');
+	    }
 	  },
-	  removeSavedProject: function removeSavedProject(data) {
-	    AppDispatcher.dispatch({
-	      actionType: SavedProjectConstants.SAVED_PROJECT_REMOVED,
-	      data: data
-	    });
+	  _changePage: function _changePage(pageNum) {
+	    var num = this._parseNum(pageNum);
+	    this.currentPage = this.pages[num];
+	    this.forceUpdate();
+	  },
+	  _saveChanges: function _saveChanges(savedData) {
+	    this.setState({ savedData: savedData });
+	    this.setState({ saved: true });
+	  },
+	  render: function render() {
+	    var lets = "Let's";
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'div',
+	        { className: 'nav-bar-box' },
+	        React.createElement(ProjectNavBar, { changePage: this._changePage }),
+	        React.createElement('br', null),
+	        React.createElement(
+	          'div',
+	          { className: 'nav-bar-top-text' },
+	          lets,
+	          ' get started.'
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'nav-bar-bottom-text' },
+	          'The title of your project will impact its place in history. Pick a title, image, goal, campaign duration, and category.'
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'project-create-subpage' },
+	        this.props.children
+	      )
+	    );
 	  }
-	};
+	});
 	
-	module.exports = SavedProjectActions;
+	module.exports = FinalizeProject;
+	
+	/*
+	TODO
+
+	1) Add save functionality (will require saved_project model and new logic to prepopulate info)
+	2) Replace 'us' with apostrophe once syntax highlighting is fixed
+
+
+
+
+
+
+
+	*/
 
 /***/ },
 /* 287 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	module.exports = {
-	  SAVED_PROJECT_RECEIVED: 'SAVED_PROJECT_RECEIVED',
-	  SAVED_PROJECT_REMOVED: 'SAVED_PROJECT_REMOVED'
+	var Store = __webpack_require__(242).Store;
+	var AppDispatcher = __webpack_require__(260);
+	var ProjectConstants = __webpack_require__(288);
+	var ProjectStore = new Store(AppDispatcher);
+	
+	var _currentUser = {};
+	
+	function _logIn(user) {
+	  _currentUser = user;
+	  ProjectStore.__emitChange();
+	}
+	
+	function _logOut() {
+	  _currentUser = {};
+	  ProjectStore.__emitChange();
+	}
+	
+	ProjectStore.currentUser = function () {
+	  return _currentUser;
 	};
+	
+	ProjectStore.isUserLoggedIn = function (id) {
+	  return _currentUser.id === id;
+	};
+	
+	ProjectStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case ProjectConstants.USER_RECEIVED:
+	      _logIn(payload.user);
+	      break;
+	    case ProjectConstants.USER_REMOVED:
+	      _logOut();
+	      break;
+	    case ProjectConstants.SESSION_STOPPED:
+	      _logOut();
+	      break;
+	  }
+	};
+	
+	module.exports = ProjectStore;
 
 /***/ },
 /* 288 */
@@ -35589,32 +35526,134 @@
 
 	'use strict';
 	
-	var ProjectApiUtil = {
-	  saveProject: function saveProject(form, data, successCB, errorCB) {
-	    $.ajax({
-	      url: 'api/saved_projects',
-	      type: 'POST',
-	      data: { saved_project: data },
-	      success: function success(resp) {
-	        successCB(resp);
-	      },
-	      error: function error(resp) {
-	        errorCB(form, resp);
-	      }
-	    });
-	  },
-	  removeSavedProject: function removeSavedProject(form, id, successCB, errorCB) {
-	    $.ajax({
-	      url: 'api/saved_projects/' + id,
-	      type: 'DELETE',
-	      data: { params: id },
-	      success: success,
-	      error: error
-	    });
-	  }
+	module.exports = {
+	  PROJECT_RECEIVED: 'PROJECT_RECEIVED',
+	  PROJECT_REMOVED: 'PROJECT_REMOVED'
 	};
+
+/***/ },
+/* 289 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
 	
-	module.exports = ProjectApiUtil;
+	var _reactRouter = __webpack_require__(1);
+	
+	var React = __webpack_require__(3);
+	
+	
+	var ProjectNavBar = React.createClass({
+	  displayName: 'ProjectNavBar',
+	  getInitialState: function getInitialState() {
+	    return { selected: '' };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    this.setState({ selected: 'basics' });
+	  },
+	  _handleClick: function _handleClick(e) {
+	    this.setState({ selected: e.target.id });
+	    _reactRouter.browserHistory.push('/finalizeProject/' + e.target.id);
+	  },
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      { className: 'project-nav-bar' },
+	      React.createElement(
+	        'ul',
+	        null,
+	        React.createElement(
+	          'li',
+	          null,
+	          React.createElement(
+	            'span',
+	            { id: 'basics', className: this.state.selected,
+	              onClick: this._handleClick },
+	            'Basics'
+	          )
+	        ),
+	        React.createElement(
+	          'li',
+	          null,
+	          React.createElement(
+	            'span',
+	            { id: 'rewards', className: this.state.selected,
+	              onClick: this._handleClick },
+	            'Rewards'
+	          )
+	        ),
+	        React.createElement(
+	          'li',
+	          null,
+	          React.createElement(
+	            'span',
+	            { id: 'story', className: this.state.selected,
+	              onClick: this._handleClick },
+	            'Story'
+	          )
+	        ),
+	        React.createElement(
+	          'li',
+	          null,
+	          React.createElement(
+	            'span',
+	            { id: 'about_you', className: this.state.selected,
+	              onClick: this._handleClick },
+	            'About You'
+	          )
+	        ),
+	        React.createElement(
+	          'li',
+	          { className: 'act-li' },
+	          React.createElement(
+	            'span',
+	            { id: 'account', className: 'act ' + this.state.selected,
+	              onClick: this._handleClick },
+	            'Account'
+	          )
+	        ),
+	        React.createElement(
+	          'li',
+	          { className: 'prev-li' },
+	          React.createElement(
+	            'span',
+	            { id: 'preview', className: 'prev ' + this.state.selected,
+	              onClick: this._handleClick },
+	            'Preview'
+	          )
+	        ),
+	        React.createElement(
+	          'li',
+	          { className: 'submit-li' },
+	          React.createElement(
+	            'span',
+	            { id: 'submit', className: 'submit-span',
+	              onClick: this._handleClick },
+	            'Submit for review'
+	          )
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = ProjectNavBar;
+	
+	/* TODO
+	
+	1) Submit hover color should be red until mandatory fields are complete.
+
+
+
+
+	*/
+
+/***/ },
+/* 290 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	module.exports = [{ label: 'Before Time', value: 1 }, { label: 'Stone Age', value: 2 }, { label: 'Middle Ages', value: 3 }, { label: 'Present', value: 4 }, { label: 'Future', value: 5 }];
 
 /***/ }
 /******/ ]);
