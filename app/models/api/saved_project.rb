@@ -1,11 +1,11 @@
 # == Schema Information
 #
-# Table name: api_projects
+# Table name: api_saved_projects
 #
 #  id               :integer          not null, primary key
-#  title            :string           not null
+#  title            :string
 #  content          :text
-#  author_id        :integer          not null
+#  author_id        :integer
 #  category_id      :integer
 #  goal             :integer
 #  project_img_urls :string
@@ -14,9 +14,9 @@
 #  updated_at       :datetime         not null
 #
 
-class Api::Project < ActiveRecord::Base
+class Api::SavedProject < ActiveRecord::Base
 
-  validates :title, :author_id, presence: true
+  validates :author_id, presence: true
 
   belongs_to :author, class_name: 'User', foreign_key: 'author_id'
 

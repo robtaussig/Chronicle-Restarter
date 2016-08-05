@@ -1,6 +1,8 @@
 const React = require('react');
 const ErrorStore = require('../stores/error_store.js');
 
+const ErrorActions = require('../actions/error_actions.js');
+
 const Errors  = React.createClass({
 
   getInitialState () {

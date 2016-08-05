@@ -42,6 +42,12 @@ const ErrorActions = {
       form: form,
       data: data
     });
+  },
+
+  clearErrors () {
+    AppDispatcher.dispatch({
+      actionType:ErrorConstants.CLEAR_ERRORS,
+    });
   }
 
 };

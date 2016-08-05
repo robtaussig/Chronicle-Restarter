@@ -1,7 +1,6 @@
 const React = require('react');
 const SessionStore = require('../stores/session_store.js');
 const SessionActions = require('../actions/session_actions.js');
-const ErrorActions = require('../actions/error_actions.js');
 const Link = require('react-router').Link;
 const ErrorStore = require('../stores/error_store.js');
 import { hashHistory } from 'react-router';

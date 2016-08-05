@@ -20,7 +20,9 @@ class Api::User < ActiveRecord::Base
   attr_reader :password
   after_initialize :ensure_session_token
 
-  has_many :projects
+
+  has_many :saved_projects, foreign_key: 'author_id'
+  has_many :projects, foreign_key: 'author_id'
 
   def self.generate_session_token
     SecureRandom::urlsafe_base64(16)

@@ -27088,9 +27088,13 @@
 	var React = __webpack_require__(3);
 	var NavBar = __webpack_require__(239);
 	var Errors = __webpack_require__(271);
+	var ErrorActions = __webpack_require__(267);
 	
 	var App = React.createClass({
 	  displayName: 'App',
+	  componentWillReceiveProps: function componentWillReceiveProps() {
+	    ErrorActions.clearErrors();
+	  },
 	  render: function render() {
 	    return React.createElement(
 	      'div',
@@ -27242,7 +27246,6 @@
 	var React = __webpack_require__(3);
 	var SessionStore = __webpack_require__(241);
 	var SessionActions = __webpack_require__(264);
-	var ErrorActions = __webpack_require__(267);
 	var Link = __webpack_require__(1).Link;
 	var ErrorStore = __webpack_require__(268);
 	
@@ -34324,7 +34327,8 @@
 	
 	module.exports = {
 	  ERROR_RECEIVED: 'ERROR_RECEIVED',
-	  SIGNUP_ERROR_RECEIVED: 'SIGNUP_ERROR_RECEIVED'
+	  SIGNUP_ERROR_RECEIVED: 'SIGNUP_ERROR_RECEIVED',
+	  CLEAR_ERRORS: 'CLEAR_ERRORS'
 	};
 
 /***/ },
@@ -34371,6 +34375,11 @@
 	      actionType: ErrorConstants.ERROR_RECEIVED,
 	      form: form,
 	      data: data
+	    });
+	  },
+	  clearErrors: function clearErrors() {
+	    AppDispatcher.dispatch({
+	      actionType: ErrorConstants.CLEAR_ERRORS
 	    });
 	  }
 	};
@@ -34562,6 +34571,8 @@
 	
 	var React = __webpack_require__(3);
 	var ErrorStore = __webpack_require__(268);
+	
+	var ErrorActions = __webpack_require__(267);
 	
 	var Errors = React.createClass({
 	  displayName: 'Errors',
@@ -35127,12 +35138,13 @@
 /* 280 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	var React = __webpack_require__(3);
+	var SavedProjectActions = __webpack_require__(286);
 	
 	var Basics = React.createClass({
-	  displayName: "Basics",
+	  displayName: 'Basics',
 	  getInitialState: function getInitialState() {
 	    return {
 	      image: {},
@@ -35161,99 +35173,104 @@
 	  _setPrefilledData: function _setPrefilledData() {
 	    this.setState(this.props.data);
 	  },
-	  _savechange: function _savechange() {
+	  _saveChangeToPage: function _saveChangeToPage() {
 	    this.props.onSave(this.state);
+	  },
+	  _handleSave: function _handleSave() {
+	    this._saveChangeToPage();
+	    SavedProjectActions.submitSavedProject(this.state);
+	    // Use modal to show quick preview + confirmation
 	  },
 	
 	
 	  render: function render() {
 	    var rows = 3;
 	    return React.createElement(
-	      "div",
-	      { className: "wrapper" },
+	      'div',
+	      { className: 'wrapper' },
 	      React.createElement(
-	        "div",
-	        { className: "project-basic-form" },
+	        'div',
+	        { className: 'project-basic-form' },
 	        React.createElement(
-	          "ul",
+	          'ul',
 	          null,
 	          React.createElement(
-	            "li",
-	            { className: "project-image" },
+	            'li',
+	            { className: 'project-image' },
 	            React.createElement(
-	              "div",
-	              { className: "grey-field" },
+	              'div',
+	              { className: 'grey-field' },
 	              React.createElement(
-	                "div",
-	                { className: "attribute-field" },
-	                "Project image"
+	                'div',
+	                { className: 'attribute-field' },
+	                'Project image'
 	              ),
 	              React.createElement(
-	                "div",
-	                { className: "field-wrapper" },
+	                'div',
+	                { className: 'field-wrapper' },
 	                React.createElement(
-	                  "button",
+	                  'button',
 	                  null,
-	                  "Choose an image from your computer"
+	                  'Choose an image from your computer'
 	                )
 	              )
 	            )
 	          ),
 	          React.createElement(
-	            "li",
-	            { className: "project-title" },
+	            'li',
+	            { className: 'project-title' },
 	            React.createElement(
-	              "div",
-	              { className: "grey-field" },
+	              'div',
+	              { className: 'grey-field' },
 	              React.createElement(
-	                "div",
-	                { className: "attribute-field" },
-	                "Project title"
+	                'div',
+	                { className: 'attribute-field' },
+	                'Project title'
 	              ),
 	              React.createElement(
-	                "div",
-	                { className: "field-wrapper" },
-	                React.createElement("input", { type: "text", className: "title",
+	                'div',
+	                { className: 'field-wrapper' },
+	                React.createElement('input', { type: 'text', className: 'title',
 	                  onChange: this._setTitle, value: this.state.title })
 	              )
 	            )
 	          ),
 	          React.createElement(
-	            "li",
-	            { className: "project-short-blurb" },
+	            'li',
+	            { className: 'project-short-blurb' },
 	            React.createElement(
-	              "div",
-	              { className: "grey-field" },
+	              'div',
+	              { className: 'grey-field' },
 	              React.createElement(
-	                "div",
-	                { className: "attribute-field" },
-	                "Short blurb"
+	                'div',
+	                { className: 'attribute-field' },
+	                'Short blurb'
 	              ),
 	              React.createElement(
-	                "div",
-	                { className: "field-wrapper" },
-	                React.createElement("textarea", { rows: "3", wrap: "hard", className: "short-blurb-field",
+	                'div',
+	                { className: 'field-wrapper' },
+	                React.createElement('textarea', { rows: '3', wrap: 'hard', className: 'short-blurb-field',
 	                  onChange: this._setBlurb })
 	              )
 	            )
 	          ),
 	          React.createElement(
-	            "li",
-	            { className: "project-category" },
+	            'li',
+	            { className: 'project-category' },
 	            React.createElement(
-	              "div",
-	              { className: "grey-field" },
+	              'div',
+	              { className: 'grey-field' },
 	              React.createElement(
-	                "div",
-	                { className: "attribute-field" },
-	                "Category"
+	                'div',
+	                { className: 'attribute-field' },
+	                'Category'
 	              ),
 	              React.createElement(
-	                "div",
-	                { className: "field-wrapper" },
+	                'div',
+	                { className: 'field-wrapper' },
 	                React.createElement(
-	                  "button",
-	                  { className: "category-button",
+	                  'button',
+	                  { className: 'category-button',
 	                    onClick: this._setCategory },
 	                  this.state.category
 	                )
@@ -35261,77 +35278,77 @@
 	            )
 	          ),
 	          React.createElement(
-	            "li",
-	            { className: "project-location" },
+	            'li',
+	            { className: 'project-location' },
 	            React.createElement(
-	              "div",
-	              { className: "grey-field" },
+	              'div',
+	              { className: 'grey-field' },
 	              React.createElement(
-	                "div",
-	                { className: "attribute-field" },
-	                "Project location"
+	                'div',
+	                { className: 'attribute-field' },
+	                'Project location'
 	              ),
 	              React.createElement(
-	                "div",
-	                { className: "field-wrapper" },
-	                React.createElement("input", { type: "text", className: "location",
+	                'div',
+	                { className: 'field-wrapper' },
+	                React.createElement('input', { type: 'text', className: 'location',
 	                  onChange: this._setLocation,
 	                  placeholder: this.state.location })
 	              )
 	            )
 	          ),
 	          React.createElement(
-	            "li",
-	            { className: "project-duration" },
+	            'li',
+	            { className: 'project-duration' },
 	            React.createElement(
-	              "div",
-	              { className: "grey-field" },
+	              'div',
+	              { className: 'grey-field' },
 	              React.createElement(
-	                "div",
-	                { className: "attribute-field" },
-	                "Funding duration"
+	                'div',
+	                { className: 'attribute-field' },
+	                'Funding duration'
 	              ),
 	              React.createElement(
-	                "div",
-	                { className: "field-wrapper" },
+	                'div',
+	                { className: 'field-wrapper' },
 	                React.createElement(
-	                  "div",
-	                  { className: "num-days" },
-	                  React.createElement("input", { className: "duration-field", type: "text",
+	                  'div',
+	                  { className: 'num-days' },
+	                  React.createElement('input', { className: 'duration-field', type: 'text',
 	                    onChange: this._setDuration })
 	                )
 	              )
 	            )
 	          ),
 	          React.createElement(
-	            "li",
-	            { className: "project-goal" },
+	            'li',
+	            { className: 'project-goal' },
 	            React.createElement(
-	              "div",
-	              { className: "grey-field" },
+	              'div',
+	              { className: 'grey-field' },
 	              React.createElement(
-	                "div",
-	                { className: "attribute-field" },
-	                "Funding goal"
+	                'div',
+	                { className: 'attribute-field' },
+	                'Funding goal'
 	              ),
 	              React.createElement(
-	                "div",
-	                { className: "field-wrapper" },
-	                React.createElement("input", { type: "text", className: "goal",
+	                'div',
+	                { className: 'field-wrapper' },
+	                React.createElement('input', { type: 'text', className: 'goal',
 	                  onChange: this._setGoal,
-	                  placeholder: "$0 USD" })
+	                  placeholder: '$0 USD' })
 	              )
 	            )
 	          )
 	        )
 	      ),
 	      React.createElement(
-	        "div",
-	        { id: "save-box" },
+	        'div',
+	        { id: 'save-box' },
 	        React.createElement(
-	          "button",
-	          null,
-	          "Save Changes"
+	          'button',
+	          { onClick: this._handleSave },
+	          'Save Changes'
 	        )
 	      )
 	    );
@@ -35460,6 +35477,12 @@
 	});
 	
 	module.exports = Preview;
+
+/***/ },
+/* 286 */
+/***/ function(module, exports) {
+
+	"use strict";
 
 /***/ }
 /******/ ]);

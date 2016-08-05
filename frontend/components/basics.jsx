@@ -1,4 +1,5 @@
 const React = require('react');
+const SavedProjectActions = require('../actions/saved_project_actions.js');
 
 const Basics = React.createClass({
 
@@ -63,8 +64,14 @@ const Basics = React.createClass({
     this.setState(this.props.data);
   },
 
-  _savechange () {
+  _saveChangeToPage () {
     this.props.onSave(this.state);
+  },
+
+  _handleSave () {
+    this._saveChangeToPage ();
+    SavedProjectActions.submitSavedProject(this.state);
+    // Use modal to show quick preview + confirmation
   },
 
   render: function() {
@@ -142,7 +149,7 @@ const Basics = React.createClass({
           </ul>
         </div>
         <div id="save-box">
-          <button>Save Changes</button>
+          <button onClick={this._handleSave}>Save Changes</button>
         </div>
       </div>
     );
