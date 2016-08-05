@@ -12,7 +12,8 @@ const Basics = React.createClass({
       location: "",
       duration: 0,
       goal: 0,
-      saved: false
+      saved: false,
+      errorMessage: ""
     });
   },
 
@@ -28,36 +29,43 @@ const Basics = React.createClass({
 
   },
 
-  _setTitle () {
+  _resetSavedStatus () {
+    this.setState({saved: false});
+    this.setState({errorMessage: ""});
+  },
+
+  _setTitle (e) {
+    this.setState({title: e.target.value});
+    this._resetSavedStatus();
+  },
+
+  _setImage (e) {
 
   },
 
-  _setImage () {
-
+  _setBlurb (e) {
+    this.setState({blurb: e.target.value});
+    this._resetSavedStatus();
   },
 
-  _setBlurb () {
-
+  _setCategory (e) {
+    this.setState({category: e.target.value});
+    this._resetSavedStatus();
   },
 
-  _setCategory () {
-
+  _setLocation (e) {
+    this.setState({location: e.target.value});
+    this._resetSavedStatus();
   },
 
-  _setLocation () {
-
+  _setDuration (e) {
+    this.setState({duration: e.target.value});
+    this._resetSavedStatus();
   },
 
-  _setDuration () {
-
-  },
-
-  _setDurationRadio () {
-
-  },
-
-  _setGoal () {
-
+  _setGoal (e) {
+    this.setState({goal: e.target.value});
+    this._resetSavedStatus();
   },
 
   _setPrefilledData () {
@@ -69,13 +77,23 @@ const Basics = React.createClass({
   },
 
   _handleSave () {
-    this._saveChangeToPage ();
-    SavedProjectActions.submitSavedProject(this.state);
+    console.log(this.state);
+    if (this.state.saved) {
+      this.setState({errorMessage: "Your project is already up-to-date"});
+    } else {
+      this.setState({errorMessage: ""});
+      this.setState({saved: true});
+      this._saveChangeToPage ();
+    }
+
+
+    // SavedProjectActions.submitSavedProject('basicForm', this.state);
     // Use modal to show quick preview + confirmation
   },
 
   render: function() {
     let rows = 3;
+    let saved = this.state.saved ? 'saved' : 'unsaved';
     return (
       <div className="wrapper">
         <div className="project-basic-form">
@@ -148,8 +166,9 @@ const Basics = React.createClass({
             </li>
           </ul>
         </div>
-        <div id="save-box">
-          <button onClick={this._handleSave}>Save Changes</button>
+        <div id="save-box" className={saved}>
+          <button className={saved} onClick={this._handleSave}>Save Changes</button>
+          <p>{this.state.errorMessage}</p>
         </div>
       </div>
     );

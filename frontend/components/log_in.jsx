@@ -2,6 +2,7 @@ const React = require('react');
 const SessionStore = require('../stores/session_store.js');
 const SessionActions = require('../actions/session_actions.js');
 const Link = require('react-router').Link;
+const ErrorActions = require('../actions/error_actions.js');
 import { hashHistory } from 'react-router';
 
 const LogIn = React.createClass({
@@ -25,6 +26,10 @@ const LogIn = React.createClass({
     this.redirectIfLoggedIn();
   },
 
+  componentWillReceiveProps () {
+    ErrorActions.clearErrors();
+  },
+
   componentDidMount () {
     this.sessionListener = SessionStore.addListener(this._onChange);
     this.redirectIfLoggedIn();
@@ -32,7 +37,7 @@ const LogIn = React.createClass({
 
   redirectIfLoggedIn () {
     if (typeof window.myApp.pendingAction !== "undefined" && this.state.logged_in) {
-      hashHistory.push(`api/${window.myApp.pendingAction}`);
+      hashHistory.push(`${window.myApp.pendingAction}`);
     } else if (this.state.logged_in) {
       hashHistory.push('/');
     }
@@ -71,7 +76,7 @@ const LogIn = React.createClass({
           <button className="log-in-button" onClick={this._handleSubmit}>Log me in!</button>
         </form>
         <p>
-          New to Chronicle Restarter? <Link to={'api/signUp'}><b>Sign Up</b></Link>
+          New to Chronicle Restarter? <Link to={'signUp'}><b>Sign Up</b></Link>
         </p>
     </div>
     );

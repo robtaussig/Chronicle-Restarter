@@ -12,12 +12,12 @@ import { Router, Route, hashHistory, IndexRoute } from 'react-router';
 
 const routes = (
   <Route path="/" component={App}>
-    <Route path="api/signUp" component={SignUp} />
-    <Route path="api/logIn" component={LogIn} />
-    <Route path="api/userProfile" component={UserProfile} />
-    <Route path="api/startProject" component={StartProject} />
-    <Route path="api/createProject" component={CreateProject} />
-    <Route path="api/finalizeProject" component={FinalizeProject} />
+    <Route path="signUp" component={SignUp} />
+    <Route path="logIn" component={LogIn} />
+    <Route path="userProfile" component={UserProfile} />
+    <Route path="startProject" component={StartProject} />
+    <Route path="createProject" component={CreateProject} />
+    <Route path="finalizeProject" component={FinalizeProject} />
 
   </Route>
 );

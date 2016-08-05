@@ -5,10 +5,6 @@ const ErrorActions = require('../actions/error_actions.js');
 
 const App = React.createClass({
 
-  componentWillReceiveProps () {
-    ErrorActions.clearErrors();
-  },
-
   render () {
     return (
       <div>

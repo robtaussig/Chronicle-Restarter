@@ -63,12 +63,12 @@
 	var routes = React.createElement(
 	  _reactRouter.Route,
 	  { path: '/', component: App },
-	  React.createElement(_reactRouter.Route, { path: 'api/signUp', component: SignUp }),
-	  React.createElement(_reactRouter.Route, { path: 'api/logIn', component: LogIn }),
-	  React.createElement(_reactRouter.Route, { path: 'api/userProfile', component: UserProfile }),
-	  React.createElement(_reactRouter.Route, { path: 'api/startProject', component: StartProject }),
-	  React.createElement(_reactRouter.Route, { path: 'api/createProject', component: CreateProject }),
-	  React.createElement(_reactRouter.Route, { path: 'api/finalizeProject', component: FinalizeProject })
+	  React.createElement(_reactRouter.Route, { path: 'signUp', component: SignUp }),
+	  React.createElement(_reactRouter.Route, { path: 'logIn', component: LogIn }),
+	  React.createElement(_reactRouter.Route, { path: 'userProfile', component: UserProfile }),
+	  React.createElement(_reactRouter.Route, { path: 'startProject', component: StartProject }),
+	  React.createElement(_reactRouter.Route, { path: 'createProject', component: CreateProject }),
+	  React.createElement(_reactRouter.Route, { path: 'finalizeProject', component: FinalizeProject })
 	);
 	
 	var router = React.createElement(
@@ -27092,9 +27092,6 @@
 	
 	var App = React.createClass({
 	  displayName: 'App',
-	  componentWillReceiveProps: function componentWillReceiveProps() {
-	    ErrorActions.clearErrors();
-	  },
 	  render: function render() {
 	    return React.createElement(
 	      'div',
@@ -27118,6 +27115,7 @@
 	var SignUp = __webpack_require__(240);
 	var LogIn = __webpack_require__(269);
 	var Search = __webpack_require__(270);
+	var ErrorActions = __webpack_require__(267);
 	var SessionStore = __webpack_require__(241);
 	var SessionActions = __webpack_require__(264);
 	var Link = __webpack_require__(1).Link;
@@ -27145,7 +27143,7 @@
 	      React.createElement(
 	        Link,
 	        { className: 'user-link',
-	          to: 'api/userProfile' },
+	          to: 'userProfile' },
 	        this.state.user.email
 	      )
 	    ), React.createElement(
@@ -27161,7 +27159,7 @@
 	      { key: 'signup' },
 	      React.createElement(
 	        Link,
-	        { className: 'session-link', to: 'api/signUp' },
+	        { className: 'session-link', to: 'signUp' },
 	        'Sign Up'
 	      )
 	    ), React.createElement(
@@ -27169,7 +27167,7 @@
 	      { key: 'login' },
 	      React.createElement(
 	        Link,
-	        { className: 'session-link', to: 'api/logIn' },
+	        { className: 'session-link', to: 'logIn' },
 	        'Log In'
 	      )
 	    ), React.createElement(
@@ -27191,7 +27189,7 @@
 	            null,
 	            React.createElement(
 	              Link,
-	              { className: 'nav-link', to: 'api/discover' },
+	              { className: 'nav-link', to: 'discover' },
 	              'Discover'
 	            )
 	          ),
@@ -27200,7 +27198,7 @@
 	            null,
 	            React.createElement(
 	              Link,
-	              { className: 'nav-link', to: 'api/startProject' },
+	              { className: 'nav-link', to: 'startProject' },
 	              'Start a project'
 	            )
 	          ),
@@ -27209,7 +27207,7 @@
 	            null,
 	            React.createElement(
 	              Link,
-	              { className: 'nav-link', to: 'api/about' },
+	              { className: 'nav-link', to: 'about' },
 	              'About us'
 	            )
 	          )
@@ -27247,6 +27245,7 @@
 	var SessionStore = __webpack_require__(241);
 	var SessionActions = __webpack_require__(264);
 	var Link = __webpack_require__(1).Link;
+	var ErrorActions = __webpack_require__(267);
 	var ErrorStore = __webpack_require__(268);
 	
 	
@@ -27257,6 +27256,9 @@
 	      form: "signup", id: "", username: "", email: "", confirmEmail: "",
 	      password: "", confirmPassword: "", logged_in: false, errors: []
 	    };
+	  },
+	  componentWillReceiveProps: function componentWillReceiveProps() {
+	    ErrorActions.clearErrors();
 	  },
 	  componentDidMount: function componentDidMount() {
 	    this.errors = [];
@@ -27270,7 +27272,7 @@
 	  },
 	  redirectIfLoggedIn: function redirectIfLoggedIn() {
 	    if (typeof window.myApp.pendingAction !== "undefined" && this.state.logged_in) {
-	      _reactRouter.hashHistory.push('api/' + window.myApp.pendingAction);
+	      _reactRouter.hashHistory.push('' + window.myApp.pendingAction);
 	    } else if (this.state.logged_in) {
 	      _reactRouter.hashHistory.push('/');
 	    }
@@ -27383,7 +27385,7 @@
 	        'Have an account? ',
 	        React.createElement(
 	          Link,
-	          { to: 'api/logIn' },
+	          { to: 'logIn' },
 	          React.createElement(
 	            'b',
 	            null,
@@ -34338,7 +34340,6 @@
 	'use strict';
 	
 	var AppDispatcher = __webpack_require__(260);
-	var ApiUtil = __webpack_require__(265);
 	var ErrorConstants = __webpack_require__(266);
 	
 	var ErrorActions = {
@@ -34446,6 +34447,7 @@
 	var SessionStore = __webpack_require__(241);
 	var SessionActions = __webpack_require__(264);
 	var Link = __webpack_require__(1).Link;
+	var ErrorActions = __webpack_require__(267);
 	
 	
 	var LogIn = React.createClass({
@@ -34467,13 +34469,16 @@
 	    }
 	    this.redirectIfLoggedIn();
 	  },
+	  componentWillReceiveProps: function componentWillReceiveProps() {
+	    ErrorActions.clearErrors();
+	  },
 	  componentDidMount: function componentDidMount() {
 	    this.sessionListener = SessionStore.addListener(this._onChange);
 	    this.redirectIfLoggedIn();
 	  },
 	  redirectIfLoggedIn: function redirectIfLoggedIn() {
 	    if (typeof window.myApp.pendingAction !== "undefined" && this.state.logged_in) {
-	      _reactRouter.hashHistory.push('api/' + window.myApp.pendingAction);
+	      _reactRouter.hashHistory.push('' + window.myApp.pendingAction);
 	    } else if (this.state.logged_in) {
 	      _reactRouter.hashHistory.push('/');
 	    }
@@ -34523,7 +34528,7 @@
 	        'New to Chronicle Restarter? ',
 	        React.createElement(
 	          Link,
-	          { to: 'api/signUp' },
+	          { to: 'signUp' },
 	          React.createElement(
 	            'b',
 	            null,
@@ -34668,7 +34673,7 @@
 	      ),
 	      React.createElement(
 	        Link,
-	        { to: 'api/createProject' },
+	        { to: '/createProject' },
 	        'Start a project'
 	      )
 	    );
@@ -34769,14 +34774,14 @@
 	      window.myApp.title = this.state.title;
 	      window.myApp.category = this.state.category;
 	      ErrorActions.mustBeSignedIn();
-	      _reactRouter.hashHistory.push('api/signUp');
+	      _reactRouter.hashHistory.push('signUp');
 	    }
 	  },
 	  _advanceToProjectCreation: function _advanceToProjectCreation() {
 	    window.myApp.pendingAction = 'finalizeProject';
 	    window.myApp.title = this.state.title;
 	    window.myApp.category = this.state.category;
-	    _reactRouter.hashHistory.push('api/finalizeProject');
+	    _reactRouter.hashHistory.push('finalizeProject');
 	  },
 	  render: function render() {
 	    return React.createElement(
@@ -34856,11 +34861,11 @@
 	    return {
 	      title: window.myApp.title ? window.myApp.title : "",
 	      category: window.myApp.category ? window.myApp.category : "",
-	      shortBlurb: window.myApp.shortBlurb ? window.myApp.shortBlurb : "",
-	      location: window.myApp.location ? window.myApp.location : "",
-	      duration: window.myApp.duration ? window.myApp.duration : "",
-	      goal: window.myApp.goal ? window.myApp.goal : "",
-	      saved: window.myApp.saved ? window.myApp.saved : ""
+	      blurb: "",
+	      location: "",
+	      duration: "",
+	      goal: "",
+	      saved: true
 	    };
 	  },
 	  componentDidMount: function componentDidMount() {
@@ -34879,7 +34884,7 @@
 	    if (SessionStore.currentUser().hasOwnProperty('id')) {
 	      return;
 	    } else {
-	      _reactRouter.hashHistory.push('/api/login');
+	      _reactRouter.hashHistory.push('/login');
 	    }
 	  },
 	  _onChange: function _onChange() {},
@@ -35154,7 +35159,8 @@
 	      location: "",
 	      duration: 0,
 	      goal: 0,
-	      saved: false
+	      saved: false,
+	      errorMessage: ""
 	    };
 	  },
 	  componentDidMount: function componentDidMount() {
@@ -35162,14 +35168,35 @@
 	  },
 	  componentWillUnmount: function componentWillUnmount() {},
 	  _onChange: function _onChange() {},
-	  _setTitle: function _setTitle() {},
-	  _setImage: function _setImage() {},
-	  _setBlurb: function _setBlurb() {},
-	  _setCategory: function _setCategory() {},
-	  _setLocation: function _setLocation() {},
-	  _setDuration: function _setDuration() {},
-	  _setDurationRadio: function _setDurationRadio() {},
-	  _setGoal: function _setGoal() {},
+	  _resetSavedStatus: function _resetSavedStatus() {
+	    this.setState({ saved: false });
+	    this.setState({ errorMessage: "" });
+	  },
+	  _setTitle: function _setTitle(e) {
+	    this.setState({ title: e.target.value });
+	    this._resetSavedStatus();
+	  },
+	  _setImage: function _setImage(e) {},
+	  _setBlurb: function _setBlurb(e) {
+	    this.setState({ blurb: e.target.value });
+	    this._resetSavedStatus();
+	  },
+	  _setCategory: function _setCategory(e) {
+	    this.setState({ category: e.target.value });
+	    this._resetSavedStatus();
+	  },
+	  _setLocation: function _setLocation(e) {
+	    this.setState({ location: e.target.value });
+	    this._resetSavedStatus();
+	  },
+	  _setDuration: function _setDuration(e) {
+	    this.setState({ duration: e.target.value });
+	    this._resetSavedStatus();
+	  },
+	  _setGoal: function _setGoal(e) {
+	    this.setState({ goal: e.target.value });
+	    this._resetSavedStatus();
+	  },
 	  _setPrefilledData: function _setPrefilledData() {
 	    this.setState(this.props.data);
 	  },
@@ -35177,14 +35204,23 @@
 	    this.props.onSave(this.state);
 	  },
 	  _handleSave: function _handleSave() {
-	    this._saveChangeToPage();
-	    SavedProjectActions.submitSavedProject(this.state);
+	    console.log(this.state);
+	    if (this.state.saved) {
+	      this.setState({ errorMessage: "Your project is already up-to-date" });
+	    } else {
+	      this.setState({ errorMessage: "" });
+	      this.setState({ saved: true });
+	      this._saveChangeToPage();
+	    }
+	
+	    // SavedProjectActions.submitSavedProject('basicForm', this.state);
 	    // Use modal to show quick preview + confirmation
 	  },
 	
 	
 	  render: function render() {
 	    var rows = 3;
+	    var saved = this.state.saved ? 'saved' : 'unsaved';
 	    return React.createElement(
 	      'div',
 	      { className: 'wrapper' },
@@ -35344,11 +35380,16 @@
 	      ),
 	      React.createElement(
 	        'div',
-	        { id: 'save-box' },
+	        { id: 'save-box', className: saved },
 	        React.createElement(
 	          'button',
-	          { onClick: this._handleSave },
+	          { className: saved, onClick: this._handleSave },
 	          'Save Changes'
+	        ),
+	        React.createElement(
+	          'p',
+	          null,
+	          this.state.errorMessage
 	        )
 	      )
 	    );
@@ -35480,9 +35521,81 @@
 
 /***/ },
 /* 286 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var AppDispatcher = __webpack_require__(260);
+	var ProjectApiUtil = __webpack_require__(288);
+	var SavedProjectConstants = __webpack_require__(287);
+	var ErrorActions = __webpack_require__(267);
+	
+	var SavedProjectActions = {
+	  submitSavedProject: function submitSavedProject(form, projectInfo) {
+	    ApiUtil.saveProject(form, projectInfo, this.receiveSavedProject, ErrorActions.receiveError);
+	  },
+	  deleteSavedProject: function deleteSavedProject(form, projectInfo) {
+	    ApiUtil.removeSavedProject(form, projectInfo.id, this.removeSavedProject, ErrorActions.receiveError);
+	  },
+	  receiveSavedProject: function receiveSavedProject(data) {
+	    AppDispatcher.dispatch({
+	      actionType: SavedProjectConstants.SAVED_PROJECT_RECEIVED,
+	      data: data
+	    });
+	  },
+	  removeSavedProject: function removeSavedProject(data) {
+	    AppDispatcher.dispatch({
+	      actionType: SavedProjectConstants.SAVED_PROJECT_REMOVED,
+	      data: data
+	    });
+	  }
+	};
+	
+	module.exports = SavedProjectActions;
+
+/***/ },
+/* 287 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
+	
+	module.exports = {
+	  SAVED_PROJECT_RECEIVED: 'SAVED_PROJECT_RECEIVED',
+	  SAVED_PROJECT_REMOVED: 'SAVED_PROJECT_REMOVED'
+	};
+
+/***/ },
+/* 288 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	var ProjectApiUtil = {
+	  saveProject: function saveProject(form, data, successCB, errorCB) {
+	    $.ajax({
+	      url: 'api/saved_projects',
+	      type: 'POST',
+	      data: { saved_project: data },
+	      success: function success(resp) {
+	        successCB(resp);
+	      },
+	      error: function error(resp) {
+	        errorCB(form, resp);
+	      }
+	    });
+	  },
+	  removeSavedProject: function removeSavedProject(form, id, successCB, errorCB) {
+	    $.ajax({
+	      url: 'api/saved_projects/' + id,
+	      type: 'DELETE',
+	      data: { params: id },
+	      success: success,
+	      error: error
+	    });
+	  }
+	};
+	
+	module.exports = ProjectApiUtil;
 
 /***/ }
 /******/ ]);

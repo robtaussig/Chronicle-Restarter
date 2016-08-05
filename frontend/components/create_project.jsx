@@ -80,7 +80,7 @@ const CreateProject = React.createClass({
       window.myApp.title = this.state.title;
       window.myApp.category = this.state.category;
       ErrorActions.mustBeSignedIn();
-      hashHistory.push('api/signUp');
+      hashHistory.push('signUp');
     }
   },
 
@@ -88,7 +88,7 @@ const CreateProject = React.createClass({
     window.myApp.pendingAction = 'finalizeProject';
     window.myApp.title = this.state.title;
     window.myApp.category = this.state.category;
-    hashHistory.push('api/finalizeProject');
+    hashHistory.push('finalizeProject');
   },
 
   render () {

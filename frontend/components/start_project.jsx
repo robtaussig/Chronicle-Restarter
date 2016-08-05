@@ -10,7 +10,7 @@ const StartProject = React.createClass({
           <li><h1>Change history with</h1></li>
           <li><h1>a few more clicks.</h1></li>
         </ul>
-        <Link to='api/createProject'>Start a project</Link>
+        <Link to="/createProject">Start a project</Link>
       </div>
     );
   }

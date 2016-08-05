@@ -238,6 +238,9 @@ body {
   position: relative;
   background-image: image-url("splash2.jpeg");
   background-size: cover;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  background-position: 50% 50%;
   top: -54px;
 }
 .start-project ul:first-child {
@@ -275,6 +278,10 @@ body {
   width: auto;
   position: relative;
   background-image: image-url("splash2.jpeg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  background-position: 50% 50%;
   border-bottom: 1px solid #ccc;
   background-size: cover;
   top: -54px;
@@ -624,7 +631,6 @@ button.category-button {
    right: 0;
    width: 150px;
    height:60px;
-   background: #217198;
    border: 1px solid #ccc;
    border-top-left-radius: 5px;
    border-bottom-left-radius: 5px;
@@ -633,4 +639,28 @@ button.category-button {
    text-align: center;
    color: white;
    line-height: 60px;
+}
+
+#save-box.saved {
+  background: #ccc;
+
+}
+
+#save-box.unsaved {
+  background: #217198;
+}
+
+#save-box button.saved {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+#save-box button.unsaved {
+  background: #217198;
+}
+
+#save-box p {
+  color: black;
+  line-height: 20px;
+  margin-top: 5px;
 }

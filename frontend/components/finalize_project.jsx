@@ -19,11 +19,11 @@ const FinalizeProject = React.createClass({
     return ({
       title: window.myApp.title ? window.myApp.title : "",
       category: window.myApp.category ? window.myApp.category : "",
-      shortBlurb: window.myApp.shortBlurb ? window.myApp.shortBlurb : "",
-      location: window.myApp.location ? window.myApp.location : "",
-      duration: window.myApp.duration ? window.myApp.duration : "",
-      goal: window.myApp.goal ? window.myApp.goal : "",
-      saved: window.myApp.saved ? window.myApp.saved : ""
+      blurb: "",
+      location: "",
+      duration: "",
+      goal: "",
+      saved: true
     });
   },
 
@@ -52,7 +52,7 @@ const FinalizeProject = React.createClass({
     if (SessionStore.currentUser().hasOwnProperty('id')) {
       return;
     } else {
-      hashHistory.push('/api/login');
+      hashHistory.push('/login');
     }
   },
 
