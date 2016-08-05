@@ -34784,8 +34784,8 @@
 	          { className: 'create-category-select group' },
 	          React.createElement(
 	            'li',
-	            null,
-	            'I want to start a'
+	            { className: 'first-half-text' },
+	            'I\'ll start a new'
 	          ),
 	          React.createElement(
 	            'li',
@@ -34794,8 +34794,8 @@
 	          ),
 	          React.createElement(
 	            'li',
-	            null,
-	            'project called'
+	            { className: 'second-half-text' },
+	            'project called:'
 	          )
 	        ),
 	        React.createElement(

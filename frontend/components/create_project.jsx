@@ -97,9 +97,9 @@ const CreateProject = React.createClass({
         <form className="select-era">
           <h2>In which era will your project exist?</h2>
           <ul className="create-category-select group">
-            <li>I want to start a</li>
+            <li className="first-half-text">I'll start a new</li>
             <li className ="display-cat" onClick={this._displayCats}>{this.state.displayCat}</li>
-            <li>project called</li>
+            <li className="second-half-text">project called:</li>
           </ul>
           <ul id="drop-down-ul" onMouseLeave={this._hideCats} className={`${this.state.status}`}>
             {this.state.firstHalf}

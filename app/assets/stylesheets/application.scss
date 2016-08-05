@@ -324,13 +324,16 @@ body {
 ul.inactive-drop-down > li {
   display: none;
 }
+li.first-half-text {
+  word-spacing: 1px;
+}
 
 ul.active-drop-down {
   width: 221px;
   top: 394px;
   border: 1px solid #ccc;
   font-size: 18px;
-  left: 979px;
+  left: 50%;
   background-color: mintcream;
   border-radius: 10px;
   z-index: 1;
