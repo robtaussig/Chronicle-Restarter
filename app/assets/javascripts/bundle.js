@@ -35097,7 +35097,7 @@
 	                'div',
 	                { className: 'field-wrapper' },
 	                React.createElement('input', { type: 'text', className: 'title',
-	                  onChange: this._setTitle, value: this.state.title })
+	                  onChange: this._setTitle, value: this.state.title || "" })
 	              )
 	            )
 	          ),
@@ -35115,7 +35115,7 @@
 	              React.createElement(
 	                'div',
 	                { className: 'field-wrapper' },
-	                React.createElement('textarea', { rows: '3', value: this.state.blurb, wrap: 'hard', className: 'short-blurb-field',
+	                React.createElement('textarea', { rows: '3', value: this.state.blurb || "", wrap: 'hard', className: 'short-blurb-field',
 	                  onChange: this._setBlurb })
 	              )
 	            )
@@ -35138,7 +35138,7 @@
 	                  'button',
 	                  { className: 'category-button',
 	                    onClick: this._setCategory },
-	                  this.displayCategory
+	                  this.displayCategory || ""
 	                )
 	              )
 	            )
@@ -35159,7 +35159,7 @@
 	                { className: 'field-wrapper' },
 	                React.createElement('input', { type: 'text', className: 'location',
 	                  onChange: this._setLocation,
-	                  value: this.state.location })
+	                  value: this.state.location || "" })
 	              )
 	            )
 	          ),
@@ -35180,7 +35180,7 @@
 	                React.createElement(
 	                  'div',
 	                  { className: 'num-days' },
-	                  React.createElement('input', { value: this.state.duration, className: 'duration-field', type: 'text',
+	                  React.createElement('input', { value: this.state.duration || "", className: 'duration-field', type: 'text',
 	                    onChange: this._setDuration })
 	                )
 	              )
@@ -35203,7 +35203,7 @@
 	                '$',
 	                React.createElement('input', { type: 'text', className: 'goal',
 	                  onChange: this._setGoal,
-	                  value: this.state.goal,
+	                  value: this.state.goal || "",
 	                  placeholder: '0' }),
 	                'USD'
 	              )
@@ -35309,6 +35309,7 @@
 	
 	var React = __webpack_require__(3);
 	var SavedProjectStore = __webpack_require__(281);
+	var ProjectStore = __webpack_require__(288);
 	
 	var Rewards = React.createClass({
 	  displayName: 'Rewards',
@@ -35324,7 +35325,7 @@
 	  render: function render() {
 	
 	    var _rewards = [];
-	    var _projectId = ProjectStore.currentProject().id ? ProjectStore.currentProject().id : 0;
+	    var _projectId = SavedProjectStore.currentProject().id ? SavedProjectStore.currentProject().id : 0;
 	
 	    for (var i = 0; i < this.state.rewardItems.length; i++) {
 	      _rewards.push(React.createElement(RewardItem, { projectId: _projectId,

@@ -1,5 +1,6 @@
 const React = require('react');
 const SavedProjectStore = require('../stores/saved_project_store.js');
+const ProjectStore = require('../stores/project_store.js');
 
 const Rewards = React.createClass({
 
@@ -18,8 +19,8 @@ const Rewards = React.createClass({
   render: function() {
 
     let _rewards = [];
-    let _projectId = ProjectStore.currentProject().id ?
-      ProjectStore.currentProject().id : 0;
+    let _projectId = SavedProjectStore.currentProject().id ?
+      SavedProjectStore.currentProject().id : 0;
 
     for (let i = 0; i < this.state.rewardItems.length; i++) {
       _rewards.push(<RewardItem projectId={_projectId}

@@ -110,7 +110,7 @@ const Basics = React.createClass({
                 <div className="attribute-field">Project title</div>
                 <div className="field-wrapper">
                   <input type="text" className="title"
-                    onChange={this._setTitle} value={this.state.title}/>
+                    onChange={this._setTitle} value={this.state.title || ""}/>
                 </div>
               </div>
             </li>
@@ -118,7 +118,7 @@ const Basics = React.createClass({
               <div className="grey-field">
                 <div className="attribute-field">Short blurb</div>
                 <div className="field-wrapper">
-                  <textarea rows="3" value={this.state.blurb} wrap="hard" className="short-blurb-field"
+                  <textarea rows="3" value={this.state.blurb || ""} wrap="hard" className="short-blurb-field"
                     onChange={this._setBlurb} />
                 </div>
               </div>
@@ -129,7 +129,7 @@ const Basics = React.createClass({
                 <div className="field-wrapper">
                   <button className="category-button"
                     onClick={this._setCategory}>
-                    {this.displayCategory}
+                    {this.displayCategory  || ""}
                   </button>
                 </div>
               </div>
@@ -140,7 +140,7 @@ const Basics = React.createClass({
                 <div className="field-wrapper">
                   <input type="text" className="location"
                     onChange={this._setLocation}
-                    value={this.state.location}/>
+                    value={this.state.location || ""}/>
                 </div>
               </div>
             </li>
@@ -149,7 +149,7 @@ const Basics = React.createClass({
                 <div className="attribute-field">Funding duration</div>
                 <div className="field-wrapper">
                   <div className="num-days">
-                    <input value={this.state.duration} className="duration-field" type="text"
+                    <input value={this.state.duration || ""} className="duration-field" type="text"
                       onChange={this._setDuration} />
                   </div>
                 </div>
@@ -161,7 +161,7 @@ const Basics = React.createClass({
                 <div className="field-wrapper">
                   $<input type="text" className="goal"
                     onChange={this._setGoal}
-                    value={this.state.goal}
+                    value={this.state.goal || ""}
                     placeholder="0"/>USD
                 </div>
               </div>
