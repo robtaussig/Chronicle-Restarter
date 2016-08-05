@@ -109,7 +109,7 @@ const FinalizeProject = React.createClass({
             duration, and category.</div>
         </div>
         <div className="project-create-subpage">
-          {this.currentPage}
+          {this.props.children}
         </div>
       </div>
     );

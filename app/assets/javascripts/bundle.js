@@ -57,6 +57,12 @@
 	var SetupApp = __webpack_require__(273);
 	var StartProject = __webpack_require__(274);
 	var CreateProject = __webpack_require__(275);
+	var Basics = __webpack_require__(280);
+	var Rewards = __webpack_require__(281);
+	var Story = __webpack_require__(282);
+	var AboutYou = __webpack_require__(283);
+	var Account = __webpack_require__(284);
+	var Preview = __webpack_require__(285);
 	var FinalizeProject = __webpack_require__(276);
 	
 	
@@ -68,7 +74,16 @@
 	  React.createElement(_reactRouter.Route, { path: 'userProfile', component: UserProfile }),
 	  React.createElement(_reactRouter.Route, { path: 'startProject', component: StartProject }),
 	  React.createElement(_reactRouter.Route, { path: 'createProject', component: CreateProject }),
-	  React.createElement(_reactRouter.Route, { path: 'finalizeProject', component: FinalizeProject })
+	  React.createElement(
+	    _reactRouter.Route,
+	    { path: 'finalizeProject', component: FinalizeProject },
+	    React.createElement(_reactRouter.Route, { path: 'basics', component: Basics }),
+	    React.createElement(_reactRouter.Route, { path: 'rewards', component: Rewards }),
+	    React.createElement(_reactRouter.Route, { path: 'story', component: Story }),
+	    React.createElement(_reactRouter.Route, { path: 'about_you', component: AboutYou }),
+	    React.createElement(_reactRouter.Route, { path: 'account', component: Account }),
+	    React.createElement(_reactRouter.Route, { path: 'preview', component: Preview })
+	  )
 	);
 	
 	var router = React.createElement(
@@ -34946,7 +34961,7 @@
 	      React.createElement(
 	        'div',
 	        { className: 'project-create-subpage' },
-	        this.currentPage
+	        this.props.children
 	      )
 	    );
 	  }
@@ -35032,7 +35047,10 @@
 
 	'use strict';
 	
+	var _reactRouter = __webpack_require__(1);
+	
 	var React = __webpack_require__(3);
+	
 	
 	var ProjectNavBar = React.createClass({
 	  displayName: 'ProjectNavBar',
@@ -35040,11 +35058,12 @@
 	    return { selected: '' };
 	  },
 	  componentDidMount: function componentDidMount() {
-	    this.setState({ selected: 'zero' });
+	    this.setState({ selected: 'basics' });
 	  },
 	  _handleClick: function _handleClick(e) {
 	    this.setState({ selected: e.target.id });
-	    this.props.changePage(e.target.id);
+	    _reactRouter.browserHistory.push('/finalizeProject/' + e.target.id);
+	    // this.props.changePage(e.target.id);
 	  },
 	  render: function render() {
 	    return React.createElement(
@@ -35058,7 +35077,7 @@
 	          null,
 	          React.createElement(
 	            'span',
-	            { id: 'zero', className: this.state.selected,
+	            { id: 'basics', className: this.state.selected,
 	              onClick: this._handleClick },
 	            'Basics'
 	          )
@@ -35068,7 +35087,7 @@
 	          null,
 	          React.createElement(
 	            'span',
-	            { id: 'one', className: this.state.selected,
+	            { id: 'rewards', className: this.state.selected,
 	              onClick: this._handleClick },
 	            'Rewards'
 	          )
@@ -35078,7 +35097,7 @@
 	          null,
 	          React.createElement(
 	            'span',
-	            { id: 'two', className: this.state.selected,
+	            { id: 'story', className: this.state.selected,
 	              onClick: this._handleClick },
 	            'Story'
 	          )
@@ -35088,7 +35107,7 @@
 	          null,
 	          React.createElement(
 	            'span',
-	            { id: 'three', className: this.state.selected,
+	            { id: 'about_you', className: this.state.selected,
 	              onClick: this._handleClick },
 	            'About You'
 	          )
@@ -35098,7 +35117,7 @@
 	          { className: 'act-li' },
 	          React.createElement(
 	            'span',
-	            { id: 'four', className: 'act ' + this.state.selected,
+	            { id: 'account', className: 'act ' + this.state.selected,
 	              onClick: this._handleClick },
 	            'Account'
 	          )
@@ -35108,7 +35127,7 @@
 	          { className: 'prev-li' },
 	          React.createElement(
 	            'span',
-	            { id: 'five', className: 'prev ' + this.state.selected,
+	            { id: 'preview', className: 'prev ' + this.state.selected,
 	              onClick: this._handleClick },
 	            'Preview'
 	          )
@@ -35118,7 +35137,7 @@
 	          { className: 'submit-li' },
 	          React.createElement(
 	            'span',
-	            { id: 'six', className: 'submit-span',
+	            { id: 'submit', className: 'submit-span',
 	              onClick: this._handleClick },
 	            'Submit for review'
 	          )

@@ -7,6 +7,12 @@ const UserProfile = require('./components/user_profile.jsx');
 const SetupApp = require('./setup_app.js');
 const StartProject = require('./components/start_project.jsx');
 const CreateProject = require('./components/create_project.jsx');
+const Basics = require('./components/basics.jsx');
+const Rewards = require('./components/rewards.jsx');
+const Story = require('./components/story.jsx');
+const AboutYou = require('./components/about_you.jsx');
+const Account = require('./components/account.jsx');
+const Preview = require('./components/preview.jsx');
 const FinalizeProject = require('./components/finalize_project.jsx');
 import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 
@@ -17,7 +23,14 @@ const routes = (
     <Route path="userProfile" component={UserProfile} />
     <Route path="startProject" component={StartProject} />
     <Route path="createProject" component={CreateProject} />
-    <Route path="finalizeProject" component={FinalizeProject} />
+    <Route path="finalizeProject" component={FinalizeProject} >
+      <Route path="basics" component={Basics} />
+      <Route path="rewards" component={Rewards} />
+      <Route path="story" component={Story} />
+      <Route path="about_you" component={AboutYou} />
+      <Route path="account" component={Account} />
+      <Route path="preview" component={Preview} />
+    </Route>
 
   </Route>
 );
