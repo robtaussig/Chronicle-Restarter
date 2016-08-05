@@ -34844,13 +34844,12 @@
 	      location: window.myApp.location ? window.myApp.location : "",
 	      duration: window.myApp.duration ? window.myApp.duration : "",
 	      goal: window.myApp.goal ? window.myApp.goal : "",
-	      saved: window.myApp.saved ? window.myApp.saved : "",
-	      currentPage: 0
+	      saved: window.myApp.saved ? window.myApp.saved : ""
 	    };
 	  },
 	  componentDidMount: function componentDidMount() {
 	    this.pages = [React.createElement(Basics, { data: this.state, onSave: this._saveChanges }), React.createElement(Rewards, null), React.createElement(Story, null), React.createElement(AboutYou, null), React.createElement(Account, null), React.createElement(Preview, null)];
-	    this.currentPage = this.pages[this.state.currentPage];
+	    this.currentPage = this.pages[0];
 	    this.forceUpdate();
 	    // ProjectStore.addListener(this._onChange);
 	    // ErrorStore.addListener(this._handleError);
@@ -34882,8 +34881,7 @@
 	  },
 	  _changePage: function _changePage(pageNum) {
 	    var num = this._parseNum(pageNum);
-	    this.setState({ currentPage: num });
-	    this.currentPage = this.pages[this.state.currentPage];
+	    this.currentPage = this.pages[num];
 	    this.forceUpdate();
 	  },
 	  _saveChanges: function _saveChanges(savedData) {

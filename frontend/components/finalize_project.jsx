@@ -20,8 +20,7 @@ const FinalizeProject = React.createClass({
       location: window.myApp.location ? window.myApp.location : "",
       duration: window.myApp.duration ? window.myApp.duration : "",
       goal: window.myApp.goal ? window.myApp.goal : "",
-      saved: window.myApp.saved ? window.myApp.saved : "",
-      currentPage: 0
+      saved: window.myApp.saved ? window.myApp.saved : ""
     });
   },
 
@@ -34,7 +33,7 @@ const FinalizeProject = React.createClass({
       <Account />,
       <Preview />,
     ];
-    this.currentPage = this.pages[this.state.currentPage];
+    this.currentPage = this.pages[0];
     this.forceUpdate();
     // ProjectStore.addListener(this._onChange);
     // ErrorStore.addListener(this._handleError);
@@ -71,8 +70,7 @@ const FinalizeProject = React.createClass({
 
   _changePage (pageNum) {
     let num = this._parseNum(pageNum);
-    this.setState({currentPage: num});
-    this.currentPage = this.pages[this.state.currentPage];
+    this.currentPage = this.pages[num];
     this.forceUpdate();
   },
 
