@@ -74,25 +74,25 @@ const Basics = React.createClass({
         <div className="project-basic-form">
           <ul>
             <li className="project-image">
-              <h3>Project image</h3>
               <div className="grey-field">
+                <div className="attribute-field">Project image</div>
                 <div className="field-wrapper">
-                  <p>Choose an image from your computer</p>
+                  <button>Choose an image from your computer</button>
                 </div>
               </div>
             </li>
             <li className="project-title">
-              <h3>Project title</h3>
               <div className="grey-field">
+                <div className="attribute-field">Project title</div>
                 <div className="field-wrapper">
                   <input type="text" className="title"
                     onChange={this._setTitle} placeholder={this.state.title}/>
                 </div>
               </div>
             </li>
-            <li className="project-shortBlurb">
-              <h3>Short blurb</h3>
+            <li className="project-short-blurb">
               <div className="grey-field">
+                <div className="attribute-field">Short blurb</div>
                 <div className="field-wrapper">
                   <textarea rows="3" wrap="hard" className="short-blurb-field"
                     onChange={this._setBlurb} />
@@ -100,8 +100,8 @@ const Basics = React.createClass({
               </div>
             </li>
             <li className="project-category">
-              <h3>Category</h3>
               <div className="grey-field">
+                <div className="attribute-field">Category</div>
                 <div className="field-wrapper">
                   <button className="category-button"
                     onClick={this._setCategory}>{this.state.category}</button>
@@ -109,8 +109,8 @@ const Basics = React.createClass({
               </div>
             </li>
             <li className="project-location">
-              <h3>Project location</h3>
               <div className="grey-field">
+                <div className="attribute-field">Project location</div>
                 <div className="field-wrapper">
                   <input type="text" className="location"
                     onChange={this._setLocation}
@@ -119,8 +119,8 @@ const Basics = React.createClass({
               </div>
             </li>
             <li className="project-duration">
-              <h3>Funding duration</h3>
               <div className="grey-field">
+                <div className="attribute-field">Funding duration</div>
                 <div className="field-wrapper">
                   <div className="num-days">
                     <ul>
@@ -149,8 +149,8 @@ const Basics = React.createClass({
               </div>
             </li>
             <li className="project-goal">
-              <h3>Funding goal</h3>
               <div className="grey-field">
+                <div className="attribute-field">Funding goal</div>
                 <div className="field-wrapper">
                   <input type="text" className="goal"
                     onChange={this._setGoal}
@@ -160,7 +160,8 @@ const Basics = React.createClass({
             </li>
           </ul>
         </div>
-        <div>
+        <div id="save-box">
+          <button>Save</button>
         </div>
       </div>
     );

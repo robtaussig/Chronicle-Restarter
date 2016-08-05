@@ -35166,18 +35166,18 @@
 	            "li",
 	            { className: "project-image" },
 	            React.createElement(
-	              "h3",
-	              null,
-	              "Project image"
-	            ),
-	            React.createElement(
 	              "div",
 	              { className: "grey-field" },
 	              React.createElement(
 	                "div",
+	                { className: "attribute-field" },
+	                "Project image"
+	              ),
+	              React.createElement(
+	                "div",
 	                { className: "field-wrapper" },
 	                React.createElement(
-	                  "p",
+	                  "button",
 	                  null,
 	                  "Choose an image from your computer"
 	                )
@@ -35188,13 +35188,13 @@
 	            "li",
 	            { className: "project-title" },
 	            React.createElement(
-	              "h3",
-	              null,
-	              "Project title"
-	            ),
-	            React.createElement(
 	              "div",
 	              { className: "grey-field" },
+	              React.createElement(
+	                "div",
+	                { className: "attribute-field" },
+	                "Project title"
+	              ),
 	              React.createElement(
 	                "div",
 	                { className: "field-wrapper" },
@@ -35205,15 +35205,15 @@
 	          ),
 	          React.createElement(
 	            "li",
-	            { className: "project-shortBlurb" },
-	            React.createElement(
-	              "h3",
-	              null,
-	              "Short blurb"
-	            ),
+	            { className: "project-short-blurb" },
 	            React.createElement(
 	              "div",
 	              { className: "grey-field" },
+	              React.createElement(
+	                "div",
+	                { className: "attribute-field" },
+	                "Short blurb"
+	              ),
 	              React.createElement(
 	                "div",
 	                { className: "field-wrapper" },
@@ -35226,13 +35226,13 @@
 	            "li",
 	            { className: "project-category" },
 	            React.createElement(
-	              "h3",
-	              null,
-	              "Category"
-	            ),
-	            React.createElement(
 	              "div",
 	              { className: "grey-field" },
+	              React.createElement(
+	                "div",
+	                { className: "attribute-field" },
+	                "Category"
+	              ),
 	              React.createElement(
 	                "div",
 	                { className: "field-wrapper" },
@@ -35249,13 +35249,13 @@
 	            "li",
 	            { className: "project-location" },
 	            React.createElement(
-	              "h3",
-	              null,
-	              "Project location"
-	            ),
-	            React.createElement(
 	              "div",
 	              { className: "grey-field" },
+	              React.createElement(
+	                "div",
+	                { className: "attribute-field" },
+	                "Project location"
+	              ),
 	              React.createElement(
 	                "div",
 	                { className: "field-wrapper" },
@@ -35269,13 +35269,13 @@
 	            "li",
 	            { className: "project-duration" },
 	            React.createElement(
-	              "h3",
-	              null,
-	              "Funding duration"
-	            ),
-	            React.createElement(
 	              "div",
 	              { className: "grey-field" },
+	              React.createElement(
+	                "div",
+	                { className: "attribute-field" },
+	                "Funding duration"
+	              ),
 	              React.createElement(
 	                "div",
 	                { className: "field-wrapper" },
@@ -35329,13 +35329,13 @@
 	            "li",
 	            { className: "project-goal" },
 	            React.createElement(
-	              "h3",
-	              null,
-	              "Funding goal"
-	            ),
-	            React.createElement(
 	              "div",
 	              { className: "grey-field" },
+	              React.createElement(
+	                "div",
+	                { className: "attribute-field" },
+	                "Funding goal"
+	              ),
 	              React.createElement(
 	                "div",
 	                { className: "field-wrapper" },
@@ -35347,7 +35347,15 @@
 	          )
 	        )
 	      ),
-	      React.createElement("div", null)
+	      React.createElement(
+	        "div",
+	        { id: "save-box" },
+	        React.createElement(
+	          "button",
+	          null,
+	          "Save"
+	        )
+	      )
 	    );
 	  }
 	

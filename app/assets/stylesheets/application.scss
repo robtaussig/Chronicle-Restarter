@@ -557,10 +557,63 @@ html,
    padding:10px;
    padding-bottom:60px;   /* Height of the footer */
 }
-.footer {
-   position:absolute;
-   bottom:0;
-   width:100%;
+
+div.attribute-field  {
+  float: left;
+  width: auto;
+  margin-left: 25px;
+  margin-top: 25px;
+  font-weight: 700;
+}
+
+div.grey-field {
+  height: 200px;
+  width: 100%;
+  position: relative;
+}
+
+div.field-wrapper {
+  float: right;
+  width: 700px;
+  height: 200px;
+}
+
+input.title {
+  border: 1px solid black;
+  margin-top: 25px;
+  margin-right: 25px;
+  width: 100%;
+  height: 45px;
+  line-height: 45px;
+  font-size: 24px;
+  border-radius: 5px;
+}
+
+textarea.short-blurb-field {
+  border: 1px solid black;
+  margin-top: 25px;
+  margin-right: 25px;
+  width: 100%;
+  height: 75px;
+  line-height: 25px;
+  font-size: 20px;
+  border-radius: 5px;
+  resize: none;
+}
+
+#save-box {
+   position: fixed;
+   top: 50%;
+   right: 0;
+   width: 150px;
    height:60px;   /* Height of the footer */
-   background:#6cf;
+   background: #217198;
+   border: 1px solid #ccc;
+   border-top-left-radius: 5px;
+   border-bottom-left-radius: 5px;
+   font-size: 20px;
+   font-weight: 700;
+   text-align: center;
+   color: white;
+   line-height: 60px;
 }
