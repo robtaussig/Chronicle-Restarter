@@ -73,7 +73,7 @@
 	
 	var router = React.createElement(
 	  _reactRouter.Router,
-	  { history: _reactRouter.hashHistory },
+	  { history: _reactRouter.browserHistory },
 	  routes
 	);
 	
@@ -27272,9 +27272,9 @@
 	  },
 	  redirectIfLoggedIn: function redirectIfLoggedIn() {
 	    if (typeof window.myApp.pendingAction !== "undefined" && this.state.logged_in) {
-	      _reactRouter.hashHistory.push('' + window.myApp.pendingAction);
+	      _reactRouter.browserHistory.push('' + window.myApp.pendingAction);
 	    } else if (this.state.logged_in) {
-	      _reactRouter.hashHistory.push('/');
+	      _reactRouter.browserHistory.push('/');
 	    }
 	  },
 	  _handleError: function _handleError() {
@@ -34478,9 +34478,9 @@
 	  },
 	  redirectIfLoggedIn: function redirectIfLoggedIn() {
 	    if (typeof window.myApp.pendingAction !== "undefined" && this.state.logged_in) {
-	      _reactRouter.hashHistory.push('' + window.myApp.pendingAction);
+	      _reactRouter.browserHistory.push('' + window.myApp.pendingAction);
 	    } else if (this.state.logged_in) {
-	      _reactRouter.hashHistory.push('/');
+	      _reactRouter.browserHistory.push('/');
 	    }
 	  },
 	  componentWillUnmount: function componentWillUnmount() {
@@ -34774,14 +34774,14 @@
 	      window.myApp.title = this.state.title;
 	      window.myApp.category = this.state.category;
 	      ErrorActions.mustBeSignedIn();
-	      _reactRouter.hashHistory.push('signUp');
+	      _reactRouter.browserHistory.push('signUp');
 	    }
 	  },
 	  _advanceToProjectCreation: function _advanceToProjectCreation() {
 	    window.myApp.pendingAction = 'finalizeProject';
 	    window.myApp.title = this.state.title;
 	    window.myApp.category = this.state.category;
-	    _reactRouter.hashHistory.push('finalizeProject');
+	    _reactRouter.browserHistory.push('finalizeProject');
 	  },
 	  render: function render() {
 	    return React.createElement(
@@ -34884,7 +34884,7 @@
 	    if (SessionStore.currentUser().hasOwnProperty('id')) {
 	      return;
 	    } else {
-	      _reactRouter.hashHistory.push('/login');
+	      _reactRouter.browserHistory.push('/login');
 	    }
 	  },
 	  _onChange: function _onChange() {},

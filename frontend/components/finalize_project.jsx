@@ -10,7 +10,7 @@ const AboutYou = require('./about_you.jsx');
 const Account = require('./account.jsx');
 const Preview = require('./preview.jsx');
 const SessionStore = require('../stores/session_store.js');
-import { hashHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 
 
 const FinalizeProject = React.createClass({
@@ -52,7 +52,7 @@ const FinalizeProject = React.createClass({
     if (SessionStore.currentUser().hasOwnProperty('id')) {
       return;
     } else {
-      hashHistory.push('/login');
+      browserHistory.push('/login');
     }
   },
 

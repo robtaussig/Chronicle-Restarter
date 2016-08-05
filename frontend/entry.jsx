@@ -8,7 +8,7 @@ const SetupApp = require('./setup_app.js');
 const StartProject = require('./components/start_project.jsx');
 const CreateProject = require('./components/create_project.jsx');
 const FinalizeProject = require('./components/finalize_project.jsx');
-import { Router, Route, hashHistory, IndexRoute } from 'react-router';
+import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 
 const routes = (
   <Route path="/" component={App}>
@@ -23,7 +23,7 @@ const routes = (
 );
 
 const router = (
-  <Router history={hashHistory}>
+  <Router history={browserHistory}>
     {routes}
   </Router>
 );

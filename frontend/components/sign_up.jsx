@@ -4,7 +4,7 @@ const SessionActions = require('../actions/session_actions.js');
 const Link = require('react-router').Link;
 const ErrorActions = require('../actions/error_actions.js');
 const ErrorStore = require('../stores/error_store.js');
-import { hashHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 
 const SignUp = React.createClass({
 
@@ -33,9 +33,9 @@ const SignUp = React.createClass({
 
   redirectIfLoggedIn () {
     if (typeof window.myApp.pendingAction !== "undefined" && this.state.logged_in) {
-      hashHistory.push(`${window.myApp.pendingAction}`);
+      browserHistory.push(`${window.myApp.pendingAction}`);
     } else if (this.state.logged_in) {
-      hashHistory.push('/');
+      browserHistory.push('/');
     }
   },
 

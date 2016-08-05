@@ -1,5 +1,5 @@
 const React = require('react');
-import { hashHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 const ErrorActions = require('../actions/error_actions.js');
 
 const CreateProject = React.createClass({
@@ -80,7 +80,7 @@ const CreateProject = React.createClass({
       window.myApp.title = this.state.title;
       window.myApp.category = this.state.category;
       ErrorActions.mustBeSignedIn();
-      hashHistory.push('signUp');
+      browserHistory.push('signUp');
     }
   },
 
@@ -88,7 +88,7 @@ const CreateProject = React.createClass({
     window.myApp.pendingAction = 'finalizeProject';
     window.myApp.title = this.state.title;
     window.myApp.category = this.state.category;
-    hashHistory.push('finalizeProject');
+    browserHistory.push('finalizeProject');
   },
 
   render () {
