@@ -59,11 +59,11 @@
 	var CreateProject = __webpack_require__(275);
 	var Basics = __webpack_require__(280);
 	var Rewards = __webpack_require__(282);
-	var Story = __webpack_require__(283);
-	var AboutYou = __webpack_require__(284);
-	var Account = __webpack_require__(285);
-	var Preview = __webpack_require__(286);
-	var FinalizeProject = __webpack_require__(287);
+	var Story = __webpack_require__(285);
+	var AboutYou = __webpack_require__(286);
+	var Account = __webpack_require__(287);
+	var Preview = __webpack_require__(288);
+	var FinalizeProject = __webpack_require__(289);
 	
 	
 	var routes = React.createElement(
@@ -34711,6 +34711,7 @@
 	var ErrorActions = __webpack_require__(267);
 	var SavedProjectActions = __webpack_require__(276);
 	var ProjectCategories = __webpack_require__(279);
+	var SessionStore = __webpack_require__(241);
 	
 	var CreateProject = React.createClass({
 	  displayName: 'CreateProject',
@@ -34782,7 +34783,7 @@
 	    this.setState({ title: e.currentTarget.value });
 	  },
 	  _handleSubmit: function _handleSubmit() {
-	    var userId = window.myApp.id;
+	    var userId = SessionStore.currentUser().id;
 	    if (userId > 0 || window.myApp.loggedIn) {
 	      this._advanceToProjectCreation(userId);
 	    } else {
@@ -35309,7 +35310,7 @@
 	
 	var React = __webpack_require__(3);
 	var SavedProjectStore = __webpack_require__(281);
-	var ProjectStore = __webpack_require__(288);
+	var ProjectStore = __webpack_require__(283);
 	
 	var Rewards = React.createClass({
 	  displayName: 'Rewards',
@@ -35354,6 +35355,64 @@
 
 	'use strict';
 	
+	var Store = __webpack_require__(242).Store;
+	var AppDispatcher = __webpack_require__(260);
+	var ProjectConstants = __webpack_require__(284);
+	var ProjectStore = new Store(AppDispatcher);
+	
+	var _currentUser = {};
+	
+	function _logIn(user) {
+	  _currentUser = user;
+	  ProjectStore.__emitChange();
+	}
+	
+	function _logOut() {
+	  _currentUser = {};
+	  ProjectStore.__emitChange();
+	}
+	
+	ProjectStore.currentUser = function () {
+	  return _currentUser;
+	};
+	
+	ProjectStore.isUserLoggedIn = function (id) {
+	  return _currentUser.id === id;
+	};
+	
+	ProjectStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case ProjectConstants.USER_RECEIVED:
+	      _logIn(payload.user);
+	      break;
+	    case ProjectConstants.USER_REMOVED:
+	      _logOut();
+	      break;
+	    case ProjectConstants.SESSION_STOPPED:
+	      _logOut();
+	      break;
+	  }
+	};
+	
+	module.exports = ProjectStore;
+
+/***/ },
+/* 284 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	module.exports = {
+	  PROJECT_RECEIVED: 'PROJECT_RECEIVED',
+	  PROJECT_REMOVED: 'PROJECT_REMOVED'
+	};
+
+/***/ },
+/* 285 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
 	var React = __webpack_require__(3);
 	
 	var Story = React.createClass({
@@ -35373,7 +35432,7 @@
 	module.exports = Story;
 
 /***/ },
-/* 284 */
+/* 286 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35397,7 +35456,7 @@
 	module.exports = AboutYou;
 
 /***/ },
-/* 285 */
+/* 287 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35421,7 +35480,7 @@
 	module.exports = Account;
 
 /***/ },
-/* 286 */
+/* 288 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35445,7 +35504,7 @@
 	module.exports = Preview;
 
 /***/ },
-/* 287 */
+/* 289 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35453,16 +35512,16 @@
 	var _reactRouter = __webpack_require__(1);
 	
 	var React = __webpack_require__(3);
-	var ProjectStore = __webpack_require__(288);
+	var ProjectStore = __webpack_require__(283);
 	var ErrorActions = __webpack_require__(267);
 	var ErrorStore = __webpack_require__(268);
 	var ProjectNavBar = __webpack_require__(290);
 	var Basics = __webpack_require__(280);
 	var Rewards = __webpack_require__(282);
-	var Story = __webpack_require__(283);
-	var AboutYou = __webpack_require__(284);
-	var Account = __webpack_require__(285);
-	var Preview = __webpack_require__(286);
+	var Story = __webpack_require__(285);
+	var AboutYou = __webpack_require__(286);
+	var Account = __webpack_require__(287);
+	var Preview = __webpack_require__(288);
 	var SessionStore = __webpack_require__(241);
 	
 	
@@ -35541,64 +35600,6 @@
 
 
 	*/
-
-/***/ },
-/* 288 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var Store = __webpack_require__(242).Store;
-	var AppDispatcher = __webpack_require__(260);
-	var ProjectConstants = __webpack_require__(289);
-	var ProjectStore = new Store(AppDispatcher);
-	
-	var _currentUser = {};
-	
-	function _logIn(user) {
-	  _currentUser = user;
-	  ProjectStore.__emitChange();
-	}
-	
-	function _logOut() {
-	  _currentUser = {};
-	  ProjectStore.__emitChange();
-	}
-	
-	ProjectStore.currentUser = function () {
-	  return _currentUser;
-	};
-	
-	ProjectStore.isUserLoggedIn = function (id) {
-	  return _currentUser.id === id;
-	};
-	
-	ProjectStore.__onDispatch = function (payload) {
-	  switch (payload.actionType) {
-	    case ProjectConstants.USER_RECEIVED:
-	      _logIn(payload.user);
-	      break;
-	    case ProjectConstants.USER_REMOVED:
-	      _logOut();
-	      break;
-	    case ProjectConstants.SESSION_STOPPED:
-	      _logOut();
-	      break;
-	  }
-	};
-	
-	module.exports = ProjectStore;
-
-/***/ },
-/* 289 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	module.exports = {
-	  PROJECT_RECEIVED: 'PROJECT_RECEIVED',
-	  PROJECT_REMOVED: 'PROJECT_REMOVED'
-	};
 
 /***/ },
 /* 290 */

@@ -3,6 +3,7 @@ import { browserHistory } from 'react-router';
 const ErrorActions = require('../actions/error_actions.js');
 const SavedProjectActions = require('../actions/saved_project_actions.js');
 const ProjectCategories = require('../constants/project_category_ids.js');
+const SessionStore = require('../stores/session_store.js');
 
 const CreateProject = React.createClass({
 
@@ -67,7 +68,7 @@ const CreateProject = React.createClass({
   },
 
   _handleSubmit () {
-    let userId = window.myApp.id;
+    let userId = SessionStore.currentUser().id;
     if (userId > 0 || window.myApp.loggedIn) {
       this._advanceToProjectCreation(userId);
     } else {
