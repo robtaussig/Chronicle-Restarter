@@ -16,7 +16,6 @@ import { browserHistory } from 'react-router';
 const FinalizeProject = React.createClass({
 
   componentDidMount () {
-
     this.sessionToken = SessionStore.addListener(this._handleLogin);
     this._handleLogin();
     this.forceUpdate();

@@ -130,8 +130,9 @@ body {
 
 /* error box */
 .errors {
+  position: relative;
   height: 30px;
-  width: 400px;
+  width: 800px;
   margin: 12px auto;
   color: red;
   font-size: 16px;
@@ -140,7 +141,24 @@ body {
   line-height: 30px;
 }
 
+.errors p {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.dismissError.present {
+  float: right;
+  margin-right: 10px;
+  color: green;
+}
+
+.dismissError.empty {
+  color: transparent;
+}
+
 .errors.empty {
+  color: transparent;
 }
 
 .errors.present {
@@ -442,7 +460,7 @@ button.submit-button {
 .project-nav-bar {
   position: absolute;
   left: 50%;
-  top: 25px;
+  top: 60px;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
   border-left: 1px solid #ccc;

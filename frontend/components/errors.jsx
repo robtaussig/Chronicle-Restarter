@@ -17,12 +17,17 @@ const Errors  = React.createClass({
     ErrorStore.addListener(this._onChange);
   },
 
+  _dismissError () {
+    ErrorActions.clearErrors();
+  },
+
   render () {
     let className = (this.state.error_message === "" ||
       ErrorStore.currentError().length === 0) ? 'empty' : 'present';
     return (
-      <div className={`errors ${className}`}>
-        {this.state.error_message}
+      <div id='error' className={`errors ${className}`}>
+        <p>{this.state.error_message}</p>
+        <button className={`dismissError ${className}`} onClick={this._dismissError}>Dismiss</button>
       </div>
     );
   }

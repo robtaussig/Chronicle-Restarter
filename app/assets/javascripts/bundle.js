@@ -34373,10 +34373,11 @@
 	      message: "Your password doesn't match"
 	    });
 	  },
-	  mustBeSignedIn: function mustBeSignedIn() {
+	  mustBeSignedIn: function mustBeSignedIn(pendingAction) {
 	    AppDispatcher.dispatch({
 	      actionType: ErrorConstants.SIGNUP_ERROR_RECEIVED,
 	      form: 'signup',
+	      pendingAction: pendingAction,
 	      message: "Please sign up (or log in) to continue your project"
 	    });
 	  },
@@ -34412,11 +34413,15 @@
 	var Store = __webpack_require__(242).Store;
 	var AppDispatcher = __webpack_require__(260);
 	var ErrorConstants = __webpack_require__(266);
+	// const ProjectConstants = require('../constants/project_constants.js');
+	// const SavedProjectConstants = require('../constants/saved_project_constants.js');
+	// const SessionConstants = require('../constants/session_constants.js');
 	var ErrorStore = new Store(AppDispatcher);
 	
 	var _errors = [];
 	
 	ErrorStore.currentError = function () {
+	  var returnErrors = _errors;
 	  return _errors;
 	};
 	
@@ -34427,12 +34432,17 @@
 	}
 	
 	function _clearErrors() {
-	  _errors = [];
+	  if (_errors.length === 3) {
+	    _errors[0] = "";
+	    _errors[1] = "";
+	  } else {
+	    _errors = [];
+	  }
 	  ErrorStore.__emitChange();
 	}
 	
-	function _handleSignUpError(form, message) {
-	  _errors = [form, message];
+	function _handleSignUpError(form, message, pendingAction) {
+	  _errors = [form, message, pendingAction];
 	  ErrorStore.__emitChange();
 	}
 	
@@ -34442,10 +34452,11 @@
 	      _resetError(payload.form, payload.data);
 	      break;
 	    case ErrorConstants.SIGNUP_ERROR_RECEIVED:
-	      _handleSignUpError(payload.form, payload.message);
+	      _handleSignUpError(payload.form, payload.message, payload.pendingAction);
 	      break;
-	    default:
+	    case ErrorConstants.CLEAR_ERRORS:
 	      _clearErrors();
+	      break;
 	  }
 	};
 	
@@ -34464,6 +34475,7 @@
 	var SessionActions = __webpack_require__(264);
 	var Link = __webpack_require__(1).Link;
 	var ErrorActions = __webpack_require__(267);
+	var ErrorStore = __webpack_require__(268);
 	
 	
 	var LogIn = React.createClass({
@@ -34493,8 +34505,8 @@
 	    this.redirectIfLoggedIn();
 	  },
 	  redirectIfLoggedIn: function redirectIfLoggedIn() {
-	    if (typeof window.myApp.pendingAction !== "undefined" && this.state.logged_in) {
-	      _reactRouter.browserHistory.push('' + window.myApp.pendingAction);
+	    if (typeof ErrorStore.currentError()[2] !== "undefined" && this.state.logged_in) {
+	      _reactRouter.browserHistory.push('' + ErrorStore.currentError()[2]);
 	    } else if (this.state.logged_in) {
 	      _reactRouter.browserHistory.push('/');
 	    }
@@ -34606,12 +34618,24 @@
 	  componentDidMount: function componentDidMount() {
 	    ErrorStore.addListener(this._onChange);
 	  },
+	  _dismissError: function _dismissError() {
+	    ErrorActions.clearErrors();
+	  },
 	  render: function render() {
 	    var className = this.state.error_message === "" || ErrorStore.currentError().length === 0 ? 'empty' : 'present';
 	    return React.createElement(
 	      'div',
-	      { className: 'errors ' + className },
-	      this.state.error_message
+	      { id: 'error', className: 'errors ' + className },
+	      React.createElement(
+	        'p',
+	        null,
+	        this.state.error_message
+	      ),
+	      React.createElement(
+	        'button',
+	        { className: 'dismissError ' + className, onClick: this._dismissError },
+	        'Dismiss'
+	      )
 	    );
 	  }
 	});
@@ -34787,7 +34811,9 @@
 	    if (userId > 0 || window.myApp.loggedIn) {
 	      this._advanceToProjectCreation(userId);
 	    } else {
-	      ErrorActions.mustBeSignedIn();
+	      var projectInfo = { title: this.state.title, category_id: this._getCatId() };
+	      SavedProjectActions.submitSavedProject('create', projectInfo);
+	      ErrorActions.mustBeSignedIn('finalizeProject');
 	      _reactRouter.browserHistory.push('signUp');
 	    }
 	  },
@@ -34976,11 +35002,13 @@
 	var SavedProjectActions = __webpack_require__(276);
 	var SavedProjectStore = __webpack_require__(281);
 	var ProjectCategories = __webpack_require__(279);
+	var SessionStore = __webpack_require__(241);
 	
 	var Basics = React.createClass({
 	  displayName: 'Basics',
 	  getInitialState: function getInitialState() {
 	    return {
+	      author_id: SessionStore.currentUser().id,
 	      image: {},
 	      title: "",
 	      blurb: "",
@@ -35528,7 +35556,6 @@
 	var FinalizeProject = React.createClass({
 	  displayName: 'FinalizeProject',
 	  componentDidMount: function componentDidMount() {
-	
 	    this.sessionToken = SessionStore.addListener(this._handleLogin);
 	    this._handleLogin();
 	    this.forceUpdate();

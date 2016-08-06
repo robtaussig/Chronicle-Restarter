@@ -72,7 +72,9 @@ const CreateProject = React.createClass({
     if (userId > 0 || window.myApp.loggedIn) {
       this._advanceToProjectCreation(userId);
     } else {
-      ErrorActions.mustBeSignedIn();
+      let projectInfo = {title: this.state.title, category_id: this._getCatId()};
+      SavedProjectActions.submitSavedProject ('create', projectInfo);
+      ErrorActions.mustBeSignedIn('finalizeProject');
       browserHistory.push('signUp');
     }
   },

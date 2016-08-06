@@ -3,6 +3,7 @@ const SessionStore = require('../stores/session_store.js');
 const SessionActions = require('../actions/session_actions.js');
 const Link = require('react-router').Link;
 const ErrorActions = require('../actions/error_actions.js');
+const ErrorStore = require('../stores/error_store.js');
 import { browserHistory } from 'react-router';
 
 const LogIn = React.createClass({
@@ -36,8 +37,8 @@ const LogIn = React.createClass({
   },
 
   redirectIfLoggedIn () {
-    if (typeof window.myApp.pendingAction !== "undefined" && this.state.logged_in) {
-      browserHistory.push(`${window.myApp.pendingAction}`);
+    if (typeof ErrorStore.currentError()[2] !== "undefined" && this.state.logged_in) {
+      browserHistory.push(`${ErrorStore.currentError()[2]}`);
     } else if (this.state.logged_in) {
       browserHistory.push('/');
     }

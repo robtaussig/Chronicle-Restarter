@@ -2,11 +2,13 @@ const React = require('react');
 const SavedProjectActions = require('../actions/saved_project_actions.js');
 const SavedProjectStore = require ('../stores/saved_project_store.js');
 const ProjectCategories = require('../constants/project_category_ids.js');
+const SessionStore = require('../stores/session_store.js');
 
 const Basics = React.createClass({
 
   getInitialState () {
     return ({
+      author_id: SessionStore.currentUser().id,
       image: {},
       title: "",
       blurb: "",
