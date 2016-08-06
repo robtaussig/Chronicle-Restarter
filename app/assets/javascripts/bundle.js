@@ -35471,12 +35471,28 @@
 /* 285 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	var React = __webpack_require__(3);
 	
 	var RewardItem = React.createClass({
-	  displayName: 'RewardItem',
+	  displayName: "RewardItem",
+	  getInitialState: function getInitialState() {
+	    return { title: "", description: "", amount: "" };
+	  },
+	  componentDidMount: function componentDidMount() {},
+	  _setTitle: function _setTitle(event) {
+	    event.preventDefault();
+	    this.setState({ title: event.target.value });
+	  },
+	  _setDescription: function _setDescription(event) {
+	    event.preventDefault();
+	    this.setState({ description: event.target.value });
+	  },
+	  _setAmount: function _setAmount(event) {
+	    event.preventDefault();
+	    this.setState({ amount: event.target.value });
+	  },
 	  _handleDelete: function _handleDelete(event) {
 	    event.preventDefault();
 	    this.props._delete(this.props.idx);
@@ -35486,14 +35502,61 @@
 	  render: function render() {
 	
 	    return React.createElement(
-	      'div',
+	      "div",
 	      null,
-	      'RewardItem',
-	      this.props.idx,
+	      this.state.title,
+	      ":",
 	      React.createElement(
-	        'button',
+	        "div",
+	        { className: "reward-title-wrapper" },
+	        React.createElement(
+	          "div",
+	          null,
+	          "Title"
+	        ),
+	        React.createElement(
+	          "div",
+	          { className: "reward-title-field" },
+	          React.createElement("input", { type: "text", className: "reward-title-input",
+	            onChange: this._setTitle, value: this.state.title || "" })
+	        )
+	      ),
+	      React.createElement(
+	        "div",
+	        { className: "reward-amount-wrapper" },
+	        React.createElement(
+	          "div",
+	          { className: "reward-amount-field" },
+	          "Pledge amount"
+	        ),
+	        React.createElement(
+	          "div",
+	          null,
+	          "$",
+	          React.createElement("input", { type: "text", className: "reward-amount-input",
+	            onChange: this._setAmount, value: this.state.amount || "" })
+	        )
+	      ),
+	      React.createElement(
+	        "div",
+	        { className: "reward-description-wrapper" },
+	        React.createElement(
+	          "div",
+	          { className: "reward-description-field" },
+	          "Description"
+	        ),
+	        React.createElement(
+	          "div",
+	          null,
+	          React.createElement("textarea", { rows: "3", value: this.state.description || "",
+	            wrap: "hard", className: "reward-description-field",
+	            onChange: this._setDescription })
+	        )
+	      ),
+	      React.createElement(
+	        "button",
 	        { onClick: this._handleDelete },
-	        'Delete This Reward'
+	        "Delete This Reward"
 	      )
 	    );
 	  }
