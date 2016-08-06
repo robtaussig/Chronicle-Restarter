@@ -4,7 +4,10 @@ const RewardItem = React.createClass({
 
   render: function() {
     return (
-      <div />
+      <div>
+        RewardItem
+        {this.props.projectId}
+      </div>
     );
   }
 

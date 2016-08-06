@@ -35339,32 +35339,38 @@
 	var React = __webpack_require__(3);
 	var SavedProjectStore = __webpack_require__(281);
 	var ProjectStore = __webpack_require__(283);
+	var RewardItem = __webpack_require__(291);
 	
 	var Rewards = React.createClass({
 	  displayName: 'Rewards',
-	  getInitialState: function getInitialState() {
-	    return { rewardItems: 1, saved: false };
-	  },
 	  _addReward: function _addReward() {
-	    this.setState({ rewardItems: rewardItems + 1 });
+	    this.numRewards += 1;
+	    this.rewardItems.push(React.createElement(RewardItem, { projectId: this.projectId,
+	      rewardId: this.numRewards, key: this.numRewards }));
+	    this.forceUpdate();
+	  },
+	  componentDidMount: function componentDidMount() {
+	    this.projectId = SavedProjectStore.currentProject().id;
+	    this.numRewards = 1;
+	    this.rewardItems = [React.createElement(RewardItem, { projectId: this.projectId,
+	      rewardId: this.numRewards, key: this.numRewards })];
+	    this.forceUpdate();
 	  },
 	  _handleSave: function _handleSave() {},
+	  _saveReward: function _saveReward() {},
 	
 	
 	  render: function render() {
 	
-	    var _rewards = [];
-	    var _projectId = SavedProjectStore.currentProject().id ? SavedProjectStore.currentProject().id : 0;
-	
-	    for (var i = 0; i < this.state.rewardItems.length; i++) {
-	      _rewards.push(React.createElement(RewardItem, { projectId: _projectId,
-	        _toSave: this.state.saved, key: i }));
-	    }
-	
 	    return React.createElement(
 	      'div',
 	      null,
-	      _rewards,
+	      React.createElement(
+	        'button',
+	        { onClick: this._addReward },
+	        'Add Reward'
+	      ),
+	      this.rewardItems,
 	      React.createElement(
 	        'button',
 	        { onClick: this._handleSave },
@@ -35743,6 +35749,31 @@
 
 
 	*/
+
+/***/ },
+/* 291 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(3);
+	
+	var RewardItem = React.createClass({
+	  displayName: 'RewardItem',
+	
+	
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      null,
+	      'RewardItem',
+	      this.props.projectId
+	    );
+	  }
+	
+	});
+	
+	module.exports = RewardItem;
 
 /***/ }
 /******/ ]);

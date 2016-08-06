@@ -1,35 +1,39 @@
 const React = require('react');
 const SavedProjectStore = require('../stores/saved_project_store.js');
 const ProjectStore = require('../stores/project_store.js');
+const RewardItem = require('./reward_item.jsx');
 
 const Rewards = React.createClass({
 
-  getInitialState () {
-    return ({rewardItems: 1, saved: false});
+  _addReward () {
+    this.numRewards += 1;
+    this.rewardItems.push(<RewardItem projectId={this.projectId}
+      rewardId={this.numRewards} key={this.numRewards}/>);
+    this.forceUpdate();
   },
 
-  _addReward () {
-    this.setState({rewardItems: rewardItems + 1});
+  componentDidMount () {
+    this.projectId = SavedProjectStore.currentProject().id;
+    this.numRewards = 1;
+    this.rewardItems = [<RewardItem projectId={this.projectId}
+      rewardId={this.numRewards} key={this.numRewards}/>];
+    this.forceUpdate();
   },
 
   _handleSave () {
 
   },
 
+  _saveReward () {
+
+  },
+
   render: function() {
-
-    let _rewards = [];
-    let _projectId = SavedProjectStore.currentProject().id ?
-      SavedProjectStore.currentProject().id : 0;
-
-    for (let i = 0; i < this.state.rewardItems.length; i++) {
-      _rewards.push(<RewardItem projectId={_projectId}
-        _toSave={this.state.saved} key={i}/>);
-    }
 
     return (
       <div>
-        {_rewards}
+        <button onClick={this._addReward}>Add Reward</button>
+        {this.rewardItems}
         <button onClick={this._handleSave}>Save Rewards</button>
       </div>
     );
