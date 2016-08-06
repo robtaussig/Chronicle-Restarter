@@ -20,5 +20,6 @@ Rails.application.routes.draw do
     resource :session, only: [:create, :destroy]
     resources :projects
     resources :saved_projects
+    resources :rewards
   end
 end

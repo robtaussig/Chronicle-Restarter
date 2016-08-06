@@ -35370,10 +35370,29 @@
 	    this.forceUpdate();
 	  },
 	  componentDidMount: function componentDidMount() {
-	    this.uniqueKey = 0;
-	    this.rewardItems = [];
+	    this._prepopulate();
+	
 	    this.projectId = SavedProjectStore.currentProject().id;
 	    this.forceUpdate();
+	  },
+	  _prepopulate: function _prepopulate() {
+	    var _this = this;
+	
+	    if (RewardStore.currentRewards().length > 0) {
+	      this.rewardItems = RewardStore.currentRewards().map(function (reward) {
+	        return React.createElement(RewardItem, { amount: reward.amount,
+	          description: reward.description,
+	          project_id: reward.project_id,
+	          project_reward_key: reward.project_reward_key,
+	          quantity: reward.quantity,
+	          title: reward.title,
+	          key: reward.project_reward_key,
+	          _delete: _this._deleteReward });
+	      });
+	    } else {
+	      this.rewardItems = [];
+	    }
+	    this.uniqueKey = this.rewardItems.length;
 	  },
 	  _findReward: function _findReward(rewardId) {
 	    return this.rewardItems.map(function (e) {
@@ -35476,8 +35495,13 @@
 	var RewardItem = React.createClass({
 	  displayName: 'RewardItem',
 	  getInitialState: function getInitialState() {
-	    return { project_id: this.props.projectId, project_reward_key: this.props.project_reward_key, quantity: 0, title: "",
-	      description: "", amount: "" };
+	    return {
+	      project_id: this.props.projectId,
+	      project_reward_key: this.props.project_reward_key,
+	      quantity: this.props.quantity || 0,
+	      title: this.props.title || "",
+	      description: this.props.description || "",
+	      amount: this.props.amount || 0 };
 	  },
 	  componentDidMount: function componentDidMount() {
 	    this.token = RewardStore.addListener(this._onChange);

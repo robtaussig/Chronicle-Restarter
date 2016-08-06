@@ -5,9 +5,13 @@ const RewardActions = require('../actions/reward_actions.js');
 const RewardItem = React.createClass({
 
   getInitialState () {
-    return ({project_id: this.props.projectId, project_reward_key:
-      this.props.project_reward_key, quantity: 0, title: "",
-      description: "", amount: ""});
+    return ({
+      project_id: this.props.projectId,
+      project_reward_key: this.props.project_reward_key,
+      quantity: this.props.quantity || 0,
+      title: this.props.title || "",
+      description: this.props.description || "",
+      amount: this.props.amount || 0});
   },
 
   componentDidMount () {

@@ -26,7 +26,7 @@ class Api::RewardsController < ApplicationController
   end
 
   def index
-    @rewards = Api::Reward.all()
+    @rewards = Api::Reward.find_by(project_id: project_id)
     render :index
   end
 
