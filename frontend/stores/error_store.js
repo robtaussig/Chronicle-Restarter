@@ -14,6 +14,7 @@ ErrorStore.currentError = () => {
 };
 
 function _resetError (form, errorInfo) {
+  debugger
   let message = errorInfo.responseJSON[0];
   _errors = [form, message];
   ErrorStore.__emitChange();

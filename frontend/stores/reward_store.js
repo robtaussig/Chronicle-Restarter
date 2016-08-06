@@ -2,6 +2,7 @@ const Store = require('flux/utils').Store;
 const AppDispatcher = require('../dispatcher/dispatcher.js');
 const RewardConstants = require('../constants/reward_constants.js');
 const RewardStore = new Store(AppDispatcher);
+const ErrorActions = require('../actions/error_actions.js');
 
 let _rewards = [];
 
@@ -59,7 +60,7 @@ RewardStore.saveRewards = () => {
         console.log('success!');
       },
       error: (resp) => {
-        console.log('failure');
+        ErrorActions.receiveError('rewards',resp);
       }
     });
   });

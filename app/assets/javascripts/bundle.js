@@ -34429,6 +34429,7 @@
 	};
 	
 	function _resetError(form, errorInfo) {
+	  debugger;
 	  var message = errorInfo.responseJSON[0];
 	  _errors = [form, message];
 	  ErrorStore.__emitChange();
@@ -35621,9 +35622,9 @@
 	            'li',
 	            null,
 	            React.createElement(
-	              'button',
+	              'div',
 	              { className: 'reward-save-button', onClick: this._handleSave },
-	              'Save This Reward'
+	              React.createElement('img', { id: 'check-mark', src: window.check })
 	            )
 	          )
 	        ),
@@ -35755,8 +35756,8 @@
 	var AboutYou = __webpack_require__(287);
 	var Account = __webpack_require__(288);
 	var Preview = __webpack_require__(289);
+	var ProjectMessages = __webpack_require__(296);
 	var SessionStore = __webpack_require__(241);
-	
 	
 	var FinalizeProject = React.createClass({
 	  displayName: 'FinalizeProject',
@@ -35764,6 +35765,8 @@
 	    this.sessionToken = SessionStore.addListener(this._handleLogin);
 	    this._handleLogin();
 	    this.forceUpdate();
+	    this.header = "Let's get started.";
+	    this.message = ProjectMessages['basics'];
 	    // ProjectStore.addListener(this._onChange);
 	    // ErrorStore.addListener(this._handleError);
 	  },
@@ -35777,9 +35780,9 @@
 	      _reactRouter.browserHistory.push('/login');
 	    }
 	  },
-	  _changePage: function _changePage(pageNum) {
-	    var num = this._parseNum(pageNum);
-	    this.currentPage = this.pages[num];
+	  _changePage: function _changePage(pageTarget) {
+	    this.message = ProjectMessages[pageTarget];
+	    this.header = "";
 	    this.forceUpdate();
 	  },
 	  _saveChanges: function _saveChanges(savedData) {
@@ -35787,7 +35790,6 @@
 	    this.setState({ saved: true });
 	  },
 	  render: function render() {
-	    var lets = "Let's";
 	    return React.createElement(
 	      'div',
 	      null,
@@ -35799,13 +35801,12 @@
 	        React.createElement(
 	          'div',
 	          { className: 'nav-bar-top-text' },
-	          lets,
-	          ' get started.'
+	          this.header
 	        ),
 	        React.createElement(
 	          'div',
 	          { className: 'nav-bar-bottom-text' },
-	          'The title of your project will impact its place in history. Pick a title, image, goal, campaign duration, and category.'
+	          this.message
 	        )
 	      ),
 	      React.createElement(
@@ -35853,6 +35854,7 @@
 	    this.setState({ selected: 'basics' });
 	  },
 	  _handleClick: function _handleClick(e) {
+	    this.props.changePage(e.target.id);
 	    this.setState({ selected: e.target.id });
 	    _reactRouter.browserHistory.push('/finalizeProject/' + e.target.id);
 	  },
@@ -35959,6 +35961,7 @@
 	var AppDispatcher = __webpack_require__(260);
 	var RewardConstants = __webpack_require__(293);
 	var RewardStore = new Store(AppDispatcher);
+	var ErrorActions = __webpack_require__(267);
 	
 	var _rewards = [];
 	
@@ -36012,7 +36015,7 @@
 	        console.log('success!');
 	      },
 	      error: function error(resp) {
-	        console.log('failure');
+	        ErrorActions.receiveError('rewards', resp);
 	      }
 	    });
 	  });
@@ -36129,6 +36132,21 @@
 	};
 	
 	module.exports = RewardApiUtil;
+
+/***/ },
+/* 296 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	module.exports = {
+	  'basics': "The title of your project will impact its place in history. Pick a title, image, goal, campaign duration, and category.",
+	  'rewards': "Add as many rewards as you will. Don't forget to save them by clicking on the checkmark before continuing.",
+	  'story': "Story",
+	  'about_you': "About You",
+	  'account': "Account",
+	  'preview': "Preview"
+	};
 
 /***/ }
 /******/ ]);

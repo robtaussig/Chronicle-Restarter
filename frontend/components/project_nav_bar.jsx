@@ -12,6 +12,7 @@ const ProjectNavBar = React.createClass({
   },
 
   _handleClick (e) {
+    this.props.changePage(e.target.id);
     this.setState({selected: e.target.id});
     browserHistory.push('/finalizeProject/' + e.target.id);
   },

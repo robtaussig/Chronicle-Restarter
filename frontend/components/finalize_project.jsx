@@ -9,7 +9,9 @@ const Story = require('./story.jsx');
 const AboutYou = require('./about_you.jsx');
 const Account = require('./account.jsx');
 const Preview = require('./preview.jsx');
+const ProjectMessages = require('../constants/project_messages.js');
 const SessionStore = require('../stores/session_store.js');
+
 import { browserHistory } from 'react-router';
 
 
@@ -19,6 +21,8 @@ const FinalizeProject = React.createClass({
     this.sessionToken = SessionStore.addListener(this._handleLogin);
     this._handleLogin();
     this.forceUpdate();
+    this.header = "Let's get started.";
+    this.message = ProjectMessages['basics'];
     // ProjectStore.addListener(this._onChange);
     // ErrorStore.addListener(this._handleError);
   },
@@ -35,9 +39,9 @@ const FinalizeProject = React.createClass({
     }
   },
 
-  _changePage (pageNum) {
-    let num = this._parseNum(pageNum);
-    this.currentPage = this.pages[num];
+  _changePage (pageTarget) {
+    this.message = ProjectMessages[pageTarget];
+    this.header = "";
     this.forceUpdate();
   },
 
@@ -47,16 +51,13 @@ const FinalizeProject = React.createClass({
   },
 
   render () {
-    let lets = "Let's";
     return (
       <div>
         <div className="nav-bar-box">
           <ProjectNavBar changePage={this._changePage} />
           <br></br>
-          <div className="nav-bar-top-text">{lets} get started.</div>
-          <div className="nav-bar-bottom-text">The title of your project will
-            impact its place in history. Pick a title, image, goal, campaign
-            duration, and category.</div>
+          <div className="nav-bar-top-text">{this.header}</div>
+          <div className="nav-bar-bottom-text">{this.message}</div>
         </div>
         <div className="project-create-subpage group">
           {this.props.children}
