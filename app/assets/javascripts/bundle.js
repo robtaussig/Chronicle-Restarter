@@ -59,11 +59,11 @@
 	var CreateProject = __webpack_require__(275);
 	var Basics = __webpack_require__(280);
 	var Rewards = __webpack_require__(282);
-	var Story = __webpack_require__(285);
-	var AboutYou = __webpack_require__(286);
-	var Account = __webpack_require__(287);
-	var Preview = __webpack_require__(288);
-	var FinalizeProject = __webpack_require__(289);
+	var Story = __webpack_require__(286);
+	var AboutYou = __webpack_require__(287);
+	var Account = __webpack_require__(288);
+	var Preview = __webpack_require__(289);
+	var FinalizeProject = __webpack_require__(290);
 	
 	
 	var routes = React.createElement(
@@ -27287,8 +27287,8 @@
 	    this.errorListener.remove();
 	  },
 	  redirectIfLoggedIn: function redirectIfLoggedIn() {
-	    if (typeof window.myApp.pendingAction !== "undefined" && this.state.logged_in) {
-	      _reactRouter.browserHistory.push('' + window.myApp.pendingAction);
+	    if (typeof ErrorStore.currentError()[2] !== "undefined" && this.state.logged_in) {
+	      _reactRouter.browserHistory.push('' + ErrorStore.currentError()[2]);
 	    } else if (this.state.logged_in) {
 	      _reactRouter.browserHistory.push('/');
 	    }
@@ -34528,6 +34528,15 @@
 	      email: this.state.email
 	    });
 	  },
+	  _loginGuest: function _loginGuest(event) {
+	    event.preventDefault();
+	    var _guest = 'guest' + Math.floor(Math.random() * 100);
+	    SessionActions.signUp(this.state.form, {
+	      username: _guest,
+	      password: 'password',
+	      email: _guest
+	    });
+	  },
 	  render: function render() {
 	    return React.createElement(
 	      'div',
@@ -34548,6 +34557,11 @@
 	          'button',
 	          { className: 'log-in-button', onClick: this._handleSubmit },
 	          'Log me in!'
+	        ),
+	        React.createElement(
+	          'button',
+	          { className: 'log-in-button', onClick: this._loginGuest },
+	          'Guest Login'
 	        )
 	      ),
 	      React.createElement(
@@ -35339,28 +35353,37 @@
 	var React = __webpack_require__(3);
 	var SavedProjectStore = __webpack_require__(281);
 	var ProjectStore = __webpack_require__(283);
-	var RewardItem = __webpack_require__(291);
+	var RewardItem = __webpack_require__(285);
 	
 	var Rewards = React.createClass({
 	  displayName: 'Rewards',
 	  _addReward: function _addReward() {
-	    this.numRewards += 1;
+	    this.uniqueKey += 1;
 	    this.rewardItems.push(React.createElement(RewardItem, { projectId: this.projectId,
-	      rewardId: this.numRewards, key: this.numRewards,
+	      key: this.uniqueKey, idx: this.uniqueKey,
 	      _delete: this._deleteReward }));
 	    this.forceUpdate();
 	  },
 	  componentDidMount: function componentDidMount() {
+	    this.uniqueKey = 1;
 	    this.projectId = SavedProjectStore.currentProject().id;
-	    this.numRewards = 1;
 	    this.rewardItems = [React.createElement(RewardItem, { projectId: this.projectId,
-	      rewardId: this.numRewards, key: this.numRewards,
+	      key: this.uniqueKey, idx: this.uniqueKey,
 	      _delete: this._deleteReward })];
 	    this.forceUpdate();
 	  },
 	  _handleSave: function _handleSave() {},
 	  _saveReward: function _saveReward() {},
-	  _deleteReward: function _deleteReward() {},
+	  _findReward: function _findReward(rewardId) {
+	    return this.rewardItems.map(function (e) {
+	      return e.props.idx;
+	    }).indexOf(rewardId);
+	  },
+	  _deleteReward: function _deleteReward(rewardId) {
+	    var pos = this._findReward(rewardId);
+	    this.rewardItems.splice(pos, 1);
+	    this.forceUpdate();
+	  },
 	
 	
 	  render: function render() {
@@ -35452,6 +35475,41 @@
 	
 	var React = __webpack_require__(3);
 	
+	var RewardItem = React.createClass({
+	  displayName: 'RewardItem',
+	  _handleDelete: function _handleDelete(event) {
+	    event.preventDefault();
+	    this.props._delete(this.props.idx);
+	  },
+	
+	
+	  render: function render() {
+	
+	    return React.createElement(
+	      'div',
+	      null,
+	      'RewardItem',
+	      this.props.idx,
+	      React.createElement(
+	        'button',
+	        { onClick: this._handleDelete },
+	        'Delete This Reward'
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = RewardItem;
+
+/***/ },
+/* 286 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(3);
+	
 	var Story = React.createClass({
 	  displayName: 'Story',
 	
@@ -35469,7 +35527,7 @@
 	module.exports = Story;
 
 /***/ },
-/* 286 */
+/* 287 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35493,7 +35551,7 @@
 	module.exports = AboutYou;
 
 /***/ },
-/* 287 */
+/* 288 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35517,7 +35575,7 @@
 	module.exports = Account;
 
 /***/ },
-/* 288 */
+/* 289 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35541,7 +35599,7 @@
 	module.exports = Preview;
 
 /***/ },
-/* 289 */
+/* 290 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35552,13 +35610,13 @@
 	var ProjectStore = __webpack_require__(283);
 	var ErrorActions = __webpack_require__(267);
 	var ErrorStore = __webpack_require__(268);
-	var ProjectNavBar = __webpack_require__(290);
+	var ProjectNavBar = __webpack_require__(291);
 	var Basics = __webpack_require__(280);
 	var Rewards = __webpack_require__(282);
-	var Story = __webpack_require__(285);
-	var AboutYou = __webpack_require__(286);
-	var Account = __webpack_require__(287);
-	var Preview = __webpack_require__(288);
+	var Story = __webpack_require__(286);
+	var AboutYou = __webpack_require__(287);
+	var Account = __webpack_require__(288);
+	var Preview = __webpack_require__(289);
 	var SessionStore = __webpack_require__(241);
 	
 	
@@ -35638,7 +35696,7 @@
 	*/
 
 /***/ },
-/* 290 */
+/* 291 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35752,31 +35810,6 @@
 
 
 	*/
-
-/***/ },
-/* 291 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var React = __webpack_require__(3);
-	
-	var RewardItem = React.createClass({
-	  displayName: 'RewardItem',
-	
-	
-	  render: function render() {
-	    return React.createElement(
-	      'div',
-	      null,
-	      'RewardItem',
-	      this.props.projectId
-	    );
-	  }
-	
-	});
-	
-	module.exports = RewardItem;
 
 /***/ }
 /******/ ]);

@@ -6,18 +6,18 @@ const RewardItem = require('./reward_item.jsx');
 const Rewards = React.createClass({
 
   _addReward () {
-    this.numRewards += 1;
+    this.uniqueKey += 1;
     this.rewardItems.push(<RewardItem projectId={this.projectId}
-      rewardId={this.numRewards} key={this.numRewards}
+      key={this.uniqueKey} idx={this.uniqueKey}
       _delete={this._deleteReward}/>);
     this.forceUpdate();
   },
 
   componentDidMount () {
+    this.uniqueKey = 1;
     this.projectId = SavedProjectStore.currentProject().id;
-    this.numRewards = 1;
     this.rewardItems = [<RewardItem projectId={this.projectId}
-      rewardId={this.numRewards} key={this.numRewards}
+      key={this.uniqueKey} idx={this.uniqueKey}
       _delete={this._deleteReward}/>];
     this.forceUpdate();
   },
@@ -30,8 +30,15 @@ const Rewards = React.createClass({
 
   },
 
-  _deleteReward () {
+  _findReward (rewardId) {
+    return this.rewardItems.map(function(e)
+      { return e.props.idx; }).indexOf(rewardId);
+  },
 
+  _deleteReward (rewardId) {
+    let pos = this._findReward(rewardId);
+    this.rewardItems.splice(pos,1);
+    this.forceUpdate();
   },
 
   render: function() {

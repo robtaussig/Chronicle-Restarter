@@ -32,8 +32,8 @@ const SignUp = React.createClass({
   },
 
   redirectIfLoggedIn () {
-    if (typeof window.myApp.pendingAction !== "undefined" && this.state.logged_in) {
-      browserHistory.push(`${window.myApp.pendingAction}`);
+    if (typeof ErrorStore.currentError()[2] !== "undefined" && this.state.logged_in) {
+      browserHistory.push(`${ErrorStore.currentError()[2]}`);
     } else if (this.state.logged_in) {
       browserHistory.push('/');
     }

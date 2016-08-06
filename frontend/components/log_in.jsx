@@ -65,6 +65,16 @@ const LogIn = React.createClass({
     });
   },
 
+  _loginGuest (event) {
+    event.preventDefault();
+    let _guest = `guest${Math.floor(Math.random()*100)}`;
+    SessionActions.signUp(this.state.form,{
+        username: _guest,
+        password: 'password',
+        email: _guest
+    });
+  },
+
   render () {
     return (
       <div className="login-form">
@@ -75,6 +85,7 @@ const LogIn = React.createClass({
           <input type="password" placeholder="Password" onChange={this._setPassword}/>
           <br></br>
           <button className="log-in-button" onClick={this._handleSubmit}>Log me in!</button>
+          <button className="log-in-button" onClick={this._loginGuest}>Guest Login</button>
         </form>
         <p>
           New to Chronicle Restarter? <Link to={'signUp'}><b>Sign Up</b></Link>
