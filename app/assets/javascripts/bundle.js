@@ -63,6 +63,7 @@
 	var AboutYou = __webpack_require__(287);
 	var Account = __webpack_require__(288);
 	var Preview = __webpack_require__(289);
+	var RewardStore = __webpack_require__(292);
 	var FinalizeProject = __webpack_require__(290);
 	
 	
@@ -92,6 +93,8 @@
 	  { history: _reactRouter.browserHistory },
 	  routes
 	);
+	
+	window.RewardStore = RewardStore;
 	
 	document.addEventListener('DOMContentLoaded', function () {
 	  SetupApp();
@@ -35353,27 +35356,25 @@
 	var React = __webpack_require__(3);
 	var SavedProjectStore = __webpack_require__(281);
 	var ProjectStore = __webpack_require__(283);
+	var RewardStore = __webpack_require__(292);
 	var RewardItem = __webpack_require__(285);
+	var RewardActions = __webpack_require__(294);
 	
 	var Rewards = React.createClass({
 	  displayName: 'Rewards',
 	  _addReward: function _addReward() {
 	    this.uniqueKey += 1;
 	    this.rewardItems.push(React.createElement(RewardItem, { projectId: this.projectId,
-	      key: this.uniqueKey, idx: this.uniqueKey,
-	      _delete: this._deleteReward }));
+	      key: this.uniqueKey, project_reward_key: this.uniqueKey,
+	      idx: this.uniqueKey, _delete: this._deleteReward }));
 	    this.forceUpdate();
 	  },
 	  componentDidMount: function componentDidMount() {
-	    this.uniqueKey = 1;
+	    this.uniqueKey = 0;
+	    this.rewardItems = [];
 	    this.projectId = SavedProjectStore.currentProject().id;
-	    this.rewardItems = [React.createElement(RewardItem, { projectId: this.projectId,
-	      key: this.uniqueKey, idx: this.uniqueKey,
-	      _delete: this._deleteReward })];
 	    this.forceUpdate();
 	  },
-	  _handleSave: function _handleSave() {},
-	  _saveReward: function _saveReward() {},
 	  _findReward: function _findReward(rewardId) {
 	    return this.rewardItems.map(function (e) {
 	      return e.props.idx;
@@ -35396,12 +35397,7 @@
 	        { onClick: this._addReward },
 	        'Add Reward'
 	      ),
-	      this.rewardItems,
-	      React.createElement(
-	        'button',
-	        { onClick: this._handleSave },
-	        'Save Rewards'
-	      )
+	      this.rewardItems
 	    );
 	  }
 	
@@ -35471,16 +35467,25 @@
 /* 285 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	var React = __webpack_require__(3);
+	var RewardStore = __webpack_require__(292);
+	var RewardActions = __webpack_require__(294);
 	
 	var RewardItem = React.createClass({
-	  displayName: "RewardItem",
+	  displayName: 'RewardItem',
 	  getInitialState: function getInitialState() {
-	    return { title: "", description: "", amount: "" };
+	    return { project_id: this.props.projectId, project_reward_key: this.props.project_reward_key, quantity: 0, title: "",
+	      description: "", amount: "" };
 	  },
-	  componentDidMount: function componentDidMount() {},
+	  componentDidMount: function componentDidMount() {
+	    this.token = RewardStore.addListener(this._onChange);
+	  },
+	  componentWillUnmount: function componentWillUnmount() {
+	    this.token.remove();
+	  },
+	  _onChange: function _onChange() {},
 	  _setTitle: function _setTitle(event) {
 	    event.preventDefault();
 	    this.setState({ title: event.target.value });
@@ -35489,6 +35494,10 @@
 	    event.preventDefault();
 	    this.setState({ description: event.target.value });
 	  },
+	  _setQuantity: function _setQuantity(event) {
+	    event.preventDefault();
+	    this.setState({ quantity: event.target.value });
+	  },
 	  _setAmount: function _setAmount(event) {
 	    event.preventDefault();
 	    this.setState({ amount: event.target.value });
@@ -35496,67 +35505,92 @@
 	  _handleDelete: function _handleDelete(event) {
 	    event.preventDefault();
 	    this.props._delete(this.props.idx);
+	    RewardActions.deleteReward(this.state);
+	  },
+	  _handleSave: function _handleSave(event) {
+	    event.preventDefault();
+	    RewardActions.createReward(this.state);
 	  },
 	
 	
 	  render: function render() {
 	
 	    return React.createElement(
-	      "div",
+	      'div',
 	      null,
 	      this.state.title,
-	      ":",
+	      ':',
 	      React.createElement(
-	        "div",
-	        { className: "reward-title-wrapper" },
+	        'div',
+	        { className: 'reward-title-wrapper' },
 	        React.createElement(
-	          "div",
+	          'div',
 	          null,
-	          "Title"
+	          'Title'
 	        ),
 	        React.createElement(
-	          "div",
-	          { className: "reward-title-field" },
-	          React.createElement("input", { type: "text", className: "reward-title-input",
+	          'div',
+	          { className: 'reward-title-field' },
+	          React.createElement('input', { type: 'text', className: 'reward-title-input',
 	            onChange: this._setTitle, value: this.state.title || "" })
 	        )
 	      ),
 	      React.createElement(
-	        "div",
-	        { className: "reward-amount-wrapper" },
+	        'div',
+	        { className: 'reward-amount-wrapper' },
 	        React.createElement(
-	          "div",
-	          { className: "reward-amount-field" },
-	          "Pledge amount"
+	          'div',
+	          { className: 'reward-amount-field' },
+	          'Pledge amount'
 	        ),
 	        React.createElement(
-	          "div",
+	          'div',
 	          null,
-	          "$",
-	          React.createElement("input", { type: "text", className: "reward-amount-input",
+	          '$',
+	          React.createElement('input', { type: 'text', className: 'reward-amount-input',
 	            onChange: this._setAmount, value: this.state.amount || "" })
 	        )
 	      ),
 	      React.createElement(
-	        "div",
-	        { className: "reward-description-wrapper" },
+	        'div',
+	        { className: 'reward-description-wrapper' },
 	        React.createElement(
-	          "div",
-	          { className: "reward-description-field" },
-	          "Description"
+	          'div',
+	          { className: 'reward-description-field' },
+	          'Description'
 	        ),
 	        React.createElement(
-	          "div",
+	          'div',
 	          null,
-	          React.createElement("textarea", { rows: "3", value: this.state.description || "",
-	            wrap: "hard", className: "reward-description-field",
+	          React.createElement('textarea', { rows: '3', value: this.state.description || "",
+	            wrap: 'hard', className: 'reward-description-field',
 	            onChange: this._setDescription })
 	        )
 	      ),
 	      React.createElement(
-	        "button",
+	        'div',
+	        { className: 'reward-quantity-wrapper' },
+	        React.createElement(
+	          'div',
+	          { className: 'reward-quantity-field' },
+	          'Quantity'
+	        ),
+	        React.createElement(
+	          'div',
+	          null,
+	          React.createElement('input', { type: 'text', className: 'reward-quantity-input',
+	            onChange: this._setQuantity, value: this.state.quantity || "" })
+	        )
+	      ),
+	      React.createElement(
+	        'button',
+	        { onClick: this._handleSave },
+	        'Save This Reward'
+	      ),
+	      React.createElement(
+	        'button',
 	        { onClick: this._handleDelete },
-	        "Delete This Reward"
+	        'Delete This Reward'
 	      )
 	    );
 	  }
@@ -35873,6 +35907,187 @@
 
 
 	*/
+
+/***/ },
+/* 292 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var Store = __webpack_require__(242).Store;
+	var AppDispatcher = __webpack_require__(260);
+	var RewardConstants = __webpack_require__(293);
+	var RewardStore = new Store(AppDispatcher);
+	
+	var _rewards = [];
+	
+	RewardStore.find = function (projectId, rewardId) {
+	  return _rewards.filter(function (reward) {
+	    return reward.project_id === projectId && project_reward_key === rewardId;
+	  }).id;
+	};
+	
+	RewardStore.currentRewards = function () {
+	  return _rewards;
+	};
+	
+	function _addReward(data) {
+	  if (_rewards.some(function (reward) {
+	    return reward.project_id === data.project_id && reward.project_reward_key === data.project_reward_key;
+	  })) {
+	    _updateReward(data);
+	  } else {
+	    _rewards.push(data);
+	  }
+	
+	  RewardStore.__emitChange();
+	}
+	
+	function _updateReward(data) {
+	  var rewardToUpdate = _rewards.filter(function (reward) {
+	    return reward.project_id === data.project_id && reward.project_reward_key === data.project_reward_key;
+	  });
+	
+	  Object.assign(rewardToUpdate[0], data);
+	  RewardStore.__emitChange();
+	}
+	
+	function _removeReward(data) {
+	  var rewardToDelete = _rewards.filter(function (reward) {
+	    return reward.project_id === data.project_id && reward.project_reward_key === data.project_reward_key;
+	  });
+	  var i = _rewards.indexOf(rewardToDelete[0]);
+	  _rewards.splice(i, 1);
+	  RewardStore.__emitChange();
+	}
+	
+	RewardStore.saveRewards = function () {
+	  _rewards.forEach(function (reward) {
+	    $.ajax({
+	      url: '/api/rewards',
+	      type: 'POST',
+	      data: { reward: reward },
+	      success: function success(resp) {
+	        console.log('success!');
+	      },
+	      error: function error(resp) {
+	        console.log('failure');
+	      }
+	    });
+	  });
+	};
+	
+	RewardStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case RewardConstants.REWARD_RECEIVED:
+	      _addReward(payload.data);
+	      break;
+	    case RewardConstants.REWARD_REMOVED:
+	      _removeReward(payload.data);
+	      break;
+	    case RewardConstants.REWARD_UPDATED:
+	      _updateReward(payload.data);
+	      break;
+	    case RewardConstants.SAVE_ALL:
+	      _saveRewards(payload.data);
+	      break;
+	  }
+	};
+	
+	module.exports = RewardStore;
+
+/***/ },
+/* 293 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	module.exports = {
+	  REWARD_RECEIVED: 'REWARD_RECEIVED',
+	  REWARD_REMOVED: 'REWARD_REMOVED',
+	  REWARD_UPDATED: 'REWARD_UPDATED',
+	  SAVE_ALL: 'SAVE_ALL'
+	};
+
+/***/ },
+/* 294 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var AppDispatcher = __webpack_require__(260);
+	var RewardApiUtil = __webpack_require__(295);
+	var RewardConstants = __webpack_require__(293);
+	var ErrorActions = __webpack_require__(267);
+	
+	var RewardActions = {
+	  createReward: function createReward(rewardInfo) {
+	    AppDispatcher.dispatch({
+	      actionType: RewardConstants.REWARD_RECEIVED,
+	      data: rewardInfo
+	    });
+	  },
+	  updateReward: function updateReward(rewardInfo) {
+	    AppDispatcher.dispatch({
+	      actionType: RewardConstants.REWARD_UPDATED,
+	      data: rewardInfo
+	    });
+	  },
+	  deleteReward: function deleteReward(rewardInfo) {
+	    AppDispatcher.dispatch({
+	      actionType: RewardConstants.REWARD_REMOVED,
+	      data: rewardInfo
+	    });
+	  }
+	};
+	
+	module.exports = RewardActions;
+
+/***/ },
+/* 295 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	var RewardApiUtil = {
+	  createReward: function createReward(data, successCB, errorCB) {
+	    $.ajax({
+	      url: '/api/rewards',
+	      type: 'POST',
+	      data: { reward: data },
+	      success: function success(resp) {
+	        successCB(resp);
+	      },
+	      error: function error(resp) {
+	        errorCB(resp);
+	      }
+	    });
+	  },
+	  updateReward: function updateReward(data, successCB, errorCB) {
+	    $.ajax({
+	      url: '/api/rewards/' + data.id,
+	      type: 'PATCH',
+	      data: { reward: data },
+	      success: function success(resp) {
+	        successCB(resp);
+	      },
+	      error: function error(resp) {
+	        errorCB(resp);
+	      }
+	    });
+	  },
+	  removeReward: function removeReward(id, successCB, errorCB) {
+	    $.ajax({
+	      url: '/api/rewards/' + id,
+	      type: 'DELETE',
+	      data: { params: id },
+	      success: success,
+	      error: error
+	    });
+	  }
+	};
+	
+	module.exports = RewardApiUtil;
 
 /***/ }
 /******/ ]);

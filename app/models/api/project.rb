@@ -21,5 +21,6 @@ class Api::Project < ActiveRecord::Base
   validates :title, :author_id, presence: true
 
   belongs_to :author, class_name: 'User', foreign_key: 'author_id'
+  belongs_to :saved_project, class_name: 'SavedProject', foreign_key: 'saved_project_id'
 
 end

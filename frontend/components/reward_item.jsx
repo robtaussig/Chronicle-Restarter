@@ -1,12 +1,24 @@
 const React = require('react');
+const RewardStore = require('../stores/reward_store.js');
+const RewardActions = require('../actions/reward_actions.js');
 
 const RewardItem = React.createClass({
 
   getInitialState () {
-    return ({title: "", description: "", amount: ""});
+    return ({project_id: this.props.projectId, project_reward_key:
+      this.props.project_reward_key, quantity: 0, title: "",
+      description: "", amount: ""});
   },
 
   componentDidMount () {
+    this.token = RewardStore.addListener(this._onChange);
+  },
+
+  componentWillUnmount () {
+    this.token.remove();
+  },
+
+  _onChange () {
 
   },
 
@@ -20,6 +32,11 @@ const RewardItem = React.createClass({
     this.setState({description: event.target.value});
   },
 
+  _setQuantity (event) {
+    event.preventDefault();
+    this.setState({quantity: event.target.value});
+  },
+
   _setAmount (event) {
     event.preventDefault();
     this.setState({amount: event.target.value});
@@ -28,6 +45,12 @@ const RewardItem = React.createClass({
   _handleDelete (event) {
     event.preventDefault();
     this.props._delete(this.props.idx);
+    RewardActions.deleteReward(this.state);
+  },
+
+  _handleSave (event) {
+    event.preventDefault();
+    RewardActions.createReward(this.state);
   },
 
   render: function() {
@@ -57,6 +80,14 @@ const RewardItem = React.createClass({
               onChange={this._setDescription} />
           </div>
         </div>
+        <div className="reward-quantity-wrapper">
+          <div className="reward-quantity-field">Quantity</div>
+          <div>
+            <input type="text" className="reward-quantity-input"
+              onChange={this._setQuantity} value={this.state.quantity || ""} />
+          </div>
+        </div>
+        <button onClick={this._handleSave}>Save This Reward</button>
         <button onClick={this._handleDelete}>Delete This Reward</button>
       </div>
     );

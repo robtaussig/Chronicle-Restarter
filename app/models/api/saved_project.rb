@@ -19,5 +19,7 @@
 class Api::SavedProject < ActiveRecord::Base
 
   belongs_to :author, class_name: 'User', foreign_key: 'author_id'
+  has_many :rewards, foreign_key: 'project_id'
+  has_one :project, foreign_key: 'saved_project_id'
 
 end
