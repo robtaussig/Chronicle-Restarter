@@ -55,7 +55,8 @@ const Rewards = React.createClass({
 
     return (
       <div>
-        <button onClick={this._addReward}>Add Reward</button>
+        <button className="add-reward-button"
+          onClick={this._addReward}>Add Reward</button>
         {this.rewardItems}
       </div>
     );

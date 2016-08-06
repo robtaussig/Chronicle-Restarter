@@ -58,41 +58,48 @@ const RewardItem = React.createClass({
   },
 
   render: function() {
+    let _title = this.state.title !== "" ? this.state.title : "Reward title";
 
     return (
-      <div>
-        {this.state.title}:
-        <div className="reward-title-wrapper">
-          <div>Title</div>
-          <div className="reward-title-field">
-            <input type="text" className="reward-title-input"
-              onChange={this._setTitle} value={this.state.title || ""} />
+      <div className="rewards-wrapper">
+        <div className="reward-title-text">{_title}:</div>
+        <div className="reward-form-wrapper">
+          <div className="reward-title-wrapper">
+            <div className="reward-title-field">Title</div>
+            <div>
+              <input type="text" className="reward-title-input"
+                onChange={this._setTitle} value={this.state.title || ""} />
+            </div>
           </div>
-        </div>
-        <div className="reward-amount-wrapper">
-          <div className="reward-amount-field">Pledge amount</div>
-          <div>
-            $<input type="text" className="reward-amount-input"
-              onChange={this._setAmount} value={this.state.amount || ""} />
+          <div className="reward-amount-wrapper">
+            <div className="reward-amount-field">Pledge amount</div>
+            <div>
+              <input type="text" placeholder="$" className="reward-amount-input"
+                onChange={this._setAmount} value={this.state.amount || ""} />
+            </div>
           </div>
-        </div>
-        <div className="reward-description-wrapper">
-          <div className="reward-description-field">Description</div>
-          <div>
-            <textarea rows="3" value={this.state.description || ""}
-              wrap="hard" className="reward-description-field"
-              onChange={this._setDescription} />
+          <div className="reward-description-wrapper">
+            <div className="reward-description-field">Description</div>
+            <div>
+              <textarea rows="3" value={this.state.description || ""}
+                wrap="hard" className="reward-description-field"
+                onChange={this._setDescription} />
+            </div>
           </div>
-        </div>
-        <div className="reward-quantity-wrapper">
-          <div className="reward-quantity-field">Quantity</div>
-          <div>
-            <input type="text" className="reward-quantity-input"
-              onChange={this._setQuantity} value={this.state.quantity || ""} />
+          <div className="reward-quantity-wrapper">
+            <div className="reward-quantity-field">Quantity</div>
+            <div>
+              <input type="text" className="reward-quantity-input"
+                onChange={this._setQuantity} value={this.state.quantity || ""} />
+            </div>
           </div>
+          <ul className="save-button">
+            <li>
+              <button className="reward-save-button" onClick={this._handleSave}>Save This Reward</button>
+            </li>
+          </ul>
+          <button className="reward-delete-button" onClick={this._handleDelete}>X</button>
         </div>
-        <button onClick={this._handleSave}>Save This Reward</button>
-        <button onClick={this._handleDelete}>Delete This Reward</button>
       </div>
     );
   }

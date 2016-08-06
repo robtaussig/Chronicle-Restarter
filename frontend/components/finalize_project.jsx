@@ -58,7 +58,7 @@ const FinalizeProject = React.createClass({
             impact its place in history. Pick a title, image, goal, campaign
             duration, and category.</div>
         </div>
-        <div className="project-create-subpage">
+        <div className="project-create-subpage group">
           {this.props.children}
         </div>
       </div>

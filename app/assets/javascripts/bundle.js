@@ -35413,7 +35413,8 @@
 	      null,
 	      React.createElement(
 	        'button',
-	        { onClick: this._addReward },
+	        { className: 'add-reward-button',
+	          onClick: this._addReward },
 	        'Add Reward'
 	      ),
 	      this.rewardItems
@@ -35538,83 +35539,99 @@
 	
 	
 	  render: function render() {
+	    var _title = this.state.title !== "" ? this.state.title : "Reward title";
 	
 	    return React.createElement(
 	      'div',
-	      null,
-	      this.state.title,
-	      ':',
+	      { className: 'rewards-wrapper' },
 	      React.createElement(
 	        'div',
-	        { className: 'reward-title-wrapper' },
-	        React.createElement(
-	          'div',
-	          null,
-	          'Title'
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'reward-title-field' },
-	          React.createElement('input', { type: 'text', className: 'reward-title-input',
-	            onChange: this._setTitle, value: this.state.title || "" })
-	        )
+	        { className: 'reward-title-text' },
+	        _title,
+	        ':'
 	      ),
 	      React.createElement(
 	        'div',
-	        { className: 'reward-amount-wrapper' },
+	        { className: 'reward-form-wrapper' },
 	        React.createElement(
 	          'div',
-	          { className: 'reward-amount-field' },
-	          'Pledge amount'
+	          { className: 'reward-title-wrapper' },
+	          React.createElement(
+	            'div',
+	            { className: 'reward-title-field' },
+	            'Title'
+	          ),
+	          React.createElement(
+	            'div',
+	            null,
+	            React.createElement('input', { type: 'text', className: 'reward-title-input',
+	              onChange: this._setTitle, value: this.state.title || "" })
+	          )
 	        ),
 	        React.createElement(
 	          'div',
-	          null,
-	          '$',
-	          React.createElement('input', { type: 'text', className: 'reward-amount-input',
-	            onChange: this._setAmount, value: this.state.amount || "" })
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'reward-description-wrapper' },
-	        React.createElement(
-	          'div',
-	          { className: 'reward-description-field' },
-	          'Description'
+	          { className: 'reward-amount-wrapper' },
+	          React.createElement(
+	            'div',
+	            { className: 'reward-amount-field' },
+	            'Pledge amount'
+	          ),
+	          React.createElement(
+	            'div',
+	            null,
+	            React.createElement('input', { type: 'text', placeholder: '$', className: 'reward-amount-input',
+	              onChange: this._setAmount, value: this.state.amount || "" })
+	          )
 	        ),
 	        React.createElement(
 	          'div',
-	          null,
-	          React.createElement('textarea', { rows: '3', value: this.state.description || "",
-	            wrap: 'hard', className: 'reward-description-field',
-	            onChange: this._setDescription })
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'reward-quantity-wrapper' },
-	        React.createElement(
-	          'div',
-	          { className: 'reward-quantity-field' },
-	          'Quantity'
+	          { className: 'reward-description-wrapper' },
+	          React.createElement(
+	            'div',
+	            { className: 'reward-description-field' },
+	            'Description'
+	          ),
+	          React.createElement(
+	            'div',
+	            null,
+	            React.createElement('textarea', { rows: '3', value: this.state.description || "",
+	              wrap: 'hard', className: 'reward-description-field',
+	              onChange: this._setDescription })
+	          )
 	        ),
 	        React.createElement(
 	          'div',
-	          null,
-	          React.createElement('input', { type: 'text', className: 'reward-quantity-input',
-	            onChange: this._setQuantity, value: this.state.quantity || "" })
+	          { className: 'reward-quantity-wrapper' },
+	          React.createElement(
+	            'div',
+	            { className: 'reward-quantity-field' },
+	            'Quantity'
+	          ),
+	          React.createElement(
+	            'div',
+	            null,
+	            React.createElement('input', { type: 'text', className: 'reward-quantity-input',
+	              onChange: this._setQuantity, value: this.state.quantity || "" })
+	          )
+	        ),
+	        React.createElement(
+	          'ul',
+	          { className: 'save-button' },
+	          React.createElement(
+	            'li',
+	            null,
+	            React.createElement(
+	              'button',
+	              { className: 'reward-save-button', onClick: this._handleSave },
+	              'Save This Reward'
+	            )
+	          )
+	        ),
+	        React.createElement(
+	          'button',
+	          { className: 'reward-delete-button', onClick: this._handleDelete },
+	          'X'
 	        )
-	      ),
-	      React.createElement(
-	        'button',
-	        { onClick: this._handleSave },
-	        'Save This Reward'
-	      ),
-	      React.createElement(
-	        'button',
-	        { onClick: this._handleDelete },
-	        'Delete This Reward'
 	      )
 	    );
 	  }
@@ -35793,7 +35810,7 @@
 	      ),
 	      React.createElement(
 	        'div',
-	        { className: 'project-create-subpage' },
+	        { className: 'project-create-subpage group' },
 	        this.props.children
 	      )
 	    );

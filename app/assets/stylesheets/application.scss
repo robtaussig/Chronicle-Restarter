@@ -35,7 +35,11 @@ span, article, footer, time, small {
   // -webkit-font-smoothing: antialiased;
 }
 
-
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
 
 ul {
   list-style: none;
@@ -426,11 +430,13 @@ button.submit-button {
 .project-create-subpage {
   background-color: white;
   width: 945px;
-  height: 1200px;
+  min-height: 1200px;
   margin: 0 auto;
   border: 1px solid #ccc;
   border-radius: 5px;
   margin-bottom: 400px;
+  padding-bottom: 100px;
+  flex: 1;
 }
 
 /* Project Nav Bar */
@@ -657,6 +663,7 @@ button.category-button {
    text-align: center;
    color: white;
    line-height: 60px;
+   cursor: pointer;
 }
 
 #save-box.saved {
@@ -681,4 +688,125 @@ button.category-button {
   color: black;
   line-height: 20px;
   margin-top: 5px;
+}
+
+/* Rewards creation */
+div.rewards-wrapper {
+  position: relative;
+}
+
+div.rewards-wrapper input {
+  border: 1px solid #ccc;
+  width: 125%;
+  margin: 10px;
+  text-indent: 5px;
+  background-color: white;
+}
+
+div.rewards-wrapper input:focus {
+  border-color: blue;
+  transition: 0.5s;
+}
+
+div.rewards-wrapper textarea {
+  border: 1px solid #ccc;
+  width: 120%;
+  resize: none;
+  margin: 10px;
+  text-indent: 5px;
+  background-color: white;
+}
+
+div.rewards-wrapper textarea:focus {
+  border-color: blue;
+  transition: 0.5s;
+}
+
+button.add-reward-button {
+  position: fixed;
+  top: 40%;
+  right: 0;
+  width: 150px;
+  height:60px;
+  border: 1px solid #ccc;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  font-size: 20px;
+  font-weight: 500;
+  text-align: center;
+  background-color: green;
+  color: white;
+  line-height: 60px;
+}
+
+div.reward-title-text {
+  float: left;
+  margin-left: 20px;
+  font-weight: 700;
+}
+div.reward-form-wrapper {
+  height: 300px;
+  width: 300px;
+  margin: 0 auto;
+  border: 2px solid black;
+  border-radius: 5px;
+  margin-top: 20px;
+  background-color:steelblue;
+}
+
+ul.save-button {
+  bottom: 5px;
+  position: absolute;
+  left: 50%;
+  align-items: center;
+  transform: translateX(-50%);
+  text-align: center;
+  cursor: pointer;
+}
+
+ul.save-button button {
+  margin-bottom: 5px;
+  border: 1px solid black;
+  border-radius: 5px;
+  background-color: #00fff5;
+  padding: 2px 5px;
+}
+
+
+button.reward-delete-button {
+  float: right;
+  margin-top: 5px;
+  margin-right: 5px;
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+div.reward-title-wrapper {
+  margin: 20px;
+  margin-top: 5px;
+  position: absolute;
+}
+
+div.reward-title-field {
+
+
+}
+
+div.reward-amount-wrapper {
+  margin: 20px;
+  position: absolute;
+  top: 40px;
+}
+
+div.reward-description-wrapper {
+  margin: 20px;
+  position: absolute;
+  top: 95px;
+}
+
+div.reward-quantity-wrapper {
+  margin: 20px;
+  top: 187px;
+  position: absolute;
 }
