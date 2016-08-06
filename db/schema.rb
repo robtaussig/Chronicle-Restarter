@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160805185248) do
+ActiveRecord::Schema.define(version: 20160806154337) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,6 +33,18 @@ ActiveRecord::Schema.define(version: 20160805185248) do
   add_index "api_projects", ["author_id"], name: "index_api_projects_on_author_id", using: :btree
   add_index "api_projects", ["category_id"], name: "index_api_projects_on_category_id", using: :btree
   add_index "api_projects", ["title"], name: "index_api_projects_on_title", unique: true, using: :btree
+
+  create_table "api_rewards", force: :cascade do |t|
+    t.integer  "project_id",  null: false
+    t.string   "title"
+    t.integer  "amount"
+    t.string   "description"
+    t.integer  "quantity"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "api_rewards", ["project_id"], name: "index_api_rewards_on_project_id", using: :btree
 
   create_table "api_saved_projects", force: :cascade do |t|
     t.string   "title"

@@ -35346,18 +35346,21 @@
 	  _addReward: function _addReward() {
 	    this.numRewards += 1;
 	    this.rewardItems.push(React.createElement(RewardItem, { projectId: this.projectId,
-	      rewardId: this.numRewards, key: this.numRewards }));
+	      rewardId: this.numRewards, key: this.numRewards,
+	      _delete: this._deleteReward }));
 	    this.forceUpdate();
 	  },
 	  componentDidMount: function componentDidMount() {
 	    this.projectId = SavedProjectStore.currentProject().id;
 	    this.numRewards = 1;
 	    this.rewardItems = [React.createElement(RewardItem, { projectId: this.projectId,
-	      rewardId: this.numRewards, key: this.numRewards })];
+	      rewardId: this.numRewards, key: this.numRewards,
+	      _delete: this._deleteReward })];
 	    this.forceUpdate();
 	  },
 	  _handleSave: function _handleSave() {},
 	  _saveReward: function _saveReward() {},
+	  _deleteReward: function _deleteReward() {},
 	
 	
 	  render: function render() {

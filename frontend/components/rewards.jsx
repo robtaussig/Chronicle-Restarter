@@ -8,7 +8,8 @@ const Rewards = React.createClass({
   _addReward () {
     this.numRewards += 1;
     this.rewardItems.push(<RewardItem projectId={this.projectId}
-      rewardId={this.numRewards} key={this.numRewards}/>);
+      rewardId={this.numRewards} key={this.numRewards}
+      _delete={this._deleteReward}/>);
     this.forceUpdate();
   },
 
@@ -16,7 +17,8 @@ const Rewards = React.createClass({
     this.projectId = SavedProjectStore.currentProject().id;
     this.numRewards = 1;
     this.rewardItems = [<RewardItem projectId={this.projectId}
-      rewardId={this.numRewards} key={this.numRewards}/>];
+      rewardId={this.numRewards} key={this.numRewards}
+      _delete={this._deleteReward}/>];
     this.forceUpdate();
   },
 
@@ -25,6 +27,10 @@ const Rewards = React.createClass({
   },
 
   _saveReward () {
+
+  },
+
+  _deleteReward () {
 
   },
 
