@@ -576,6 +576,37 @@ button.submit-button {
   transform: translate(-50%, -50%);
 }
 
+div.delete-wrapper {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  width: 150px;
+  height: 60px;
+  border: 1px solid #ccc;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  background-color: #b96565;
+  font-size: 20px;
+  font-weight: 500;
+  text-align: center;
+  color: white;
+  line-height: 60px;
+}
+
+button.delete-project {
+  width: 150px;
+  height: 60px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  cursor: pointer;
+}
+
+p.delete-message {
+  color: black;
+  line-height: 20px;
+  margin-top: 5px;
+}
+
 .project-nav-bar li {
   float: left;
   height: 50px;
@@ -796,6 +827,12 @@ button.category-button {
 /* Rewards creation */
 div.rewards-wrapper {
   position: relative;
+  height: 350px;
+  width: auto;
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+  background-color: aliceblue;
 }
 
 div.rewards-wrapper input {
@@ -829,7 +866,7 @@ div.rewards-wrapper textarea:focus {
 
 button.add-reward-button {
   position: fixed;
-  top: 40%;
+  top: 50%;
   right: 0;
   width: 150px;
   height:60px;
@@ -848,7 +885,23 @@ div.reward-title-text {
   float: left;
   margin-left: 20px;
   font-weight: 700;
+  margin-top: 20px;
 }
+
+div.reward-title-text.unsaved {
+  font-weight: normal;
+}
+
+div.reward-title-text.saved {
+  color: white;
+  transition: 1s;
+  margin-left: 18px;
+  margin-top: 18px;
+  padding: 2px;
+  background-color: limegreen;
+  border-radius: 5px;
+}
+
 div.reward-form-wrapper {
   height: 300px;
   width: 300px;
@@ -856,8 +909,11 @@ div.reward-form-wrapper {
   color: darkblue;
   border: 2px solid black;
   border-radius: 5px;
-  margin-top: 20px;
-  background-color:steelblue;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: steelblue;
 }
 
 ul.save-button {

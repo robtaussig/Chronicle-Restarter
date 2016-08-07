@@ -11,6 +11,14 @@ const ErrorActions = {
     });
   },
 
+  projectDeleted () {
+    AppDispatcher.dispatch({
+      actionType:ErrorConstants.PROJECT_DELETED,
+      form: 'finalizeProject',
+      message: "Project successfully deleted"
+    });
+  },
+
   mismatchedPasswords () {
     AppDispatcher.dispatch({
       actionType:ErrorConstants.SIGNUP_ERROR_RECEIVED,

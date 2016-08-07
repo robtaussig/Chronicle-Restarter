@@ -90,7 +90,12 @@ const Basics = React.createClass({
   },
 
   _saveProject () {
-    SavedProjectActions.updateSavedProject('basics', this.state);
+    if (SavedProjectStore.currentProject().id) {
+      SavedProjectActions.updateSavedProject('basics', this.state);
+    } else {
+      SavedProjectActions.submitSavedProject('basics', this.state);
+    }
+
   },
 
   render: function() {
@@ -171,7 +176,8 @@ const Basics = React.createClass({
           </ul>
         </div>
         <div id="save-box" className={this.state.saved}>
-          <button className={this.state.saved} onClick={this._handleSave}>Save Changes</button>
+          <button className={this.state.saved}
+            onClick={this._handleSave}>Save Changes</button>
           <p>{this.state.errorMessage}</p>
         </div>
       </div>

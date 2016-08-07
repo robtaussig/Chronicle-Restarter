@@ -28,13 +28,15 @@ const ProjectApiUtil = {
     });
   },
 
-  removeSavedProject (form, id, successCB, errorCB) {
+  removeSavedProject (form, id, success, errorCB) {
     $.ajax({
       url: '/api/saved_projects/' + id,
       type: 'DELETE',
       data: {params: id},
       success,
-      error
+      error: (resp) => {
+        errorCB(form, resp);
+      }
     });
   },
 

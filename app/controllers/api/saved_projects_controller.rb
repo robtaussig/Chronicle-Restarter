@@ -23,7 +23,7 @@ class Api::SavedProjectsController < ApplicationController
   def destroy
     @saved_project = Api::SavedProject.find(params[:id])
     @saved_project.destroy!
-    redirect_to root_url
+    render :show
   end
 
   def index

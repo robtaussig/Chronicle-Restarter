@@ -34355,7 +34355,8 @@
 	module.exports = {
 	  ERROR_RECEIVED: 'ERROR_RECEIVED',
 	  SIGNUP_ERROR_RECEIVED: 'SIGNUP_ERROR_RECEIVED',
-	  CLEAR_ERRORS: 'CLEAR_ERRORS'
+	  CLEAR_ERRORS: 'CLEAR_ERRORS',
+	  PROJECT_DELETED: 'PROJECT_DELETED'
 	};
 
 /***/ },
@@ -34373,6 +34374,13 @@
 	      actionType: ErrorConstants.SIGNUP_ERROR_RECEIVED,
 	      form: 'signup',
 	      message: "Neither your email nor your password match"
+	    });
+	  },
+	  projectDeleted: function projectDeleted() {
+	    AppDispatcher.dispatch({
+	      actionType: ErrorConstants.PROJECT_DELETED,
+	      form: 'finalizeProject',
+	      message: "Project successfully deleted"
 	    });
 	  },
 	  mismatchedPasswords: function mismatchedPasswords() {
@@ -34435,7 +34443,6 @@
 	};
 	
 	function _resetError(form, errorInfo) {
-	  debugger;
 	  var message = errorInfo.responseJSON[0];
 	  _errors = [form, message];
 	  ErrorStore.__emitChange();
@@ -34466,6 +34473,9 @@
 	      break;
 	    case ErrorConstants.CLEAR_ERRORS:
 	      _clearErrors();
+	      break;
+	    case ErrorConstants.PROJECT_DELETED:
+	      _resetError(payload.form, payload.data);
 	      break;
 	  }
 	};
@@ -35041,13 +35051,15 @@
 	      }
 	    });
 	  },
-	  removeSavedProject: function removeSavedProject(form, id, successCB, errorCB) {
+	  removeSavedProject: function removeSavedProject(form, id, success, errorCB) {
 	    $.ajax({
 	      url: '/api/saved_projects/' + id,
 	      type: 'DELETE',
 	      data: { params: id },
 	      success: success,
-	      error: error
+	      error: function error(resp) {
+	        errorCB(form, resp);
+	      }
 	    });
 	  }
 	};
@@ -35156,7 +35168,11 @@
 	    }
 	  },
 	  _saveProject: function _saveProject() {
-	    SavedProjectActions.updateSavedProject('basics', this.state);
+	    if (SavedProjectStore.currentProject().id) {
+	      SavedProjectActions.updateSavedProject('basics', this.state);
+	    } else {
+	      SavedProjectActions.submitSavedProject('basics', this.state);
+	    }
 	  },
 	
 	
@@ -35327,7 +35343,8 @@
 	        { id: 'save-box', className: this.state.saved },
 	        React.createElement(
 	          'button',
-	          { className: this.state.saved, onClick: this._handleSave },
+	          { className: this.state.saved,
+	            onClick: this._handleSave },
 	          'Save Changes'
 	        ),
 	        React.createElement(
@@ -35365,7 +35382,7 @@
 	  location: "",
 	  duration: 0,
 	  goal: 0,
-	  saved: 'saved',
+	  saved: '',
 	  errorMessage: ""
 	};
 	
@@ -35431,8 +35448,12 @@
 	    this.uniqueKey += 1;
 	    this.rewardItems.push(React.createElement(RewardItem, { projectId: this.projectId,
 	      key: this.uniqueKey, project_reward_key: this.uniqueKey,
-	      idx: this.uniqueKey, _delete: this._deleteReward }));
+	      idx: this.uniqueKey, _delete: this._deleteReward,
+	      _rewardCount: this._rewardCount }));
 	    this.forceUpdate();
+	  },
+	  _rewardCount: function _rewardCount() {
+	    return this.rewardItems.length;
 	  },
 	  componentDidMount: function componentDidMount() {
 	    this._prepopulate();
@@ -35492,63 +35513,52 @@
 
 /***/ },
 /* 284 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var Store = __webpack_require__(242).Store;
-	var AppDispatcher = __webpack_require__(260);
-	var ProjectConstants = __webpack_require__(285);
-	var ProjectStore = new Store(AppDispatcher);
-	
-	var _currentUser = {};
-	
-	function _logIn(user) {
-	  _currentUser = user;
-	  ProjectStore.__emitChange();
-	}
-	
-	function _logOut() {
-	  _currentUser = {};
-	  ProjectStore.__emitChange();
-	}
-	
-	ProjectStore.currentUser = function () {
-	  return _currentUser;
-	};
-	
-	ProjectStore.isUserLoggedIn = function (id) {
-	  return _currentUser.id === id;
-	};
-	
-	ProjectStore.__onDispatch = function (payload) {
-	  switch (payload.actionType) {
-	    case ProjectConstants.USER_RECEIVED:
-	      _logIn(payload.user);
-	      break;
-	    case ProjectConstants.USER_REMOVED:
-	      _logOut();
-	      break;
-	    case ProjectConstants.SESSION_STOPPED:
-	      _logOut();
-	      break;
-	  }
-	};
-	
-	module.exports = ProjectStore;
-
-/***/ },
-/* 285 */
 /***/ function(module, exports) {
 
-	'use strict';
-	
-	module.exports = {
-	  PROJECT_RECEIVED: 'PROJECT_RECEIVED',
-	  PROJECT_REMOVED: 'PROJECT_REMOVED'
-	};
+	// const Store = require('flux/utils').Store;
+	// const AppDispatcher = require('../dispatcher/dispatcher.js');
+	// const ProjectConstants = require('../constants/project_constants.js');
+	// const ProjectStore = new Store(AppDispatcher);
+	//
+	// let _currentUser = {};
+	//
+	// function _logIn(user) {
+	//   _currentUser = user;
+	//   ProjectStore.__emitChange();
+	// }
+	// 
+	// function _logOut () {
+	//   _currentUser = {};
+	//   ProjectStore.__emitChange();
+	// }
+	//
+	// ProjectStore.currentUser = () => {
+	//   return _currentUser;
+	// };
+	//
+	// ProjectStore.isUserLoggedIn = (id) => {
+	//   return _currentUser.id === id;
+	// };
+	//
+	// ProjectStore.__onDispatch = (payload) => {
+	//   switch (payload.actionType) {
+	//     case ProjectConstants.USER_RECEIVED:
+	//       _logIn(payload.user);
+	//     break;
+	//     case ProjectConstants.USER_REMOVED:
+	//       _logOut();
+	//     break;
+	//     case ProjectConstants.SESSION_STOPPED:
+	//       _logOut();
+	//       break;
+	//   }
+	// };
+	//
+	// module.exports = ProjectStore;
+	"use strict";
 
 /***/ },
+/* 285 */,
 /* 286 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -35562,10 +35572,10 @@
 	
 	var _rewards = [];
 	
-	RewardStore.find = function (projectId, rewardId) {
+	RewardStore.find = function (rewardId) {
 	  return _rewards.filter(function (reward) {
-	    return reward.project_id === projectId && project_reward_key === rewardId;
-	  }).id;
+	    return reward.project_reward_key === rewardId;
+	  });
 	};
 	
 	RewardStore.currentRewards = function () {
@@ -35669,7 +35679,9 @@
 	      quantity: this.props.quantity || 0,
 	      title: this.props.title || "",
 	      description: this.props.description || "",
-	      amount: this.props.amount || 0 };
+	      amount: this.props.amount || 0,
+	      saved: ""
+	    };
 	  },
 	  componentDidMount: function componentDidMount() {
 	    this.token = RewardStore.addListener(this._onChange);
@@ -35677,22 +35689,26 @@
 	  componentWillUnmount: function componentWillUnmount() {
 	    this.token.remove();
 	  },
-	  _onChange: function _onChange() {},
+	  _onChange: function _onChange() {
+	    if (RewardStore.find(this.state.project_reward_key).length > 0) {
+	      this.setState({ saved: 'saved' });
+	    }
+	  },
 	  _setTitle: function _setTitle(event) {
 	    event.preventDefault();
-	    this.setState({ title: event.target.value });
+	    this.setState({ title: event.target.value, saved: '' });
 	  },
 	  _setDescription: function _setDescription(event) {
 	    event.preventDefault();
-	    this.setState({ description: event.target.value });
+	    this.setState({ description: event.target.value, saved: '' });
 	  },
 	  _setQuantity: function _setQuantity(event) {
 	    event.preventDefault();
-	    this.setState({ quantity: event.target.value });
+	    this.setState({ quantity: event.target.value, saved: '' });
 	  },
 	  _setAmount: function _setAmount(event) {
 	    event.preventDefault();
-	    this.setState({ amount: event.target.value });
+	    this.setState({ amount: event.target.value, saved: '' });
 	  },
 	  _handleDelete: function _handleDelete(event) {
 	    event.preventDefault();
@@ -35707,15 +35723,22 @@
 	
 	  render: function render() {
 	    var _title = this.state.title !== "" ? this.state.title : "Reward title";
+	    var _unsavedText = this.state.saved === "" ? "Not saved" : "";
 	
 	    return React.createElement(
 	      'div',
 	      { className: 'rewards-wrapper' },
 	      React.createElement(
 	        'div',
-	        { className: 'reward-title-text' },
-	        _title,
+	        { className: 'reward-title-text ' + this.state.saved },
+	        'Reward #',
+	        this.props._rewardCount(),
 	        ':'
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'reward-title-text unsaved' },
+	        _unsavedText
 	      ),
 	      React.createElement(
 	        'div',
@@ -35891,19 +35914,81 @@
 /* 291 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	var React = __webpack_require__(3);
 	
 	var Story = React.createClass({
-	  displayName: 'Story',
+	  displayName: "Story",
+	  getInitialState: function getInitialState() {
+	    return { description: "", risk: "" };
+	  },
+	  componentDidMount: function componentDidMount() {},
+	  _setDescription: function _setDescription() {},
+	  _setRisks: function _setRisks() {},
 	
 	
 	  render: function render() {
+	    var projectDescriptionInstructions = "Use your project description to \
+	    share more about what you’re raising funds to do and how you plan to pull \
+	    it off. It’s up to you to make the case for your project.";
+	
+	    var projectRisksInstructions = "What are the risks and challenges that come\
+	     with completing your project, and how are you qualified to overcome them?";
+	
 	    return React.createElement(
-	      'div',
-	      null,
-	      'Story'
+	      "div",
+	      { className: "story-wrapper" },
+	      React.createElement(
+	        "div",
+	        { className: "project-description-title" },
+	        "Project Description"
+	      ),
+	      React.createElement(
+	        "div",
+	        { className: "project-description-wrapper" },
+	        React.createElement(
+	          "ul",
+	          null,
+	          React.createElement(
+	            "li",
+	            { className: "instructions" },
+	            projectDescriptionInstructions
+	          ),
+	          React.createElement(
+	            "li",
+	            null,
+	            React.createElement("textarea", { rows: "10", value: this.state.description || "",
+	              wrap: "hard", className: "project-description-field",
+	              onChange: this._setDescription })
+	          )
+	        )
+	      ),
+	      React.createElement(
+	        "div",
+	        { className: "project-risks-title" },
+	        "Risks and challenges"
+	      ),
+	      React.createElement(
+	        "div",
+	        { className: "project-risks-wrapper" },
+	        React.createElement(
+	          "ul",
+	          null,
+	          React.createElement(
+	            "li",
+	            { className: "risks" },
+	            projectRisksInstructions
+	          ),
+	          React.createElement(
+	            "li",
+	            null,
+	            React.createElement("textarea", { rows: "5", value: this.state.risks || "",
+	              wrap: "hard", className: "project-risks-field",
+	              onChange: this._setRisks })
+	          )
+	        )
+	      )
 	    );
 	  }
 	
@@ -36022,6 +36107,8 @@
 	
 	var React = __webpack_require__(3);
 	var ProjectStore = __webpack_require__(284);
+	var SavedProjectActions = __webpack_require__(277);
+	var SavedProjectStore = __webpack_require__(282);
 	var ErrorActions = __webpack_require__(267);
 	var ErrorStore = __webpack_require__(268);
 	var ProjectNavBar = __webpack_require__(297);
@@ -36036,10 +36123,15 @@
 	
 	var FinalizeProject = React.createClass({
 	  displayName: 'FinalizeProject',
+	  getInitialState: function getInitialState() {
+	    return { deleteMessage: "" };
+	  },
 	  componentDidMount: function componentDidMount() {
 	    this.sessionToken = SessionStore.addListener(this._handleLogin);
+	    this.currentProject = SavedProjectStore.currentProject();
 	    this._handleLogin();
 	    this.forceUpdate();
+	    this.deleteMessage = "";
 	    this.header = ProjectMessages['basics header'];
 	    this.message = ProjectMessages['basics'];
 	    // ProjectStore.addListener(this._onChange);
@@ -36064,6 +36156,22 @@
 	    this.setState({ savedData: savedData });
 	    this.setState({ saved: true });
 	  },
+	  _deleteProject: function _deleteProject() {
+	    var _this = this;
+	
+	    SavedProjectActions.deleteSavedProject('finalizeProject', SavedProjectStore.currentProject());
+	    if (SavedProjectStore.currentProject().id) {
+	      this.setState({ deleteMessage: "Project deleted" });
+	    } else {
+	      this.setState({ deleteMessage: "No project to delete" });
+	    }
+	
+	    var that = this;
+	    window.setTimeout(function () {
+	      _this.setState({ deleteMessage: "" });
+	    }, 2000);
+	  },
+	  _onChange: function _onChange() {},
 	  render: function render() {
 	    return React.createElement(
 	      'div',
@@ -36088,6 +36196,20 @@
 	        'div',
 	        { className: 'project-create-subpage group' },
 	        this.props.children
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'delete-wrapper' },
+	        React.createElement(
+	          'button',
+	          { className: 'delete-project', onClick: this._deleteProject },
+	          'Delete Project'
+	        ),
+	        React.createElement(
+	          'p',
+	          { className: 'delete-message' },
+	          this.state.deleteMessage
+	        )
 	      )
 	    );
 	  }

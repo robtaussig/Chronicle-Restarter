@@ -11,7 +11,9 @@ const RewardItem = React.createClass({
       quantity: this.props.quantity || 0,
       title: this.props.title || "",
       description: this.props.description || "",
-      amount: this.props.amount || 0});
+      amount: this.props.amount || 0,
+      saved: ""
+    });
   },
 
   componentDidMount () {
@@ -23,27 +25,29 @@ const RewardItem = React.createClass({
   },
 
   _onChange () {
-
+    if (RewardStore.find(this.state.project_reward_key).length > 0) {
+      this.setState({saved: 'saved'});
+    }
   },
 
   _setTitle (event) {
     event.preventDefault();
-    this.setState({title: event.target.value});
+    this.setState({title: event.target.value, saved: ''});
   },
 
   _setDescription (event) {
     event.preventDefault();
-    this.setState({description: event.target.value});
+    this.setState({description: event.target.value, saved: ''});
   },
 
   _setQuantity (event) {
     event.preventDefault();
-    this.setState({quantity: event.target.value});
+    this.setState({quantity: event.target.value, saved: ''});
   },
 
   _setAmount (event) {
     event.preventDefault();
-    this.setState({amount: event.target.value});
+    this.setState({amount: event.target.value, saved: ''});
   },
 
   _handleDelete (event) {
@@ -59,10 +63,12 @@ const RewardItem = React.createClass({
 
   render: function() {
     let _title = this.state.title !== "" ? this.state.title : "Reward title";
+    let _unsavedText = this.state.saved === "" ? "Not saved" : "";
 
     return (
       <div className="rewards-wrapper">
-        <div className="reward-title-text">{_title}:</div>
+        <div className={`reward-title-text ${this.state.saved}`}>Reward #{this.props._rewardCount()}:</div>
+        <div className="reward-title-text unsaved">{_unsavedText}</div>
         <div className="reward-form-wrapper">
           <div className="reward-title-wrapper">
             <div className="reward-title-field">Title</div>

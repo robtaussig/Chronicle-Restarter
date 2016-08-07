@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get "/startProject", to: 'static_pages#root'
   get "/createProject", to: 'static_pages#root'
   get "/finalizeProject", to: 'static_pages#root'
+  get "finalizeProject/startProject", to: 'static_pages#root'
   get "/finalizeProject/basics", to: 'static_pages#root'
   get "/finalizeProject/rewards", to: 'static_pages#root'
   get "/finalizeProject/story", to: 'static_pages#root'

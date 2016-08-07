@@ -6,11 +6,10 @@ const ErrorActions = require('../actions/error_actions.js');
 
 let _rewards = [];
 
-RewardStore.find = (projectId, rewardId) => {
-  return _rewards.filter(reward=> {
-    return reward.project_id === projectId &&
-    project_reward_key === rewardId;
-  }).id;
+RewardStore.find = (rewardId) => {
+  return _rewards.filter(reward => {
+    return reward.project_reward_key === rewardId;
+  });
 };
 
 RewardStore.currentRewards = () => {

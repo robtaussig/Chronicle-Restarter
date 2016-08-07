@@ -1,5 +1,7 @@
 const React = require('react');
 const ProjectStore = require('../stores/project_store.js');
+const SavedProjectActions = require('../actions/saved_project_actions.js');
+const SavedProjectStore = require('../stores/saved_project_store.js');
 const ErrorActions = require('../actions/error_actions.js');
 const ErrorStore = require('../stores/error_store.js');
 const ProjectNavBar = require('./project_nav_bar.jsx');
@@ -17,10 +19,16 @@ import { browserHistory } from 'react-router';
 
 const FinalizeProject = React.createClass({
 
+  getInitialState () {
+    return ({deleteMessage: ""});
+  },
+
   componentDidMount () {
     this.sessionToken = SessionStore.addListener(this._handleLogin);
+    this.currentProject = SavedProjectStore.currentProject();
     this._handleLogin();
     this.forceUpdate();
+    this.deleteMessage="";
     this.header = ProjectMessages['basics header'];
     this.message = ProjectMessages['basics'];
     // ProjectStore.addListener(this._onChange);
@@ -50,6 +58,25 @@ const FinalizeProject = React.createClass({
     this.setState({saved: true});
   },
 
+  _deleteProject () {
+    SavedProjectActions.deleteSavedProject('finalizeProject',
+      SavedProjectStore.currentProject());
+    if (SavedProjectStore.currentProject().id) {
+      this.setState({deleteMessage: "Project deleted"});
+    } else {
+      this.setState({deleteMessage: "No project to delete"});
+    }
+
+    let that = this;
+    window.setTimeout(()=> {
+      this.setState({deleteMessage: ""});
+    },2000);
+  },
+
+  _onChange () {
+
+  },
+
   render () {
     return (
       <div>
@@ -62,6 +89,12 @@ const FinalizeProject = React.createClass({
         <div className="project-create-subpage group">
           {this.props.children}
         </div>
+        <div className="delete-wrapper">
+          <button className="delete-project" onClick={this._deleteProject}>
+            Delete Project</button>
+          <p className="delete-message">{this.state.deleteMessage}</p>
+        </div>
+
       </div>
     );
   }

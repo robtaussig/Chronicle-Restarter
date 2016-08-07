@@ -14,7 +14,6 @@ ErrorStore.currentError = () => {
 };
 
 function _resetError (form, errorInfo) {
-  debugger
   let message = errorInfo.responseJSON[0];
   _errors = [form, message];
   ErrorStore.__emitChange();
@@ -45,6 +44,9 @@ ErrorStore.__onDispatch = (payload) => {
       break;
     case ErrorConstants.CLEAR_ERRORS:
       _clearErrors();
+      break;
+    case ErrorConstants.PROJECT_DELETED:
+      _resetError(payload.form, payload.data);
       break;
   }
 };

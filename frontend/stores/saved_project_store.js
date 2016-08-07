@@ -10,7 +10,7 @@ let _blankProject = {
                       location: "",
                       duration: 0,
                       goal: 0,
-                      saved: 'saved',
+                      saved: '',
                       errorMessage: ""
                     };
 
