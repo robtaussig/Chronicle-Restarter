@@ -27117,6 +27117,7 @@
 	      'div',
 	      { className: 'container' },
 	      React.createElement(NavBar, null),
+	      React.createElement('div', { className: 'splash' }),
 	      React.createElement(Errors, null),
 	      this.props.children,
 	      React.createElement(Footer, null),
