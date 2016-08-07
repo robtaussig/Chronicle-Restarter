@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160806210106) do
+ActiveRecord::Schema.define(version: 20160807205157) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -60,6 +60,7 @@ ActiveRecord::Schema.define(version: 20160806210106) do
     t.text     "blurb"
     t.integer  "duration"
     t.string   "location"
+    t.text     "risks"
   end
 
   create_table "api_sessions", force: :cascade do |t|

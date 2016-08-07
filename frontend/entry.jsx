@@ -15,6 +15,7 @@ const FrontPage = require('./components/front_page.jsx');
 const Account = require('./components/account.jsx');
 const Preview = require('./components/preview.jsx');
 const RewardStore = require('./stores/reward_store.js');
+const SavedProjectStore = require('./stores/saved_project_store.js');
 const FinalizeProject = require('./components/finalize_project.jsx');
 import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 
@@ -47,6 +48,7 @@ const router = (
 );
 
 window.RewardStore = RewardStore;
+window.SavedProjectStore = SavedProjectStore;
 
 document.addEventListener('DOMContentLoaded', ()=> {
   SetupApp();

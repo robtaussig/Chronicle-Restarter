@@ -1,20 +1,50 @@
 const React = require('react');
-
+const SavedProjectStore = require('../stores/saved_project_store.js');
+const SavedProjectActions = require('../actions/saved_project_actions.js');
 const Story = React.createClass({
 
   getInitialState () {
-    return ({description: "", risk: ""});
+    return ({content: "", risks: "", saved: 'saved', errorMessage: ""});
   },
 
   componentDidMount () {
-    
+    this.listener = SavedProjectStore.addListener(this._onChange);
+    this.setState(SavedProjectStore.currentProject());
   },
 
-  _setDescription () {
-
+  componentWillUnmount () {
+    this.listener.remove();
   },
 
-  _setRisks () {
+  _onChange () {
+    this.setState(SavedProjectStore.currentProject());
+    this.forceUpdate();
+  },
+
+  _setDescription (event) {
+    this.setState({content: event.target.value, saved: 'unsaved'});
+  },
+
+  _setRisks (event) {
+    this.setState({risks: event.target.value, saved: 'unsaved'});
+  },
+
+  _handleSave () {
+    console.log(this.state);
+    if (this.state.saved === 'saved') {
+      this.setState({errorMessage: "Your project is already up-to-date"});
+    } else {
+      this.setState({errorMessage: "", saved: 'saved'});
+      this._saveProject();
+    }
+  },
+
+  _saveProject () {
+    if (SavedProjectStore.currentProject().id) {
+      SavedProjectActions.updateSavedProject('story', this.state);
+    } else {
+      SavedProjectActions.submitSavedProject('story', this.state);
+    }
 
   },
 
@@ -28,27 +58,40 @@ const Story = React.createClass({
 
     return (
       <div className="story-wrapper">
-        <div className="project-description-title">Project Description</div>
-        <div className="project-description-wrapper">
+        <div className="story-basic-form">
           <ul>
-            <li className="instructions">{projectDescriptionInstructions}</li>
-            <li>
-              <textarea rows="10" value={this.state.description || ""}
-                wrap="hard" className="project-description-field"
-                onChange={this._setDescription} />
+            <li className="story-content">
+              <div className="story-grey-field">
+                <div className="story-attribute-field">Description</div>
+                <div className="story-field-wrapper">
+                  <div className="story-instructions">{projectDescriptionInstructions}</div>
+                  <div className="text-box">
+                    <textarea rows="10" value={this.state.content || ""}
+                      wrap="hard" className="story-description-field"
+                      onChange={this._setDescription} />
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li className="story-risks">
+              <div className="story-grey-field">
+                <div className="story-attribute-field">Risks</div>
+                <div className="story-field-wrapper">
+                    <div className="story-instructions">{projectRisksInstructions}</div>
+                    <div className="text-box">
+                      <textarea rows="10" value={this.state.risks || ""}
+                        wrap="hard" className="story-risks-field"
+                        onChange={this._setRisks} />
+                    </div>
+                </div>
+              </div>
             </li>
           </ul>
         </div>
-        <div className="project-risks-title">Risks and challenges</div>
-        <div className="project-risks-wrapper">
-          <ul>
-            <li className="risks">{projectRisksInstructions}</li>
-            <li>
-              <textarea rows="5" value={this.state.risks || ""}
-                wrap="hard" className="project-risks-field"
-                onChange={this._setRisks} />
-            </li>
-          </ul>
+        <div id="save-box" className={this.state.saved || 'saved'}>
+        <button className={this.state.saved || 'saved'}
+        onClick={this._handleSave}>Save Changes</button>
+        <p>{this.state.errorMessage}</p>
         </div>
       </div>
     );

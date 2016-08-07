@@ -12,12 +12,8 @@ const Rewards = React.createClass({
     this.rewardItems.push(<RewardItem projectId={this.projectId}
       key={this.uniqueKey} project_reward_key={this.uniqueKey}
       idx={this.uniqueKey} _delete={this._deleteReward}
-      _rewardCount={this._rewardCount}/>);
+      count={this.rewardItems.length} />);
     this.forceUpdate();
-  },
-
-  _rewardCount () {
-    return this.rewardItems.length;
   },
 
   componentDidMount () {

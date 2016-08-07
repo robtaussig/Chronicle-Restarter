@@ -65,6 +65,7 @@
 	var Account = __webpack_require__(294);
 	var Preview = __webpack_require__(295);
 	var RewardStore = __webpack_require__(286);
+	var SavedProjectStore = __webpack_require__(282);
 	var FinalizeProject = __webpack_require__(296);
 	
 	
@@ -98,6 +99,7 @@
 	);
 	
 	window.RewardStore = RewardStore;
+	window.SavedProjectStore = SavedProjectStore;
 	
 	document.addEventListener('DOMContentLoaded', function () {
 	  SetupApp();
@@ -35142,8 +35144,11 @@
 	    this.setState({ blurb: e.target.value });
 	    this._resetSavedStatus();
 	  },
+	  _cycleCategory: function _cycleCategory() {
+	    return this.state.category_id === ProjectCategories.length - 1 ? 0 : this.state.category_id + 1;
+	  },
 	  _setCategory: function _setCategory(e) {
-	    this.setState({ category: e.target.value });
+	    this.setState({ category_id: this._cycleCategory() });
 	    this._resetSavedStatus();
 	  },
 	  _setLocation: function _setLocation(e) {
@@ -35242,7 +35247,8 @@
 	              React.createElement(
 	                'div',
 	                { className: 'field-wrapper' },
-	                React.createElement('textarea', { rows: '3', value: this.state.blurb || "", wrap: 'hard', className: 'short-blurb-field',
+	                React.createElement('textarea', { rows: '3', value: this.state.blurb || "",
+	                  wrap: 'hard', className: 'short-blurb-field',
 	                  onChange: this._setBlurb })
 	              )
 	            )
@@ -35260,12 +35266,17 @@
 	              ),
 	              React.createElement(
 	                'div',
-	                { className: 'field-wrapper' },
+	                { id: 'cat-field-wrapper', className: 'field-wrapper' },
 	                React.createElement(
 	                  'button',
-	                  { className: 'category-button',
-	                    onClick: this._setCategory },
-	                  this.displayCategory || ""
+	                  { id: 'cat-button', className: 'category-button' },
+	                  ProjectCategories[this.state.category_id].label || ""
+	                ),
+	                React.createElement(
+	                  'div',
+	                  { id: 'down-arrow' },
+	                  React.createElement('img', { onClick: this._setCategory, id: 'down',
+	                    src: window.down })
 	                )
 	              )
 	            )
@@ -35340,10 +35351,10 @@
 	      ),
 	      React.createElement(
 	        'div',
-	        { id: 'save-box', className: this.state.saved },
+	        { id: 'save-box', className: this.state.saved || 'saved' },
 	        React.createElement(
 	          'button',
-	          { className: this.state.saved,
+	          { className: this.state.saved || 'saved',
 	            onClick: this._handleSave },
 	          'Save Changes'
 	        ),
@@ -35376,12 +35387,14 @@
 	var SavedProjectStore = new Store(AppDispatcher);
 	
 	var _blankProject = {
-	  image: {},
+	  image: "",
 	  title: "",
 	  blurb: "",
 	  location: "",
 	  duration: 0,
 	  goal: 0,
+	  risks: "",
+	  content: "",
 	  saved: '',
 	  errorMessage: ""
 	};
@@ -35449,11 +35462,8 @@
 	    this.rewardItems.push(React.createElement(RewardItem, { projectId: this.projectId,
 	      key: this.uniqueKey, project_reward_key: this.uniqueKey,
 	      idx: this.uniqueKey, _delete: this._deleteReward,
-	      _rewardCount: this._rewardCount }));
+	      count: this.rewardItems.length }));
 	    this.forceUpdate();
-	  },
-	  _rewardCount: function _rewardCount() {
-	    return this.rewardItems.length;
 	  },
 	  componentDidMount: function componentDidMount() {
 	    this._prepopulate();
@@ -35732,7 +35742,7 @@
 	        'div',
 	        { className: 'reward-title-text ' + this.state.saved },
 	        'Reward #',
-	        this.props._rewardCount(),
+	        this.props.count + 1,
 	        ':'
 	      ),
 	      React.createElement(
@@ -35914,18 +35924,49 @@
 /* 291 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	var React = __webpack_require__(3);
-	
+	var SavedProjectStore = __webpack_require__(282);
+	var SavedProjectActions = __webpack_require__(277);
 	var Story = React.createClass({
-	  displayName: "Story",
+	  displayName: 'Story',
 	  getInitialState: function getInitialState() {
-	    return { description: "", risk: "" };
+	    return { content: "", risks: "", saved: 'saved', errorMessage: "" };
 	  },
-	  componentDidMount: function componentDidMount() {},
-	  _setDescription: function _setDescription() {},
-	  _setRisks: function _setRisks() {},
+	  componentDidMount: function componentDidMount() {
+	    this.listener = SavedProjectStore.addListener(this._onChange);
+	    this.setState(SavedProjectStore.currentProject());
+	  },
+	  componentWillUnmount: function componentWillUnmount() {
+	    this.listener.remove();
+	  },
+	  _onChange: function _onChange() {
+	    this.setState(SavedProjectStore.currentProject());
+	    this.forceUpdate();
+	  },
+	  _setDescription: function _setDescription(event) {
+	    this.setState({ content: event.target.value, saved: 'unsaved' });
+	  },
+	  _setRisks: function _setRisks(event) {
+	    this.setState({ risks: event.target.value, saved: 'unsaved' });
+	  },
+	  _handleSave: function _handleSave() {
+	    console.log(this.state);
+	    if (this.state.saved === 'saved') {
+	      this.setState({ errorMessage: "Your project is already up-to-date" });
+	    } else {
+	      this.setState({ errorMessage: "", saved: 'saved' });
+	      this._saveProject();
+	    }
+	  },
+	  _saveProject: function _saveProject() {
+	    if (SavedProjectStore.currentProject().id) {
+	      SavedProjectActions.updateSavedProject('story', this.state);
+	    } else {
+	      SavedProjectActions.submitSavedProject('story', this.state);
+	    }
+	  },
 	
 	
 	  render: function render() {
@@ -35937,56 +35978,87 @@
 	     with completing your project, and how are you qualified to overcome them?";
 	
 	    return React.createElement(
-	      "div",
-	      { className: "story-wrapper" },
+	      'div',
+	      { className: 'story-wrapper' },
 	      React.createElement(
-	        "div",
-	        { className: "project-description-title" },
-	        "Project Description"
-	      ),
-	      React.createElement(
-	        "div",
-	        { className: "project-description-wrapper" },
+	        'div',
+	        { className: 'story-basic-form' },
 	        React.createElement(
-	          "ul",
+	          'ul',
 	          null,
 	          React.createElement(
-	            "li",
-	            { className: "instructions" },
-	            projectDescriptionInstructions
+	            'li',
+	            { className: 'story-content' },
+	            React.createElement(
+	              'div',
+	              { className: 'story-grey-field' },
+	              React.createElement(
+	                'div',
+	                { className: 'story-attribute-field' },
+	                'Description'
+	              ),
+	              React.createElement(
+	                'div',
+	                { className: 'story-field-wrapper' },
+	                React.createElement(
+	                  'div',
+	                  { className: 'story-instructions' },
+	                  projectDescriptionInstructions
+	                ),
+	                React.createElement(
+	                  'div',
+	                  { className: 'text-box' },
+	                  React.createElement('textarea', { rows: '10', value: this.state.content || "",
+	                    wrap: 'hard', className: 'story-description-field',
+	                    onChange: this._setDescription })
+	                )
+	              )
+	            )
 	          ),
 	          React.createElement(
-	            "li",
-	            null,
-	            React.createElement("textarea", { rows: "10", value: this.state.description || "",
-	              wrap: "hard", className: "project-description-field",
-	              onChange: this._setDescription })
+	            'li',
+	            { className: 'story-risks' },
+	            React.createElement(
+	              'div',
+	              { className: 'story-grey-field' },
+	              React.createElement(
+	                'div',
+	                { className: 'story-attribute-field' },
+	                'Risks'
+	              ),
+	              React.createElement(
+	                'div',
+	                { className: 'story-field-wrapper' },
+	                React.createElement(
+	                  'div',
+	                  { className: 'story-instructions' },
+	                  projectRisksInstructions
+	                ),
+	                React.createElement(
+	                  'div',
+	                  { className: 'text-box' },
+	                  React.createElement('textarea', { rows: '10', value: this.state.risks || "",
+	                    wrap: 'hard', className: 'story-risks-field',
+	                    onChange: this._setRisks })
+	                )
+	              )
+	            )
 	          )
 	        )
 	      ),
 	      React.createElement(
-	        "div",
-	        { className: "project-risks-title" },
-	        "Risks and challenges"
-	      ),
-	      React.createElement(
-	        "div",
-	        { className: "project-risks-wrapper" },
+	        'div',
+	        { id: 'save-box', className: this.state.saved || 'saved' },
 	        React.createElement(
-	          "ul",
+	          'button',
+	          { className: this.state.saved || 'saved',
+	            onClick: this._handleSave },
+	          'Save Changes'
+	        ),
+	        React.createElement(
+	          'p',
 	          null,
-	          React.createElement(
-	            "li",
-	            { className: "risks" },
-	            projectRisksInstructions
-	          ),
-	          React.createElement(
-	            "li",
-	            null,
-	            React.createElement("textarea", { rows: "5", value: this.state.risks || "",
-	              wrap: "hard", className: "project-risks-field",
-	              onChange: this._setRisks })
-	          )
+	          this.state.errorMessage
 	        )
 	      )
 	    );
@@ -36359,8 +36431,8 @@
 	  'basics': "The title of your project will impact its place in history. Pick a title, image, goal, campaign duration, and category.",
 	  'rewards header': "Add as many rewards as you wish.",
 	  'rewards': "You can delete them at any time. Don't forget to save them before moving on by clicking on the checkmark.",
-	  'story header': "Story",
-	  'story': "Story text",
+	  'story header': "If history is written by the victors...",
+	  'story': "Be the victor.",
 	  'about_you header': "About You",
 	  'about_you': "About you text",
 	  'account header': "Account",

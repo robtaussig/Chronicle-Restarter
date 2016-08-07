@@ -446,7 +446,6 @@ div.footer-wrapper ul.footer-bottom li{
   margin: 0 10px;
   width: 220px;
   border: 1px solid #ccc;
-  border-radius: 10px;
   background-color: white;
   cursor: pointer;
 }
@@ -472,18 +471,14 @@ ul.active-drop-down {
   font-size: 18px;
   left: 50%;
   background-color: mintcream;
-  border-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
   z-index: 1;
 }
 
 li.cats-first-half, li.cats-second-half {
   padding:20px;
   cursor: pointer;
-}
-
-li.cats-first-half:first-child {
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
 }
 
 li.cats-second-half:last-child {
@@ -729,6 +724,7 @@ div.grey-field {
   line-height: 155px;
   position: relative;
   margin: 10px;
+  border-radius: 5px;
   background-color: aliceblue;
 }
 
@@ -774,13 +770,25 @@ button.category-button {
   transform: translateY(-50%);
   border: 1px solid #ccc;
   margin-right: -6px;
-  width: 680px;
+  width: 220px;
   height: 45px;
   line-height: 45px;
   font-size: 24px;
   border-radius: 5px;
   text-indent: 15px;
   background-color: white;
+  cursor: default;
+}
+
+img#down {
+  color: blue;
+  position: absolute;
+  height: 25px;
+  width: auto;
+  top: 50%;
+  left: 180px;
+  transform: translateY(-50%);
+  cursor: pointer;
 }
 
 #save-box {
@@ -832,6 +840,7 @@ div.rewards-wrapper {
   margin-top: 20px;
   margin-left: 20px;
   margin-right: 20px;
+  border-radius: 5px;
   background-color: aliceblue;
 }
 
@@ -969,3 +978,75 @@ div.reward-quantity-wrapper {
   top: 187px;
   position: absolute;
 }
+
+/* Story page */
+
+.story-wrapper {
+   position:relative;
+   height: 100%;
+}
+
+.story-basic-form {
+   padding:15px;
+   height: 100%;
+}
+
+div.story-attribute-field  {
+  position: absolute;
+  width: auto;
+  margin-top: 30px;
+  margin-left: 25px;
+  font-weight: 700;
+}
+
+div.story-grey-field {
+  height: 600px;
+  width: 98%;
+  position: relative;
+  margin: 10px;
+  border-radius:5px;
+  background-color: aliceblue;
+}
+
+div.story-field-wrapper {
+  position: relative;
+  float: right;
+  width: 700px;
+  height: auto;
+}
+
+div.story-instructions {
+  position: absolute;
+  line-height: 20px;
+  margin: 25px;
+  margin-left: -50px;
+}
+
+div.text-box textarea {
+  position: absolute;
+  top: 100px;
+  border: 1px solid #ccc;
+  margin-left: -50px;
+  margin-right: 25px;
+  width: 700px;
+  height: auto;
+  line-height: 45px;
+  font-size: 24px;
+  border-radius: 5px;
+  background-color: white;
+  text-indent: 15px;
+  resize: none;
+}
+
+div.text-box textarea:focus {
+  border: 1px solid blue;
+  transition: 0.5s;
+}
+
+// textarea.short-blurb-field {
+//   height: 75px;
+//   line-height: 25px;
+//   font-size: 20px;
+//   resize: none;
+//   line-indent: 15px;
+// }

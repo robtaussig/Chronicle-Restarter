@@ -67,7 +67,7 @@ const RewardItem = React.createClass({
 
     return (
       <div className="rewards-wrapper">
-        <div className={`reward-title-text ${this.state.saved}`}>Reward #{this.props._rewardCount()}:</div>
+        <div className={`reward-title-text ${this.state.saved}`}>Reward #{this.props.count + 1}:</div>
         <div className="reward-title-text unsaved">{_unsavedText}</div>
         <div className="reward-form-wrapper">
           <div className="reward-title-wrapper">

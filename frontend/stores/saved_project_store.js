@@ -4,12 +4,14 @@ const SavedProjectConstants = require('../constants/saved_project_constants.js')
 const SavedProjectStore = new Store(AppDispatcher);
 
 let _blankProject = {
-                      image: {},
+                      image: "",
                       title: "",
                       blurb: "",
                       location: "",
                       duration: 0,
                       goal: 0,
+                      risks: "",
+                      content: "",
                       saved: '',
                       errorMessage: ""
                     };

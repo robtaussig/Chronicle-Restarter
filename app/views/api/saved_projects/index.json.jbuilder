@@ -6,6 +6,7 @@ json.array! current_user.saved_projects do |project|
   json.goal project.goal
   json.duration project.duration
   json.location project.location
+  json.risks project.risks
   json.due_date project.project_due_date
   json.project_imgs project.project_img_urls
 end

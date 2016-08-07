@@ -59,8 +59,13 @@ const Basics = React.createClass({
     this._resetSavedStatus();
   },
 
+  _cycleCategory () {
+    return this.state.category_id === ProjectCategories.length - 1 ? 0 :
+      this.state.category_id + 1;
+  },
+
   _setCategory (e) {
-    this.setState({category: e.target.value});
+    this.setState({category_id: this._cycleCategory()});
     this._resetSavedStatus();
   },
 
@@ -125,7 +130,8 @@ const Basics = React.createClass({
               <div className="grey-field">
                 <div className="attribute-field">Short blurb</div>
                 <div className="field-wrapper">
-                  <textarea rows="3" value={this.state.blurb || ""} wrap="hard" className="short-blurb-field"
+                  <textarea rows="3" value={this.state.blurb || ""}
+                    wrap="hard" className="short-blurb-field"
                     onChange={this._setBlurb} />
                 </div>
               </div>
@@ -133,11 +139,12 @@ const Basics = React.createClass({
             <li className="project-category">
               <div className="grey-field">
                 <div className="attribute-field">Category</div>
-                <div className="field-wrapper">
-                  <button className="category-button"
-                    onClick={this._setCategory}>
-                    {this.displayCategory  || ""}
+                <div id="cat-field-wrapper" className="field-wrapper">
+                  <button id="cat-button" className="category-button">
+                    {ProjectCategories[this.state.category_id].label  || ""}
                   </button>
+                  <div id="down-arrow"><img onClick={this._setCategory} id="down"
+                    src={window.down}></img></div>
                 </div>
               </div>
             </li>
@@ -175,8 +182,8 @@ const Basics = React.createClass({
             </li>
           </ul>
         </div>
-        <div id="save-box" className={this.state.saved}>
-          <button className={this.state.saved}
+        <div id="save-box" className={this.state.saved || 'saved'}>
+          <button className={this.state.saved || 'saved'}
             onClick={this._handleSave}>Save Changes</button>
           <p>{this.state.errorMessage}</p>
         </div>
