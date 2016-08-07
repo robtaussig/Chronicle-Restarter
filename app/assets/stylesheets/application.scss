@@ -40,6 +40,16 @@ span, article, footer, time, small {
   flex-direction: column;
   min-height: 100vh;
 }
+html, body {
+  height: 100%
+}
+
+div.container {
+  min-height: 1000px;
+  height: 100%;
+  position: relative;
+  margin: 0 auto;
+}
 
 ul {
   list-style: none;
@@ -179,6 +189,47 @@ body {
 #password.password {
   border: 1px solid red;
   transition: 0.5s;
+}
+
+/* Footer */
+
+div.footer-wrapper {
+  border-top: 1px dashed limegreen;
+  height: 200px;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  color: white;
+  background-color: #16163c;
+}
+
+div.footer-wrapper ul.footer-bottom {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 100px;
+}
+
+h2.click-joke {
+  position: absolute;
+  transform: translateX(-50%);
+  margin-top: 25px;
+  left: 50%;
+  color: limegreen;
+}
+
+h2.click-joke:hover {
+  color: red;
+  transition: 0.5s;
+  cursor: pointer;
+}
+
+div.footer-wrapper ul.footer-bottom li{
+  float: left;
+  margin-left: 50px;
+  margin-right: 50px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 /* Search */

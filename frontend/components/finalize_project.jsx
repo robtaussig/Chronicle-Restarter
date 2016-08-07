@@ -21,7 +21,7 @@ const FinalizeProject = React.createClass({
     this.sessionToken = SessionStore.addListener(this._handleLogin);
     this._handleLogin();
     this.forceUpdate();
-    this.header = "Let's get started.";
+    this.header = ProjectMessages['basics header'];
     this.message = ProjectMessages['basics'];
     // ProjectStore.addListener(this._onChange);
     // ErrorStore.addListener(this._handleError);
@@ -40,8 +40,8 @@ const FinalizeProject = React.createClass({
   },
 
   _changePage (pageTarget) {
+    this.header = ProjectMessages[`${pageTarget} header`];
     this.message = ProjectMessages[pageTarget];
-    this.header = "";
     this.forceUpdate();
   },
 

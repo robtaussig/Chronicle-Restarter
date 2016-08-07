@@ -27108,16 +27108,19 @@
 	var NavBar = __webpack_require__(239);
 	var Errors = __webpack_require__(271);
 	var ErrorActions = __webpack_require__(267);
+	var Footer = __webpack_require__(297);
 	
 	var App = React.createClass({
 	  displayName: 'App',
 	  render: function render() {
 	    return React.createElement(
 	      'div',
-	      null,
+	      { className: 'container' },
 	      React.createElement(NavBar, null),
 	      React.createElement(Errors, null),
-	      this.props.children
+	      this.props.children,
+	      React.createElement(Footer, null),
+	      React.createElement('div', { className: 'push' })
 	    );
 	  }
 	});
@@ -35765,7 +35768,7 @@
 	    this.sessionToken = SessionStore.addListener(this._handleLogin);
 	    this._handleLogin();
 	    this.forceUpdate();
-	    this.header = "Let's get started.";
+	    this.header = ProjectMessages['basics header'];
 	    this.message = ProjectMessages['basics'];
 	    // ProjectStore.addListener(this._onChange);
 	    // ErrorStore.addListener(this._handleError);
@@ -35781,8 +35784,8 @@
 	    }
 	  },
 	  _changePage: function _changePage(pageTarget) {
+	    this.header = ProjectMessages[pageTarget + ' header'];
 	    this.message = ProjectMessages[pageTarget];
-	    this.header = "";
 	    this.forceUpdate();
 	  },
 	  _saveChanges: function _saveChanges(savedData) {
@@ -36140,13 +36143,77 @@
 	'use strict';
 	
 	module.exports = {
+	  'basics header': "Let's get started.",
 	  'basics': "The title of your project will impact its place in history. Pick a title, image, goal, campaign duration, and category.",
-	  'rewards': "Add as many rewards as you will. Don't forget to save them by clicking on the checkmark before continuing.",
-	  'story': "Story",
-	  'about_you': "About You",
-	  'account': "Account",
-	  'preview': "Preview"
+	  'rewards header': "Add as many rewards as you wish.",
+	  'rewards': "You can delete them at any time. Don't forget to save them before moving on by clicking on the checkmark.",
+	  'story header': "Story",
+	  'story': "Story text",
+	  'about_you header': "About You",
+	  'about_you': "About you text",
+	  'account header': "Account",
+	  'account': "Account text",
+	  'preview header': "Preview",
+	  'preview': "Preview text"
 	};
+
+/***/ },
+/* 297 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(3);
+	
+	var Footer = React.createClass({
+	  displayName: "Footer",
+	
+	
+	  render: function render() {
+	    var message = "Wait, this isn't actually Kickstarter? Here's a link.";
+	
+	    return React.createElement(
+	      "div",
+	      { className: "footer-wrapper" },
+	      React.createElement(
+	        "a",
+	        { href: "http://www.kickstarter.com" },
+	        React.createElement(
+	          "h2",
+	          { className: "click-joke" },
+	          message
+	        )
+	      ),
+	      React.createElement(
+	        "ul",
+	        { id: "footer", className: "footer-bottom group" },
+	        React.createElement(
+	          "li",
+	          null,
+	          "LinkedIn"
+	        ),
+	        React.createElement(
+	          "li",
+	          null,
+	          "Facebook"
+	        ),
+	        React.createElement(
+	          "li",
+	          null,
+	          "Github"
+	        ),
+	        React.createElement(
+	          "li",
+	          null,
+	          "Portfolio Site"
+	        )
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = Footer;
 
 /***/ }
 /******/ ]);
