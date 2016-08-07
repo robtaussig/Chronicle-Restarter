@@ -14,15 +14,32 @@
  *= require_self
  */
 
- @font-face {
+@font-face {
   font-family: 'Liberation Sans';
-  src:font-url('icomoon.eot');
-  src:font-url('icomoon.eot?#iefix') format('embedded-opentype'),
-    font-url('icomoon.svg#icomoon') format('svg'),
-    font-url('icomoon.woff') format('woff'),
-    font-url('icomoon.ttf') format('truetype');
+  src:font_path('LiberationSans-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
+}
+
+@font-face {
+  font-family: 'Liberation Sans';
+  src:font_path('LiberationSans-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Liberation Sans';
+  src:font_path('LiberationSans-Italic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Liberation Sans';
+  src:font_path('LiberationSans-BoldItalic.ttf') format('truetype');
+  font-weight: bold;
+  font-style: italic;
 }
 
  html, body, header, nav, h1, a,
@@ -41,7 +58,7 @@ span, article, footer, time, small {
   vertical-align: inherit;
   box-sizing: inherit;
   background: transparent;
-  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
+  font-family: "Liberation Sans", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
     Helvetica, Arial, "Lucida Grande", sans-serif;
   // -webkit-font-smoothing: antialiased;
 }
@@ -168,6 +185,13 @@ div.splash {
   top: -54px;
 }
 
+h2.under-construction {
+  position: absolute;
+  text-align: center;
+  font-size: 24px;
+  width: 100%;
+  cursor: default;
+}
 
 /* error box */
 .errors {

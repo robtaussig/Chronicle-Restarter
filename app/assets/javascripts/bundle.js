@@ -61,6 +61,7 @@
 	var Rewards = __webpack_require__(282);
 	var Story = __webpack_require__(286);
 	var AboutYou = __webpack_require__(287);
+	var FrontPage = __webpack_require__(298);
 	var Account = __webpack_require__(288);
 	var Preview = __webpack_require__(289);
 	var RewardStore = __webpack_require__(292);
@@ -70,6 +71,8 @@
 	var routes = React.createElement(
 	  _reactRouter.Route,
 	  { path: '/', component: App },
+	  React.createElement(_reactRouter.IndexRoute, { component: FrontPage }),
+	  React.createElement(_reactRouter.Route, { path: 'home', component: FrontPage }),
 	  React.createElement(_reactRouter.Route, { path: 'signUp', component: SignUp }),
 	  React.createElement(_reactRouter.Route, { path: 'logIn', component: LogIn }),
 	  React.createElement(_reactRouter.Route, { path: 'userProfile', component: UserProfile }),
@@ -27117,7 +27120,6 @@
 	      'div',
 	      { className: 'container' },
 	      React.createElement(NavBar, null),
-	      React.createElement('div', { className: 'splash' }),
 	      React.createElement(Errors, null),
 	      this.props.children,
 	      React.createElement(Footer, null),
@@ -35231,7 +35233,7 @@
 	                React.createElement(
 	                  'div',
 	                  { className: 'num-days' },
-	                  React.createElement('input', { value: this.state.duration || "", className: 'duration-field', type: 'text',
+	                  React.createElement('input', { value: this.state.duration || "", className: 'duration-field', type: 'number',
 	                    onChange: this._setDuration })
 	                )
 	              )
@@ -35252,7 +35254,7 @@
 	                'div',
 	                { className: 'field-wrapper' },
 	                '$',
-	                React.createElement('input', { type: 'text', className: 'goal',
+	                React.createElement('input', { type: 'number', className: 'goal',
 	                  onChange: this._setGoal,
 	                  value: this.state.goal || "",
 	                  placeholder: '0' }),
@@ -35584,7 +35586,7 @@
 	          React.createElement(
 	            'div',
 	            null,
-	            React.createElement('input', { type: 'text', placeholder: '$', className: 'reward-amount-input',
+	            React.createElement('input', { type: 'number', placeholder: '$', className: 'reward-amount-input',
 	              onChange: this._setAmount, value: this.state.amount || "" })
 	          )
 	        ),
@@ -35615,7 +35617,7 @@
 	          React.createElement(
 	            'div',
 	            null,
-	            React.createElement('input', { type: 'text', className: 'reward-quantity-input',
+	            React.createElement('input', { type: 'number', className: 'reward-quantity-input',
 	              onChange: this._setQuantity, value: this.state.quantity || "" })
 	          )
 	        ),
@@ -36215,6 +36217,35 @@
 	});
 	
 	module.exports = Footer;
+
+/***/ },
+/* 298 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(3);
+	
+	var FrontPage = React.createClass({
+	  displayName: "FrontPage",
+	
+	
+	  render: function render() {
+	    return React.createElement(
+	      "div",
+	      null,
+	      React.createElement("div", { className: "splash" }),
+	      React.createElement(
+	        "h2",
+	        { className: "under-construction" },
+	        "Project Navigation is currently under construction... Please check back later."
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = FrontPage;
 
 /***/ }
 /******/ ]);

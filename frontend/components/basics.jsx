@@ -151,7 +151,7 @@ const Basics = React.createClass({
                 <div className="attribute-field">Funding duration</div>
                 <div className="field-wrapper">
                   <div className="num-days">
-                    <input value={this.state.duration || ""} className="duration-field" type="text"
+                    <input value={this.state.duration || ""} className="duration-field" type="number"
                       onChange={this._setDuration} />
                   </div>
                 </div>
@@ -161,7 +161,7 @@ const Basics = React.createClass({
               <div className="grey-field">
                 <div className="attribute-field">Funding goal</div>
                 <div className="field-wrapper">
-                  $<input type="text" className="goal"
+                  $<input type="number" className="goal"
                     onChange={this._setGoal}
                     value={this.state.goal || ""}
                     placeholder="0"/>USD

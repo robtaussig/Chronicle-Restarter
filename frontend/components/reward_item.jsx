@@ -74,7 +74,7 @@ const RewardItem = React.createClass({
           <div className="reward-amount-wrapper">
             <div className="reward-amount-field">Pledge amount</div>
             <div>
-              <input type="text" placeholder="$" className="reward-amount-input"
+              <input type="number" placeholder="$" className="reward-amount-input"
                 onChange={this._setAmount} value={this.state.amount || ""} />
             </div>
           </div>
@@ -89,7 +89,7 @@ const RewardItem = React.createClass({
           <div className="reward-quantity-wrapper">
             <div className="reward-quantity-field">Quantity</div>
             <div>
-              <input type="text" className="reward-quantity-input"
+              <input type="number" className="reward-quantity-input"
                 onChange={this._setQuantity} value={this.state.quantity || ""} />
             </div>
           </div>

@@ -10,7 +10,6 @@ const App = React.createClass({
     return (
       <div className="container">
         <NavBar/>
-        <div className="splash"></div>
         <Errors/>
         {this.props.children}
         <Footer/>

@@ -11,6 +11,7 @@ const Basics = require('./components/basics.jsx');
 const Rewards = require('./components/rewards.jsx');
 const Story = require('./components/story.jsx');
 const AboutYou = require('./components/about_you.jsx');
+const FrontPage = require('./components/front_page.jsx');
 const Account = require('./components/account.jsx');
 const Preview = require('./components/preview.jsx');
 const RewardStore = require('./stores/reward_store.js');
@@ -19,6 +20,8 @@ import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 
 const routes = (
   <Route path="/" component={App}>
+    <IndexRoute component={FrontPage} />
+    <Route path="home" component={FrontPage} />
     <Route path="signUp" component={SignUp} />
     <Route path="logIn" component={LogIn} />
     <Route path="userProfile" component={UserProfile} />
