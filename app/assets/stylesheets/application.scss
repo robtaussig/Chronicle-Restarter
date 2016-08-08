@@ -532,7 +532,7 @@ button.submit-button {
 .project-create-subpage {
   background-color: white;
   width: 945px;
-  min-height: 400px;
+  min-height: 200px;
   margin: 0 auto;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -1074,10 +1074,61 @@ div.text-box textarea:focus {
   font-weight: bold;
 }
 
-// textarea.short-blurb-field {
-//   height: 75px;
-//   line-height: 25px;
-//   font-size: 20px;
-//   resize: none;
-//   line-indent: 15px;
-// }
+/* Account form */
+
+.account-info-form {
+   padding:15px;
+   height: 100%;
+}
+
+.email-text {
+  position: absolute;
+  height: auto;
+  line-height: 20px;
+  bottom: 10px;
+  left: 200px;
+  margin-right: 15px;
+}
+
+div.unverified, div.verified, div.pending {
+  position: absolute;
+  right: 0;
+  line-height: 20px;
+  padding-right: 20px;
+  padding-top: 20px;
+  font-weight: bold;
+}
+
+input#account.user-email {
+  width: 500px;
+  text-align: center;
+}
+
+div.status.pending {
+  color: orange;
+  transition: 1s;
+}
+
+div.status.verified {
+  color: green;
+  transition: 1s;
+}
+
+div.email-button {
+  position: absolute;
+  right: 15px;
+  line-height: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: steelblue;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+div.email-button.verified, div.email-button.pending, div.email-button.verified
+  button, div.email-button.pending button {
+  background-color: #aaa;
+  cursor: not-allowed;
+  color: #fff;
+}

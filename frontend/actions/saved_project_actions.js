@@ -10,6 +10,10 @@ const SavedProjectActions = {
       ErrorActions.receiveError);
   },
 
+  fetchAllSavedProjects (form, userId) {
+    
+  }
+
   updateSavedProject (form, projectInfo) {
     ProjectApiUtil.updateProject(form, projectInfo, this.receiveUpdatedProject,
       ErrorActions.receiveError);

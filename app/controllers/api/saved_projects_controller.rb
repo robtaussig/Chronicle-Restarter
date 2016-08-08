@@ -27,7 +27,10 @@ class Api::SavedProjectsController < ApplicationController
   end
 
   def index
-    @saved_projects = current_user.saved_projects
+    @user = Api::User.find(params[:user_id])
+    @saved_projects = Api::SavedProject.all.select do |project|
+
+    end
     render :index
   end
 

@@ -34855,7 +34855,7 @@
 	var React = __webpack_require__(3);
 	
 	var ErrorActions = __webpack_require__(267);
-	var SavedProjectActions = __webpack_require__(277);
+	var SavedProjectActions = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../actions/saved_project_actions.js\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	var ProjectCategories = __webpack_require__(280);
 	var SessionStore = __webpack_require__(241);
 	
@@ -35006,97 +35006,8 @@
 	module.exports = CreateProject;
 
 /***/ },
-/* 277 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var AppDispatcher = __webpack_require__(260);
-	var ProjectApiUtil = __webpack_require__(278);
-	var SavedProjectConstants = __webpack_require__(279);
-	var ErrorActions = __webpack_require__(267);
-	
-	var SavedProjectActions = {
-	  submitSavedProject: function submitSavedProject(form, projectInfo) {
-	    ProjectApiUtil.saveProject(form, projectInfo, this.receiveSavedProject, ErrorActions.receiveError);
-	  },
-	  updateSavedProject: function updateSavedProject(form, projectInfo) {
-	    ProjectApiUtil.updateProject(form, projectInfo, this.receiveUpdatedProject, ErrorActions.receiveError);
-	  },
-	  deleteSavedProject: function deleteSavedProject(form, projectInfo) {
-	    ProjectApiUtil.removeSavedProject(form, projectInfo.id, this.removeSavedProject, ErrorActions.receiveError);
-	  },
-	  receiveSavedProject: function receiveSavedProject(data) {
-	    AppDispatcher.dispatch({
-	      actionType: SavedProjectConstants.SAVED_PROJECT_RECEIVED,
-	      data: data
-	    });
-	  },
-	  receiveUpdatedProject: function receiveUpdatedProject(data) {
-	    AppDispatcher.dispatch({
-	      actionType: SavedProjectConstants.SAVED_PROJECT_UPDATED,
-	      data: data
-	    });
-	  },
-	  removeSavedProject: function removeSavedProject(data) {
-	    AppDispatcher.dispatch({
-	      actionType: SavedProjectConstants.SAVED_PROJECT_REMOVED,
-	      data: data
-	    });
-	  }
-	};
-	
-	module.exports = SavedProjectActions;
-
-/***/ },
-/* 278 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	var ProjectApiUtil = {
-	  saveProject: function saveProject(form, data, successCB, errorCB) {
-	    $.ajax({
-	      url: '/api/saved_projects',
-	      type: 'POST',
-	      data: { saved_project: data },
-	      success: function success(resp) {
-	        successCB(resp);
-	      },
-	      error: function error(resp) {
-	        errorCB(form, resp);
-	      }
-	    });
-	  },
-	  updateProject: function updateProject(form, data, successCB, errorCB) {
-	    $.ajax({
-	      url: '/api/saved_projects/' + data.id,
-	      type: 'PATCH',
-	      data: { saved_project: data },
-	      success: function success(resp) {
-	        successCB(resp);
-	      },
-	      error: function error(resp) {
-	        errorCB(form, resp);
-	      }
-	    });
-	  },
-	  removeSavedProject: function removeSavedProject(form, id, success, errorCB) {
-	    $.ajax({
-	      url: '/api/saved_projects/' + id,
-	      type: 'DELETE',
-	      data: { params: id },
-	      success: success,
-	      error: function error(resp) {
-	        errorCB(form, resp);
-	      }
-	    });
-	  }
-	};
-	
-	module.exports = ProjectApiUtil;
-
-/***/ },
+/* 277 */,
+/* 278 */,
 /* 279 */
 /***/ function(module, exports) {
 
@@ -35123,7 +35034,7 @@
 	'use strict';
 	
 	var React = __webpack_require__(3);
-	var SavedProjectActions = __webpack_require__(277);
+	var SavedProjectActions = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../actions/saved_project_actions.js\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	var SavedProjectStore = __webpack_require__(282);
 	var ProjectCategories = __webpack_require__(280);
 	var SessionStore = __webpack_require__(241);
@@ -35955,7 +35866,7 @@
 	
 	var React = __webpack_require__(3);
 	var SavedProjectStore = __webpack_require__(282);
-	var SavedProjectActions = __webpack_require__(277);
+	var SavedProjectActions = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../actions/saved_project_actions.js\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	var Story = React.createClass({
 	  displayName: 'Story',
 	  getInitialState: function getInitialState() {
@@ -36350,16 +36261,96 @@
 	'use strict';
 	
 	var React = __webpack_require__(3);
+	var UserStore = __webpack_require__(300);
+	var UserActions = __webpack_require__(298);
+	var SessionStore = __webpack_require__(300);
 	
 	var Account = React.createClass({
 	  displayName: 'Account',
+	  getInitialState: function getInitialState() {
+	    return { id: "", email: "", verified: "unverified", verification_status: "" };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    var userId = SessionStore.currentUser().id || window.myApp.id;
+	    this._prepopulate(userId);
+	    this.listener = UserStore.addListener(this._onChange);
+	    UserActions.fetchUser('about', userId);
+	  },
+	  componentWillUnmount: function componentWillUnmount() {
+	    this.listener.remove();
+	  },
+	  _prepopulate: function _prepopulate(userId) {
+	    var email = SessionStore.currentUser().email || window.myApp.email;
+	    this.setState({ email: email, id: userId });
+	  },
+	  _setEmail: function _setEmail(event) {
+	    this.setState({ email: event.target.value });
+	  },
+	  _onChange: function _onChange() {
+	    this.setState({ verified: UserStore.currentUser().verified,
+	      verification_status: UserStore.currentUser().verification_status });
+	  },
+	  _handleVerification: function _handleVerification() {
+	    UserActions.saveUser('account', { id: this.state.id, email: this.state.email,
+	      verification_status: "pending" });
+	  },
 	
 	
 	  render: function render() {
+	    var text = "You do not have to enter your email for purposes of this " + "demonstration, but if you do, you will receive a confirmation email, " + "as well as be notified if your project is ever fully funded.";
+	
+	    var verifiedStatus = this.state.verified === "verified" ? "verified" : this.state.verification_status === "pending" ? "pending" : "unverified";
+	
 	    return React.createElement(
 	      'div',
-	      null,
-	      'Account'
+	      { className: 'account-info-wrapper' },
+	      React.createElement(
+	        'div',
+	        { className: 'account-info-form' },
+	        React.createElement(
+	          'ul',
+	          null,
+	          React.createElement(
+	            'li',
+	            { className: 'email-field' },
+	            React.createElement(
+	              'div',
+	              { className: 'grey-field' },
+	              React.createElement(
+	                'div',
+	                { className: 'attribute-field' },
+	                'Email'
+	              ),
+	              React.createElement(
+	                'div',
+	                { className: 'email-text' },
+	                text
+	              ),
+	              React.createElement(
+	                'div',
+	                { className: 'field-wrapper' },
+	                React.createElement('input', { id: 'account', type: 'text', className: 'user-email',
+	                  onChange: this._setEmail, value: this.state.email || "" })
+	              ),
+	              React.createElement(
+	                'div',
+	                { className: 'status ' + verifiedStatus },
+	                verifiedStatus
+	              ),
+	              React.createElement(
+	                'div',
+	                { className: 'email-button ' + this.state.verification_status },
+	                React.createElement(
+	                  'button',
+	                  {
+	                    onClick: this._handleVerification },
+	                  'Send Confirmation'
+	                )
+	              )
+	            )
+	          )
+	        )
+	      )
 	    );
 	  }
 	
@@ -36401,7 +36392,7 @@
 	
 	var React = __webpack_require__(3);
 	var ProjectStore = __webpack_require__(284);
-	var SavedProjectActions = __webpack_require__(277);
+	var SavedProjectActions = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../actions/saved_project_actions.js\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	var SavedProjectStore = __webpack_require__(282);
 	var ErrorActions = __webpack_require__(267);
 	var ErrorStore = __webpack_require__(268);
