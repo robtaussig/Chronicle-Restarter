@@ -770,6 +770,10 @@ textarea.short-blurb-field, textarea.user-biography {
   padding-left: 15px;
 }
 
+textarea.user-biography {
+  height: 125px;
+}
+
 button.category-button {
   float: right;
   position: absolute;

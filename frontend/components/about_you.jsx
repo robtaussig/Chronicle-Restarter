@@ -8,7 +8,7 @@ const AboutYou = React.createClass({
 
   getInitialState () {
     return({
-      author_id: "",
+      id: "",
       pic_url: "",
       full_name: "",
       biography: "",
@@ -20,8 +20,8 @@ const AboutYou = React.createClass({
   },
 
   componentDidMount () {
-    let userId = SessionStore.currentUser().id;
-    this.setState({user_id: userId});
+    let userId = SessionStore.currentUser().id || window.myApp.id;
+    this.setState({id: userId});
     UserActions.fetchUser('about', userId);
     this.listener = UserStore.addListener(this._onChange);
   },
@@ -104,7 +104,7 @@ const AboutYou = React.createClass({
               <div className="grey-field">
                 <div className="attribute-field">Biography</div>
                 <div className="field-wrapper">
-                  <textarea rows="4" value={this.state.biography || ""}
+                  <textarea rows="5" value={this.state.biography || ""}
                     wrap="hard" className="user-biography"
                     onChange={this._setBiography} />
                 </div>
@@ -124,6 +124,7 @@ const AboutYou = React.createClass({
                 <div className="attribute-field">Website</div>
                 <div className="field-wrapper">
                   <input type="text" className="website"
+                    placeholder="www."
                     onChange={this._setWebsite}
                     value={this.state.website || ""}/>
                 </div>

@@ -67,7 +67,7 @@ const LogIn = React.createClass({
 
   _loginGuest (event) {
     event.preventDefault();
-    let _guest = `guest${Math.floor(Math.random()*100)}`;
+    let _guest = `guest${Math.floor(Math.random()*10000)}`;
     SessionActions.signUp(this.state.form,{
         username: _guest,
         password: 'password',

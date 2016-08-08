@@ -34580,7 +34580,7 @@
 	  },
 	  _loginGuest: function _loginGuest(event) {
 	    event.preventDefault();
-	    var _guest = 'guest' + Math.floor(Math.random() * 100);
+	    var _guest = 'guest' + Math.floor(Math.random() * 10000);
 	    SessionActions.signUp(this.state.form, {
 	      username: _guest,
 	      password: 'password',
@@ -36111,7 +36111,7 @@
 	  displayName: 'AboutYou',
 	  getInitialState: function getInitialState() {
 	    return {
-	      author_id: "",
+	      id: "",
 	      pic_url: "",
 	      full_name: "",
 	      biography: "",
@@ -36122,8 +36122,8 @@
 	    };
 	  },
 	  componentDidMount: function componentDidMount() {
-	    var userId = SessionStore.currentUser().id;
-	    this.setState({ user_id: userId });
+	    var userId = SessionStore.currentUser().id || window.myApp.id;
+	    this.setState({ id: userId });
 	    UserActions.fetchUser('about', userId);
 	    this.listener = UserStore.addListener(this._onChange);
 	  },
@@ -36244,7 +36244,7 @@
 	              React.createElement(
 	                'div',
 	                { className: 'field-wrapper' },
-	                React.createElement('textarea', { rows: '4', value: this.state.biography || "",
+	                React.createElement('textarea', { rows: '5', value: this.state.biography || "",
 	                  wrap: 'hard', className: 'user-biography',
 	                  onChange: this._setBiography })
 	              )
@@ -36284,6 +36284,7 @@
 	                'div',
 	                { className: 'field-wrapper' },
 	                React.createElement('input', { type: 'text', className: 'website',
+	                  placeholder: 'www.',
 	                  onChange: this._setWebsite,
 	                  value: this.state.website || "" })
 	              )
@@ -36654,8 +36655,8 @@
 	  'rewards': "You can delete them at any time. Don't forget to save them before moving on by clicking on the checkmark.",
 	  'story header': "If history is written by the victors...",
 	  'story': "Be the victor.",
-	  'about_you header': "About You",
-	  'about_you': "About you text",
+	  'about_you header': "Tell us about yourself.",
+	  'about_you': "If history has taught us one thing, it's that the people behind an idea are more important than the idea itself.",
 	  'account header': "Account",
 	  'account': "Account text",
 	  'preview header': "Preview",
