@@ -320,7 +320,7 @@ div.footer-wrapper ul.footer-bottom li{
   height: 40px;
   font-size: 14px;
   border-radius: 5px;
-  text-indent: 10px;
+  padding-left: 10px;
   font-weight: 300;
 }
 
@@ -747,7 +747,7 @@ div.field-wrapper input, textarea.short-blurb-field {
   font-size: 24px;
   border-radius: 5px;
   background-color: white;
-  text-indent: 15px;
+  padding-left: 15px;
 }
 
 div.field-wrapper input:focus, textarea.short-blurb-field:focus {
@@ -760,7 +760,7 @@ textarea.short-blurb-field {
   line-height: 25px;
   font-size: 20px;
   resize: none;
-  line-indent: 15px;
+  padding-left: 15px;
 }
 
 button.category-button {
@@ -847,7 +847,7 @@ div.rewards-wrapper {
 div.rewards-wrapper input {
   width: 125%;
   margin: 10px;
-  text-indent: 5px;
+  padding-left: 5px;
   border: 1px solid black;
   color: black;
   background-color: white;
@@ -864,7 +864,7 @@ div.rewards-wrapper textarea {
   resize: none;
   color: black;
   margin: 10px;
-  text-indent: 5px;
+  padding-left: 5px;
   background-color: white;
 }
 
@@ -1034,7 +1034,7 @@ div.text-box textarea {
   font-size: 24px;
   border-radius: 5px;
   background-color: white;
-  text-indent: 15px;
+  padding-left: 15px;
   resize: none;
 }
 
