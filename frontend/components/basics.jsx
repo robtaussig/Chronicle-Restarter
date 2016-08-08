@@ -3,6 +3,7 @@ const SavedProjectActions = require('../actions/saved_project_actions.js');
 const SavedProjectStore = require ('../stores/saved_project_store.js');
 const ProjectCategories = require('../constants/project_category_ids.js');
 const SessionStore = require('../stores/session_store.js');
+const UserActions = require('../actions/user_actions.js');
 
 const Basics = React.createClass({
 
@@ -100,6 +101,10 @@ const Basics = React.createClass({
     } else {
       SavedProjectActions.submitSavedProject('basics', this.state);
     }
+
+    UserActions.saveUser('basics',{id: SessionStore.currentUser().id,
+      full_name: SessionStore.currentUser().username,
+      location: this.state.location});
 
   },
 

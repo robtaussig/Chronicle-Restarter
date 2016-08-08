@@ -6,16 +6,16 @@ const ErrorActions = require('./error_actions.js');
 
 const UserActions = {
 
-  logIn (form, userInfo) {
-    ApiUtil.logIn(form, userInfo, this.receiveCurrentUser, ErrorActions.receiveError);
+  saveUser (form, userInfo) {
+    ApiUtil.saveUser(form, userInfo, this.receiveCurrentUser, ErrorActions.receiveError);
   },
 
-  signUp (form, userInfo) {
-    ApiUtil.signUp(form, userInfo, this.receiveCurrentUser, ErrorActions.receiveError);
+  fetchUser (form, userId) {
+    ApiUtil.fetchUser(form, userId, this.receiveCurrentUser, ErrorActions.receiveError);
   },
 
-  deleteUser (userId) {
-    ApiUtil.deleteUser(userId, this.removeUser, ErrorActions.receiveError);
+  deleteUser (form, userId) {
+    ApiUtil.deleteUser(form, userId, this.removeUser, ErrorActions.receiveError);
   },
 
   receiveCurrentUser (data) {
@@ -27,7 +27,7 @@ const UserActions = {
 
   removeUser(data) {
     AppDispatcher.dispatch({
-      actionType: UserConstants.USER_INFO_REMOVED,
+      actionType: UserConstants.USER_REMOVED,
       data: data
     });
   }

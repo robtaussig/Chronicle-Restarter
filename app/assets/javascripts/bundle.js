@@ -35127,6 +35127,7 @@
 	var SavedProjectStore = __webpack_require__(282);
 	var ProjectCategories = __webpack_require__(280);
 	var SessionStore = __webpack_require__(241);
+	var UserActions = __webpack_require__(298);
 	
 	var Basics = React.createClass({
 	  displayName: 'Basics',
@@ -35206,6 +35207,10 @@
 	    } else {
 	      SavedProjectActions.submitSavedProject('basics', this.state);
 	    }
+	
+	    UserActions.saveUser('basics', { id: SessionStore.currentUser().id,
+	      full_name: SessionStore.currentUser().username,
+	      location: this.state.location });
 	  },
 	
 	
@@ -36117,16 +36122,19 @@
 	    };
 	  },
 	  componentDidMount: function componentDidMount() {
-	    this._prepopulate();
+	    var userId = SessionStore.currentUser().id;
+	    this.setState({ user_id: userId });
+	    UserActions.fetchUser('about', userId);
+	    this.listener = UserStore.addListener(this._onChange);
 	  },
-	  componentWillUnmount: function componentWillUnmount() {},
+	  componentWillUnmount: function componentWillUnmount() {
+	    this.listener.remove();
+	  },
+	  _onChange: function _onChange() {
+	    this.setState(UserStore.currentUser());
+	  },
 	  _resetSavedStatus: function _resetSavedStatus() {
 	    this.setState({ saved: 'unsaved', errorMessage: "" });
-	  },
-	  _prepopulate: function _prepopulate() {
-	    var _currentUser = SessionStore.currentUser();
-	    var _initialLocation = SavedProjectStore.currentProject().location;
-	    this.setState({ full_name: _currentUser.username, location: _initialLocation });
 	  },
 	  _setName: function _setName(event) {
 	    event.preventDefault();
@@ -36157,7 +36165,7 @@
 	    }
 	  },
 	  _saveUserInfo: function _saveUserInfo() {
-	    console.log('success!');
+	    UserActions.saveUser('about', this.state);
 	  },
 	
 	
@@ -36667,14 +36675,14 @@
 	var ErrorActions = __webpack_require__(267);
 	
 	var UserActions = {
-	  logIn: function logIn(form, userInfo) {
-	    ApiUtil.logIn(form, userInfo, this.receiveCurrentUser, ErrorActions.receiveError);
+	  saveUser: function saveUser(form, userInfo) {
+	    ApiUtil.saveUser(form, userInfo, this.receiveCurrentUser, ErrorActions.receiveError);
 	  },
-	  signUp: function signUp(form, userInfo) {
-	    ApiUtil.signUp(form, userInfo, this.receiveCurrentUser, ErrorActions.receiveError);
+	  fetchUser: function fetchUser(form, userId) {
+	    ApiUtil.fetchUser(form, userId, this.receiveCurrentUser, ErrorActions.receiveError);
 	  },
-	  deleteUser: function deleteUser(userId) {
-	    ApiUtil.deleteUser(userId, this.removeUser, ErrorActions.receiveError);
+	  deleteUser: function deleteUser(form, userId) {
+	    ApiUtil.deleteUser(form, userId, this.removeUser, ErrorActions.receiveError);
 	  },
 	  receiveCurrentUser: function receiveCurrentUser(data) {
 	    AppDispatcher.dispatch({
@@ -36684,7 +36692,7 @@
 	  },
 	  removeUser: function removeUser(data) {
 	    AppDispatcher.dispatch({
-	      actionType: UserConstants.USER_INFO_REMOVED,
+	      actionType: UserConstants.USER_REMOVED,
 	      data: data
 	    });
 	  }
@@ -36699,11 +36707,11 @@
 	'use strict';
 	
 	var UserApiUtil = {
-	  logIn: function logIn(form, data, successCB, errorCB) {
+	  saveUser: function saveUser(form, userInfo, successCB, errorCB) {
 	    $.ajax({
-	      url: '/api/session',
-	      type: 'POST',
-	      data: { user: data },
+	      url: '/api/users/' + userInfo.id,
+	      type: 'PATCH',
+	      data: { user: userInfo },
 	      success: function success(resp) {
 	        successCB(resp);
 	      },
@@ -36712,13 +36720,17 @@
 	      }
 	    });
 	  },
-	  logOut: function logOut(currentUser, success, error) {
+	  fetchUser: function fetchUser(form, userId, successCB, errorCB) {
 	    $.ajax({
-	      url: '/api/session',
-	      type: 'DELETE',
-	      data: { currentUser: currentUser },
-	      success: success,
-	      error: error
+	      url: '/api/users/' + userId,
+	      type: 'GET',
+	      data: { params: userId },
+	      success: function success(resp) {
+	        successCB(resp);
+	      },
+	      error: function error(resp) {
+	        errorCB(form, resp);
+	      }
 	    });
 	  },
 	  deleteUser: function deleteUser(userId, success, error) {
@@ -36727,7 +36739,9 @@
 	      type: 'DELETE',
 	      data: { params: userId },
 	      success: success,
-	      error: error
+	      error: function error(resp) {
+	        errorCB(form, resp);
+	      }
 	    });
 	  }
 	};
@@ -36745,33 +36759,29 @@
 	var UserConstants = __webpack_require__(301);
 	var UserStore = new Store(AppDispatcher);
 	
-	var _currentUser = {};
+	var _userInfo = {};
 	
-	function _logIn(user) {
-	  _currentUser = user;
+	function _removeUser() {
+	  _userInfo = {};
 	  UserStore.__emitChange();
 	}
 	
-	function _logOut() {
-	  _currentUser = {};
+	function _updateUserInfo(user) {
+	  _userInfo = user;
 	  UserStore.__emitChange();
 	}
 	
 	UserStore.currentUser = function () {
-	  return _currentUser;
-	};
-	
-	UserStore.isUserLoggedIn = function (id) {
-	  return _currentUser.id === id;
+	  return _userInfo;
 	};
 	
 	UserStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
 	    case UserConstants.USER_INFO_RECEIVED:
-	      _logIn(payload.user);
+	      _updateUserInfo(payload.user);
 	      break;
-	    case UserConstants.USER_INFO_REMOVED:
-	      _logOut();
+	    case UserConstants.USER_REMOVED:
+	      _removeUser();
 	      break;
 	  }
 	};

@@ -20,21 +20,22 @@ const AboutYou = React.createClass({
   },
 
   componentDidMount () {
-    this._prepopulate();
+    let userId = SessionStore.currentUser().id;
+    this.setState({user_id: userId});
+    UserActions.fetchUser('about', userId);
+    this.listener = UserStore.addListener(this._onChange);
   },
 
   componentWillUnmount () {
+    this.listener.remove();
+  },
 
+  _onChange () {
+    this.setState(UserStore.currentUser());
   },
 
   _resetSavedStatus () {
     this.setState({saved: 'unsaved', errorMessage: ""});
-  },
-
-  _prepopulate () {
-    let _currentUser = SessionStore.currentUser();
-    let _initialLocation = SavedProjectStore.currentProject().location;
-    this.setState({full_name: _currentUser.username, location: _initialLocation});
   },
 
   _setName (event) {
@@ -71,7 +72,7 @@ const AboutYou = React.createClass({
   },
 
   _saveUserInfo () {
-    console.log('success!');
+    UserActions.saveUser('about', this.state);
   },
 
   render: function() {

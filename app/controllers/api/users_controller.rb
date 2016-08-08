@@ -11,6 +11,16 @@ class Api::UsersController < ApplicationController
     end
   end
 
+  def update
+    @user = Api::User.find(params[:id])
+    if @user.update(user_params)
+      render :show
+    else
+      @errors = @user.errors.full_messages
+      render json: @errors, status: 401
+    end
+  end
+
   def show
     @user = Api::User.find(params[:id])
     render :show

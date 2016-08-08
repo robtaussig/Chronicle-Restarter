@@ -1,10 +1,10 @@
 const UserApiUtil = {
 
-  logIn (form, data, successCB, errorCB) {
+  saveUser (form, userInfo, successCB, errorCB) {
     $.ajax({
-      url: '/api/session',
-      type: 'POST',
-      data: {user: data},
+      url: '/api/users/' + userInfo.id,
+      type: 'PATCH',
+      data: {user: userInfo},
       success: (resp) => {
         successCB(resp);
       },
@@ -14,13 +14,17 @@ const UserApiUtil = {
     });
   },
 
-  logOut (currentUser, success, error) {
+  fetchUser (form, userId, successCB, errorCB) {
     $.ajax({
-      url: '/api/session',
-      type: 'DELETE',
-      data: {currentUser},
-      success,
-      error
+      url: '/api/users/' + userId,
+      type: 'GET',
+      data: {params: userId},
+      success: (resp) => {
+        successCB(resp);
+      },
+      error: (resp) => {
+        errorCB(form, resp);
+      }
     });
   },
 
@@ -30,7 +34,9 @@ const UserApiUtil = {
       type: 'DELETE',
       data: {params: userId},
       success,
-      error
+      error: (resp) => {
+        errorCB(form, resp);
+      }
     });
   },
 
