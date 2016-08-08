@@ -173,10 +173,10 @@ const Basics = React.createClass({
               <div className="grey-field">
                 <div className="attribute-field">Funding goal</div>
                 <div className="field-wrapper">
-                  $<input type="number" className="goal"
+                  <input type="number" className="goal"
                     onChange={this._setGoal}
                     value={this.state.goal || ""}
-                    placeholder="0"/>USD
+                    placeholder="$0"/>USD
                 </div>
               </div>
             </li>
@@ -194,7 +194,3 @@ const Basics = React.createClass({
 });
 
 module.exports = Basics;
-
-/* TODO
-1) Create a delete button (discard changes)
- */

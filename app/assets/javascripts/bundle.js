@@ -59,14 +59,14 @@
 	var CreateProject = __webpack_require__(276);
 	var Basics = __webpack_require__(281);
 	var Rewards = __webpack_require__(283);
-	var Story = __webpack_require__(291);
-	var AboutYou = __webpack_require__(292);
-	var FrontPage = __webpack_require__(293);
-	var Account = __webpack_require__(294);
-	var Preview = __webpack_require__(295);
-	var RewardStore = __webpack_require__(286);
+	var Story = __webpack_require__(290);
+	var AboutYou = __webpack_require__(291);
+	var FrontPage = __webpack_require__(292);
+	var Account = __webpack_require__(293);
+	var Preview = __webpack_require__(294);
+	var RewardStore = __webpack_require__(285);
 	var SavedProjectStore = __webpack_require__(282);
-	var FinalizeProject = __webpack_require__(296);
+	var FinalizeProject = __webpack_require__(295);
 	
 	
 	var routes = React.createElement(
@@ -503,17 +503,45 @@
 	} ())
 	function runTimeout(fun) {
 	    if (cachedSetTimeout === setTimeout) {
+	        //normal enviroments in sane situations
 	        return setTimeout(fun, 0);
-	    } else {
-	        return cachedSetTimeout.call(null, fun, 0);
 	    }
+	    try {
+	        // when when somebody has screwed with setTimeout but no I.E. maddness
+	        return cachedSetTimeout(fun, 0);
+	    } catch(e){
+	        try {
+	            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+	            return cachedSetTimeout.call(null, fun, 0);
+	        } catch(e){
+	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+	            return cachedSetTimeout.call(this, fun, 0);
+	        }
+	    }
+	
+	
 	}
 	function runClearTimeout(marker) {
 	    if (cachedClearTimeout === clearTimeout) {
-	        clearTimeout(marker);
-	    } else {
-	        cachedClearTimeout.call(null, marker);
+	        //normal enviroments in sane situations
+	        return clearTimeout(marker);
 	    }
+	    try {
+	        // when when somebody has screwed with setTimeout but no I.E. maddness
+	        return cachedClearTimeout(marker);
+	    } catch (e){
+	        try {
+	            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+	            return cachedClearTimeout.call(null, marker);
+	        } catch (e){
+	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+	            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+	            return cachedClearTimeout.call(this, marker);
+	        }
+	    }
+	
+	
+	
 	}
 	var queue = [];
 	var draining = false;
@@ -35338,11 +35366,10 @@
 	              React.createElement(
 	                'div',
 	                { className: 'field-wrapper' },
-	                '$',
 	                React.createElement('input', { type: 'number', className: 'goal',
 	                  onChange: this._setGoal,
 	                  value: this.state.goal || "",
-	                  placeholder: '0' }),
+	                  placeholder: '$0' }),
 	                'USD'
 	              )
 	            )
@@ -35370,10 +35397,6 @@
 	});
 	
 	module.exports = Basics;
-	
-	/* TODO
-	1) Create a delete button (discard changes)
-	 */
 
 /***/ },
 /* 282 */
@@ -35451,9 +35474,9 @@
 	var React = __webpack_require__(3);
 	var SavedProjectStore = __webpack_require__(282);
 	var ProjectStore = __webpack_require__(284);
-	var RewardStore = __webpack_require__(286);
-	var RewardItem = __webpack_require__(288);
-	var RewardActions = __webpack_require__(289);
+	var RewardStore = __webpack_require__(285);
+	var RewardItem = __webpack_require__(287);
+	var RewardActions = __webpack_require__(288);
 	
 	var Rewards = React.createClass({
 	  displayName: 'Rewards',
@@ -35568,15 +35591,14 @@
 	"use strict";
 
 /***/ },
-/* 285 */,
-/* 286 */
+/* 285 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var Store = __webpack_require__(242).Store;
 	var AppDispatcher = __webpack_require__(260);
-	var RewardConstants = __webpack_require__(287);
+	var RewardConstants = __webpack_require__(286);
 	var RewardStore = new Store(AppDispatcher);
 	var ErrorActions = __webpack_require__(267);
 	
@@ -35658,7 +35680,7 @@
 	module.exports = RewardStore;
 
 /***/ },
-/* 287 */
+/* 286 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -35671,14 +35693,14 @@
 	};
 
 /***/ },
-/* 288 */
+/* 287 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(3);
-	var RewardStore = __webpack_require__(286);
-	var RewardActions = __webpack_require__(289);
+	var RewardStore = __webpack_require__(285);
+	var RewardActions = __webpack_require__(288);
 	
 	var RewardItem = React.createClass({
 	  displayName: 'RewardItem',
@@ -35841,14 +35863,14 @@
 	module.exports = RewardItem;
 
 /***/ },
-/* 289 */
+/* 288 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var AppDispatcher = __webpack_require__(260);
-	var RewardApiUtil = __webpack_require__(290);
-	var RewardConstants = __webpack_require__(287);
+	var RewardApiUtil = __webpack_require__(289);
+	var RewardConstants = __webpack_require__(286);
 	var ErrorActions = __webpack_require__(267);
 	
 	var RewardActions = {
@@ -35875,7 +35897,7 @@
 	module.exports = RewardActions;
 
 /***/ },
-/* 290 */
+/* 289 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -35921,7 +35943,7 @@
 	module.exports = RewardApiUtil;
 
 /***/ },
-/* 291 */
+/* 290 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -36069,22 +36091,213 @@
 	module.exports = Story;
 
 /***/ },
-/* 292 */
+/* 291 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(3);
+	var UserStore = __webpack_require__(300);
+	var UserActions = __webpack_require__(298);
+	var SavedProjectStore = __webpack_require__(282);
+	var SessionStore = __webpack_require__(241);
 	
 	var AboutYou = React.createClass({
 	  displayName: 'AboutYou',
+	  getInitialState: function getInitialState() {
+	    return {
+	      author_id: "",
+	      pic_url: "",
+	      full_name: "",
+	      biography: "",
+	      location: "",
+	      website: "",
+	      saved: 'saved',
+	      errorMessage: ""
+	    };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    this._prepopulate();
+	  },
+	  componentWillUnmount: function componentWillUnmount() {},
+	  _resetSavedStatus: function _resetSavedStatus() {
+	    this.setState({ saved: 'unsaved', errorMessage: "" });
+	  },
+	  _prepopulate: function _prepopulate() {
+	    var _currentUser = SessionStore.currentUser();
+	    var _initialLocation = SavedProjectStore.currentProject().location;
+	    this.setState({ full_name: _currentUser.username, location: _initialLocation });
+	  },
+	  _setName: function _setName(event) {
+	    event.preventDefault();
+	    this.setState({ full_name: event.target.value });
+	    this._resetSavedStatus();
+	  },
+	  _setBiography: function _setBiography(event) {
+	    event.preventDefault();
+	    this.setState({ biography: event.target.value });
+	    this._resetSavedStatus();
+	  },
+	  _setLocation: function _setLocation(event) {
+	    event.preventDefault();
+	    this.setState({ location: event.target.value });
+	    this._resetSavedStatus();
+	  },
+	  _setWebsite: function _setWebsite(event) {
+	    event.preventDefault();
+	    this.setState({ website: event.target.value });
+	    this._resetSavedStatus();
+	  },
+	  _handleSave: function _handleSave() {
+	    if (this.state.saved === 'saved') {
+	      this.setState({ errorMessage: "Your information is already up-to-date" });
+	    } else {
+	      this.setState({ errorMessage: "", saved: 'saved' });
+	      this._saveUserInfo();
+	    }
+	  },
+	  _saveUserInfo: function _saveUserInfo() {
+	    console.log('success!');
+	  },
 	
 	
 	  render: function render() {
 	    return React.createElement(
 	      'div',
-	      null,
-	      'AboutYou'
+	      { className: 'about-you-wrapper' },
+	      React.createElement(
+	        'div',
+	        { className: 'about-you-form' },
+	        React.createElement(
+	          'ul',
+	          null,
+	          React.createElement(
+	            'li',
+	            { className: 'user-image-field' },
+	            React.createElement(
+	              'div',
+	              { className: 'grey-field' },
+	              React.createElement(
+	                'div',
+	                { className: 'attribute-field' },
+	                'Profile photo'
+	              ),
+	              React.createElement(
+	                'div',
+	                { className: 'field-wrapper' },
+	                React.createElement(
+	                  'button',
+	                  null,
+	                  'Choose an image from your computer'
+	                )
+	              )
+	            )
+	          ),
+	          React.createElement(
+	            'li',
+	            { className: 'user-name-field' },
+	            React.createElement(
+	              'div',
+	              { className: 'grey-field' },
+	              React.createElement(
+	                'div',
+	                { className: 'attribute-field' },
+	                'Full Name'
+	              ),
+	              React.createElement(
+	                'div',
+	                { className: 'warning-text' },
+	                React.createElement(
+	                  'strong',
+	                  null,
+	                  'Warning:'
+	                ),
+	                ' Once you launch your project, you cannot modify your full name.'
+	              ),
+	              React.createElement(
+	                'div',
+	                { className: 'field-wrapper' },
+	                React.createElement('input', { type: 'text', className: 'user-name',
+	                  onChange: this._setName, value: this.state.full_name || "" })
+	              )
+	            )
+	          ),
+	          React.createElement(
+	            'li',
+	            { className: 'user-biography-field' },
+	            React.createElement(
+	              'div',
+	              { className: 'grey-field' },
+	              React.createElement(
+	                'div',
+	                { className: 'attribute-field' },
+	                'Biography'
+	              ),
+	              React.createElement(
+	                'div',
+	                { className: 'field-wrapper' },
+	                React.createElement('textarea', { rows: '4', value: this.state.biography || "",
+	                  wrap: 'hard', className: 'user-biography',
+	                  onChange: this._setBiography })
+	              )
+	            )
+	          ),
+	          React.createElement(
+	            'li',
+	            { className: 'user-location-field' },
+	            React.createElement(
+	              'div',
+	              { className: 'grey-field' },
+	              React.createElement(
+	                'div',
+	                { className: 'attribute-field' },
+	                'Location'
+	              ),
+	              React.createElement(
+	                'div',
+	                { className: 'field-wrapper' },
+	                React.createElement('input', { type: 'text', className: 'user-location',
+	                  onChange: this._setLocation, value: this.state.location || "" })
+	              )
+	            )
+	          ),
+	          React.createElement(
+	            'li',
+	            { className: 'user-website-field' },
+	            React.createElement(
+	              'div',
+	              { className: 'grey-field' },
+	              React.createElement(
+	                'div',
+	                { className: 'attribute-field' },
+	                'Website'
+	              ),
+	              React.createElement(
+	                'div',
+	                { className: 'field-wrapper' },
+	                React.createElement('input', { type: 'text', className: 'website',
+	                  onChange: this._setWebsite,
+	                  value: this.state.website || "" })
+	              )
+	            )
+	          )
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { id: 'save-box', className: this.state.saved || 'saved' },
+	        React.createElement(
+	          'button',
+	          { className: this.state.saved || 'saved',
+	            onClick: this._handleSave },
+	          'Save Changes'
+	        ),
+	        React.createElement(
+	          'p',
+	          null,
+	          this.state.errorMessage
+	        )
+	      )
 	    );
 	  }
 	
@@ -36093,7 +36306,7 @@
 	module.exports = AboutYou;
 
 /***/ },
-/* 293 */
+/* 292 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -36122,7 +36335,7 @@
 	module.exports = FrontPage;
 
 /***/ },
-/* 294 */
+/* 293 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -36146,7 +36359,7 @@
 	module.exports = Account;
 
 /***/ },
-/* 295 */
+/* 294 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -36170,7 +36383,7 @@
 	module.exports = Preview;
 
 /***/ },
-/* 296 */
+/* 295 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -36183,14 +36396,14 @@
 	var SavedProjectStore = __webpack_require__(282);
 	var ErrorActions = __webpack_require__(267);
 	var ErrorStore = __webpack_require__(268);
-	var ProjectNavBar = __webpack_require__(297);
+	var ProjectNavBar = __webpack_require__(296);
 	var Basics = __webpack_require__(281);
 	var Rewards = __webpack_require__(283);
-	var Story = __webpack_require__(291);
-	var AboutYou = __webpack_require__(292);
-	var Account = __webpack_require__(294);
-	var Preview = __webpack_require__(295);
-	var ProjectMessages = __webpack_require__(298);
+	var Story = __webpack_require__(290);
+	var AboutYou = __webpack_require__(291);
+	var Account = __webpack_require__(293);
+	var Preview = __webpack_require__(294);
+	var ProjectMessages = __webpack_require__(297);
 	var SessionStore = __webpack_require__(241);
 	
 	var FinalizeProject = React.createClass({
@@ -36304,7 +36517,7 @@
 	*/
 
 /***/ },
-/* 297 */
+/* 296 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -36421,7 +36634,7 @@
 	*/
 
 /***/ },
-/* 298 */
+/* 297 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36439,6 +36652,141 @@
 	  'account': "Account text",
 	  'preview header': "Preview",
 	  'preview': "Preview text"
+	};
+
+/***/ },
+/* 298 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var AppDispatcher = __webpack_require__(260);
+	var UserConstants = __webpack_require__(263);
+	var ApiUtil = __webpack_require__(299);
+	var ErrorConstants = __webpack_require__(266);
+	var ErrorActions = __webpack_require__(267);
+	
+	var UserActions = {
+	  logIn: function logIn(form, userInfo) {
+	    ApiUtil.logIn(form, userInfo, this.receiveCurrentUser, ErrorActions.receiveError);
+	  },
+	  signUp: function signUp(form, userInfo) {
+	    ApiUtil.signUp(form, userInfo, this.receiveCurrentUser, ErrorActions.receiveError);
+	  },
+	  deleteUser: function deleteUser(userId) {
+	    ApiUtil.deleteUser(userId, this.removeUser, ErrorActions.receiveError);
+	  },
+	  receiveCurrentUser: function receiveCurrentUser(data) {
+	    AppDispatcher.dispatch({
+	      actionType: UserConstants.USER_INFO_RECEIVED,
+	      user: data
+	    });
+	  },
+	  removeUser: function removeUser(data) {
+	    AppDispatcher.dispatch({
+	      actionType: UserConstants.USER_INFO_REMOVED,
+	      data: data
+	    });
+	  }
+	};
+	
+	module.exports = UserActions;
+
+/***/ },
+/* 299 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	var UserApiUtil = {
+	  logIn: function logIn(form, data, successCB, errorCB) {
+	    $.ajax({
+	      url: '/api/session',
+	      type: 'POST',
+	      data: { user: data },
+	      success: function success(resp) {
+	        successCB(resp);
+	      },
+	      error: function error(resp) {
+	        errorCB(form, resp);
+	      }
+	    });
+	  },
+	  logOut: function logOut(currentUser, success, error) {
+	    $.ajax({
+	      url: '/api/session',
+	      type: 'DELETE',
+	      data: { currentUser: currentUser },
+	      success: success,
+	      error: error
+	    });
+	  },
+	  deleteUser: function deleteUser(userId, success, error) {
+	    $.ajax({
+	      url: '/api/users/' + userId,
+	      type: 'DELETE',
+	      data: { params: userId },
+	      success: success,
+	      error: error
+	    });
+	  }
+	};
+	
+	module.exports = UserApiUtil;
+
+/***/ },
+/* 300 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var Store = __webpack_require__(242).Store;
+	var AppDispatcher = __webpack_require__(260);
+	var UserConstants = __webpack_require__(301);
+	var UserStore = new Store(AppDispatcher);
+	
+	var _currentUser = {};
+	
+	function _logIn(user) {
+	  _currentUser = user;
+	  UserStore.__emitChange();
+	}
+	
+	function _logOut() {
+	  _currentUser = {};
+	  UserStore.__emitChange();
+	}
+	
+	UserStore.currentUser = function () {
+	  return _currentUser;
+	};
+	
+	UserStore.isUserLoggedIn = function (id) {
+	  return _currentUser.id === id;
+	};
+	
+	UserStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case UserConstants.USER_INFO_RECEIVED:
+	      _logIn(payload.user);
+	      break;
+	    case UserConstants.USER_INFO_REMOVED:
+	      _logOut();
+	      break;
+	  }
+	};
+	
+	module.exports = UserStore;
+
+/***/ },
+/* 301 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	module.exports = {
+	  USER_RECEIVED: 'USER_RECEIVED',
+	  USER_REMOVED: 'USER_REMOVED'
 	};
 
 /***/ }

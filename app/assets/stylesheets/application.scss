@@ -63,6 +63,10 @@ span, article, footer, time, small {
   // -webkit-font-smoothing: antialiased;
 }
 
+html {
+  overflow-y: scroll;
+}
+
 .flex-container {
   display: flex;
   flex-direction: column;
@@ -528,12 +532,12 @@ button.submit-button {
 .project-create-subpage {
   background-color: white;
   width: 945px;
-  min-height: 1200px;
+  min-height: 400px;
   margin: 0 auto;
   border: 1px solid #ccc;
   border-radius: 5px;
   margin-bottom: 400px;
-  padding-bottom: 100px;
+  padding-bottom: 15px;
   flex: 1;
 }
 
@@ -701,7 +705,9 @@ p.delete-message {
   position: relative;
 }
 
-.wrapper {
+/* Basics Form */
+
+.wrapper, .about-you-wrapper {
    position:relative;
    height: 100%;
 }
@@ -735,13 +741,13 @@ div.field-wrapper {
   height: 155px;
 }
 
-div.field-wrapper input, textarea.short-blurb-field {
+div.field-wrapper input, textarea.short-blurb-field, textarea.user-biography {
   position: absolute;
   top: 77px;
   transform: translateY(-50%);
   border: 1px solid #ccc;
   margin-right: 25px;
-  width: 680px;
+  width: 660px;
   height: 45px;
   line-height: 45px;
   font-size: 24px;
@@ -750,12 +756,13 @@ div.field-wrapper input, textarea.short-blurb-field {
   padding-left: 15px;
 }
 
-div.field-wrapper input:focus, textarea.short-blurb-field:focus {
+div.field-wrapper input:focus, textarea.short-blurb-field:focus,
+  textarea.user-biography:focus {
   border: 1px solid blue;
   transition: 0.5s;
 }
 
-textarea.short-blurb-field {
+textarea.short-blurb-field, textarea.user-biography {
   height: 75px;
   line-height: 25px;
   font-size: 20px;
@@ -833,6 +840,7 @@ img#down {
 }
 
 /* Rewards creation */
+
 div.rewards-wrapper {
   position: relative;
   height: 350px;
@@ -1041,6 +1049,25 @@ div.text-box textarea {
 div.text-box textarea:focus {
   border: 1px solid blue;
   transition: 0.5s;
+}
+
+/* About You Form */
+
+.about-you-form {
+   padding:15px;
+   height: 100%;
+}
+
+.warning-text {
+  position: absolute;
+  height: auto;
+  line-height: 20px;
+  bottom: 20px;
+  left: 200px;
+}
+.warning-text strong {
+  color: red;
+  font-weight: bold;
 }
 
 // textarea.short-blurb-field {

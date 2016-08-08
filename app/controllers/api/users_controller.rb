@@ -20,13 +20,14 @@ class Api::UsersController < ApplicationController
     @user = Api::User.find(params[:id])
     logout(@user)
     @user.destroy!
-    redirect_to root_url
+    render :show
   end
 
   private
 
   def user_params
-    params.require(:user).permit(:username, :password, :email, :home, :image_url)
+    params.require(:user).permit(:username, :password, :email, :location,
+      :website, :pic_url, :biography, :full_name)
   end
 
 end
