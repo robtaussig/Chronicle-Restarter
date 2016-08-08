@@ -12,6 +12,12 @@ const RewardActions = {
     });
   },
 
+  saveAllRewards () {
+    AppDispatcher.dispatch({
+      actionType: RewardConstants.SAVE_ALL,
+    });
+  },
+
   updateReward (rewardInfo) {
     AppDispatcher.dispatch({
       actionType: RewardConstants.REWARD_UPDATED,

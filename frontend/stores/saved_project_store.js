@@ -18,8 +18,14 @@ let _blankProject = {
 
 let _savedProject = _blankProject;
 
+let _savedProjects = [];
+
 SavedProjectStore.find = (id) => {
 
+};
+
+SavedProjectStore.allCurrentProjects = () => {
+  return _savedProjects;
 };
 
 SavedProjectStore.currentProject = () => {
@@ -45,6 +51,11 @@ function _removeSavedProject () {
   SavedProjectStore.__emitChange();
 }
 
+function _retrieveAllProjects (projects) {
+  _savedProjects = projects;
+  SavedProjectStore.__emitChange();
+}
+
 SavedProjectStore.__onDispatch = (payload) => {
   switch (payload.actionType) {
     case SavedProjectConstants.SAVED_PROJECT_UPDATED:
@@ -55,6 +66,9 @@ SavedProjectStore.__onDispatch = (payload) => {
     break;
     case SavedProjectConstants.SAVED_PROJECT_RECEIVED:
       _resetSavedProject(payload.data);
+    break;
+    case SavedProjectConstants.SAVED_PROJECTS_RECEIVED:
+      _retrieveAllProjects(payload.data);
     break;
   }
 };

@@ -57,6 +57,7 @@
 	var SetupApp = __webpack_require__(274);
 	var StartProject = __webpack_require__(275);
 	var CreateProject = __webpack_require__(276);
+	var SavedProjects = __webpack_require__(302);
 	var Basics = __webpack_require__(281);
 	var Rewards = __webpack_require__(283);
 	var Story = __webpack_require__(290);
@@ -77,6 +78,7 @@
 	  React.createElement(_reactRouter.Route, { path: 'signUp', component: SignUp }),
 	  React.createElement(_reactRouter.Route, { path: 'logIn', component: LogIn }),
 	  React.createElement(_reactRouter.Route, { path: 'userProfile', component: UserProfile }),
+	  React.createElement(_reactRouter.Route, { path: 'savedProjects', component: SavedProjects }),
 	  React.createElement(_reactRouter.Route, { path: 'startProject', component: StartProject }),
 	  React.createElement(_reactRouter.Route, { path: 'createProject', component: CreateProject }),
 	  React.createElement(
@@ -97,9 +99,6 @@
 	  { history: _reactRouter.browserHistory },
 	  routes
 	);
-	
-	window.RewardStore = RewardStore;
-	window.SavedProjectStore = SavedProjectStore;
 	
 	document.addEventListener('DOMContentLoaded', function () {
 	  SetupApp();
@@ -34802,12 +34801,51 @@
 
 	'use strict';
 	
+	var _reactRouter = __webpack_require__(1);
+	
 	var React = __webpack_require__(3);
 	var Link = __webpack_require__(1).Link;
+	var SavedProjects = __webpack_require__(302);
+	
 	
 	var StartProject = React.createClass({
 	  displayName: 'StartProject',
+	  getInitialState: function getInitialState() {
+	    return { selected: false };
+	  },
+	  _newProject: function _newProject() {
+	    _reactRouter.browserHistory.push('/createProject');
+	  },
+	  _savedProjects: function _savedProjects() {
+	    _reactRouter.browserHistory.push('/savedProjects');
+	  },
+	  _selectButtons: function _selectButtons() {
+	    this.setState({ selected: true });
+	  },
+	  _hideButtons: function _hideButtons() {
+	    this.setState({ selected: false });
+	  },
 	  render: function render() {
+	    var hidden = this.state.selected ? "hidden" : "";
+	
+	    var subButtons = this.state.selected ? [React.createElement(
+	      'li',
+	      { key: '1', onClick: this._newProject },
+	      'New Project'
+	    ), React.createElement(
+	      'li',
+	      { className: hidden, key: '2' },
+	      'Start a project'
+	    ), React.createElement(
+	      'li',
+	      { key: '3', onClick: this._savedProjects },
+	      'Saved Projects'
+	    )] : [React.createElement(
+	      'li',
+	      { key: '2' },
+	      'Start a project'
+	    )];
+	
 	    return React.createElement(
 	      'div',
 	      { className: 'start-project' },
@@ -34834,15 +34872,29 @@
 	        )
 	      ),
 	      React.createElement(
-	        Link,
-	        { to: '/createProject' },
-	        'Start a project'
+	        'ul',
+	        { onMouseEnter: this._selectButtons, onMouseLeave: this._hideButtons,
+	          className: 'buttons-wrapper' },
+	        subButtons
 	      )
 	    );
 	  }
 	});
 	
 	module.exports = StartProject;
+	
+	/*
+	let subButtons = this.state.selected ? [
+	    <button className="new-project-button" key="1"
+	      onClick={this._newProject} onMouseLeave={this._hideButtons}>
+	      New Project
+	    </button>,
+	    <button className="saved-projects-button"  key="2"
+	      onClick={this._savedProjects} onMouseLeave={this._hideButtons}>
+	      Saved Projects
+	    </button>
+	  ] : [];
+	 */
 
 /***/ },
 /* 276 */
@@ -34855,7 +34907,7 @@
 	var React = __webpack_require__(3);
 	
 	var ErrorActions = __webpack_require__(267);
-	var SavedProjectActions = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../actions/saved_project_actions.js\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var SavedProjectActions = __webpack_require__(277);
 	var ProjectCategories = __webpack_require__(280);
 	var SessionStore = __webpack_require__(241);
 	
@@ -35006,8 +35058,119 @@
 	module.exports = CreateProject;
 
 /***/ },
-/* 277 */,
-/* 278 */,
+/* 277 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var AppDispatcher = __webpack_require__(260);
+	var ProjectApiUtil = __webpack_require__(278);
+	var SavedProjectConstants = __webpack_require__(279);
+	var ErrorActions = __webpack_require__(267);
+	
+	var SavedProjectActions = {
+	  submitSavedProject: function submitSavedProject(form, projectInfo) {
+	    ProjectApiUtil.saveProject(form, projectInfo, this.receiveSavedProject, ErrorActions.receiveError);
+	  },
+	  fetchAllSavedProjects: function fetchAllSavedProjects(form, userId) {
+	    ProjectApiUtil.fetchAllSavedProjects(form, userId, this.receiveAllSavedProjects, ErrorActions.receiveError);
+	  },
+	  updateSavedProject: function updateSavedProject(form, projectInfo) {
+	    ProjectApiUtil.updateProject(form, projectInfo, this.receiveUpdatedProject, ErrorActions.receiveError);
+	  },
+	  deleteSavedProject: function deleteSavedProject(form, projectInfo) {
+	    ProjectApiUtil.removeSavedProject(form, projectInfo.id, this.removeSavedProject, ErrorActions.receiveError);
+	  },
+	  receiveSavedProject: function receiveSavedProject(data) {
+	    AppDispatcher.dispatch({
+	      actionType: SavedProjectConstants.SAVED_PROJECT_RECEIVED,
+	      data: data
+	    });
+	  },
+	  receiveAllSavedProjects: function receiveAllSavedProjects(data) {
+	    AppDispatcher.dispatch({
+	      actionType: SavedProjectConstants.SAVED_PROJECTS_RECEIVED,
+	      data: data
+	    });
+	  },
+	  receiveUpdatedProject: function receiveUpdatedProject(data) {
+	    AppDispatcher.dispatch({
+	      actionType: SavedProjectConstants.SAVED_PROJECT_UPDATED,
+	      data: data
+	    });
+	  },
+	  removeSavedProject: function removeSavedProject(data) {
+	    AppDispatcher.dispatch({
+	      actionType: SavedProjectConstants.SAVED_PROJECT_REMOVED,
+	      data: data
+	    });
+	  }
+	};
+	
+	module.exports = SavedProjectActions;
+
+/***/ },
+/* 278 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	var ProjectApiUtil = {
+	  saveProject: function saveProject(form, data, successCB, errorCB) {
+	    $.ajax({
+	      url: '/api/saved_projects',
+	      type: 'POST',
+	      data: { saved_project: data },
+	      success: function success(resp) {
+	        successCB(resp);
+	      },
+	      error: function error(resp) {
+	        errorCB(form, resp);
+	      }
+	    });
+	  },
+	  fetchAllSavedProjects: function fetchAllSavedProjects(form, userId, successCB, errorCB) {
+	    $.ajax({
+	      url: '/api/saved_projects',
+	      type: 'GET',
+	      data: { user_id: userId },
+	      success: function success(resp) {
+	        successCB(resp);
+	      },
+	      error: function error(resp) {
+	        errorCB(form, resp);
+	      }
+	    });
+	  },
+	  updateProject: function updateProject(form, data, successCB, errorCB) {
+	    $.ajax({
+	      url: '/api/saved_projects/' + data.id,
+	      type: 'PATCH',
+	      data: { saved_project: data },
+	      success: function success(resp) {
+	        successCB(resp);
+	      },
+	      error: function error(resp) {
+	        errorCB(form, resp);
+	      }
+	    });
+	  },
+	  removeSavedProject: function removeSavedProject(form, id, success, errorCB) {
+	    $.ajax({
+	      url: '/api/saved_projects/' + id,
+	      type: 'DELETE',
+	      data: { params: id },
+	      success: success,
+	      error: function error(resp) {
+	        errorCB(form, resp);
+	      }
+	    });
+	  }
+	};
+	
+	module.exports = ProjectApiUtil;
+
+/***/ },
 /* 279 */
 /***/ function(module, exports) {
 
@@ -35016,7 +35179,8 @@
 	module.exports = {
 	  SAVED_PROJECT_RECEIVED: 'SAVED_PROJECT_RECEIVED',
 	  SAVED_PROJECT_REMOVED: 'SAVED_PROJECT_REMOVED',
-	  SAVED_PROJECT_UPDATED: 'SAVED_PROJECT_UPDATED'
+	  SAVED_PROJECT_UPDATED: 'SAVED_PROJECT_UPDATED',
+	  SAVED_PROJECTS_RECEIVED: 'SAVED_PROJECTS_RECEIVED'
 	};
 
 /***/ },
@@ -35034,7 +35198,7 @@
 	'use strict';
 	
 	var React = __webpack_require__(3);
-	var SavedProjectActions = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../actions/saved_project_actions.js\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var SavedProjectActions = __webpack_require__(277);
 	var SavedProjectStore = __webpack_require__(282);
 	var ProjectCategories = __webpack_require__(280);
 	var SessionStore = __webpack_require__(241);
@@ -35340,7 +35504,13 @@
 	
 	var _savedProject = _blankProject;
 	
+	var _savedProjects = [];
+	
 	SavedProjectStore.find = function (id) {};
+	
+	SavedProjectStore.allCurrentProjects = function () {
+	  return _savedProjects;
+	};
 	
 	SavedProjectStore.currentProject = function () {
 	  return _savedProject;
@@ -35365,6 +35535,11 @@
 	  SavedProjectStore.__emitChange();
 	}
 	
+	function _retrieveAllProjects(projects) {
+	  _savedProjects = projects;
+	  SavedProjectStore.__emitChange();
+	}
+	
 	SavedProjectStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
 	    case SavedProjectConstants.SAVED_PROJECT_UPDATED:
@@ -35375,6 +35550,9 @@
 	      break;
 	    case SavedProjectConstants.SAVED_PROJECT_RECEIVED:
 	      _resetSavedProject(payload.data);
+	      break;
+	    case SavedProjectConstants.SAVED_PROJECTS_RECEIVED:
+	      _retrieveAllProjects(payload.data);
 	      break;
 	  }
 	};
@@ -35414,10 +35592,12 @@
 	    var _this = this;
 	
 	    if (RewardStore.currentRewards().length > 0) {
-	      this.rewardItems = RewardStore.currentRewards().map(function (reward) {
+	      this.rewardItems = RewardStore.currentRewards().map(function (reward, i) {
 	        return React.createElement(RewardItem, { amount: reward.amount,
 	          description: reward.description,
 	          project_id: reward.project_id,
+	          saved: 'saved',
+	          count: i,
 	          project_reward_key: reward.project_reward_key,
 	          quantity: reward.quantity,
 	          title: reward.title,
@@ -35560,7 +35740,7 @@
 	  RewardStore.__emitChange();
 	}
 	
-	RewardStore.saveRewards = function () {
+	function _saveRewards() {
 	  _rewards.forEach(function (reward) {
 	    $.ajax({
 	      url: '/api/rewards',
@@ -35628,7 +35808,7 @@
 	      title: this.props.title || "",
 	      description: this.props.description || "",
 	      amount: this.props.amount || 0,
-	      saved: ""
+	      saved: this.props.saved || ""
 	    };
 	  },
 	  componentDidMount: function componentDidMount() {
@@ -35796,6 +35976,11 @@
 	      data: rewardInfo
 	    });
 	  },
+	  saveAllRewards: function saveAllRewards() {
+	    AppDispatcher.dispatch({
+	      actionType: RewardConstants.SAVE_ALL
+	    });
+	  },
 	  updateReward: function updateReward(rewardInfo) {
 	    AppDispatcher.dispatch({
 	      actionType: RewardConstants.REWARD_UPDATED,
@@ -35866,7 +36051,7 @@
 	
 	var React = __webpack_require__(3);
 	var SavedProjectStore = __webpack_require__(282);
-	var SavedProjectActions = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../actions/saved_project_actions.js\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var SavedProjectActions = __webpack_require__(277);
 	var Story = React.createClass({
 	  displayName: 'Story',
 	  getInitialState: function getInitialState() {
@@ -36365,9 +36550,16 @@
 	'use strict';
 	
 	var React = __webpack_require__(3);
+	var RewardActions = __webpack_require__(288);
 	
 	var Preview = React.createClass({
 	  displayName: 'Preview',
+	  getInitialState: function getInitialState() {
+	    return { submitted: false };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    RewardActions.saveAllRewards();
+	  },
 	
 	
 	  render: function render() {
@@ -36392,7 +36584,7 @@
 	
 	var React = __webpack_require__(3);
 	var ProjectStore = __webpack_require__(284);
-	var SavedProjectActions = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../actions/saved_project_actions.js\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var SavedProjectActions = __webpack_require__(277);
 	var SavedProjectStore = __webpack_require__(282);
 	var ErrorActions = __webpack_require__(267);
 	var ErrorStore = __webpack_require__(268);
@@ -36790,6 +36982,44 @@
 	  USER_RECEIVED: 'USER_RECEIVED',
 	  USER_REMOVED: 'USER_REMOVED'
 	};
+
+/***/ },
+/* 302 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(3);
+	var SavedProjectActions = __webpack_require__(277);
+	var SavedProjectStore = __webpack_require__(282);
+	var SessionStore = __webpack_require__(241);
+	
+	var SavedProjects = React.createClass({
+	  displayName: 'SavedProjects',
+	  getInitialState: function getInitialState() {
+	    return { savedProjects: [] };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    this.listener = SavedProjectStore.addListener(this._onChange);
+	    var userId = SessionStore.currentUser().id || window.myApp.id;
+	    SavedProjectActions.fetchAllSavedProjects('start', userId);
+	  },
+	  componentWillUnmount: function componentWillUnmount() {
+	    this.listener.remove();
+	  },
+	  _onChange: function _onChange() {
+	    this.setState({ savedProjects: SavedProjectStore.allCurrentProjects() });
+	    console.log(this.state);
+	  },
+	
+	
+	  render: function render() {
+	    return React.createElement('div', null);
+	  }
+	
+	});
+	
+	module.exports = SavedProjects;
 
 /***/ }
 /******/ ]);

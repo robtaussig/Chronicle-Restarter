@@ -14,6 +14,20 @@ const ProjectApiUtil = {
     });
   },
 
+  fetchAllSavedProjects (form, userId, successCB, errorCB) {
+    $.ajax({
+      url: '/api/saved_projects',
+      type: 'GET',
+      data: {user_id: userId},
+      success: (resp) => {
+        successCB(resp);
+      },
+      error: (resp) => {
+        errorCB(form, resp);
+      }
+    });
+  },
+
   updateProject (form, data, successCB, errorCB) {
     $.ajax({
       url: '/api/saved_projects/' + data.id,

@@ -12,7 +12,7 @@ const RewardItem = React.createClass({
       title: this.props.title || "",
       description: this.props.description || "",
       amount: this.props.amount || 0,
-      saved: ""
+      saved: this.props.saved || ""
     });
   },
 

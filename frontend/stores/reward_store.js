@@ -49,7 +49,7 @@ function _removeReward (data) {
   RewardStore.__emitChange();
 }
 
-RewardStore.saveRewards = () => {
+function _saveRewards () {
   _rewards.forEach(reward=> {
     $.ajax({
       url: '/api/rewards',

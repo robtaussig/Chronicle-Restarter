@@ -11,8 +11,9 @@ const SavedProjectActions = {
   },
 
   fetchAllSavedProjects (form, userId) {
-    
-  }
+    ProjectApiUtil.fetchAllSavedProjects (form, userId,
+      this.receiveAllSavedProjects, ErrorActions.receiveError);
+  },
 
   updateSavedProject (form, projectInfo) {
     ProjectApiUtil.updateProject(form, projectInfo, this.receiveUpdatedProject,
@@ -27,6 +28,13 @@ const SavedProjectActions = {
   receiveSavedProject (data) {
     AppDispatcher.dispatch({
       actionType: SavedProjectConstants.SAVED_PROJECT_RECEIVED,
+      data: data
+    });
+  },
+
+  receiveAllSavedProjects (data) {
+    AppDispatcher.dispatch({
+      actionType: SavedProjectConstants.SAVED_PROJECTS_RECEIVED,
       data: data
     });
   },

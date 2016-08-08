@@ -7,6 +7,7 @@ const UserProfile = require('./components/user_profile.jsx');
 const SetupApp = require('./setup_app.js');
 const StartProject = require('./components/start_project.jsx');
 const CreateProject = require('./components/create_project.jsx');
+const SavedProjects = require('./components/saved_projects.jsx');
 const Basics = require('./components/basics.jsx');
 const Rewards = require('./components/rewards.jsx');
 const Story = require('./components/story.jsx');
@@ -26,6 +27,7 @@ const routes = (
     <Route path="signUp" component={SignUp} />
     <Route path="logIn" component={LogIn} />
     <Route path="userProfile" component={UserProfile} />
+    <Route path="savedProjects" component={SavedProjects} />
     <Route path="startProject" component={StartProject} />
     <Route path="createProject" component={CreateProject} />
     <Route path="finalizeProject" component={FinalizeProject} >
@@ -47,8 +49,6 @@ const router = (
   </Router>
 );
 
-window.RewardStore = RewardStore;
-window.SavedProjectStore = SavedProjectStore;
 
 document.addEventListener('DOMContentLoaded', ()=> {
   SetupApp();

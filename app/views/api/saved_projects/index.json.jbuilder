@@ -9,9 +9,5 @@ json.array! @saved_projects do |project|
   json.duration project.duration
   json.location project.location
   json.risks project.risks
-  json.due_date project.project_due_date
   json.project_imgs project.project_img_urls
 end
-
-:id, :title, :content, :author_id, :category_id,
-:goal, :duration, :location, :blurb, :project_img_urls, :risks

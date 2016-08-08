@@ -25,10 +25,12 @@ const Rewards = React.createClass({
 
   _prepopulate () {
     if (RewardStore.currentRewards().length > 0) {
-      this.rewardItems = RewardStore.currentRewards().map(reward=>{
+      this.rewardItems = RewardStore.currentRewards().map((reward,i)=>{
         return <RewardItem amount={reward.amount}
           description={reward.description}
           project_id={reward.project_id}
+          saved='saved'
+          count={i}
           project_reward_key={reward.project_reward_key}
           quantity={reward.quantity}
           title={reward.title}
