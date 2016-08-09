@@ -84,7 +84,9 @@ const AboutYou = React.createClass({
               <div className="grey-field">
                 <div className="attribute-field">Profile photo</div>
                 <div className="field-wrapper">
-                  <button>Choose an image from your computer</button>
+                  <button id="about-you-image" className="about-you-image">
+                    Choose an image from your computer
+                  </button>
                 </div>
               </div>
             </li>

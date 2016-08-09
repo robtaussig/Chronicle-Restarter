@@ -124,7 +124,9 @@ const Basics = React.createClass({
               <div className="grey-field">
                 <div className="attribute-field">Project image</div>
                 <div className="field-wrapper">
-                  <button>Choose an image from your computer</button>
+                  <button id="project-image" className="project-image">
+                    Choose an image from your computer
+                  </button>
                 </div>
               </div>
             </li>

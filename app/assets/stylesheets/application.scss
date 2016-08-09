@@ -835,6 +835,16 @@ div.field-wrapper input, textarea.short-blurb-field, textarea.user-biography {
   padding-left: 15px;
 }
 
+button#project-image.project-image, button#about-you-image.about-you-image {
+  border: 1px dashed #000;
+  width: 99%;
+  text-align: center;
+  border-radius: 10px;
+  height: 95%;
+  margin-bottom: auto;
+  vertical-align: middle;
+}
+
 div.field-wrapper input:focus, textarea.short-blurb-field:focus,
   textarea.user-biography:focus {
   border: 1px solid blue;
