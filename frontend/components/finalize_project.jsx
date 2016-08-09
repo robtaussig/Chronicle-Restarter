@@ -91,7 +91,7 @@ const FinalizeProject = React.createClass({
         </div>
         <div className="delete-wrapper">
           <button className="delete-project" onClick={this._deleteProject}>
-            Delete Project</button>
+            Clear</button>
           <p className="delete-message">{this.state.deleteMessage}</p>
         </div>
 

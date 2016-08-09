@@ -14,6 +14,7 @@ const Story = require('./components/story.jsx');
 const AboutYou = require('./components/about_you.jsx');
 const FrontPage = require('./components/front_page.jsx');
 const Account = require('./components/account.jsx');
+const SubmitProject = require('./components/submit.jsx');
 const Preview = require('./components/preview.jsx');
 const RewardStore = require('./stores/reward_store.js');
 const SavedProjectStore = require('./stores/saved_project_store.js');
@@ -38,6 +39,7 @@ const routes = (
       <Route path="about_you" component={AboutYou} />
       <Route path="account" component={Account} />
       <Route path="preview" component={Preview} />
+      <Route path="submit" component={SubmitProject} />
     </Route>
 
   </Route>

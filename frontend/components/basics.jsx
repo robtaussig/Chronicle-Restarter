@@ -60,13 +60,19 @@ const Basics = React.createClass({
     this._resetSavedStatus();
   },
 
-  _cycleCategory () {
-    return this.state.category_id === ProjectCategories.length - 1 ? 0 :
-      this.state.category_id + 1;
+  _cycleCategory (num) {
+    let nextCat = this.state.category_id + num;
+    return nextCat === ProjectCategories.length ? 0 :
+      (nextCat < 0 ? ProjectCategories.length - 1 : nextCat);
   },
 
-  _setCategory (e) {
-    this.setState({category_id: this._cycleCategory()});
+  _reduceCategory (e) {
+    this.setState({category_id: this._cycleCategory(-1)});
+    this._resetSavedStatus();
+  },
+
+  _increaseCategory (e) {
+    this.setState({category_id: this._cycleCategory(+1)});
     this._resetSavedStatus();
   },
 
@@ -143,13 +149,15 @@ const Basics = React.createClass({
             </li>
             <li className="project-category">
               <div className="grey-field">
-                <div className="attribute-field">Category</div>
+                <div className="attribute-field">Era</div>
                 <div id="cat-field-wrapper" className="field-wrapper">
+                  <div id="left-arrow"><img onClick={this._reduceCategory}
+                    id="left" src={window.left_arrow}></img></div>
                   <button id="cat-button" className="category-button">
                     {ProjectCategories[this.state.category_id].label  || ""}
                   </button>
-                  <div id="down-arrow"><img onClick={this._setCategory} id="down"
-                    src={window.down}></img></div>
+                  <div id="right-arrow"><img onClick={this._increaseCategory}
+                    id="right" src={window.right_arrow}></img></div>
                 </div>
               </div>
             </li>
@@ -168,8 +176,9 @@ const Basics = React.createClass({
                 <div className="attribute-field">Funding duration</div>
                 <div className="field-wrapper">
                   <div className="num-days">
-                    <input value={this.state.duration || ""} className="duration-field" type="number"
-                      onChange={this._setDuration} />
+                    <input value={this.state.duration || ""}
+                      className="duration-field" type="number"
+                      onChange={this._setDuration} placeholder="(in days)"/>
                   </div>
                 </div>
               </div>
@@ -189,7 +198,7 @@ const Basics = React.createClass({
         </div>
         <div id="save-box" className={this.state.saved || 'saved'}>
           <button className={this.state.saved || 'saved'}
-            onClick={this._handleSave}>Save Changes</button>
+            onClick={this._handleSave}>Save</button>
           <p>{this.state.errorMessage}</p>
         </div>
       </div>

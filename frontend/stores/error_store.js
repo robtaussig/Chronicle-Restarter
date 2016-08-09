@@ -14,9 +14,20 @@ ErrorStore.currentError = () => {
 };
 
 function _resetError (form, errorInfo) {
-  let message = errorInfo.responseJSON[0];
-  _errors = [form, message];
+  if (errorInfo.responseJSON) {
+    let message = errorInfo.responseJSON[0];
+    _errors = [form, message];
+  } else {
+    let message = _parseError(form);
+    _errors = [form, message];
+  }
   ErrorStore.__emitChange();
+}
+
+function _parseError (form) {
+  if (form === "finalizeProject") {
+    return "Saved Project not found.";
+  }
 }
 
 function _clearErrors () {

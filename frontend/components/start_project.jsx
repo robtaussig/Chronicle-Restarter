@@ -29,9 +29,9 @@ const StartProject = React.createClass({
     let hidden = this.state.selected ? "hidden" : "";
 
     let subButtons = this.state.selected ? [
-        <li key="1" onClick={this._newProject}>New Project</li>,
+        <li className="new-project-button" key="1" onClick={this._newProject}>New Project</li>,
         <li className={hidden} key="2">Start a project</li>,
-        <li key="3" onClick={this._savedProjects}>Saved Projects</li>
+        <li className="saved-projects-button" key="3" onClick={this._savedProjects}>Saved Projects</li>
     ] : [<li key="2">Start a project</li>];
 
     return (
@@ -40,7 +40,7 @@ const StartProject = React.createClass({
           <li><h1>Change history with</h1></li>
           <li><h1>a few more clicks.</h1></li>
         </ul>
-        <ul onMouseEnter={this._selectButtons} onMouseLeave={this._hideButtons}
+        <ul onClick={this._selectButtons} onMouseLeave={this._hideButtons}
           className="buttons-wrapper">
           {subButtons}
         </ul>

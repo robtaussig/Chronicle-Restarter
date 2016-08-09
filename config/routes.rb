@@ -4,8 +4,10 @@ Rails.application.routes.draw do
   get "/logIn", to: 'static_pages#root'
   get "/userProfile", to: 'static_pages#root'
   get "/startProject", to: 'static_pages#root'
+  get "/savedProject", to: 'static_pages#root'
   get "/createProject", to: 'static_pages#root'
   get "/finalizeProject", to: 'static_pages#root'
+  get "finalizeProject/createProject", to: 'static_pages#root'
   get "finalizeProject/startProject", to: 'static_pages#root'
   get "/finalizeProject/basics", to: 'static_pages#root'
   get "/finalizeProject/rewards", to: 'static_pages#root'
@@ -13,6 +15,7 @@ Rails.application.routes.draw do
   get "/finalizeProject/about_you", to: 'static_pages#root'
   get "/finalizeProject/account", to: 'static_pages#root'
   get "/finalizeProject/preview", to: 'static_pages#root'
+  get "/finalizeProject/submit", to: 'static_pages#root'
 
   root to: 'static_pages#root'
 

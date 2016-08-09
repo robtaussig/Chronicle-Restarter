@@ -249,7 +249,7 @@ h2.under-construction {
 /* Footer */
 
 div.footer-wrapper {
-  border-top: 1px dashed limegreen;
+  border-top: 1px solid limegreen;
   height: 200px;
   width: 100%;
   position: absolute;
@@ -420,25 +420,41 @@ ul.buttons-wrapper li {
   color: white;
   font-weight: 700;
   cursor: pointer;
-  margin-left: 10px;
-  margin-right: 10px;
 }
 
 ul.buttons-wrapper li:hover {
-  background-color: steelblue;
+  background-color: #02a654;;
 }
 
 ul.buttons-wrapper li.hidden {
   display: none;
 }
 
-button.new-project-button {
-
+ul.buttons-wrapper li.new-project-button {
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  opacity: 0.25;
 }
 
-button.saved-projects.button {
-
+ul.buttons-wrapper li.saved-projects-button {
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  opacity: 0.25;
 }
+
+ul.buttons-wrapper li.saved-projects-button:hover {
+  opacity: 1;
+  transition: opacity 0.5s linear;
+}
+
+ul.buttons-wrapper li.new-project-button:hover {
+  opacity: 1;
+  transition: opacity 0.5s linear;
+}
+
+
+
+
 
 /* Select-era */
 
@@ -480,22 +496,38 @@ button.saved-projects.button {
   font-weight: 300;
   font-size: 36px;
   color: black;
-
+  text-align: center;
 }
+
+.select-era ul.create-category-select {
+  min-width: 703px;
+}
+
 .select-era ul.create-category-select > li {
   float:left;
 }
 
 .select-era .display-cat {
   margin: 0 10px;
-  width: 220px;
-  border: 1px solid #ccc;
-  background-color: white;
+  width: 250px;
+  border-bottom: 2px solid #000;
   cursor: pointer;
 }
 
+img#cat-down {
+    color: blue;
+    position: absolute;
+    height: 25px;
+    width: auto;
+    transform: translateX(48%);
+    top: 50%;
+    right: 44px;
+    transform: translate(400%, -50%);
+    cursor: pointer;
+}
+
 .select-era .display-cat:hover {
-  border: 1px solid blue;
+  border-bottom: 2px solid #00e673;
   transition: 0.5s;
 }
 
@@ -509,7 +541,7 @@ li.first-half-text {
 }
 
 ul.active-drop-down {
-  width: 221px;
+  width: 248px;
   top: 394px;
   border: 1px solid #ccc;
   font-size: 18px;
@@ -532,7 +564,7 @@ li.cats-second-half:last-child {
 
 li.cats-first-half:hover, li.cats-second-half:hover {
   background-color: palegreen;
-  transition: 0.5s;
+  transition: 0.3s;
 }
 
 .select-era input {
@@ -552,7 +584,7 @@ li.cats-first-half:hover, li.cats-second-half:hover {
 button.submit-button {
   position: absolute;
   top: 420px;
-  background-color: rebeccapurple;
+  background-color: #00e673;
   border-radius: 10px;
   left: 60%;
   font-size: 22px;
@@ -561,10 +593,14 @@ button.submit-button {
   width: 150px;
   height: 40px;
   padding: 5px;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   vertical-align: middle;
   text-align: center;
+}
+
+button.submit-button:hover {
+  background-color: #02a654;
 }
 
 /* Finalize Project */
@@ -592,6 +628,8 @@ button.submit-button {
   position: absolute;
   left: 50%;
   top: 125px;
+  min-width: 953px;
+  text-align: center;
   font-size: 44px;
   transform: translate(-50%, -50%);
 }
@@ -601,12 +639,15 @@ button.submit-button {
   left: 50%;
   top: 200px;
   text-align: center;
+  min-width: 953px;
+  text-align: center;
   font-size: 24px;
   transform: translate(-50%, -50%);
 }
 
 .project-nav-bar {
   position: absolute;
+  min-width: 630px;
   left: 50%;
   top: 30px;
   border-top-left-radius: 5px;
@@ -617,24 +658,21 @@ button.submit-button {
 
 div.delete-wrapper {
   position: fixed;
-  top: 50%;
-  left: 0;
-  width: 150px;
+  top: 550px;
+  right: 0;
+  width: 100px;
   height: 60px;
-  border: 1px solid #ccc;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
-  background-color: #b96565;
-  font-size: 20px;
-  font-weight: 500;
+  border: 1px solid #fd003b;
+  border-bottom-left-radius: 5px;
+  background-color: #fd003b;
+  font-size: 14px;
+  font-weight: 700;
   text-align: center;
   color: white;
   line-height: 60px;
 }
 
 button.delete-project {
-  width: 150px;
-  height: 60px;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
   cursor: pointer;
@@ -686,37 +724,37 @@ p.delete-message {
 }
 
 .project-nav-bar #basics.basics {
-  background-color: #4a4ad0;
+  color: #0927e2;
   font-weight: 700;
 }
 
 .project-nav-bar #rewards.rewards {
   border-radius: 0px;
-  background-color: #4a4ad0;
+  color: #0927e2;
   font-weight: 700;
 }
 
 .project-nav-bar #story.story {
   border-radius: 0px;
-  background-color: #4a4ad0;
+  color: #0927e2;
   font-weight: 700;
 }
 
 .project-nav-bar #about_you.about_you {
   border-radius: 0px;
-  background-color: #4a4ad0;
+  color: #0927e2;
   font-weight: 700;
 }
 
 .project-nav-bar #account.account {
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
-  background-color: #4a4ad0;
+  color: #0927e2;
   font-weight: 700;
 }
 
 .project-nav-bar #preview.preview {
-  background-color: #4a4ad0;
+  color: #0927e2;
   font-weight: 700;
   border-radius: 5px;
 }
@@ -821,38 +859,45 @@ button.category-button {
   transform: translateY(-50%);
   border: 1px solid #ccc;
   margin-right: -6px;
-  width: 220px;
+  width: 300px;
   height: 45px;
   line-height: 45px;
   font-size: 24px;
   border-radius: 5px;
-  text-indent: 15px;
+  text-align: center;
   background-color: white;
   cursor: default;
 }
 
-img#down {
+img#left, img#right {
   color: blue;
   position: absolute;
   height: 25px;
   width: auto;
   top: 50%;
-  left: 180px;
   transform: translateY(-50%);
   cursor: pointer;
 }
 
+img#right {
+  left: 268px;
+}
+
+img#left {
+  left: 10px;
+  z-index: 1;
+}
+
 #save-box {
    position: fixed;
-   top: 50%;
+   top: 490px;
    right: 0;
-   width: 150px;
+   width: 100px;
    height:60px;
    border: 1px solid #ccc;
    border-top-left-radius: 5px;
-   border-bottom-left-radius: 5px;
-   font-size: 20px;
-   font-weight: 500;
+   font-size: 14px;
+   font-weight: 700;
    text-align: center;
    color: white;
    line-height: 60px;
@@ -861,11 +906,12 @@ img#down {
 
 #save-box.saved {
   background: #ccc;
-
+  border: 1px solid #ccc;
 }
 
 #save-box.unsaved {
-  background: #217198;
+  background: #00e673;
+  border: 1px solid #00e673;
 }
 
 #save-box button.saved {
@@ -874,13 +920,13 @@ img#down {
 }
 
 #save-box button.unsaved {
-  background: #217198;
+  background: #00e673;
 }
 
 #save-box p {
   color: black;
   line-height: 20px;
-  margin-top: 5px;
+  margin-top: -125px;
 }
 
 /* Rewards creation */
@@ -927,17 +973,16 @@ div.rewards-wrapper textarea:focus {
 
 button.add-reward-button {
   position: fixed;
-  top: 50%;
+  top: 490px;
   right: 0;
-  width: 150px;
+  width: 100px;
   height:60px;
-  border: 1px solid #ccc;
+  border: 1px solid #00e673;
   border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
-  font-size: 20px;
-  font-weight: 500;
+  font-size: 14px;
+  font-weight: 700;
   text-align: center;
-  background-color: green;
+  background-color: #00e673;
   color: white;
   line-height: 60px;
 }
@@ -954,17 +999,15 @@ div.reward-title-text.unsaved {
 }
 
 div.reward-title-text.saved {
-  color: white;
+  color: limegreen;
   transition: 1s;
   margin-left: 18px;
   margin-top: 18px;
   padding: 2px;
-  background-color: limegreen;
-  border-radius: 5px;
 }
 
 div.reward-form-wrapper {
-  height: 300px;
+  height: 306px;
   width: 300px;
   margin: 0 auto;
   color: darkblue;
@@ -977,7 +1020,7 @@ div.reward-form-wrapper {
   background-color: steelblue;
 }
 
-ul.save-button {
+ul.reward-save-wrapper {
   bottom: 5px;
   position: absolute;
   left: 50%;
@@ -985,6 +1028,30 @@ ul.save-button {
   cursor: pointer;
   margin-bottom: 5px;
   padding: 2px 5px;
+  border-radius: 5px;
+  border: 1px solid #000;
+  background-color: white;
+}
+
+ul.reward-save-wrapper:hover {
+  border: 1px solid #00e673;
+  transition: 0.5s;
+}
+
+ul.reward-save-wrapper li {
+  float: left;
+}
+
+ul.reward-save-wrapper li p {
+  margin-top: 5px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #000000;
+  padding-left: 12px;
+}
+
+div.reward-save-button {
+  float: left;
 }
 
 img#check-mark {

@@ -68,11 +68,12 @@ const CreateProject = React.createClass({
   },
 
   _handleSubmit () {
+    let catId = this.state.category !== "" ? this._getCatId() - 1 : 0;
     let userId = SessionStore.currentUser().id;
     if (userId > 0 || window.myApp.loggedIn) {
-      this._advanceToProjectCreation(userId);
+      this._advanceToProjectCreation(userId, catId);
     } else {
-      let projectInfo = {title: this.state.title, category_id: this._getCatId()};
+      let projectInfo = {title: this.state.title, category_id: catId};
       SavedProjectActions.submitSavedProject ('create', projectInfo);
       ErrorActions.mustBeSignedIn('finalizeProject');
       browserHistory.push('signUp');
@@ -88,8 +89,8 @@ const CreateProject = React.createClass({
 
   },
 
-  _advanceToProjectCreation (userId) {
-    let projectInfo = {author_id: userId, title: this.state.title, category_id: this._getCatId()};
+  _advanceToProjectCreation (userId, catId) {
+    let projectInfo = {author_id: userId, title: this.state.title, category_id: catId};
     SavedProjectActions.submitSavedProject ('create', projectInfo);
     browserHistory.push('finalizeProject');
   },
@@ -102,7 +103,8 @@ const CreateProject = React.createClass({
           <h2>In which era will your project exist?</h2>
           <ul className="create-category-select group">
             <li className="first-half-text">{ill} start a new</li>
-            <li className ="display-cat" onClick={this._displayCats}>{this.state.displayCat}</li>
+            <li className ="display-cat" onClick={this._displayCats}>{this.state.displayCat}<img onClick={this._setCategory} id="cat-down"
+              src={window.down}></img></li>
             <li className="second-half-text">project called:</li>
           </ul>
           <ul id="drop-down-ul" onMouseLeave={this._hideCats} className={`${this.state.status}`}>

@@ -134,7 +134,7 @@ const AboutYou = React.createClass({
         </div>
         <div id="save-box" className={this.state.saved || 'saved'}>
           <button className={this.state.saved || 'saved'}
-            onClick={this._handleSave}>Save Changes</button>
+            onClick={this._handleSave}>Save</button>
           <p>{this.state.errorMessage}</p>
         </div>
       </div>
