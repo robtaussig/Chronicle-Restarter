@@ -35960,7 +35960,8 @@
 	      title: this.props.title || "",
 	      description: this.props.description || "",
 	      amount: this.props.amount || 0,
-	      saved: this.props.saved || ""
+	      saved: this.props.saved || "",
+	      errors: ""
 	    };
 	  },
 	  componentDidMount: function componentDidMount() {
@@ -35976,19 +35977,19 @@
 	  },
 	  _setTitle: function _setTitle(event) {
 	    event.preventDefault();
-	    this.setState({ title: event.target.value, saved: '' });
+	    this.setState({ title: event.target.value, saved: '', errors: "" });
 	  },
 	  _setDescription: function _setDescription(event) {
 	    event.preventDefault();
-	    this.setState({ description: event.target.value, saved: '' });
+	    this.setState({ description: event.target.value, saved: '', errors: "" });
 	  },
 	  _setQuantity: function _setQuantity(event) {
 	    event.preventDefault();
-	    this.setState({ quantity: event.target.value, saved: '' });
+	    this.setState({ quantity: event.target.value, saved: '', errors: "" });
 	  },
 	  _setAmount: function _setAmount(event) {
 	    event.preventDefault();
-	    this.setState({ amount: event.target.value, saved: '' });
+	    this.setState({ amount: event.target.value, saved: '', errors: "" });
 	  },
 	  _handleDelete: function _handleDelete(event) {
 	    event.preventDefault();
@@ -35997,13 +35998,28 @@
 	  },
 	  _handleSave: function _handleSave(event) {
 	    event.preventDefault();
-	    RewardActions.createReward(this.state);
+	    if (this.state.quantity > 0 && this.state.amount > 0 && this.state.description !== "" && this.state.title !== "") {
+	      RewardActions.createReward(this.state);
+	    } else {
+	      this._handleError();
+	    }
+	  },
+	  _handleError: function _handleError() {
+	    if (this.state.title === "") {
+	      this.setState({ errors: "The title cannot be blank." });
+	    } else if (this.state.description === "") {
+	      this.setState({ errors: "The description cannot be blank." });
+	    } else if (this.state.amount === 0) {
+	      this.setState({ errors: "You must set the pledge amount." });
+	    } else if (this.state.quantity === 0) {
+	      this.setState({ errors: "You must set an available quantity." });
+	    }
 	  },
 	
 	
 	  render: function render() {
 	    var _title = this.state.title !== "" ? this.state.title : "Reward title";
-	    var _unsavedText = this.state.saved === "" ? "Not saved" : "";
+	    var _unsavedText = this.state.saved === "" ? "not saved" : "saved";
 	
 	    return React.createElement(
 	      'div',
@@ -36011,18 +36027,22 @@
 	      React.createElement(
 	        'div',
 	        { className: 'reward-title-text ' + this.state.saved },
-	        'Reward #',
-	        this.props.count + 1,
+	        'Reward ',
+	        _unsavedText,
 	        ':'
 	      ),
 	      React.createElement(
 	        'div',
-	        { className: 'reward-title-text unsaved' },
-	        _unsavedText
-	      ),
-	      React.createElement(
-	        'div',
 	        { className: 'reward-form-wrapper' },
+	        React.createElement(
+	          'div',
+	          { className: 'reward-error-message' },
+	          React.createElement(
+	            'p',
+	            null,
+	            this.state.errors
+	          )
+	        ),
 	        React.createElement(
 	          'div',
 	          { className: 'reward-title-wrapper' },
@@ -36762,7 +36782,9 @@
 	'use strict';
 	
 	var React = __webpack_require__(3);
+	var SavedProjectStore = __webpack_require__(280);
 	var RewardActions = __webpack_require__(291);
+	var RewardStore = __webpack_require__(288);
 	
 	var Preview = React.createClass({
 	  displayName: 'Preview',
@@ -36771,6 +36793,8 @@
 	  },
 	  componentDidMount: function componentDidMount() {
 	    RewardActions.saveAllRewards();
+	    console.log(SavedProjectStore.currentProject());
+	    console.log(RewardStore.currentRewards());
 	  },
 	
 	

@@ -261,6 +261,7 @@ div.footer-wrapper {
 div.footer-wrapper ul.footer-bottom {
   position: absolute;
   left: 50%;
+  min-width: 656px;
   transform: translateX(-50%);
   bottom: 100px;
 }
@@ -940,6 +941,19 @@ div.rewards-wrapper {
   margin-right: 20px;
   border-radius: 5px;
   background-color: aliceblue;
+}
+
+div.reward-error-message {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  min-width: 200px;
+  transform: translateX(-50%);
+  font-size: 12px;
+}
+
+div.reward-error-message p {
+  text-align: center;
 }
 
 div.rewards-wrapper input {

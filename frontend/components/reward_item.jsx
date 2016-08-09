@@ -12,7 +12,8 @@ const RewardItem = React.createClass({
       title: this.props.title || "",
       description: this.props.description || "",
       amount: this.props.amount || 0,
-      saved: this.props.saved || ""
+      saved: this.props.saved || "",
+      errors: ""
     });
   },
 
@@ -32,22 +33,22 @@ const RewardItem = React.createClass({
 
   _setTitle (event) {
     event.preventDefault();
-    this.setState({title: event.target.value, saved: ''});
+    this.setState({title: event.target.value, saved: '', errors: ""});
   },
 
   _setDescription (event) {
     event.preventDefault();
-    this.setState({description: event.target.value, saved: ''});
+    this.setState({description: event.target.value, saved: '', errors: ""});
   },
 
   _setQuantity (event) {
     event.preventDefault();
-    this.setState({quantity: event.target.value, saved: ''});
+    this.setState({quantity: event.target.value, saved: '', errors: ""});
   },
 
   _setAmount (event) {
     event.preventDefault();
-    this.setState({amount: event.target.value, saved: ''});
+    this.setState({amount: event.target.value, saved: '', errors: ""});
   },
 
   _handleDelete (event) {
@@ -58,18 +59,35 @@ const RewardItem = React.createClass({
 
   _handleSave (event) {
     event.preventDefault();
-    RewardActions.createReward(this.state);
+    if (this.state.quantity > 0 && this.state.amount > 0 &&
+          this.state.description !== "" && this.state.title !== "") {
+          RewardActions.createReward(this.state);
+    } else {
+      this._handleError();
+    }
+  },
+
+  _handleError () {
+    if (this.state.title === "") {
+      this.setState({errors: "The title cannot be blank."});
+    } else if (this.state.description === "") {
+      this.setState({errors: "The description cannot be blank."});
+    } else if (this.state.amount === 0) {
+      this.setState({errors: "You must set the pledge amount."});
+    } else if (this.state.quantity === 0) {
+      this.setState({errors: "You must set an available quantity."});
+    }
   },
 
   render: function() {
     let _title = this.state.title !== "" ? this.state.title : "Reward title";
-    let _unsavedText = this.state.saved === "" ? "Not saved" : "";
+    let _unsavedText = this.state.saved === "" ? "not saved" : "saved";
 
     return (
       <div className="rewards-wrapper">
-        <div className={`reward-title-text ${this.state.saved}`}>Reward #{this.props.count + 1}:</div>
-        <div className="reward-title-text unsaved">{_unsavedText}</div>
+        <div className={`reward-title-text ${this.state.saved}`}>Reward {_unsavedText}:</div>
         <div className="reward-form-wrapper">
+          <div className="reward-error-message"><p>{this.state.errors}</p></div>
           <div className="reward-title-wrapper">
             <div className="reward-title-field">Title</div>
             <div>
