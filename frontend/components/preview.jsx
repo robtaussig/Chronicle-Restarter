@@ -9,15 +9,43 @@ const ProjectCategories = require('../constants/project_category_ids');
 const Preview = React.createClass({
 
   getInitialState () {
-    return ({submitted: false, appearance: "entering", rewards: []});
+    return ({
+      appearance: "entering",
+      rewards: [],
+      project_title: "",
+      full_name: "",
+      project_img_urls: "",
+      project_funders: 0,
+      project_funded: 0,
+      project_goal: 0,
+      project_category_id: 0,
+      user_project_total: 0,
+      user_pic_url: "",
+      project_content: "",
+      project_risks: ""
+    });
   },
 
   componentDidMount () {
     RewardActions.saveAllRewards();
-    this.project = SavedProjectStore.currentProject();
-    this.rewards = RewardStore.currentRewards();
-    this.user = UserStore.currentUser();
+    this._populate();
+    this.rewardListener = RewardStore.addListener(this._onChange);
+    this.projectListener = SavedProjectStore.addListener(this._onChange);
+    this.userListener = UserStore.addListener(this._onChange);
     window.setTimeout(() => {this.setState({appearance: 'entered'});},100);
+  },
+
+  componentWillUnmount () {
+    this.rewardListener.remove();
+    this.projectListener.remove();
+    this.userListener.remove();
+  },
+
+  _populate () {
+    let project = SavedProjectStore.currentProject();
+    let rewards = RewardStore.currentRewards();
+    let user = UserStore.currentUser();
+
   },
 
   render: function() {
@@ -26,21 +54,21 @@ const Preview = React.createClass({
       <div className={this.state.appearance}>
         <div className="preview-wrapper">
           <div className="preview-header">
-            <h3>{this.project.title || ""}</h3>
-            <p>by {this.user.full_name || ""}</p>
+            <h3>{this.state.project_title || ""}</h3>
+            <p>by {this.state.user_full_name || ""}</p>
             <br></br>
           </div>
           <div className="preview-project-image">
-            <div>{this.project.project_img_urls || ""}</div>
+            <div>{this.state.project_img_urls || ""}</div>
           </div>
           <div className="preview-project-summary">
             <ul className="funders">
-              <li>{this.project.funders || ""}</li>
+              <li>{this.state.project_funders || ""}</li>
               <li>backers</li>
             </ul>
             <ul className="funded">
-              <li>{this.project.funded || ""}</li>
-              <li>pledged of ${this.project.goal || 0} goal</li>
+              <li>{this.state.project_funded || ""}</li>
+              <li>pledged of ${this.state.project_goal || 0} goal</li>
             </ul>
             <div className="preview-warning">
               <p>THIS PROJECT IS NOT LIVE</p>
@@ -48,7 +76,7 @@ const Preview = React.createClass({
               <p>This is only a draft that the creator has chosen to share.</p>
               <br></br>
             </div>
-            <div><b>Era:</b> {ProjectCategories[this.project.category_id].label}</div>
+            <div><b>Era:</b> {ProjectCategories[this.state.project_category_id].label}</div>
           </div>
           <div className="preview-sub-info">
             <div>
@@ -61,14 +89,14 @@ const Preview = React.createClass({
               </ul>
             </div>
             <div className="user-info">
-              <p className="user-full-name">{this.user.full_name || ""}</p>
+              <p className="user-full-name">{this.state.user_full_name || ""}</p>
               <br></br>
-              <p>{this.user.project_total || 0} {this.user.project_total === 1 ? project : projects} created</p>
+              <p>{this.state.user_project_total || 0} {this.state.user_project_total === 1 ? project : projects} created</p>
               <br></br>
               <ul className="user-contact-info">
                 <li>See full bio</li>
                 <li>Contact me</li>
-                <li>{this.user.pic_url || ""}</li>
+                <li>{this.state.user_pic_url || ""}</li>
               </ul>
             </div>
           </div>
@@ -82,13 +110,13 @@ const Preview = React.createClass({
           </div>
           <div className="project-content-field">
             <h3>About this project</h3>
-            <div className="project-content">{this.project.content || ""}</div>
+            <div className="project-content">{this.state.project_content || ""}</div>
             <br></br>
             <h4>Risks</h4>
-            <div className="project-risks">{this.project.risks || ""}</div>
+            <div className="project-risks">{this.state.project_risks || ""}</div>
           </div>
           <div className="project-rewards-sidebar">
-            {this.rewards.length}
+            {this.state.rewards.length}
           </div>
         </div>
       </div>
