@@ -58,8 +58,8 @@ span, article, footer, time, small {
   vertical-align: inherit;
   box-sizing: inherit;
   background: transparent;
-  font-family: "Liberation Sans", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
-    Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-family: "Liberation Sans", "HelveticaNeue-Light", "Helvetica Neue Light",
+  "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
   // -webkit-font-smoothing: antialiased;
 }
 
@@ -1038,6 +1038,10 @@ button.add-reward-button {
   background-color: #00e673;
   color: white;
   line-height: 60px;
+}
+
+button.add-reward-button:hover {
+  background-color: #02a654;
 }
 
 div.reward-title-text {

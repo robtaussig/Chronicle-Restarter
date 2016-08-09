@@ -10,29 +10,44 @@ const StartProject = React.createClass({
   },
 
   _newProject () {
+    this.advance = true;
     browserHistory.push('/createProject');
   },
 
+  componentDidMount () {
+    this.advance = false;
+  },
+
+  componentWillUnmount () {
+    clearTimeout(this.timeoutOne);
+    clearTimeout(this.timeoutTwo);
+  },
+
   _savedProjects () {
+    this.advance = true;
     browserHistory.push('/savedProjects');
   },
 
   _selectButtons () {
     this.setState({status: 'moving-up'});
-    window.setTimeout(() => {
+    this.timeoutOne = window.setTimeout(() => {
       this._spreadButtons();
     },200);
   },
 
   _spreadButtons () {
     this.setState({selected: true, spread: ""});
-    window.setTimeout(() => {
+    this.timeoutTwo = window.setTimeout(() => {
       this.setState({spread: "spread"});
     },200);
   },
 
   _hideButtons () {
-    this.setState({selected: false, status: "", spread: ""});
+    if (this.advance) {
+      return;
+    } else {
+      this.setState({selected: false, status: "", spread: ""});
+    }
   },
 
   render () {
