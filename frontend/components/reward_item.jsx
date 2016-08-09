@@ -73,7 +73,7 @@ const RewardItem = React.createClass({
     } else if (this.state.description === "") {
       this.setState({errors: "The description cannot be blank."});
     } else if (this.state.amount === 0) {
-      this.setState({errors: "You must set the pledge amount."});
+      this.setState({errors: "You must set a pledge amount."});
     } else if (this.state.quantity === 0) {
       this.setState({errors: "You must set an available quantity."});
     }
