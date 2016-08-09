@@ -6,7 +6,7 @@ import { browserHistory } from 'react-router';
 const StartProject = React.createClass({
 
   getInitialState () {
-    return({selected: false});
+    return({selected: false, status: "", spread: ""});
   },
 
   _newProject () {
@@ -18,21 +18,31 @@ const StartProject = React.createClass({
   },
 
   _selectButtons () {
-    this.setState({selected: true});
+    this.setState({status: 'moving-up'});
+    window.setTimeout(() => {
+      this._spreadButtons();
+    },200);
+  },
+
+  _spreadButtons () {
+    this.setState({selected: true, spread: ""});
+    window.setTimeout(() => {
+      this.setState({spread: "spread"});
+    },200);
   },
 
   _hideButtons () {
-    this.setState({selected: false});
+    this.setState({selected: false, status: "", spread: ""});
   },
 
   render () {
     let hidden = this.state.selected ? "hidden" : "";
 
     let subButtons = this.state.selected ? [
-        <li className="new-project-button" key="1" onClick={this._newProject}>New Project</li>,
-        <li className={hidden} key="2">Start a project</li>,
-        <li className="saved-projects-button" key="3" onClick={this._savedProjects}>Saved Projects</li>
-    ] : [<li key="2">Start a project</li>];
+        <li className={`new-project-button ${this.state.spread}`} key="1" onClick={this._newProject}>New Project</li>,
+        <li className={this.state.status} key="2">Start a project</li>,
+        <li className={`saved-projects-button ${this.state.spread}`} key="3" onClick={this._savedProjects}>Saved Projects</li>
+    ] : [<li className={this.state.status} key="2">Start a project</li>];
 
     return (
       <div className="start-project">
@@ -53,14 +63,5 @@ const StartProject = React.createClass({
 module.exports = StartProject;
 
 /*
-let subButtons = this.state.selected ? [
-    <button className="new-project-button" key="1"
-      onClick={this._newProject} onMouseLeave={this._hideButtons}>
-      New Project
-    </button>,
-    <button className="saved-projects-button"  key="2"
-      onClick={this._savedProjects} onMouseLeave={this._hideButtons}>
-      Saved Projects
-    </button>
-  ] : [];
+
  */

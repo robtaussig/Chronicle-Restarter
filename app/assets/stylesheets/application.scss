@@ -421,36 +421,56 @@ ul.buttons-wrapper li {
   color: white;
   font-weight: 700;
   cursor: pointer;
+  transition: 0.5s;
 }
 
 ul.buttons-wrapper li:hover {
   background-color: #02a654;;
 }
 
-ul.buttons-wrapper li.hidden {
-  display: none;
+ul.buttons-wrapper li.moving-up {
+  height: -10px;
+  transform: scale(0.7) translateY(-70px);
+  opacity: 0.5;
+  transition: 0.5s;
+  background-color: #02a654;
+  border-bottom-left-radius:0px;
+  border-bottom-right-radius:0px;
+
 }
 
 ul.buttons-wrapper li.new-project-button {
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
   opacity: 0.25;
+  position: absolute;
+}
+
+ul.buttons-wrapper li.new-project-button.spread {
+  transform: translateX(-88px);
+  transition: 0.5s;
 }
 
 ul.buttons-wrapper li.saved-projects-button {
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
   opacity: 0.25;
+  position: absolute;
+}
+
+ul.buttons-wrapper li.saved-projects-button.spread {
+  transform: translateX(87px);
+  transition: 0.5s;
 }
 
 ul.buttons-wrapper li.saved-projects-button:hover {
   opacity: 1;
-  transition: opacity 0.5s linear;
+  transition: opacity 0.1s linear;
 }
 
 ul.buttons-wrapper li.new-project-button:hover {
   opacity: 1;
-  transition: opacity 0.5s linear;
+  transition: opacity 0.1s linear;
 }
 
 
@@ -660,7 +680,7 @@ button.submit-button:hover {
 div.delete-wrapper {
   position: fixed;
   top: 360px;
-  right: 0;
+  right: -120px;
   width: 100px;
   height: 60px;
   border: 1px solid #fd003b;
@@ -671,6 +691,12 @@ div.delete-wrapper {
   text-align: center;
   color: white;
   line-height: 60px;
+  transition: 0.5s;
+}
+
+div.delete-wrapper.visible {
+  transform: translateX(-120px);
+  transition: 0.5s;
 }
 
 button.delete-project {
@@ -901,10 +927,10 @@ img#left {
 
 #save-box {
    position: fixed;
-   top: 300px;
-   right: 0;
    width: 100px;
    height:60px;
+   top: 300px;
+   right: -120px;
    border: 1px solid #ccc;
    border-top-left-radius: 5px;
    font-size: 14px;
@@ -913,6 +939,7 @@ img#left {
    color: white;
    line-height: 60px;
    cursor: pointer;
+   transition: 0.5s
 }
 
 #save-box.saved {
@@ -923,6 +950,8 @@ img#left {
 #save-box.unsaved {
   background: #00e673;
   border: 1px solid #00e673;
+  transform: translateX(-120px);
+  transition: 0.5s;
 }
 
 #save-box button.saved {

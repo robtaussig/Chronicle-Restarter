@@ -13,7 +13,7 @@ const Preview = React.createClass({
     RewardActions.saveAllRewards();
     console.log(SavedProjectStore.currentProject());
     console.log(RewardStore.currentRewards());
-    window.setTimeout(() => {this.setState({appearance: 'entered'});},200);
+    window.setTimeout(() => {this.setState({appearance: 'entered'});},100);
   },
 
   render: function() {

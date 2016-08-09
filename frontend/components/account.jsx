@@ -20,7 +20,7 @@ const Account = React.createClass({
     this._prepopulate(userId);
     this.listener = UserStore.addListener(this._onChange);
     UserActions.fetchUser('about', userId);
-    window.setTimeout(() => {this.setState({appearance: 'entered'});},200);
+    window.setTimeout(() => {this.setState({appearance: 'entered'});},100);
   },
 
   componentWillUnmount () {

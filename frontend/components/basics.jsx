@@ -19,15 +19,29 @@ const Basics = React.createClass({
       goal: 0,
       saved: 'saved',
       errorMessage: "",
-      appearance: "entering"
+      appearance: "entering",
+      visibility: ""
     });
   },
 
   componentDidMount () {
     this.listener = SavedProjectStore.addListener(this._onChange);
+    this.blankState = {
+      author_id: SessionStore.currentUser().id,
+      image: {},
+      title: "",
+      blurb: "",
+      category_id: 0,
+      location: "",
+      duration: 0,
+      goal: 0,
+      saved: 'saved',
+      errorMessage: "",
+      visibility: ""
+    };
     this.setState(SavedProjectStore.currentProject());
     this.displayCategory = ProjectCategories[0].label;
-    window.setTimeout(() => {this.setState({appearance: 'entered'});},200);
+    window.setTimeout(() => {this.setState({appearance: 'entered'});},100);
   },
 
   componentWillUnmount () {
@@ -45,7 +59,7 @@ const Basics = React.createClass({
   },
 
   _resetSavedStatus () {
-    this.setState({saved: 'unsaved', errorMessage: ""});
+    this.setState({saved: 'unsaved', errorMessage: "", visibility: "visible"});
   },
 
   _setTitle (e) {
@@ -54,18 +68,13 @@ const Basics = React.createClass({
   },
 
   _deleteProject () {
-    SavedProjectActions.deleteSavedProject('finalizeProject',
-      SavedProjectStore.currentProject());
     if (SavedProjectStore.currentProject().id) {
-      this.setState({deleteMessage: "Project deleted"});
+      SavedProjectActions.deleteSavedProject('finalizeProject',
+        SavedProjectStore.currentProject());
+      this.setState({deleteMessage: "", visibility: ""});
     } else {
-      this.setState({deleteMessage: "No project to delete"});
+      this.setState(this.blankState);
     }
-
-    let that = this;
-    window.setTimeout(()=> {
-      this.setState({deleteMessage: ""});
-    },2000);
   },
 
   _setImage (e) {
@@ -222,7 +231,7 @@ const Basics = React.createClass({
             onClick={this._handleSave}>Save</button>
           <p>{this.state.errorMessage}</p>
         </div>
-        <div className="delete-wrapper">
+        <div className={`delete-wrapper ${this.state.visibility}`}>
           <button className="delete-project" onClick={this._deleteProject}>
             Clear</button>
           <p className="delete-message">{this.state.deleteMessage}</p>

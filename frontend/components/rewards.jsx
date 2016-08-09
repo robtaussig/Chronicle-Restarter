@@ -22,7 +22,7 @@ const Rewards = React.createClass({
 
   componentDidMount () {
     this._prepopulate();
-    window.setTimeout(() => {this.setState({appearance: 'entered'});},200);
+    window.setTimeout(() => {this.setState({appearance: 'entered'});},100);
     this.projectId = SavedProjectStore.currentProject().id;
     this.forceUpdate();
   },
