@@ -659,7 +659,7 @@ button.submit-button:hover {
 
 div.delete-wrapper {
   position: fixed;
-  top: 550px;
+  top: 360px;
   right: 0;
   width: 100px;
   height: 60px;
@@ -901,7 +901,7 @@ img#left {
 
 #save-box {
    position: fixed;
-   top: 490px;
+   top: 300px;
    right: 0;
    width: 100px;
    height:60px;
@@ -997,7 +997,7 @@ div.rewards-wrapper textarea:focus {
 
 button.add-reward-button {
   position: fixed;
-  top: 490px;
+  top: 300px;
   right: 0;
   width: 100px;
   height:60px;
@@ -1262,4 +1262,13 @@ div.email-button.verified, div.email-button.pending, div.email-button.verified
   background-color: #aaa;
   cursor: not-allowed;
   color: #fff;
+}
+
+.entering {
+  opacity: 0.01;
+}
+
+.entered {
+  opacity: 1;
+  transition: opacity .2s ease-in;
 }

@@ -18,7 +18,8 @@ const Basics = React.createClass({
       duration: 0,
       goal: 0,
       saved: 'saved',
-      errorMessage: ""
+      errorMessage: "",
+      appearance: "entering"
     });
   },
 
@@ -26,6 +27,7 @@ const Basics = React.createClass({
     this.listener = SavedProjectStore.addListener(this._onChange);
     this.setState(SavedProjectStore.currentProject());
     this.displayCategory = ProjectCategories[0].label;
+    window.setTimeout(() => {this.setState({appearance: 'entered'});},200);
   },
 
   componentWillUnmount () {
@@ -49,6 +51,21 @@ const Basics = React.createClass({
   _setTitle (e) {
     this.setState({title: e.target.value});
     this._resetSavedStatus();
+  },
+
+  _deleteProject () {
+    SavedProjectActions.deleteSavedProject('finalizeProject',
+      SavedProjectStore.currentProject());
+    if (SavedProjectStore.currentProject().id) {
+      this.setState({deleteMessage: "Project deleted"});
+    } else {
+      this.setState({deleteMessage: "No project to delete"});
+    }
+
+    let that = this;
+    window.setTimeout(()=> {
+      this.setState({deleteMessage: ""});
+    },2000);
   },
 
   _setImage (e) {
@@ -117,91 +134,98 @@ const Basics = React.createClass({
   render: function() {
 
     return (
-      <div className="wrapper">
-        <div className="project-basic-form">
-          <ul>
-            <li className="project-image">
-              <div className="grey-field">
-                <div className="attribute-field">Project image</div>
-                <div className="field-wrapper">
-                  <button id="project-image" className="project-image">
-                    Choose an image from your computer
-                  </button>
-                </div>
-              </div>
-            </li>
-            <li className="project-title">
-              <div className="grey-field">
-                <div className="attribute-field">Project title</div>
-                <div className="field-wrapper">
-                  <input type="text" className="title"
-                    onChange={this._setTitle} value={this.state.title || ""}/>
-                </div>
-              </div>
-            </li>
-            <li className="project-short-blurb">
-              <div className="grey-field">
-                <div className="attribute-field">Short blurb</div>
-                <div className="field-wrapper">
-                  <textarea rows="3" value={this.state.blurb || ""}
-                    wrap="hard" className="short-blurb-field"
-                    onChange={this._setBlurb} />
-                </div>
-              </div>
-            </li>
-            <li className="project-category">
-              <div className="grey-field">
-                <div className="attribute-field">Era</div>
-                <div id="cat-field-wrapper" className="field-wrapper">
-                  <div id="left-arrow"><img onClick={this._reduceCategory}
-                    id="left" src={window.left_arrow}></img></div>
-                  <button id="cat-button" className="category-button">
-                    {ProjectCategories[this.state.category_id].label  || ""}
-                  </button>
-                  <div id="right-arrow"><img onClick={this._increaseCategory}
-                    id="right" src={window.right_arrow}></img></div>
-                </div>
-              </div>
-            </li>
-            <li className="project-location">
-              <div className="grey-field">
-                <div className="attribute-field">Project location</div>
-                <div className="field-wrapper">
-                  <input type="text" className="location"
-                    onChange={this._setLocation}
-                    value={this.state.location || ""}/>
-                </div>
-              </div>
-            </li>
-            <li className="project-duration">
-              <div className="grey-field">
-                <div className="attribute-field">Funding duration</div>
-                <div className="field-wrapper">
-                  <div className="num-days">
-                    <input value={this.state.duration || ""}
-                      className="duration-field" type="number"
-                      onChange={this._setDuration} placeholder="(in days)"/>
+      <div>
+        <div  className={`wrapper ${this.state.appearance}`}>
+          <div className="project-basic-form">
+            <ul>
+              <li className="project-image">
+                <div className="grey-field">
+                  <div className="attribute-field">Project image</div>
+                  <div className="field-wrapper">
+                    <button id="project-image" className="project-image">
+                      Choose an image from your computer
+                    </button>
                   </div>
                 </div>
-              </div>
-            </li>
-            <li className="project-goal">
-              <div className="grey-field">
-                <div className="attribute-field">Funding goal</div>
-                <div className="field-wrapper">
-                  <input type="number" className="goal"
-                    onChange={this._setGoal}
-                    value={this.state.goal || ""}
-                    placeholder="$0"/>USD
+              </li>
+              <li className="project-title">
+                <div className="grey-field">
+                  <div className="attribute-field">Project title</div>
+                  <div className="field-wrapper">
+                    <input type="text" className="title"
+                      onChange={this._setTitle} value={this.state.title || ""}/>
+                  </div>
                 </div>
-              </div>
-            </li>
-          </ul>
+              </li>
+              <li className="project-short-blurb">
+                <div className="grey-field">
+                  <div className="attribute-field">Short blurb</div>
+                  <div className="field-wrapper">
+                    <textarea rows="3" value={this.state.blurb || ""}
+                      wrap="hard" className="short-blurb-field"
+                      onChange={this._setBlurb} />
+                  </div>
+                </div>
+              </li>
+              <li className="project-category">
+                <div className="grey-field">
+                  <div className="attribute-field">Era</div>
+                  <div id="cat-field-wrapper" className="field-wrapper">
+                    <div id="left-arrow"><img onClick={this._reduceCategory}
+                      id="left" src={window.left_arrow}></img></div>
+                    <button id="cat-button" className="category-button">
+                      {ProjectCategories[this.state.category_id].label  || ""}
+                    </button>
+                    <div id="right-arrow"><img onClick={this._increaseCategory}
+                      id="right" src={window.right_arrow}></img></div>
+                  </div>
+                </div>
+              </li>
+              <li className="project-location">
+                <div className="grey-field">
+                  <div className="attribute-field">Project location</div>
+                  <div className="field-wrapper">
+                    <input type="text" className="location"
+                      onChange={this._setLocation}
+                      value={this.state.location || ""}/>
+                  </div>
+                </div>
+              </li>
+              <li className="project-duration">
+                <div className="grey-field">
+                  <div className="attribute-field">Funding duration</div>
+                  <div className="field-wrapper">
+                    <div className="num-days">
+                      <input value={this.state.duration || ""}
+                        className="duration-field" type="number"
+                        onChange={this._setDuration} placeholder="(in days)"/>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li className="project-goal">
+                <div className="grey-field">
+                  <div className="attribute-field">Funding goal</div>
+                  <div className="field-wrapper">
+                    <input type="number" className="goal"
+                      onChange={this._setGoal}
+                      value={this.state.goal || ""}
+                      placeholder="$0"/>USD
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
         </div>
         <div id="save-box" className={this.state.saved || 'saved'}>
           <button className={this.state.saved || 'saved'}
             onClick={this._handleSave}>Save</button>
           <p>{this.state.errorMessage}</p>
+        </div>
+        <div className="delete-wrapper">
+          <button className="delete-project" onClick={this._deleteProject}>
+            Clear</button>
+          <p className="delete-message">{this.state.deleteMessage}</p>
         </div>
       </div>
     );

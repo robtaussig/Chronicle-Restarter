@@ -47,17 +47,6 @@ const FinalizeProject = React.createClass({
     }
   },
 
-  _changePage (pageTarget) {
-    this.header = ProjectMessages[`${pageTarget} header`];
-    this.message = ProjectMessages[pageTarget];
-    this.forceUpdate();
-  },
-
-  _saveChanges (savedData) {
-    this.setState({savedData});
-    this.setState({saved: true});
-  },
-
   _deleteProject () {
     SavedProjectActions.deleteSavedProject('finalizeProject',
       SavedProjectStore.currentProject());
@@ -73,6 +62,17 @@ const FinalizeProject = React.createClass({
     },2000);
   },
 
+  _changePage (pageTarget) {
+    this.header = ProjectMessages[`${pageTarget} header`];
+    this.message = ProjectMessages[pageTarget];
+    this.forceUpdate();
+  },
+
+  _saveChanges (savedData) {
+    this.setState({savedData});
+    this.setState({saved: true});
+  },
+
   _onChange () {
 
   },
@@ -86,15 +86,9 @@ const FinalizeProject = React.createClass({
           <div className="nav-bar-top-text">{this.header}</div>
           <div className="nav-bar-bottom-text">{this.message}</div>
         </div>
-        <div className="project-create-subpage group">
-          {this.props.children}
+          <div className="project-create-subpage group">
+            {this.props.children}
         </div>
-        <div className="delete-wrapper">
-          <button className="delete-project" onClick={this._deleteProject}>
-            Clear</button>
-          <p className="delete-message">{this.state.deleteMessage}</p>
-        </div>
-
       </div>
     );
   }

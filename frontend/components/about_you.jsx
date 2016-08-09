@@ -15,7 +15,8 @@ const AboutYou = React.createClass({
       location: "",
       website: "",
       saved: 'saved',
-      errorMessage: ""
+      errorMessage: "",
+      appearance: 'entering'
     });
   },
 
@@ -24,6 +25,7 @@ const AboutYou = React.createClass({
     this.setState({id: userId});
     UserActions.fetchUser('about', userId);
     this.listener = UserStore.addListener(this._onChange);
+    window.setTimeout(() => {this.setState({appearance: 'entered'});},200);
   },
 
   componentWillUnmount () {
@@ -42,6 +44,21 @@ const AboutYou = React.createClass({
     event.preventDefault();
     this.setState({full_name: event.target.value});
     this._resetSavedStatus();
+  },
+
+  _deleteProject () {
+    SavedProjectActions.deleteSavedProject('finalizeProject',
+      SavedProjectStore.currentProject());
+    if (SavedProjectStore.currentProject().id) {
+      this.setState({deleteMessage: "Project deleted"});
+    } else {
+      this.setState({deleteMessage: "No project to delete"});
+    }
+
+    let that = this;
+    window.setTimeout(()=> {
+      this.setState({deleteMessage: ""});
+    },2000);
   },
 
   _setBiography (event) {
@@ -77,67 +94,74 @@ const AboutYou = React.createClass({
 
   render: function() {
     return (
-      <div className="about-you-wrapper">
-        <div className="about-you-form">
-          <ul>
-            <li className="user-image-field">
-              <div className="grey-field">
-                <div className="attribute-field">Profile photo</div>
-                <div className="field-wrapper">
-                  <button id="about-you-image" className="about-you-image">
-                    Choose an image from your computer
-                  </button>
+      <div>
+        <div className={`about-you-wrapper ${this.state.appearance}`}>
+          <div className="about-you-form">
+            <ul>
+              <li className="user-image-field">
+                <div className="grey-field">
+                  <div className="attribute-field">Profile photo</div>
+                  <div className="field-wrapper">
+                    <button id="about-you-image" className="about-you-image">
+                      Choose an image from your computer
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </li>
-            <li className="user-name-field">
-              <div className="grey-field">
-                <div className="attribute-field">Full Name</div>
-                <div className="warning-text"><strong>Warning:</strong> Once
-                  you launch your project, you cannot modify your full
-                  name.</div>
-                <div className="field-wrapper">
-                  <input type="text" className="user-name"
-                    onChange={this._setName} value={this.state.full_name || ""}/>
+              </li>
+              <li className="user-name-field">
+                <div className="grey-field">
+                  <div className="attribute-field">Full Name</div>
+                  <div className="warning-text"><strong>Warning:</strong> Once
+                    you launch your project, you cannot modify your full
+                    name.</div>
+                  <div className="field-wrapper">
+                    <input type="text" className="user-name"
+                      onChange={this._setName} value={this.state.full_name || ""}/>
+                  </div>
                 </div>
-              </div>
-            </li>
-            <li className="user-biography-field">
-              <div className="grey-field">
-                <div className="attribute-field">Biography</div>
-                <div className="field-wrapper">
-                  <textarea rows="5" value={this.state.biography || ""}
-                    wrap="hard" className="user-biography"
-                    onChange={this._setBiography} />
+              </li>
+              <li className="user-biography-field">
+                <div className="grey-field">
+                  <div className="attribute-field">Biography</div>
+                  <div className="field-wrapper">
+                    <textarea rows="5" value={this.state.biography || ""}
+                      wrap="hard" className="user-biography"
+                      onChange={this._setBiography} />
+                  </div>
                 </div>
-              </div>
-            </li>
-            <li className="user-location-field">
-              <div className="grey-field">
-                <div className="attribute-field">Location</div>
-                <div className="field-wrapper">
-                  <input type="text" className="user-location"
-                    onChange={this._setLocation} value={this.state.location || ""}/>
+              </li>
+              <li className="user-location-field">
+                <div className="grey-field">
+                  <div className="attribute-field">Location</div>
+                  <div className="field-wrapper">
+                    <input type="text" className="user-location"
+                      onChange={this._setLocation} value={this.state.location || ""}/>
+                  </div>
                 </div>
-              </div>
-            </li>
-            <li className="user-website-field">
-              <div className="grey-field">
-                <div className="attribute-field">Website</div>
-                <div className="field-wrapper">
-                  <input type="text" className="website"
-                    placeholder="www."
-                    onChange={this._setWebsite}
-                    value={this.state.website || ""}/>
+              </li>
+              <li className="user-website-field">
+                <div className="grey-field">
+                  <div className="attribute-field">Website</div>
+                  <div className="field-wrapper">
+                    <input type="text" className="website"
+                      placeholder="www."
+                      onChange={this._setWebsite}
+                      value={this.state.website || ""}/>
+                  </div>
                 </div>
-              </div>
-            </li>
-          </ul>
+              </li>
+            </ul>
+          </div>
         </div>
         <div id="save-box" className={this.state.saved || 'saved'}>
           <button className={this.state.saved || 'saved'}
             onClick={this._handleSave}>Save</button>
           <p>{this.state.errorMessage}</p>
+        </div>
+        <div className="delete-wrapper">
+          <button className="delete-project" onClick={this._deleteProject}>
+            Clear</button>
+          <p className="delete-message">{this.state.deleteMessage}</p>
         </div>
       </div>
     );

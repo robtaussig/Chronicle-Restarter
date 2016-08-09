@@ -6,7 +6,13 @@ const SessionStore = require('../stores/user_store.js');
 const Account = React.createClass({
 
   getInitialState () {
-    return ({id: "", email: "", verified: "unverified", verification_status: ""});
+    return ({
+      id: "",
+      email: "",
+      verified: "unverified",
+      verification_status: "",
+      appearance: "entering"
+    });
   },
 
   componentDidMount () {
@@ -14,10 +20,26 @@ const Account = React.createClass({
     this._prepopulate(userId);
     this.listener = UserStore.addListener(this._onChange);
     UserActions.fetchUser('about', userId);
+    window.setTimeout(() => {this.setState({appearance: 'entered'});},200);
   },
 
   componentWillUnmount () {
     this.listener.remove();
+  },
+
+  _deleteProject () {
+    SavedProjectActions.deleteSavedProject('finalizeProject',
+      SavedProjectStore.currentProject());
+    if (SavedProjectStore.currentProject().id) {
+      this.setState({deleteMessage: "Project deleted"});
+    } else {
+      this.setState({deleteMessage: "No project to delete"});
+    }
+
+    let that = this;
+    window.setTimeout(()=> {
+      this.setState({deleteMessage: ""});
+    },2000);
   },
 
   _prepopulate (userId) {
@@ -48,7 +70,7 @@ const Account = React.createClass({
       (this.state.verification_status === "pending" ? "pending" : "unverified");
 
     return (
-      <div className="account-info-wrapper">
+      <div className={`account-info-wrapper ${this.state.appearance}`}>
         <div className="account-info-form">
           <ul>
             <li className="email-field">

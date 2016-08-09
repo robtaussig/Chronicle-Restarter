@@ -7,6 +7,10 @@ const RewardActions = require('../actions/reward_actions.js');
 
 const Rewards = React.createClass({
 
+  getInitialState () {
+    return({appearance: 'entering'});
+  },
+
   _addReward () {
     this.uniqueKey += 1;
     this.rewardItems.push(<RewardItem projectId={this.projectId}
@@ -18,7 +22,7 @@ const Rewards = React.createClass({
 
   componentDidMount () {
     this._prepopulate();
-
+    window.setTimeout(() => {this.setState({appearance: 'entered'});},200);
     this.projectId = SavedProjectStore.currentProject().id;
     this.forceUpdate();
   },
@@ -43,6 +47,21 @@ const Rewards = React.createClass({
     this.uniqueKey = this.rewardItems.length;
   },
 
+  _deleteProject () {
+    SavedProjectActions.deleteSavedProject('finalizeProject',
+      SavedProjectStore.currentProject());
+    if (SavedProjectStore.currentProject().id) {
+      this.setState({deleteMessage: "Project deleted"});
+    } else {
+      this.setState({deleteMessage: "No project to delete"});
+    }
+
+    let that = this;
+    window.setTimeout(()=> {
+      this.setState({deleteMessage: ""});
+    },2000);
+  },
+
   _findReward (rewardId) {
     return this.rewardItems.map(function(e)
       { return e.props.idx; }).indexOf(rewardId);
@@ -58,9 +77,18 @@ const Rewards = React.createClass({
 
     return (
       <div>
-        <button className="add-reward-button"
-          onClick={this._addReward}>Add Reward</button>
-        {this.rewardItems}
+        <div className={this.state.appearance}>
+          <div>
+            <button className="add-reward-button"
+              onClick={this._addReward}>Add Reward</button>
+            {this.rewardItems}
+          </div>
+        </div>
+        <div className="delete-wrapper">
+          <button className="delete-project" onClick={this._deleteProject}>
+            Clear</button>
+          <p className="delete-message">{this.state.deleteMessage}</p>
+        </div>
       </div>
     );
   }
