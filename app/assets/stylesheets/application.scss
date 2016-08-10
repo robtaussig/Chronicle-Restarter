@@ -452,6 +452,10 @@ ul.buttons-wrapper li.new-project-button.spread {
   transition: 0.2s;
 }
 
+li.hide {
+  display:none;
+}
+
 ul.buttons-wrapper li.saved-projects-button {
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
