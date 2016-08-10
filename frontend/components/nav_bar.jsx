@@ -30,7 +30,9 @@ const NavBar = React.createClass({
   render () {
     let navContent = (this.state.user.hasOwnProperty('id')) ?
       [<li key="user"><Link className="user-link"
-        to='userProfile'>{this.state.user.email}</Link></li>,
+          to='userProfile'>{this.state.user.pic_url ||
+          <img id="nav-prof-pic" src={window.profile_pic}></img>}</Link>
+        </li>,
       <li onClick={this._logOut} className="log-out-button" key="logOut">
         <img id="log-out-icon" src={window.logout}></img>
       </li>,

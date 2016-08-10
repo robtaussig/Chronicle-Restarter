@@ -1,12 +1,15 @@
 const React = require('react');
 const RewardStore = require('../stores/reward_store.js');
+const SavedProjectStore = require('../stores/saved_project_store.js');
+const SavedProjectActions = require('../actions/saved_project_actions.js');
 const RewardActions = require('../actions/reward_actions.js');
+const UserStore = require('../stores/user_store.js');
 
 const RewardItem = React.createClass({
 
   getInitialState () {
     return ({
-      project_id: this.props.projectId,
+      project_id: this.props.projectId || SavedProjectStore.currentProject().id,
       project_reward_key: this.props.project_reward_key,
       quantity: this.props.quantity || 0,
       title: this.props.title || "",
@@ -18,14 +21,30 @@ const RewardItem = React.createClass({
   },
 
   componentDidMount () {
-    this.token = RewardStore.addListener(this._onChange);
+    this.rewardToken = RewardStore.addListener(this._onRewardChange);
+    this.projectToken = SavedProjectStore.addListener(this._onProjectChange);
+    this._handlePreviousRefresh();
+  },
+
+  _handlePreviousRefresh () {
+    if (typeof this.props.projectId === "undefined") {
+      let userId = window.myApp.id || UserStore.currentUSer();
+      let projects = SavedProjectActions.fetchAllSavedProjects('rewards', userId);
+    }
   },
 
   componentWillUnmount () {
-    this.token.remove();
+    this.rewardToken.remove();
+    this.projectToken.remove();
   },
 
-  _onChange () {
+  _onProjectChange () {
+    let projectsByUser = SavedProjectStore.allCurrentProjects();
+    let lastProject = projectsByUser[projectsByUser.length - 1];
+    this.setState({project_id: lastProject.id});
+  },
+
+  _onRewardChange () {
     if (RewardStore.find(this.state.project_reward_key).length > 0) {
       this.setState({saved: 'saved'});
     }

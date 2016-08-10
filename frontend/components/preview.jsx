@@ -4,6 +4,8 @@ const RewardActions = require('../actions/reward_actions.js');
 const RewardStore = require('../stores/reward_store.js');
 const RewardItem = require('./reward_item.jsx');
 const UserStore = require('../stores/user_store.js');
+const UserActions = require('../actions/user_actions.js');
+const SavedProjectActions = require('../actions/saved_project_actions.js');
 const ProjectCategories = require('../constants/project_category_ids');
 
 const Preview = React.createClass({
@@ -17,12 +19,14 @@ const Preview = React.createClass({
       project_img_urls: "",
       project_funders: 0,
       project_funded: 0,
+      project_duration: 0,
       project_goal: 0,
       project_blurb: "",
       project_category_id: 0,
       user_project_total: 0,
       user_pic_url: "",
       user_website: "",
+      user_id: window.myApp.id || UserStore.currentUser().id,
       project_content: "",
       project_risks: ""
     });
@@ -32,8 +36,9 @@ const Preview = React.createClass({
     RewardActions.saveAllRewards();
     this._populate();
     this.rewardListener = RewardStore.addListener(this._onChange);
-    this.projectListener = SavedProjectStore.addListener(this._onChange);
-    this.userListener = UserStore.addListener(this._onChange);
+    this.projectListener = SavedProjectStore.addListener(this._onProjectChange);
+    this.userListener = UserStore.addListener(this._onUserChange);
+    SavedProjectActions.fetchAllSavedProjects ('preview', this.state.user_id);
     window.setTimeout(() => {this.setState({appearance: 'entered'});},100);
   },
 
@@ -43,27 +48,32 @@ const Preview = React.createClass({
     this.userListener.remove();
   },
 
+  _onProjectChange () {
+    this.setState({user_project_total: SavedProjectStore.allCurrentProjects().length});
+  },
+
   _populate () {
     let project = SavedProjectStore.currentProject();
     let rewards = RewardStore.currentRewards();
-    let user = UserStore.currentUser();
+    let user = Object.assign(UserStore.currentUser(),window.myApp);
     console.log(project);
     console.log(rewards);
     console.log(user);
 
     this.setState({
       rewards: rewards,
-      project_title: project.title,
-      user_full_name: user.full_name,
+      project_title: project.title || "Title was left empty",
+      user_full_name: user.full_name || user.username,
       user_website: user.website || "",
-      project_img_urls: project.project_img_urls || "",
+      project_img_urls: project.project_img_urls || <img id="default-pic" src={window.pug}></img>,
       project_funders: project.funders || 0,
       project_funded: project.funded || 0,
       project_goal: project.goal || 0,
+      project_duration: project.duration || 0,
       project_blurb: project.blurb || "",
       project_category_id: project.category_id || 0,
       user_project_total: user.project_totals || 0,
-      user_pic_url: user.pic_url || "",
+      user_pic_url: user.pic_url || <img id="prof-pic" src={window.profile_pic}></img>,
       project_content: project.content || "",
       project_risks: project.risks || ""
     });
@@ -89,28 +99,32 @@ const Preview = React.createClass({
       <div className={this.state.appearance}>
         <div className="preview-wrapper">
           <div className="preview-header">
-            <h3 className="preview-project-title">{this.state.project_title ||
-                "Test Text"}</h3>
+            <h3 className="preview-project-title">{this.state.project_title}</h3>
               <p className="preview-project-name">
-                by <b>{this.state.user_full_name || "Test Text"}</b>
+                by <b>{this.state.user_full_name}</b>
               </p>
             <br></br>
           </div>
           <div className="preview-project-image">
-            <div>{this.state.project_img_urls ||
-                <img id="default-pic" src={window.pug}></img>}</div>
+            <div>{this.state.project_img_urls}</div>
           </div>
           <div className="preview-project-summary">
             <ul className="funders group">
-              <li className="funders-num">{this.state.project_funders || 0}</li>
+              <li className="funders-num">{this.state.project_funders}</li>
               <li className="funders-text">backers</li>
             </ul>
             <ul className="funded group">
-              <li className="funded-num">${this.state.project_funded || 0}</li>
+              <li className="funded-num">${this.state.project_funded}</li>
               <li className="funded-goal">
-                pledged of ${this.state.project_goal || 0} goal
+                pledged of ${this.state.project_goal} goal
               </li>
             </ul>
+            <div className="preview-project-duration">
+              {this.state.project_duration}
+            </div>
+            <div className="preview-project-remaining">
+              days to go
+            </div>
             <div className="preview-warning">
               <p>THIS PROJECT IS NOT LIVE</p>
               <br></br>
@@ -130,16 +144,15 @@ const Preview = React.createClass({
                 <li>[Email]</li>
               </ul>
             </div>
-            <div className="preview-project-blurb">{this.state.project_blurb ||
-                ""}</div>
+            <div className="preview-project-blurb">{this.state.project_blurb}</div>
             <div className="user-info">
               <ul className="user-name-pic">
-                <li><p className="user-full-name">{this.state.user_full_name ||
-                    "Test Text"}</p></li>
-                  <li>{this.state.user_pic_url || "pic"}</li>
+                <li><p className="user-full-name">{this.state.user_full_name}</p></li>
+                  <li className="profile-pic">{this.state.user_pic_url}
+                  </li>
               </ul>
               <br></br>
-              <p className="project-total">{this.state.user_project_total || 0}
+              <p className="project-total">{this.state.user_project_total}
                 {this.state.user_project_total === 1 ? ' project ' :
                   ' projects '} created</p>
                 <br></br>
@@ -170,8 +183,7 @@ const Preview = React.createClass({
             <br></br>
             <div className="project-risks">
               <h4>Risks</h4>
-              <div className="project-risk-content">{this.state.project_risks ||
-                "Test Text"}</div>
+              <div className="project-risk-content">{this.state.project_risks}</div>
             </div>
             <div className="project-rewards-sidebar">
               {_rewards}
@@ -186,10 +198,7 @@ const Preview = React.createClass({
 
 module.exports = Preview;
 
-// <ul className="reward-sidebar">{_rewards}</ul>
-// let _rewards = this.rewards.map((reward,idx)=> {
-//   return <RewardItem key={idx} reward={reward} />;
-// });
+
 
 /* TODO
 

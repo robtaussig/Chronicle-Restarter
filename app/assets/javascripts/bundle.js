@@ -27200,7 +27200,7 @@
 	        Link,
 	        { className: 'user-link',
 	          to: 'userProfile' },
-	        this.state.user.email
+	        this.state.user.pic_url || React.createElement('img', { id: 'nav-prof-pic', src: window.profile_pic })
 	      )
 	    ), React.createElement(
 	      'li',
@@ -35815,16 +35815,18 @@
 	
 	    if (RewardStore.currentRewards().length > 0) {
 	      this.rewardItems = RewardStore.currentRewards().map(function (reward, i) {
-	        return React.createElement(RewardItem, { amount: reward.amount,
-	          description: reward.description,
-	          project_id: reward.project_id,
-	          saved: 'saved',
-	          count: i,
-	          project_reward_key: reward.project_reward_key,
-	          quantity: reward.quantity,
-	          title: reward.title,
-	          key: reward.project_reward_key,
-	          _delete: _this2._deleteReward });
+	        if (reward.project_id === SavedProjectStore.currentProject().id) {
+	          return React.createElement(RewardItem, { amount: reward.amount,
+	            description: reward.description,
+	            project_id: reward.project_id,
+	            saved: 'saved',
+	            count: i,
+	            project_reward_key: reward.project_reward_key,
+	            quantity: reward.quantity,
+	            title: reward.title,
+	            key: reward.project_reward_key,
+	            _delete: _this2._deleteReward });
+	        }
 	      });
 	    } else {
 	      this.rewardItems = [];
@@ -36055,13 +36057,16 @@
 	
 	var React = __webpack_require__(3);
 	var RewardStore = __webpack_require__(288);
+	var SavedProjectStore = __webpack_require__(280);
+	var SavedProjectActions = __webpack_require__(277);
 	var RewardActions = __webpack_require__(291);
+	var UserStore = __webpack_require__(295);
 	
 	var RewardItem = React.createClass({
 	  displayName: 'RewardItem',
 	  getInitialState: function getInitialState() {
 	    return {
-	      project_id: this.props.projectId,
+	      project_id: this.props.projectId || SavedProjectStore.currentProject().id,
 	      project_reward_key: this.props.project_reward_key,
 	      quantity: this.props.quantity || 0,
 	      title: this.props.title || "",
@@ -36072,12 +36077,26 @@
 	    };
 	  },
 	  componentDidMount: function componentDidMount() {
-	    this.token = RewardStore.addListener(this._onChange);
+	    this.rewardToken = RewardStore.addListener(this._onRewardChange);
+	    this.projectToken = SavedProjectStore.addListener(this._onProjectChange);
+	    this._handlePreviousRefresh();
+	  },
+	  _handlePreviousRefresh: function _handlePreviousRefresh() {
+	    if (typeof this.props.projectId === "undefined") {
+	      var userId = window.myApp.id || UserStore.currentUSer();
+	      var projects = SavedProjectActions.fetchAllSavedProjects('rewards', userId);
+	    }
 	  },
 	  componentWillUnmount: function componentWillUnmount() {
-	    this.token.remove();
+	    this.rewardToken.remove();
+	    this.projectToken.remove();
 	  },
-	  _onChange: function _onChange() {
+	  _onProjectChange: function _onProjectChange() {
+	    var projectsByUser = SavedProjectStore.allCurrentProjects();
+	    var lastProject = projectsByUser[projectsByUser.length - 1];
+	    this.setState({ project_id: lastProject.id });
+	  },
+	  _onRewardChange: function _onRewardChange() {
 	    if (RewardStore.find(this.state.project_reward_key).length > 0) {
 	      this.setState({ saved: 'saved' });
 	    }
@@ -37032,6 +37051,8 @@
 	var RewardStore = __webpack_require__(288);
 	var RewardItem = __webpack_require__(290);
 	var UserStore = __webpack_require__(295);
+	var UserActions = __webpack_require__(284);
+	var SavedProjectActions = __webpack_require__(277);
 	var ProjectCategories = __webpack_require__(282);
 	
 	var Preview = React.createClass({
@@ -37045,12 +37066,14 @@
 	      project_img_urls: "",
 	      project_funders: 0,
 	      project_funded: 0,
+	      project_duration: 0,
 	      project_goal: 0,
 	      project_blurb: "",
 	      project_category_id: 0,
 	      user_project_total: 0,
 	      user_pic_url: "",
 	      user_website: "",
+	      user_id: window.myApp.id || UserStore.currentUser().id,
 	      project_content: "",
 	      project_risks: ""
 	    };
@@ -37061,8 +37084,9 @@
 	    RewardActions.saveAllRewards();
 	    this._populate();
 	    this.rewardListener = RewardStore.addListener(this._onChange);
-	    this.projectListener = SavedProjectStore.addListener(this._onChange);
-	    this.userListener = UserStore.addListener(this._onChange);
+	    this.projectListener = SavedProjectStore.addListener(this._onProjectChange);
+	    this.userListener = UserStore.addListener(this._onUserChange);
+	    SavedProjectActions.fetchAllSavedProjects('preview', this.state.user_id);
 	    window.setTimeout(function () {
 	      _this.setState({ appearance: 'entered' });
 	    }, 100);
@@ -37072,27 +37096,31 @@
 	    this.projectListener.remove();
 	    this.userListener.remove();
 	  },
+	  _onProjectChange: function _onProjectChange() {
+	    this.setState({ user_project_total: SavedProjectStore.allCurrentProjects().length });
+	  },
 	  _populate: function _populate() {
 	    var project = SavedProjectStore.currentProject();
 	    var rewards = RewardStore.currentRewards();
-	    var user = UserStore.currentUser();
+	    var user = Object.assign(UserStore.currentUser(), window.myApp);
 	    console.log(project);
 	    console.log(rewards);
 	    console.log(user);
 	
 	    this.setState({
 	      rewards: rewards,
-	      project_title: project.title,
-	      user_full_name: user.full_name,
+	      project_title: project.title || "Title was left empty",
+	      user_full_name: user.full_name || user.username,
 	      user_website: user.website || "",
-	      project_img_urls: project.project_img_urls || "",
+	      project_img_urls: project.project_img_urls || React.createElement('img', { id: 'default-pic', src: window.pug }),
 	      project_funders: project.funders || 0,
 	      project_funded: project.funded || 0,
 	      project_goal: project.goal || 0,
+	      project_duration: project.duration || 0,
 	      project_blurb: project.blurb || "",
 	      project_category_id: project.category_id || 0,
 	      user_project_total: user.project_totals || 0,
-	      user_pic_url: user.pic_url || "",
+	      user_pic_url: user.pic_url || React.createElement('img', { id: 'prof-pic', src: window.profile_pic }),
 	      project_content: project.content || "",
 	      project_risks: project.risks || ""
 	    });
@@ -37151,7 +37179,7 @@
 	          React.createElement(
 	            'h3',
 	            { className: 'preview-project-title' },
-	            this.state.project_title || "Test Text"
+	            this.state.project_title
 	          ),
 	          React.createElement(
 	            'p',
@@ -37160,7 +37188,7 @@
 	            React.createElement(
 	              'b',
 	              null,
-	              this.state.user_full_name || "Test Text"
+	              this.state.user_full_name
 	            )
 	          ),
 	          React.createElement('br', null)
@@ -37171,7 +37199,7 @@
 	          React.createElement(
 	            'div',
 	            null,
-	            this.state.project_img_urls || React.createElement('img', { id: 'default-pic', src: window.pug })
+	            this.state.project_img_urls
 	          )
 	        ),
 	        React.createElement(
@@ -37183,7 +37211,7 @@
 	            React.createElement(
 	              'li',
 	              { className: 'funders-num' },
-	              this.state.project_funders || 0
+	              this.state.project_funders
 	            ),
 	            React.createElement(
 	              'li',
@@ -37198,15 +37226,25 @@
 	              'li',
 	              { className: 'funded-num' },
 	              '$',
-	              this.state.project_funded || 0
+	              this.state.project_funded
 	            ),
 	            React.createElement(
 	              'li',
 	              { className: 'funded-goal' },
 	              'pledged of $',
-	              this.state.project_goal || 0,
+	              this.state.project_goal,
 	              ' goal'
 	            )
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'preview-project-duration' },
+	            this.state.project_duration
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'preview-project-remaining' },
+	            'days to go'
 	          ),
 	          React.createElement(
 	            'div',
@@ -37279,7 +37317,7 @@
 	          React.createElement(
 	            'div',
 	            { className: 'preview-project-blurb' },
-	            this.state.project_blurb || ""
+	            this.state.project_blurb
 	          ),
 	          React.createElement(
 	            'div',
@@ -37293,20 +37331,20 @@
 	                React.createElement(
 	                  'p',
 	                  { className: 'user-full-name' },
-	                  this.state.user_full_name || "Test Text"
+	                  this.state.user_full_name
 	                )
 	              ),
 	              React.createElement(
 	                'li',
-	                null,
-	                this.state.user_pic_url || "pic"
+	                { className: 'profile-pic' },
+	                this.state.user_pic_url
 	              )
 	            ),
 	            React.createElement('br', null),
 	            React.createElement(
 	              'p',
 	              { className: 'project-total' },
-	              this.state.user_project_total || 0,
+	              this.state.user_project_total,
 	              this.state.user_project_total === 1 ? ' project ' : ' projects ',
 	              ' created'
 	            ),
@@ -37396,7 +37434,7 @@
 	            React.createElement(
 	              'div',
 	              { className: 'project-risk-content' },
-	              this.state.project_risks || "Test Text"
+	              this.state.project_risks
 	            )
 	          ),
 	          React.createElement(
@@ -37412,11 +37450,6 @@
 	});
 	
 	module.exports = Preview;
-	
-	// <ul className="reward-sidebar">{_rewards}</ul>
-	// let _rewards = this.rewards.map((reward,idx)=> {
-	//   return <RewardItem key={idx} reward={reward} />;
-	// });
 	
 	/* TODO
 	
