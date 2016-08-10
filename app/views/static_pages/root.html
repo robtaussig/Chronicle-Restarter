@@ -2,6 +2,8 @@
   <% if logged_in? %>
   	window.myApp = <%= render("api/users/user.json.jbuilder",
   		user: current_user).html_safe %>
+  <% else %>
+    window.myApp = <%= {}%>
   <% end %>
 </script>
 

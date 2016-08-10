@@ -45,7 +45,24 @@ const Preview = React.createClass({
     let project = SavedProjectStore.currentProject();
     let rewards = RewardStore.currentRewards();
     let user = UserStore.currentUser();
+    console.log(project);
+    console.log(rewards);
+    console.log(user);
 
+    this.setState({
+      rewards: rewards,
+      project_title: project.title,
+      user_full_name: user.full_name,
+      project_img_urls: project.project_img_urls || "",
+      project_funders: project.funders || 0,
+      project_funded: project.funded || 0,
+      project_goal: project.goal || 0,
+      project_category_id: project.category_id || 0,
+      user_project_total: user.project_totals || 0,
+      user_pic_url: user.pic_url || "",
+      project_content: project.content || "",
+      project_risks: project.risks || ""
+    });
   },
 
   render: function() {
@@ -54,20 +71,20 @@ const Preview = React.createClass({
       <div className={this.state.appearance}>
         <div className="preview-wrapper">
           <div className="preview-header">
-            <h3>{this.state.project_title || ""}</h3>
-            <p>by {this.state.user_full_name || ""}</p>
+            <h3>{this.state.project_title || "Test Text"}</h3>
+            <p>by {this.state.user_full_name || "Test Text"}</p>
             <br></br>
           </div>
           <div className="preview-project-image">
-            <div>{this.state.project_img_urls || ""}</div>
+            <div>{this.state.project_img_urls || "Test Text"}</div>
           </div>
           <div className="preview-project-summary">
             <ul className="funders">
-              <li>{this.state.project_funders || ""}</li>
+              <li>{this.state.project_funders || 0}</li>
               <li>backers</li>
             </ul>
             <ul className="funded">
-              <li>{this.state.project_funded || ""}</li>
+              <li>{this.state.project_funded || 0}</li>
               <li>pledged of ${this.state.project_goal || 0} goal</li>
             </ul>
             <div className="preview-warning">
@@ -79,7 +96,7 @@ const Preview = React.createClass({
             <div><b>Era:</b> {ProjectCategories[this.state.project_category_id].label}</div>
           </div>
           <div className="preview-sub-info">
-            <div>
+            <div className="social-links-wrapper">
               <ul className="social-links">
                 <li>Share: </li>
                 <li>[Tweet]</li>
@@ -89,14 +106,14 @@ const Preview = React.createClass({
               </ul>
             </div>
             <div className="user-info">
-              <p className="user-full-name">{this.state.user_full_name || ""}</p>
+              <p className="user-full-name">{this.state.user_full_name || "Test Text"}</p>
               <br></br>
-              <p>{this.state.user_project_total || 0} {this.state.user_project_total === 1 ? project : projects} created</p>
+              <p>{this.state.user_project_total || 0} {this.state.user_project_total === 1 ? 'project' : 'projects'} created</p>
               <br></br>
               <ul className="user-contact-info">
                 <li>See full bio</li>
                 <li>Contact me</li>
-                <li>{this.state.user_pic_url || ""}</li>
+                <li>{this.state.user_pic_url || "Test Text"}</li>
               </ul>
             </div>
           </div>
@@ -110,10 +127,10 @@ const Preview = React.createClass({
           </div>
           <div className="project-content-field">
             <h3>About this project</h3>
-            <div className="project-content">{this.state.project_content || ""}</div>
+            <div className="project-content">{this.state.project_content || "Test Text"}</div>
             <br></br>
             <h4>Risks</h4>
-            <div className="project-risks">{this.state.project_risks || ""}</div>
+            <div className="project-risks">{this.state.project_risks || "Test Text"}</div>
           </div>
           <div className="project-rewards-sidebar">
             {this.state.rewards.length}

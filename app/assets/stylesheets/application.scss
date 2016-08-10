@@ -638,6 +638,10 @@ button.submit-button:hover {
   flex: 1;
 }
 
+.project-create-subpage.wide {
+  width: 100%;
+}
+
 /* Project Nav Bar */
 
 .nav-bar-box {
@@ -1304,4 +1308,94 @@ div.email-button.verified, div.email-button.pending, div.email-button.verified
 .entered {
   opacity: 1;
   transition: opacity .2s ease-in;
+}
+
+/* Preview page */
+
+div.preview-wrapper {
+  color: black;
+}
+
+div.preview-header {
+  color: black;
+}
+
+div.preview-project-image {
+  color: black;
+}
+
+div.preview-project-summary {
+  color: black;
+}
+
+div.preview-project-summary ul {
+  color: black;
+}
+
+div.preview-preview-warning {
+  color: black;
+}
+
+div.preview-sub-info {
+  color: black;
+}
+
+div.social-links-wrapper {
+  color: black;
+}
+
+ul.social-links {
+  color: black;
+}
+
+ul.social-links li {
+  color: black;
+}
+
+div.user-info {
+  color: black;
+}
+
+div.user-info {
+  color: black;
+}
+
+div.user-info p {
+  color: black;
+}
+
+ul.user-contact-info {
+  color: black;
+}
+
+ul.user-contact-info li {
+  color: black;
+}
+
+div.project-content-bar {
+  color: black;
+}
+
+div.project-content-bar ul {
+  color: black;
+}
+
+div.project-content-field {
+  color: black;
+}
+
+div.project-content-field h3 {
+  color: black;
+}
+
+div.project-content-field h4 {
+  color: black;
+}
+
+div.project-risks {
+  color: black;
+}
+
+div.project-rewards-sidebar {
+
 }

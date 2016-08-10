@@ -37074,6 +37074,24 @@
 	    var project = SavedProjectStore.currentProject();
 	    var rewards = RewardStore.currentRewards();
 	    var user = UserStore.currentUser();
+	    console.log(project);
+	    console.log(rewards);
+	    console.log(user);
+	
+	    this.setState({
+	      rewards: rewards,
+	      project_title: project.title,
+	      user_full_name: user.full_name,
+	      project_img_urls: project.project_img_urls || "",
+	      project_funders: project.funders || 0,
+	      project_funded: project.funded || 0,
+	      project_goal: project.goal || 0,
+	      project_category_id: project.category_id || 0,
+	      user_project_total: user.project_totals || 0,
+	      user_pic_url: user.pic_url || "",
+	      project_content: project.content || "",
+	      project_risks: project.risks || ""
+	    });
 	  },
 	
 	
@@ -37091,13 +37109,13 @@
 	          React.createElement(
 	            'h3',
 	            null,
-	            this.state.project_title || ""
+	            this.state.project_title || "Test Text"
 	          ),
 	          React.createElement(
 	            'p',
 	            null,
 	            'by ',
-	            this.state.user_full_name || ""
+	            this.state.user_full_name || "Test Text"
 	          ),
 	          React.createElement('br', null)
 	        ),
@@ -37107,7 +37125,7 @@
 	          React.createElement(
 	            'div',
 	            null,
-	            this.state.project_img_urls || ""
+	            this.state.project_img_urls || "Test Text"
 	          )
 	        ),
 	        React.createElement(
@@ -37119,7 +37137,7 @@
 	            React.createElement(
 	              'li',
 	              null,
-	              this.state.project_funders || ""
+	              this.state.project_funders || 0
 	            ),
 	            React.createElement(
 	              'li',
@@ -37133,7 +37151,7 @@
 	            React.createElement(
 	              'li',
 	              null,
-	              this.state.project_funded || ""
+	              this.state.project_funded || 0
 	            ),
 	            React.createElement(
 	              'li',
@@ -37176,7 +37194,7 @@
 	          { className: 'preview-sub-info' },
 	          React.createElement(
 	            'div',
-	            null,
+	            { className: 'social-links-wrapper' },
 	            React.createElement(
 	              'ul',
 	              { className: 'social-links' },
@@ -37213,7 +37231,7 @@
 	            React.createElement(
 	              'p',
 	              { className: 'user-full-name' },
-	              this.state.user_full_name || ""
+	              this.state.user_full_name || "Test Text"
 	            ),
 	            React.createElement('br', null),
 	            React.createElement(
@@ -37221,7 +37239,7 @@
 	              null,
 	              this.state.user_project_total || 0,
 	              ' ',
-	              this.state.user_project_total === 1 ? project : projects,
+	              this.state.user_project_total === 1 ? 'project' : 'projects',
 	              ' created'
 	            ),
 	            React.createElement('br', null),
@@ -37241,7 +37259,7 @@
 	              React.createElement(
 	                'li',
 	                null,
-	                this.state.user_pic_url || ""
+	                this.state.user_pic_url || "Test Text"
 	              )
 	            )
 	          )
@@ -37285,7 +37303,7 @@
 	          React.createElement(
 	            'div',
 	            { className: 'project-content' },
-	            this.state.project_content || ""
+	            this.state.project_content || "Test Text"
 	          ),
 	          React.createElement('br', null),
 	          React.createElement(
@@ -37296,7 +37314,7 @@
 	          React.createElement(
 	            'div',
 	            { className: 'project-risks' },
-	            this.state.project_risks || ""
+	            this.state.project_risks || "Test Text"
 	          )
 	        ),
 	        React.createElement(
@@ -37353,7 +37371,7 @@
 	var FinalizeProject = React.createClass({
 	  displayName: 'FinalizeProject',
 	  getInitialState: function getInitialState() {
-	    return { deleteMessage: "" };
+	    return { deleteMessage: "", size: "" };
 	  },
 	  componentDidMount: function componentDidMount() {
 	    this.sessionToken = SessionStore.addListener(this._handleLogin);
@@ -37392,6 +37410,11 @@
 	    }, 2000);
 	  },
 	  _changePage: function _changePage(pageTarget) {
+	    if (pageTarget === 'preview') {
+	      this.setState({ size: 'wide' });
+	    } else {
+	      this.setState({ size: '' });
+	    }
 	    this.header = ProjectMessages[pageTarget + ' header'];
 	    this.message = ProjectMessages[pageTarget];
 	    this.forceUpdate();
@@ -37401,6 +37424,9 @@
 	    this.setState({ saved: true });
 	  },
 	  _onChange: function _onChange() {},
+	  _increaseWidth: function _increaseWidth() {
+	    this.setState({ size: "wide" });
+	  },
 	  render: function render() {
 	    return React.createElement(
 	      'div',
@@ -37423,7 +37449,7 @@
 	      ),
 	      React.createElement(
 	        'div',
-	        { className: 'project-create-subpage group' },
+	        { className: 'project-create-subpage ' + this.state.size + ' group' },
 	        this.props.children
 	      )
 	    );

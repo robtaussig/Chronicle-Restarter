@@ -20,7 +20,7 @@ import { browserHistory } from 'react-router';
 const FinalizeProject = React.createClass({
 
   getInitialState () {
-    return ({deleteMessage: ""});
+    return ({deleteMessage: "", size: ""});
   },
 
   componentDidMount () {
@@ -63,6 +63,11 @@ const FinalizeProject = React.createClass({
   },
 
   _changePage (pageTarget) {
+    if (pageTarget === 'preview') {
+      this.setState({size: 'wide'});
+    } else {
+      this.setState({size: ''});
+    }
     this.header = ProjectMessages[`${pageTarget} header`];
     this.message = ProjectMessages[pageTarget];
     this.forceUpdate();
@@ -77,6 +82,10 @@ const FinalizeProject = React.createClass({
 
   },
 
+  _increaseWidth () {
+    this.setState({size: "wide"});
+  },
+
   render () {
     return (
       <div>
@@ -86,7 +95,7 @@ const FinalizeProject = React.createClass({
           <div className="nav-bar-top-text">{this.header}</div>
           <div className="nav-bar-bottom-text">{this.message}</div>
         </div>
-          <div className="project-create-subpage group">
+          <div className={`project-create-subpage ${this.state.size} group`}>
             {this.props.children}
         </div>
       </div>
