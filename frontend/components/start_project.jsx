@@ -32,14 +32,14 @@ const StartProject = React.createClass({
     this.setState({status: 'moving-up'});
     this.timeoutOne = window.setTimeout(() => {
       this._spreadButtons();
-    },200);
+    },100);
   },
 
   _spreadButtons () {
     this.setState({selected: true, spread: ""});
     this.timeoutTwo = window.setTimeout(() => {
       this.setState({spread: "spread"});
-    },200);
+    },100);
   },
 
   _hideButtons () {

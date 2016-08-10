@@ -67,6 +67,19 @@ const Preview = React.createClass({
 
   render: function() {
 
+    let _rewards = this.state.rewards.map((reward,idx) => {
+      return <div className="single-reward-wrapper" key={idx}>
+        <h3>Pledge ${reward.amount} or more</h3>
+        <p>Reward #{idx}</p>
+        <br></br>
+        <h4>{reward.title}</h4>
+        <p className="reward-description">{reward.description}</p>
+        <br></br>
+        <p className="reward-availability">Available for {reward.quantity}
+          backers</p>
+      </div>;
+    });
+
     return (
       <div className={this.state.appearance}>
         <div className="preview-wrapper">
@@ -79,11 +92,11 @@ const Preview = React.createClass({
             <div>{this.state.project_img_urls || "Test Text"}</div>
           </div>
           <div className="preview-project-summary">
-            <ul className="funders">
+            <ul className="funders group">
               <li>{this.state.project_funders || 0}</li>
               <li>backers</li>
             </ul>
-            <ul className="funded">
+            <ul className="funded group">
               <li>{this.state.project_funded || 0}</li>
               <li>pledged of ${this.state.project_goal || 0} goal</li>
             </ul>
@@ -93,11 +106,12 @@ const Preview = React.createClass({
               <p>This is only a draft that the creator has chosen to share</p>
               <br></br>
             </div>
-            <div><b>Era:</b> {ProjectCategories[this.state.project_category_id].label}</div>
           </div>
+          <div id="era-wrapper" className="era-field"><b>{'Era: '}</b>
+            {ProjectCategories[this.state.project_category_id].label}</div>
           <div className="preview-sub-info">
             <div className="social-links-wrapper">
-              <ul className="social-links">
+              <ul className="social-links group">
                 <li>Share: </li>
                 <li>[Tweet]</li>
                 <li>[Facebook]</li>
@@ -106,19 +120,27 @@ const Preview = React.createClass({
               </ul>
             </div>
             <div className="user-info">
-              <p className="user-full-name">{this.state.user_full_name || "Test Text"}</p>
+              <ul className="user-name-pic">
+                <li><p className="user-full-name">{this.state.user_full_name ||
+                    "Test Text"}</p></li>
+                <li>{this.state.user_pic_url || "Test Text"}</li>
+              </ul>
               <br></br>
-              <p>{this.state.user_project_total || 0} {this.state.user_project_total === 1 ? 'project' : 'projects'} created</p>
+              <p className="project-total">{this.state.user_project_total || 0}
+                {this.state.user_project_total === 1 ? ' project ' :
+                  ' projects '} created</p>
               <br></br>
-              <ul className="user-contact-info">
+              <ul className="user-contact-info group">
                 <li>See full bio</li>
                 <li>Contact me</li>
-                <li>{this.state.user_pic_url || "Test Text"}</li>
               </ul>
             </div>
           </div>
+        </div>
+        <div className="content-divider"></div>
+        <div className="preview-bottom-page group">
           <div className="project-content-bar">
-            <ul className="project-content-nav-bar">
+            <ul className="project-content-nav-bar group">
               <li>[Campaign]</li>
               <li>[Updates]</li>
               <li>[Comments]</li>
@@ -127,13 +149,17 @@ const Preview = React.createClass({
           </div>
           <div className="project-content-field">
             <h3>About this project</h3>
-            <div className="project-content">{this.state.project_content || "Test Text"}</div>
+            <div className="project-content">{this.state.project_content ||
+                "Test Text"}</div>
             <br></br>
-            <h4>Risks</h4>
-            <div className="project-risks">{this.state.project_risks || "Test Text"}</div>
-          </div>
-          <div className="project-rewards-sidebar">
-            {this.state.rewards.length}
+            <div className="project-risks">
+              <h4>Risks</h4>
+              <div className="project-risk-content">{this.state.project_risks ||
+                "Test Text"}</div>
+            </div>
+            <div className="project-rewards-sidebar">
+              {_rewards}
+            </div>
           </div>
         </div>
       </div>
@@ -153,7 +179,7 @@ module.exports = Preview;
 
 1) Handle funders
 2) Count current funding amount
-3) Handle project and user pictures
+3) Handle project and user pictures (user pic next to name in user info)
 4) Create a project_count attribute
-
+5) Display website below name on social links (or replace test text)
 */

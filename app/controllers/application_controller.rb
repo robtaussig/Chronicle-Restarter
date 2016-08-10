@@ -19,7 +19,6 @@ class ApplicationController < ActionController::Base
   end
 
   def logout(user)
-    gon.clear()
     user.reset_session_token
     session[:session_token] = nil
   end

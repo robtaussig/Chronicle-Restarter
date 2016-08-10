@@ -432,7 +432,7 @@ ul.buttons-wrapper li.moving-up {
   height: -10px;
   transform: scale(0.7) translateY(-71px);
   opacity: 0.5;
-  transition: 0.5s;
+  transition: 0.2s;
   background-color: #02a654;
   border-bottom-left-radius:0px;
   border-bottom-right-radius:0px;
@@ -448,7 +448,7 @@ ul.buttons-wrapper li.new-project-button {
 
 ul.buttons-wrapper li.new-project-button.spread {
   transform: translateX(-88px);
-  transition: 0.5s;
+  transition: 0.2s;
 }
 
 ul.buttons-wrapper li.saved-projects-button {
@@ -460,7 +460,7 @@ ul.buttons-wrapper li.saved-projects-button {
 
 ul.buttons-wrapper li.saved-projects-button.spread {
   transform: translateX(87px);
-  transition: 0.5s;
+  transition: 0.2s;
 }
 
 ul.buttons-wrapper li.saved-projects-button:hover {
@@ -640,6 +640,8 @@ button.submit-button:hover {
 
 .project-create-subpage.wide {
   width: 100%;
+  background-color: #f7f7f9;
+  height: 1700px;
 }
 
 /* Project Nav Bar */
@@ -1313,31 +1315,48 @@ div.email-button.verified, div.email-button.pending, div.email-button.verified
 /* Preview page */
 
 div.preview-wrapper {
-  color: black;
+  position: relative;
+  width: 945px;
+  margin: 0 auto;
 }
 
 div.preview-header {
-  color: black;
+  text-align: center;
+  margin-top: 50px;
 }
 
 div.preview-project-image {
-  color: black;
+  width: 600px;
+  height: 600px;
+  border: 1px solid black;
+  float: left;
+  margin: 30px 30px 30px 0
 }
 
 div.preview-project-summary {
-  color: black;
+  position: absolute;
+  right: 0;
+  top: 150px;
+  width: 300px;
+  height: 400px;
 }
 
 div.preview-project-summary ul {
   color: black;
 }
 
-div.preview-preview-warning {
-  color: black;
+div.preview-warning {
+  border-left: 1px solid #ccc;
+  padding: 20px 0 0 20px;
+  margin-top: 20px;
 }
 
 div.preview-sub-info {
-  color: black;
+  width: 945px;
+  height: 100px;
+  position: absolute;
+  top: 775px;
+
 }
 
 div.social-links-wrapper {
@@ -1348,54 +1367,109 @@ ul.social-links {
   color: black;
 }
 
-ul.social-links li {
+ul.social-links li:not(:first-child) {
   color: black;
+  float: left;
+  margin: 20px 20px 0 0;
 }
 
 div.user-info {
-  color: black;
+  position: absolute;
+  margin-top: -120px;
+  padding-top: 29px;
+  width: 250px;
+  border-top: 1px solid #ccc;
+  right: 50px;
 }
 
-div.user-info {
-  color: black;
+div.era-field {
+  position: absolute;
+  top: 737px;
 }
 
-div.user-info p {
-  color: black;
+div.user-info p.project-total {
+  margin-top: 27px;
 }
 
 ul.user-contact-info {
-  color: black;
+  margin-top: 25px;
 }
 
-ul.user-contact-info li {
-  color: black;
+ul.user-name-pic li:not(:last-child) {
+  float: left;
+}
+
+ul.user-name-pic li:last-child {
+  right: 2px;
+  border: 1px solid #ccc;
+  position: absolute;
+  height: 75px;
+  width: 75px;
+}
+
+ul.user-contact-info li:not(:last-child) {
+  float: left;
+}
+
+ul.user-contact-info li:last-child {
+  float: right;
+}
+
+div.content-divider {
+  position: absolute;
+  top: 1335px;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  background-color: #fff;
+  height: 50px;
+  width: 100%;
+}
+
+div.preview-bottom-page {
+  width: 945px;
+  margin: 0 auto;
 }
 
 div.project-content-bar {
-  color: black;
+  position: absolute;
+  top: 1335px;
+  padding: 15px 0;
 }
 
 div.project-content-bar ul {
   color: black;
 }
 
+div.project-content-bar li {
+  float: left;
+  margin: 0 30px 0 0;
+}
+
 div.project-content-field {
-  color: black;
+  position: absolute;
+  height: auto;
+  width: 945px;
+  top: 1400px;
 }
 
 div.project-content-field h3 {
   color: black;
 }
 
+div.project-content, div.project-risks {
+  width: 600px;
+  float: left;
+}
+
 div.project-content-field h4 {
   color: black;
 }
 
-div.project-risks {
-  color: black;
-}
-
 div.project-rewards-sidebar {
-
+  position: absolute;
+  width: 300px;
+  left: 645px;
+  height: auto;
+  border: 1px solid #ccc;
+  margin-top: -56px;
 }

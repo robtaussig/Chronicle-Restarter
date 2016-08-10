@@ -34847,7 +34847,7 @@
 	    this.setState({ status: 'moving-up' });
 	    this.timeoutOne = window.setTimeout(function () {
 	      _this._spreadButtons();
-	    }, 200);
+	    }, 100);
 	  },
 	  _spreadButtons: function _spreadButtons() {
 	    var _this2 = this;
@@ -34855,7 +34855,7 @@
 	    this.setState({ selected: true, spread: "" });
 	    this.timeoutTwo = window.setTimeout(function () {
 	      _this2.setState({ spread: "spread" });
-	    }, 200);
+	    }, 100);
 	  },
 	  _hideButtons: function _hideButtons() {
 	    if (this.advance) {
@@ -37097,6 +37097,45 @@
 	
 	  render: function render() {
 	
+	    var _rewards = this.state.rewards.map(function (reward, idx) {
+	      return React.createElement(
+	        'div',
+	        { className: 'single-reward-wrapper', key: idx },
+	        React.createElement(
+	          'h3',
+	          null,
+	          'Pledge $',
+	          reward.amount,
+	          ' or more'
+	        ),
+	        React.createElement(
+	          'p',
+	          null,
+	          'Reward #',
+	          idx
+	        ),
+	        React.createElement('br', null),
+	        React.createElement(
+	          'h4',
+	          null,
+	          reward.title
+	        ),
+	        React.createElement(
+	          'p',
+	          { className: 'reward-description' },
+	          reward.description
+	        ),
+	        React.createElement('br', null),
+	        React.createElement(
+	          'p',
+	          { className: 'reward-availability' },
+	          'Available for ',
+	          reward.quantity,
+	          'backers'
+	        )
+	      );
+	    });
+	
 	    return React.createElement(
 	      'div',
 	      { className: this.state.appearance },
@@ -37133,7 +37172,7 @@
 	          { className: 'preview-project-summary' },
 	          React.createElement(
 	            'ul',
-	            { className: 'funders' },
+	            { className: 'funders group' },
 	            React.createElement(
 	              'li',
 	              null,
@@ -37147,7 +37186,7 @@
 	          ),
 	          React.createElement(
 	            'ul',
-	            { className: 'funded' },
+	            { className: 'funded group' },
 	            React.createElement(
 	              'li',
 	              null,
@@ -37176,18 +37215,17 @@
 	              'This is only a draft that the creator has chosen to share'
 	            ),
 	            React.createElement('br', null)
-	          ),
-	          React.createElement(
-	            'div',
-	            null,
-	            React.createElement(
-	              'b',
-	              null,
-	              'Era:'
-	            ),
-	            ' ',
-	            ProjectCategories[this.state.project_category_id].label
 	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { id: 'era-wrapper', className: 'era-field' },
+	          React.createElement(
+	            'b',
+	            null,
+	            'Era: '
+	          ),
+	          ProjectCategories[this.state.project_category_id].label
 	        ),
 	        React.createElement(
 	          'div',
@@ -37197,7 +37235,7 @@
 	            { className: 'social-links-wrapper' },
 	            React.createElement(
 	              'ul',
-	              { className: 'social-links' },
+	              { className: 'social-links group' },
 	              React.createElement(
 	                'li',
 	                null,
@@ -37229,23 +37267,35 @@
 	            'div',
 	            { className: 'user-info' },
 	            React.createElement(
-	              'p',
-	              { className: 'user-full-name' },
-	              this.state.user_full_name || "Test Text"
+	              'ul',
+	              { className: 'user-name-pic' },
+	              React.createElement(
+	                'li',
+	                null,
+	                React.createElement(
+	                  'p',
+	                  { className: 'user-full-name' },
+	                  this.state.user_full_name || "Test Text"
+	                )
+	              ),
+	              React.createElement(
+	                'li',
+	                null,
+	                this.state.user_pic_url || "Test Text"
+	              )
 	            ),
 	            React.createElement('br', null),
 	            React.createElement(
 	              'p',
-	              null,
+	              { className: 'project-total' },
 	              this.state.user_project_total || 0,
-	              ' ',
-	              this.state.user_project_total === 1 ? 'project' : 'projects',
+	              this.state.user_project_total === 1 ? ' project ' : ' projects ',
 	              ' created'
 	            ),
 	            React.createElement('br', null),
 	            React.createElement(
 	              'ul',
-	              { className: 'user-contact-info' },
+	              { className: 'user-contact-info group' },
 	              React.createElement(
 	                'li',
 	                null,
@@ -37255,21 +37305,21 @@
 	                'li',
 	                null,
 	                'Contact me'
-	              ),
-	              React.createElement(
-	                'li',
-	                null,
-	                this.state.user_pic_url || "Test Text"
 	              )
 	            )
 	          )
-	        ),
+	        )
+	      ),
+	      React.createElement('div', { className: 'content-divider' }),
+	      React.createElement(
+	        'div',
+	        { className: 'preview-bottom-page group' },
 	        React.createElement(
 	          'div',
 	          { className: 'project-content-bar' },
 	          React.createElement(
 	            'ul',
-	            { className: 'project-content-nav-bar' },
+	            { className: 'project-content-nav-bar group' },
 	            React.createElement(
 	              'li',
 	              null,
@@ -37307,20 +37357,24 @@
 	          ),
 	          React.createElement('br', null),
 	          React.createElement(
-	            'h4',
-	            null,
-	            'Risks'
+	            'div',
+	            { className: 'project-risks' },
+	            React.createElement(
+	              'h4',
+	              null,
+	              'Risks'
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'project-risk-content' },
+	              this.state.project_risks || "Test Text"
+	            )
 	          ),
 	          React.createElement(
 	            'div',
-	            { className: 'project-risks' },
-	            this.state.project_risks || "Test Text"
+	            { className: 'project-rewards-sidebar' },
+	            _rewards
 	          )
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'project-rewards-sidebar' },
-	          this.state.rewards.length
 	        )
 	      )
 	    );
@@ -37339,9 +37393,9 @@
 	
 	1) Handle funders
 	2) Count current funding amount
-	3) Handle project and user pictures
+	3) Handle project and user pictures (user pic next to name in user info)
 	4) Create a project_count attribute
-
+	5) Display website below name on social links (or replace test text)
 	*/
 
 /***/ },
