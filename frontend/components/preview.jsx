@@ -73,7 +73,7 @@ const Preview = React.createClass({
             <div className="preview-warning">
               <p>THIS PROJECT IS NOT LIVE</p>
               <br></br>
-              <p>This is only a draft that the creator has chosen to share.</p>
+              <p>This is only a draft that the creator has chosen to share</p>
               <br></br>
             </div>
             <div><b>Era:</b> {ProjectCategories[this.state.project_category_id].label}</div>
