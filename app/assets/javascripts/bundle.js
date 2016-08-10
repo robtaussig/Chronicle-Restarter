@@ -37130,7 +37130,7 @@
 	        React.createElement(
 	          'p',
 	          { className: 'reward-availability' },
-	          'Available for ' + reward.quantity + ' \n          backers'
+	          'Available for ' + reward.quantity + '\n          backers'
 	        )
 	      );
 	    });
@@ -37395,6 +37395,7 @@
 	3) Handle project and user pictures (user pic next to name in user info)
 	4) Create a project_count attribute
 	5) Display website below name on social links (or replace test text)
+	6) Look into flex box for subpage so it moves with preview page
 	*/
 
 /***/ },
