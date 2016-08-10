@@ -53,7 +53,7 @@ const router = (
 
 
 document.addEventListener('DOMContentLoaded', ()=> {
-  // SetupApp();
+  SetupApp();
   const root = document.querySelector('#content');
   ReactDOM.render(router, root);
 });
