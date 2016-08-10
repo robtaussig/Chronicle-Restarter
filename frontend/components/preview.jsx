@@ -90,7 +90,7 @@ const Preview = React.createClass({
             <br></br>
           </div>
           <div className="preview-project-image">
-            <div>{this.state.project_img_urls || "Test Text"}</div>
+            <div>{this.state.project_img_urls || "Project image will go here"}</div>
           </div>
           <div className="preview-project-summary">
             <ul className="funders group">
@@ -150,8 +150,9 @@ const Preview = React.createClass({
           </div>
           <div className="project-content-field">
             <h3>About this project</h3>
-            <div className="project-content">{this.state.project_content ||
-                "Test Text"}</div>
+            <div className="project-content">
+              <h4>Background</h4>
+              {this.state.project_content || "Test Text"}</div>
             <br></br>
             <div className="project-risks">
               <h4>Risks</h4>

@@ -1457,12 +1457,21 @@ div.project-content-field h3 {
 }
 
 div.project-content, div.project-risks {
-  width: 600px;
+  width: 560px;
   float: left;
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin: 0 0 20px 0;
+  line-height: 22px;
 }
 
 div.project-content-field h4 {
-  color: black;
+  font-size: 24px;
+  line-height: 24px;
+  padding: 0;
+  margin: 0 0 15px 0;
 }
 
 div.project-rewards-sidebar {

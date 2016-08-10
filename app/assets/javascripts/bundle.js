@@ -37163,7 +37163,7 @@
 	          React.createElement(
 	            'div',
 	            null,
-	            this.state.project_img_urls || "Test Text"
+	            this.state.project_img_urls || "Project image will go here"
 	          )
 	        ),
 	        React.createElement(
@@ -37352,6 +37352,11 @@
 	          React.createElement(
 	            'div',
 	            { className: 'project-content' },
+	            React.createElement(
+	              'h4',
+	              null,
+	              'Background'
+	            ),
 	            this.state.project_content || "Test Text"
 	          ),
 	          React.createElement('br', null),
