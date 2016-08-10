@@ -112,14 +112,14 @@ body {
   background-color: rgba(226, 224, 210, 0.31);
 }
 
-/* clearfix */
+/*--------------------------------- clearfix ---------------------------------*/
 .group:after {
   content: "";
   display: block;
   clear: both;
 }
 
-/* Nav-bar */
+/*-------------------------------- Nav-bar -----------------------------------*/
 .nav-bar {
   z-index: 1;
   position: relative;
@@ -174,7 +174,7 @@ body {
   cursor: pointer;
 }
 
-/* Front page/splash */
+/*--------------------------- Front page/splash ------------------------------*/
 div.splash {
   height: 600px;
   width: auto;
@@ -197,7 +197,7 @@ h2.under-construction {
   cursor: default;
 }
 
-/* error box */
+/*---------------------------------- error box -------------------------------*/
 .errors {
   position: relative;
   height: 30px;
@@ -246,7 +246,7 @@ h2.under-construction {
   transition: 0.5s;
 }
 
-/* Footer */
+/*---------------------------------- Footer ----------------------------------*/
 
 div.footer-wrapper {
   border-top: 1px solid limegreen;
@@ -289,7 +289,7 @@ div.footer-wrapper ul.footer-bottom li{
   cursor: pointer;
 }
 
-/* Search */
+/*------------------------------- Search -------------------------------------*/
 
 .search img {
   height: 20px;
@@ -299,7 +299,7 @@ div.footer-wrapper ul.footer-bottom li{
 .search img:hover {
 }
 
-/* login/signup */
+/*-------------------------- login/signup ------------------------------------*/
 
 .sign-up-form, .login-form {
   width: 400px;
@@ -360,7 +360,7 @@ div.footer-wrapper ul.footer-bottom li{
   font-weight: 300;
 }
 
-/* ProjectStart view */
+/*----------------------- ProjectStart view ----------------------------------*/
 
 .start-project {
   height: 600px;
@@ -383,25 +383,6 @@ div.footer-wrapper ul.footer-bottom li{
   font-size: 40px;
   text-align: center;
 }
-
-// .start-project a {
-//   background-color: rgb(0, 230, 115);
-//   border-radius: 5px;
-//   font-size: 16px;
-//   color: white;
-//   font-weight: 700;
-//   position: absolute;
-//   left: 50%;
-//   top: 225px;
-//   transform: perspective(1px) translate(-50%, -50%);
-//   width: 150px;
-//   height: 40px;
-//   padding: 5px;
-//   padding-top: 20px;
-//   vertical-align: middle;
-//   text-align: center;
-//   cursor: pointer;
-// }
 
 ul.buttons-wrapper {
   position: absolute;
@@ -477,7 +458,7 @@ ul.buttons-wrapper li.new-project-button:hover {
 
 
 
-/* Select-era */
+/*------------------------------- Select-era ---------------------------------*/
 
 .select-era {
   height: 600px;
@@ -552,7 +533,7 @@ img#cat-down {
   transition: 0.5s;
 }
 
-/* Create Project */
+/*---------------------------- Create Project --------------------------------*/
 
 ul.inactive-drop-down > li {
   display: none;
@@ -624,7 +605,7 @@ button.submit-button:hover {
   background-color: #02a654;
 }
 
-/* Finalize Project */
+/*--------------------------- Finalize Project -------------------------------*/
 
 .project-create-subpage {
   background-color: white;
@@ -641,10 +622,10 @@ button.submit-button:hover {
 .project-create-subpage.wide {
   width: 100%;
   background-color: #f7f7f9;
-  height: 1800px;
+  height: 1900px;
 }
 
-/* Project Nav Bar */
+/*---------------------------- Project Nav Bar -------------------------------*/
 
 .nav-bar-box {
   height: 265px;
@@ -816,7 +797,7 @@ p.delete-message {
   position: relative;
 }
 
-/* Basics Form */
+/*------------------------------ Basics Form ---------------------------------*/
 
 .wrapper, .about-you-wrapper {
    position:relative;
@@ -975,7 +956,7 @@ img#left {
   margin-top: -125px;
 }
 
-/* Rewards creation */
+/*-------------------------------- Rewards creation --------------------------*/
 
 div.rewards-wrapper {
   position: relative;
@@ -1161,7 +1142,7 @@ div.reward-quantity-wrapper {
   position: absolute;
 }
 
-/* Story page */
+/*----------------------------- Story page -----------------------------------*/
 
 .story-wrapper {
    position:relative;
@@ -1225,7 +1206,7 @@ div.text-box textarea:focus {
   transition: 0.5s;
 }
 
-/* About You Form */
+/*--------------------------- About You Form --------------------------------*/
 
 .about-you-form {
    padding:15px;
@@ -1244,7 +1225,7 @@ div.text-box textarea:focus {
   font-weight: bold;
 }
 
-/* Account form */
+/*---------------------------- Account form ---------------------------------*/
 
 .account-info-form {
    padding:15px;
@@ -1325,6 +1306,16 @@ div.preview-header {
   margin-top: 50px;
 }
 
+h3.preview-project-title {
+  font-size: 32px;
+  font-weight: 400;
+  margin-bottom: 4px;
+}
+
+p.preview-project-name {
+  font-size: 14px;
+}
+
 div.preview-project-image {
   width: 600px;
   height: 600px;
@@ -1345,17 +1336,38 @@ div.preview-project-summary ul {
   color: black;
 }
 
+li.funders-num {
+  color: #aeb7c2;
+  font-size: 47px;
+  font-weight: 400;
+}
+
+li.funders-text {
+  color: black;
+  margin-bottom: 20px;
+}
+
+li.funded-num {
+  color: #aeb7c2;
+  font-size: 47px;
+  font-weight: 400;
+}
+
+li.funded-goal {
+  color: black;
+}
+
 div.preview-warning {
   border-left: 1px solid #ccc;
   padding: 20px 0 0 20px;
-  margin-top: 20px;
+  margin-top: 41px;
 }
 
 div.preview-sub-info {
   width: 945px;
   height: 100px;
   position: absolute;
-  top: 775px;
+  top: 750px;
 
 }
 
@@ -1367,7 +1379,7 @@ ul.social-links {
   color: black;
 }
 
-ul.social-links li:not(:first-child) {
+ul.social-links li {
   color: black;
   float: left;
   margin: 20px 20px 0 0;
@@ -1375,11 +1387,18 @@ ul.social-links li:not(:first-child) {
 
 div.user-info {
   position: absolute;
-  margin-top: -120px;
+  margin-top: -80px;
   padding-top: 29px;
   width: 250px;
   border-top: 1px solid #ccc;
   right: 50px;
+}
+
+div.preview-project-blurb {
+  margin-top: 22px;
+  width: 600px;
+  position: absolute;
+  line-height: 20px;
 }
 
 div.era-field {
@@ -1388,11 +1407,11 @@ div.era-field {
 }
 
 div.user-info p.project-total {
-  margin-top: 27px;
+  margin-top: 22px;
 }
 
 ul.user-contact-info {
-  margin-top: 25px;
+  margin-top: 2px;
 }
 
 ul.user-name-pic li:not(:last-child) {
@@ -1409,10 +1428,27 @@ ul.user-name-pic li:last-child {
 
 ul.user-contact-info li:not(:last-child) {
   float: left;
+  font-size: 14px;
+  color: #2c56ff;
+  font-weight: 700;
 }
 
 ul.user-contact-info li:last-child {
   float: right;
+  font-size: 14px;
+  color: #2c56ff;
+  font-weight: 700;
+}
+
+p.user-full-name {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+p.user-website {
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 3px;
 }
 
 div.content-divider {
@@ -1437,12 +1473,19 @@ div.project-content-bar {
 }
 
 div.project-content-bar ul {
-  color: black;
+  margin-left: 44px;
 }
 
 div.project-content-bar li {
   float: left;
-  margin: 0 30px 0 0;
+  margin: 2px 150px 0 0;
+  font-family: helvetica;
+}
+
+div.project-content-bar li:last-child {
+  float: left;
+  margin: 2px 0 0 0;
+  font-family: helvetica;
 }
 
 div.project-content-field {
@@ -1452,8 +1495,11 @@ div.project-content-field {
   top: 1400px;
 }
 
-div.project-content-field h3 {
-  color: black;
+h3.preview-about-field {
+  color: #000;
+  font-weight: 700;
+  margin-left: 191px;
+  font-size: 24px;
 }
 
 div.project-content, div.project-risks {
@@ -1469,6 +1515,7 @@ div.project-content, div.project-risks {
 
 div.project-content-field h4 {
   font-size: 24px;
+  font-weight: 400;
   line-height: 24px;
   padding: 0;
   margin: 0 0 15px 0;
@@ -1479,7 +1526,7 @@ div.project-rewards-sidebar {
   width: 300px;
   left: 645px;
   height: auto;
-  margin-top: -56px;
+  margin-top: -17px;
 }
 
 div.single-reward-wrapper {

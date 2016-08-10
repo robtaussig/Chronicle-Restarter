@@ -18,9 +18,11 @@ const Preview = React.createClass({
       project_funders: 0,
       project_funded: 0,
       project_goal: 0,
+      project_blurb: "",
       project_category_id: 0,
       user_project_total: 0,
       user_pic_url: "",
+      user_website: "",
       project_content: "",
       project_risks: ""
     });
@@ -53,10 +55,12 @@ const Preview = React.createClass({
       rewards: rewards,
       project_title: project.title,
       user_full_name: user.full_name,
+      user_website: user.website || "",
       project_img_urls: project.project_img_urls || "",
       project_funders: project.funders || 0,
       project_funded: project.funded || 0,
       project_goal: project.goal || 0,
+      project_blurb: project.blurb || "",
       project_category_id: project.category_id || 0,
       user_project_total: user.project_totals || 0,
       user_pic_url: user.pic_url || "",
@@ -85,21 +89,27 @@ const Preview = React.createClass({
       <div className={this.state.appearance}>
         <div className="preview-wrapper">
           <div className="preview-header">
-            <h3>{this.state.project_title || "Test Text"}</h3>
-            <p>by {this.state.user_full_name || "Test Text"}</p>
+            <h3 className="preview-project-title">{this.state.project_title ||
+                "Test Text"}</h3>
+              <p className="preview-project-name">
+                by <b>{this.state.user_full_name || "Test Text"}</b>
+              </p>
             <br></br>
           </div>
           <div className="preview-project-image">
-            <div>{this.state.project_img_urls || "Project image will go here"}</div>
+            <div>{this.state.project_img_urls ||
+                <img id="default-pic" src={window.pug}></img>}</div>
           </div>
           <div className="preview-project-summary">
             <ul className="funders group">
-              <li>{this.state.project_funders || 0}</li>
-              <li>backers</li>
+              <li className="funders-num">{this.state.project_funders || 0}</li>
+              <li className="funders-text">backers</li>
             </ul>
             <ul className="funded group">
-              <li>{this.state.project_funded || 0}</li>
-              <li>pledged of ${this.state.project_goal || 0} goal</li>
+              <li className="funded-num">${this.state.project_funded || 0}</li>
+              <li className="funded-goal">
+                pledged of ${this.state.project_goal || 0} goal
+              </li>
             </ul>
             <div className="preview-warning">
               <p>THIS PROJECT IS NOT LIVE</p>
@@ -113,23 +123,27 @@ const Preview = React.createClass({
           <div className="preview-sub-info">
             <div className="social-links-wrapper">
               <ul className="social-links group">
-                <li>Share: </li>
+                <li><b>Share:</b> </li>
                 <li>[Tweet]</li>
                 <li>[Facebook]</li>
                 <li>[Embed]</li>
                 <li>[Email]</li>
               </ul>
             </div>
+            <div className="preview-project-blurb">{this.state.project_blurb ||
+                ""}</div>
             <div className="user-info">
               <ul className="user-name-pic">
                 <li><p className="user-full-name">{this.state.user_full_name ||
                     "Test Text"}</p></li>
-                <li>{this.state.user_pic_url || "Test Text"}</li>
+                  <li>{this.state.user_pic_url || "pic"}</li>
               </ul>
               <br></br>
               <p className="project-total">{this.state.user_project_total || 0}
                 {this.state.user_project_total === 1 ? ' project ' :
                   ' projects '} created</p>
+                <br></br>
+                <p className="user-website">{this.state.user_website}</p>
               <br></br>
               <ul className="user-contact-info group">
                 <li>See full bio</li>
@@ -142,14 +156,14 @@ const Preview = React.createClass({
         <div className="preview-bottom-page group">
           <div className="project-content-bar">
             <ul className="project-content-nav-bar group">
-              <li>[Campaign]</li>
-              <li>[Updates]</li>
-              <li>[Comments]</li>
-              <li>[Community]</li>
+              <li>Campaign</li>
+              <li>Updates</li>
+              <li>Comments</li>
+              <li>Community</li>
             </ul>
           </div>
           <div className="project-content-field">
-            <h3>About this project</h3>
+            <h3 className="preview-about-field">About this project</h3>
             <div className="project-content">
               <h4>Background</h4>
               {this.state.project_content || "Test Text"}</div>

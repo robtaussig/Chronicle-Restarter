@@ -37046,9 +37046,11 @@
 	      project_funders: 0,
 	      project_funded: 0,
 	      project_goal: 0,
+	      project_blurb: "",
 	      project_category_id: 0,
 	      user_project_total: 0,
 	      user_pic_url: "",
+	      user_website: "",
 	      project_content: "",
 	      project_risks: ""
 	    };
@@ -37082,10 +37084,12 @@
 	      rewards: rewards,
 	      project_title: project.title,
 	      user_full_name: user.full_name,
+	      user_website: user.website || "",
 	      project_img_urls: project.project_img_urls || "",
 	      project_funders: project.funders || 0,
 	      project_funded: project.funded || 0,
 	      project_goal: project.goal || 0,
+	      project_blurb: project.blurb || "",
 	      project_category_id: project.category_id || 0,
 	      user_project_total: user.project_totals || 0,
 	      user_pic_url: user.pic_url || "",
@@ -37146,14 +37150,18 @@
 	          { className: 'preview-header' },
 	          React.createElement(
 	            'h3',
-	            null,
+	            { className: 'preview-project-title' },
 	            this.state.project_title || "Test Text"
 	          ),
 	          React.createElement(
 	            'p',
-	            null,
+	            { className: 'preview-project-name' },
 	            'by ',
-	            this.state.user_full_name || "Test Text"
+	            React.createElement(
+	              'b',
+	              null,
+	              this.state.user_full_name || "Test Text"
+	            )
 	          ),
 	          React.createElement('br', null)
 	        ),
@@ -37163,7 +37171,7 @@
 	          React.createElement(
 	            'div',
 	            null,
-	            this.state.project_img_urls || "Project image will go here"
+	            this.state.project_img_urls || React.createElement('img', { id: 'default-pic', src: window.pug })
 	          )
 	        ),
 	        React.createElement(
@@ -37174,12 +37182,12 @@
 	            { className: 'funders group' },
 	            React.createElement(
 	              'li',
-	              null,
+	              { className: 'funders-num' },
 	              this.state.project_funders || 0
 	            ),
 	            React.createElement(
 	              'li',
-	              null,
+	              { className: 'funders-text' },
 	              'backers'
 	            )
 	          ),
@@ -37188,12 +37196,13 @@
 	            { className: 'funded group' },
 	            React.createElement(
 	              'li',
-	              null,
+	              { className: 'funded-num' },
+	              '$',
 	              this.state.project_funded || 0
 	            ),
 	            React.createElement(
 	              'li',
-	              null,
+	              { className: 'funded-goal' },
 	              'pledged of $',
 	              this.state.project_goal || 0,
 	              ' goal'
@@ -37238,7 +37247,12 @@
 	              React.createElement(
 	                'li',
 	                null,
-	                'Share: '
+	                React.createElement(
+	                  'b',
+	                  null,
+	                  'Share:'
+	                ),
+	                ' '
 	              ),
 	              React.createElement(
 	                'li',
@@ -37264,6 +37278,11 @@
 	          ),
 	          React.createElement(
 	            'div',
+	            { className: 'preview-project-blurb' },
+	            this.state.project_blurb || ""
+	          ),
+	          React.createElement(
+	            'div',
 	            { className: 'user-info' },
 	            React.createElement(
 	              'ul',
@@ -37280,7 +37299,7 @@
 	              React.createElement(
 	                'li',
 	                null,
-	                this.state.user_pic_url || "Test Text"
+	                this.state.user_pic_url || "pic"
 	              )
 	            ),
 	            React.createElement('br', null),
@@ -37290,6 +37309,12 @@
 	              this.state.user_project_total || 0,
 	              this.state.user_project_total === 1 ? ' project ' : ' projects ',
 	              ' created'
+	            ),
+	            React.createElement('br', null),
+	            React.createElement(
+	              'p',
+	              { className: 'user-website' },
+	              this.state.user_website
 	            ),
 	            React.createElement('br', null),
 	            React.createElement(
@@ -37322,22 +37347,22 @@
 	            React.createElement(
 	              'li',
 	              null,
-	              '[Campaign]'
+	              'Campaign'
 	            ),
 	            React.createElement(
 	              'li',
 	              null,
-	              '[Updates]'
+	              'Updates'
 	            ),
 	            React.createElement(
 	              'li',
 	              null,
-	              '[Comments]'
+	              'Comments'
 	            ),
 	            React.createElement(
 	              'li',
 	              null,
-	              '[Community]'
+	              'Community'
 	            )
 	          )
 	        ),
@@ -37346,7 +37371,7 @@
 	          { className: 'project-content-field' },
 	          React.createElement(
 	            'h3',
-	            null,
+	            { className: 'preview-about-field' },
 	            'About this project'
 	          ),
 	          React.createElement(
