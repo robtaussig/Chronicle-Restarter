@@ -1470,6 +1470,29 @@ div.project-rewards-sidebar {
   width: 300px;
   left: 645px;
   height: auto;
-  border: 1px solid #ccc;
   margin-top: -56px;
+}
+
+div.single-reward-wrapper {
+  border: 1px solid #7887ed;
+  padding: 0 10px 10px 10px;
+  border-radius: 10px;
+  background-color: #e0e4fb;
+  margin-bottom: 25px;
+}
+
+div.single-reward-wrapper h3 {
+  color: #7887ed;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+div.single-reward-wrapper p.reward-number {
+  font-size: 12px;
+}
+
+div.single-reward-wrapper h4.reward-title {
+  font-weight: 400;
+  margin: 0;
+  font-size: 16px;
 }

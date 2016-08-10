@@ -70,13 +70,14 @@ const Preview = React.createClass({
     let _rewards = this.state.rewards.map((reward,idx) => {
       return <div className="single-reward-wrapper" key={idx}>
         <h3>Pledge ${reward.amount} or more</h3>
-        <p>Reward #{idx}</p>
+        <p className="reward-number">Reward #{idx + 1}</p>
         <br></br>
-        <h4>{reward.title}</h4>
+        <h4 className="reward-title">{reward.title}</h4>
+        <br></br>
         <p className="reward-description">{reward.description}</p>
         <br></br>
-        <p className="reward-availability">Available for {reward.quantity}
-          backers</p>
+        <p className="reward-availability">{`Available for ${reward.quantity} 
+          backers`}</p>
       </div>;
     });
 

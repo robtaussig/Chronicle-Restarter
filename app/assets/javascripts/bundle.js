@@ -37110,16 +37110,17 @@
 	        ),
 	        React.createElement(
 	          'p',
-	          null,
+	          { className: 'reward-number' },
 	          'Reward #',
-	          idx
+	          idx + 1
 	        ),
 	        React.createElement('br', null),
 	        React.createElement(
 	          'h4',
-	          null,
+	          { className: 'reward-title' },
 	          reward.title
 	        ),
+	        React.createElement('br', null),
 	        React.createElement(
 	          'p',
 	          { className: 'reward-description' },
@@ -37129,9 +37130,7 @@
 	        React.createElement(
 	          'p',
 	          { className: 'reward-availability' },
-	          'Available for ',
-	          reward.quantity,
-	          'backers'
+	          'Available for ' + reward.quantity + ' \n          backers'
 	        )
 	      );
 	    });
