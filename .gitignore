@@ -2,5 +2,3 @@
 *.DS_Store
 *sprockets
 *tmp
-*bundle.js
-*bundle.js.map
