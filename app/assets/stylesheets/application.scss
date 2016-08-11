@@ -853,7 +853,7 @@ div.grey-field {
   position: relative;
   margin: 10px;
   border-radius: 5px;
-  background-color: aliceblue;
+  background-color: #e4f2ff;
 }
 
 div.field-wrapper {
@@ -996,7 +996,7 @@ div.rewards-wrapper {
   margin-left: 20px;
   margin-right: 20px;
   border-radius: 5px;
-  background-color: aliceblue;
+  background-color: #e4f2ff;
 }
 
 div.reward-error-message {
@@ -1207,7 +1207,7 @@ div.story-grey-field {
   position: relative;
   margin: 10px;
   border-radius:5px;
-  background-color: aliceblue;
+  background-color: #e4f2ff;
 }
 
 div.story-field-wrapper {
@@ -1650,6 +1650,12 @@ div.focal-project-wrapper {
   overflow: hidden;
   background-color: #fff;
   box-shadow: 4px 8px 18px #ccc;
+}
+
+div.focal-project-wrapper:hover, div.project-preview-wrapper:hover {
+  transition: 0.3s;
+  cursor: pointer;
+  box-shadow: 0px 0px 50px #46c76b;
 }
 
 div.focal-project-image {

@@ -22,10 +22,14 @@ const Rewards = React.createClass({
 
   componentDidMount () {
     this._prepopulate();
-    window.setTimeout(() => {this.setState({appearance: 'entered'});},100);
+    this.timer = window.setTimeout(() => {this.setState({appearance: 'entered'});},100);
     this.projectId = SavedProjectStore.currentProject().id;
     this._addReward();
     this.forceUpdate();
+  },
+
+  componentWillUnmount () {
+    clearTimeout(this.timer);
   },
 
   _prepopulate () {
@@ -40,7 +44,7 @@ const Rewards = React.createClass({
             project_reward_key={reward.project_reward_key}
             quantity={reward.quantity}
             title={reward.title}
-            key={reward.project_reward_key}
+            key={`${reward.project_reward_key}${reward.project_id}`}
             _delete={this._deleteReward}/>;
         }
       });

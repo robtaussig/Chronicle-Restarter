@@ -35304,13 +35304,21 @@
 
 	'use strict';
 	
+	var _reactRouter = __webpack_require__(1);
+	
 	var React = __webpack_require__(3);
 	var ProjectCategoryIds = __webpack_require__(284);
+	var SavedProjectActions = __webpack_require__(277);
 	var UserStore = __webpack_require__(281);
+	
 	
 	var FocusProject = React.createClass({
 	  displayName: 'FocusProject',
 	  componentDidMount: function componentDidMount() {},
+	  _goToPage: function _goToPage() {
+	    SavedProjectActions.updateSavedProject('savedProject', this.props.project);
+	    _reactRouter.browserHistory.push('/finalizeProject');
+	  },
 	  render: function render() {
 	
 	    return React.createElement(
@@ -35323,7 +35331,7 @@
 	      ),
 	      React.createElement(
 	        'div',
-	        { className: 'focal-project-wrapper' },
+	        { onClick: this._goToPage, className: 'focal-project-wrapper' },
 	        React.createElement(
 	          'div',
 	          { className: 'focal-project-image' },
@@ -36066,12 +36074,15 @@
 	    var _this = this;
 	
 	    this._prepopulate();
-	    window.setTimeout(function () {
+	    this.timer = window.setTimeout(function () {
 	      _this.setState({ appearance: 'entered' });
 	    }, 100);
 	    this.projectId = SavedProjectStore.currentProject().id;
 	    this._addReward();
 	    this.forceUpdate();
+	  },
+	  componentWillUnmount: function componentWillUnmount() {
+	    clearTimeout(this.timer);
 	  },
 	  _prepopulate: function _prepopulate() {
 	    var _this2 = this;
@@ -36087,7 +36098,7 @@
 	            project_reward_key: reward.project_reward_key,
 	            quantity: reward.quantity,
 	            title: reward.title,
-	            key: reward.project_reward_key,
+	            key: '' + reward.project_reward_key + reward.project_id,
 	            _delete: _this2._deleteReward });
 	        }
 	      });
@@ -37234,6 +37245,9 @@
 	
 	var SubmitProject = React.createClass({
 	  displayName: 'SubmitProject',
+	  _onSubmit: function _onSubmit() {
+	    RewardActions.saveAllRewards();
+	  },
 	
 	
 	  render: function render() {
@@ -37290,7 +37304,6 @@
 	  componentDidMount: function componentDidMount() {
 	    var _this = this;
 	
-	    RewardActions.saveAllRewards();
 	    this._populate();
 	    this.rewardListener = RewardStore.addListener(this._onChange);
 	    this.projectListener = SavedProjectStore.addListener(this._onProjectChange);
@@ -37942,12 +37955,20 @@
 
 	'use strict';
 	
+	var _reactRouter = __webpack_require__(1);
+	
 	var React = __webpack_require__(3);
 	var ProjectCategoryIds = __webpack_require__(284);
+	var SavedProjectActions = __webpack_require__(277);
 	var UserStore = __webpack_require__(281);
+	
 	
 	var ProjectPreview = React.createClass({
 	  displayName: 'ProjectPreview',
+	  _goToPage: function _goToPage() {
+	    SavedProjectActions.updateSavedProject('savedProject', this.props.project);
+	    _reactRouter.browserHistory.push('/finalizeProject');
+	  },
 	
 	
 	  render: function render() {
@@ -37956,7 +37977,7 @@
 	      null,
 	      React.createElement(
 	        'div',
-	        { className: 'project-preview-wrapper' },
+	        { onClick: this._goToPage, className: 'project-preview-wrapper' },
 	        React.createElement(
 	          'div',
 	          { className: 'project-preview-image' },

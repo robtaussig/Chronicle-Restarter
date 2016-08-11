@@ -33,7 +33,6 @@ const Preview = React.createClass({
   },
 
   componentDidMount () {
-    RewardActions.saveAllRewards();
     this._populate();
     this.rewardListener = RewardStore.addListener(this._onChange);
     this.projectListener = SavedProjectStore.addListener(this._onProjectChange);
