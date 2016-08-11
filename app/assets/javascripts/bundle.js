@@ -35053,13 +35053,13 @@
 	
 	var SavedProjectActions = {
 	  submitSavedProject: function submitSavedProject(form, projectInfo) {
-	    ProjectApiUtil.saveProject(form, projectInfo, this.receiveSavedProject, ErrorActions.receiveError);
+	    ProjectApiUtil.saveSavedProject(form, projectInfo, this.receiveSavedProject, ErrorActions.receiveError);
 	  },
 	  fetchAllSavedProjects: function fetchAllSavedProjects(form, userId) {
 	    ProjectApiUtil.fetchAllSavedProjects(form, userId, this.receiveAllSavedProjects, ErrorActions.receiveError);
 	  },
 	  updateSavedProject: function updateSavedProject(form, projectInfo) {
-	    ProjectApiUtil.updateProject(form, projectInfo, this.receiveUpdatedProject, ErrorActions.receiveError);
+	    ProjectApiUtil.updateSavedProject(form, projectInfo, this.receiveUpdatedSavedProject, ErrorActions.receiveError);
 	  },
 	  deleteSavedProject: function deleteSavedProject(form, projectInfo) {
 	    ProjectApiUtil.removeSavedProject(form, projectInfo.id, this.removeSavedProject, ErrorActions.receiveError);
@@ -35076,7 +35076,7 @@
 	      data: data
 	    });
 	  },
-	  receiveUpdatedProject: function receiveUpdatedProject(data) {
+	  receiveUpdatedSavedProject: function receiveUpdatedSavedProject(data) {
 	    AppDispatcher.dispatch({
 	      actionType: SavedProjectConstants.SAVED_PROJECT_UPDATED,
 	      data: data
@@ -35099,7 +35099,58 @@
 	'use strict';
 	
 	var ProjectApiUtil = {
-	  saveProject: function saveProject(form, data, successCB, errorCB) {
+	  submitProject: function submitProject(form, data, successCB, errorCB) {
+	    $.ajax({
+	      url: '/api/projects',
+	      type: 'POST',
+	      data: { project: data },
+	      success: function success(resp) {
+	        successCB(resp);
+	      },
+	      error: function error(resp) {
+	        errorCB(form, resp);
+	      }
+	    });
+	  },
+	  updateProject: function updateProject(form, data, successCB, errorCB) {
+	    $.ajax({
+	      url: '/api/projects/' + data.id,
+	      type: 'PATCH',
+	      data: { saved_project: data },
+	      success: function success(resp) {
+	        successCB(resp);
+	      },
+	      error: function error(resp) {
+	        errorCB(form, resp);
+	      }
+	    });
+	  },
+	  removeProject: function removeProject(form, id, successCB, errorCB) {
+	    $.ajax({
+	      url: '/api/projects/' + id,
+	      type: 'DELETE',
+	      data: { params: id },
+	      success: function success(resp) {
+	        successCB(resp);
+	      },
+	      error: function error(resp) {
+	        errorCB(form, resp);
+	      }
+	    });
+	  },
+	  fetchAllProjects: function fetchAllProjects(form, successCB, errorCB) {
+	    $.ajax({
+	      url: '/api/projects',
+	      type: 'GET',
+	      success: function success(resp) {
+	        successCB(resp);
+	      },
+	      error: function error(resp) {
+	        errorCB(form, resp);
+	      }
+	    });
+	  },
+	  saveSavedProject: function saveSavedProject(form, data, successCB, errorCB) {
 	    $.ajax({
 	      url: '/api/saved_projects',
 	      type: 'POST',
@@ -35125,7 +35176,7 @@
 	      }
 	    });
 	  },
-	  updateProject: function updateProject(form, data, successCB, errorCB) {
+	  updateSavedProject: function updateSavedProject(form, data, successCB, errorCB) {
 	    $.ajax({
 	      url: '/api/saved_projects/' + data.id,
 	      type: 'PATCH',
@@ -36177,49 +36228,56 @@
 
 /***/ },
 /* 290 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	// const Store = require('flux/utils').Store;
-	// const AppDispatcher = require('../dispatcher/dispatcher.js');
-	// const ProjectConstants = require('../constants/project_constants.js');
-	// const ProjectStore = new Store(AppDispatcher);
-	//
-	// let _currentUser = {};
-	//
-	// function _logIn(user) {
-	//   _currentUser = user;
-	//   ProjectStore.__emitChange();
-	// }
-	// 
-	// function _logOut () {
-	//   _currentUser = {};
-	//   ProjectStore.__emitChange();
-	// }
-	//
-	// ProjectStore.currentUser = () => {
-	//   return _currentUser;
-	// };
-	//
-	// ProjectStore.isUserLoggedIn = (id) => {
-	//   return _currentUser.id === id;
-	// };
-	//
-	// ProjectStore.__onDispatch = (payload) => {
-	//   switch (payload.actionType) {
-	//     case ProjectConstants.USER_RECEIVED:
-	//       _logIn(payload.user);
-	//     break;
-	//     case ProjectConstants.USER_REMOVED:
-	//       _logOut();
-	//     break;
-	//     case ProjectConstants.SESSION_STOPPED:
-	//       _logOut();
-	//       break;
-	//   }
-	// };
-	//
-	// module.exports = ProjectStore;
-	"use strict";
+	'use strict';
+	
+	var Store = __webpack_require__(242).Store;
+	var AppDispatcher = __webpack_require__(260);
+	var ProjectConstants = __webpack_require__(306);
+	var ProjectStore = new Store(AppDispatcher);
+	
+	var _projects = [];
+	var _project = {};
+	
+	function _resetProject(project) {
+	  _project = { project: project };
+	  ProjectStore.__emitChange();
+	}
+	
+	function _resetProjects(projects) {
+	  _projects = { projects: projects };
+	  ProjectStore.__emitChange();
+	}
+	
+	function _removeProject() {
+	  _project = {};
+	  ProjectStore.__emitChange();
+	}
+	
+	ProjectStore.currentProject = function () {
+	  return _project;
+	};
+	
+	ProjectStore.allProjects = function () {
+	  return _projects;
+	};
+	
+	ProjectStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case ProjectConstants.PROJECT_RECEIVED:
+	      _resetProject(payload);
+	      break;
+	    case ProjectConstants.PROJECTS_RECEIVED:
+	      _resetProjects(payload);
+	      break;
+	    case ProjectConstants.PROJECT_REMOVED:
+	      _removeProject();
+	      break;
+	  }
+	};
+	
+	module.exports = ProjectStore;
 
 /***/ },
 /* 291 */
@@ -36289,7 +36347,6 @@
 	      }
 	    });
 	  });
-	  _rewards = {};
 	}
 	
 	RewardStore.__onDispatch = function (payload) {
@@ -37242,18 +37299,86 @@
 	'use strict';
 	
 	var React = __webpack_require__(3);
+	var SavedProjectStore = __webpack_require__(280);
+	var ProjectActions = __webpack_require__(307);
+	var ProjectStore = __webpack_require__(290);
+	var RewardActions = __webpack_require__(294);
+	var RewardStore = __webpack_require__(291);
+	var RewardItem = __webpack_require__(293);
+	var UserStore = __webpack_require__(281);
+	var UserActions = __webpack_require__(287);
+	var SavedProjectActions = __webpack_require__(277);
+	var ProjectCategories = __webpack_require__(284);
 	
 	var SubmitProject = React.createClass({
 	  displayName: 'SubmitProject',
-	  _onSubmit: function _onSubmit() {
-	    RewardActions.saveAllRewards();
+	  getInitialState: function getInitialState() {
+	    return {
+	      appearance: "entering",
+	      rewards: [],
+	      project_title: "",
+	      full_name: "",
+	      project_img_urls: "",
+	      project_funders: 0,
+	      project_funded: 0,
+	      project_duration: 0,
+	      project_goal: 0,
+	      project_blurb: "",
+	      project_category_id: 0,
+	      user_project_total: 0,
+	      user_pic_url: "",
+	      user_website: "",
+	      user_id: window.myApp.id || UserStore.currentUser().id,
+	      project_content: "",
+	      project_risks: ""
+	    };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    var _this = this;
+	
+	    this._populate();
+	    this.listener = ProjectStore.addListener(this._onChange);
+	    window.setTimeout(function () {
+	      _this.setState({ appearance: 'entered' });
+	    }, 100);
+	  },
+	  componentWillUnmount: function componentWillUnmount() {
+	    this.listener.remove();
+	  },
+	  _onChange: function _onChange() {
+	    debugger;
+	  },
+	  _populate: function _populate() {
+	    var project = SavedProjectStore.currentProject();
+	    var rewards = RewardStore.currentRewards();
+	    var user = Object.assign(UserStore.currentUser(), window.myApp);
+	
+	    this.setState({
+	      rewards: rewards,
+	      project_title: project.title || "Title was left empty",
+	      author_full_name: user.full_name || user.username,
+	      website: user.website || "",
+	      project_img_urls: project.project_img_urls || React.createElement('img', { id: 'default-pic', src: window.pug }),
+	      project_funders: project.funders || 0,
+	      project_funded: project.funded || 0,
+	      project_goal: project.goal || 0,
+	      project_duration: project.duration || 0,
+	      project_blurb: project.blurb || "",
+	      project_category_id: project.category_id || 0,
+	      user_project_total: user.project_totals || 0,
+	      user_pic_url: user.pic_url || React.createElement('img', { id: 'prof-pic', src: window.profile_pic }),
+	      project_content: project.content || "",
+	      project_risks: project.risks || ""
+	    });
+	
+	    ProjectActions.submitProject(this.state);
 	  },
 	
 	
 	  render: function render() {
 	    return React.createElement(
 	      'div',
-	      null,
+	      { className: this.state.appearance },
 	      'Hello from Submit'
 	    );
 	  }
@@ -38087,6 +38212,70 @@
 	});
 	
 	module.exports = ProjectPreview;
+
+/***/ },
+/* 306 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	module.exports = {
+	  PROJECT_RECEIVED: 'PROJECT_RECEIVED',
+	  PROJECT_REMOVED: 'PROJECT_REMOVED',
+	  PROJECT_UPDATED: 'PROJECT_UPDATED'
+	};
+
+/***/ },
+/* 307 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var AppDispatcher = __webpack_require__(260);
+	var ProjectApiUtil = __webpack_require__(278);
+	var ProjectConstants = __webpack_require__(306);
+	var ErrorActions = __webpack_require__(267);
+	
+	var ProjectActions = {
+	  submitProject: function submitProject(form, projectInfo) {
+	    ProjectApiUtil.submitProject(form, projectInfo, this.receiveProject, ErrorActions.receiveError);
+	  },
+	  updateProject: function updateProject(form, projectInfo) {
+	    ProjectApiUtil.updateProject(form, projectInfo, this.receiveUpdatedProject, ErrorActions.receiveError);
+	  },
+	  deleteProject: function deleteProject(form, projectId) {
+	    ProjectApiUtil.removeProject(form, projectId, this.removeProject, ErrorActions.receiveError);
+	  },
+	  fetchAllProjects: function fetchAllProjects(form) {
+	    ProjectApiUtil.fetchAllProjects(form, this.receiveAllProjects, ErrorActions.receiveError);
+	  },
+	  receiveProject: function receiveProject(data) {
+	    AppDispatcher.dispatch({
+	      actionType: ProjectConstants.PROJECT_RECEIVED,
+	      data: data
+	    });
+	  },
+	  receiveAllProjects: function receiveAllProjects(data) {
+	    AppDispatcher.dispatch({
+	      actionType: ProjectConstants.PROJECTS_RECEIVED,
+	      data: data
+	    });
+	  },
+	  receiveUpdatedProject: function receiveUpdatedProject(data) {
+	    AppDispatcher.dispatch({
+	      actionType: ProjectConstants.PROJECT_RECEIVED,
+	      data: data
+	    });
+	  },
+	  removeProject: function removeProject(data) {
+	    AppDispatcher.dispatch({
+	      actionType: ProjectConstants.PROJECT_REMOVED,
+	      data: data
+	    });
+	  }
+	};
+	
+	module.exports = ProjectActions;
 
 /***/ }
 /******/ ]);

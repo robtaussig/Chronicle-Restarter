@@ -6,7 +6,7 @@ const ErrorActions = require('./error_actions.js');
 const SavedProjectActions = {
 
   submitSavedProject (form, projectInfo) {
-    ProjectApiUtil.saveProject(form, projectInfo, this.receiveSavedProject,
+    ProjectApiUtil.saveSavedProject(form, projectInfo, this.receiveSavedProject,
       ErrorActions.receiveError);
   },
 
@@ -16,7 +16,7 @@ const SavedProjectActions = {
   },
 
   updateSavedProject (form, projectInfo) {
-    ProjectApiUtil.updateProject(form, projectInfo, this.receiveUpdatedProject,
+    ProjectApiUtil.updateSavedProject(form, projectInfo, this.receiveUpdatedSavedProject,
       ErrorActions.receiveError);
   },
 
@@ -39,7 +39,7 @@ const SavedProjectActions = {
     });
   },
 
-  receiveUpdatedProject (data) {
+  receiveUpdatedSavedProject (data) {
     AppDispatcher.dispatch({
       actionType: SavedProjectConstants.SAVED_PROJECT_UPDATED,
       data: data

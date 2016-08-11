@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160808185959) do
+ActiveRecord::Schema.define(version: 20160811165842) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,10 +29,14 @@ ActiveRecord::Schema.define(version: 20160808185959) do
     t.integer  "duration"
     t.string   "location"
     t.integer  "saved_project_id"
+    t.string   "author_full_name"
+    t.string   "website"
+    t.text     "risks"
   end
 
   add_index "api_projects", ["author_id"], name: "index_api_projects_on_author_id", using: :btree
   add_index "api_projects", ["category_id"], name: "index_api_projects_on_category_id", using: :btree
+  add_index "api_projects", ["location"], name: "index_api_projects_on_location", using: :btree
   add_index "api_projects", ["title"], name: "index_api_projects_on_title", unique: true, using: :btree
 
   create_table "api_rewards", force: :cascade do |t|
@@ -86,5 +90,27 @@ ActiveRecord::Schema.define(version: 20160808185959) do
 
   add_index "api_users", ["email"], name: "index_api_users_on_email", using: :btree
   add_index "api_users", ["username"], name: "index_api_users_on_username", unique: true, using: :btree
+
+  create_table "stories", force: :cascade do |t|
+    t.string   "title",      null: false
+    t.text     "body",       null: false
+    t.integer  "author_id",  null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "stories", ["author_id"], name: "index_stories_on_author_id", using: :btree
+
+  create_table "users", force: :cascade do |t|
+    t.string   "username",        null: false
+    t.string   "password_digest", null: false
+    t.string   "session_token",   null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.string   "email"
+  end
+
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
 end

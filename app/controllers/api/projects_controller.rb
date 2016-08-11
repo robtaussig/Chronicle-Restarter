@@ -41,7 +41,8 @@ class Api::ProjectsController < ApplicationController
   def project_params
     params.require(:project).permit(
     :title, :content, :author_id, :category_id, :blurb, :duration,
-    :goal, :project_img_urls, :project_due_date, :location
+    :goal, :project_img_urls, :project_due_date, :location, :saved_project_id,
+    :author_full_name, :risks, :website
     )
   end
 end
