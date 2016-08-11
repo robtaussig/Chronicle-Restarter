@@ -21,6 +21,7 @@ const Preview = React.createClass({
       project_funded: 0,
       project_duration: 0,
       project_goal: 0,
+      project_location: "",
       project_blurb: "",
       project_category_id: 0,
       user_project_total: 0,
@@ -68,6 +69,7 @@ const Preview = React.createClass({
       project_funders: project.funders || 0,
       project_funded: project.funded || 0,
       project_goal: project.goal || 0,
+      project_location: project.location || "",
       project_duration: project.duration || 0,
       project_blurb: project.blurb || "",
       project_category_id: project.category_id || 0,
@@ -133,6 +135,7 @@ const Preview = React.createClass({
           </div>
           <div id="era-wrapper" className="era-field"><b>{'Era: '}</b>
             {ProjectCategories[this.state.project_category_id].label}</div>
+          <div className="project-location">{this.state.project_location}</div>
           <div className="preview-sub-info">
             <div className="social-links-wrapper">
               <ul className="social-links group">

@@ -48,6 +48,7 @@ const RewardItem = React.createClass({
     if (RewardStore.find(this.state.project_reward_key).length > 0) {
       this.setState({saved: 'saved'});
     }
+    this.forceUpdate();
   },
 
   _setTitle (event) {

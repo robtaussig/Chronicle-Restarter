@@ -10,5 +10,7 @@ module.exports = {
   'account header': "Stay informed.",
   'account': "Provision of your contact information will be used to notify you of a successful campaign.",
   'preview header': "How your project will appear to others:",
-  'preview': "This isn't your last chance to edit your project, but it is the last chance to edit it before it is made public."
+  'preview': "This isn't your last chance to edit your project, but it is the last chance to edit it before it is made public.",
+  'submit': "",
+  'submit header': ""
 };

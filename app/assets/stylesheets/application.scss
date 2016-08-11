@@ -1340,6 +1340,12 @@ div.preview-wrapper {
   margin: 0 auto;
 }
 
+div.project-location {
+  position: absolute;
+  font-weight: bold;
+  font-size: 14px;
+}
+
 div.preview-header {
   text-align: center;
   margin-top: 50px;
@@ -1888,4 +1894,12 @@ li#preview-basic-text {
 li#preview-basic-amount {
   font-weight: bold;
   color: #2bde73;
+}
+
+/*----------------------------- Submit-page ----------------------------------*/
+
+div.pending-wrapper {
+  margin-top: -140px;
+  font-size: 36px;
+  text-align:center;
 }

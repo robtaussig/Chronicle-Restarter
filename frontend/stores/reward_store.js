@@ -23,7 +23,18 @@ function _addReward (data) {
   })) {
     _updateReward (data);
   } else {
-    _rewards.push(data);
+    $.ajax({
+      url: '/api/rewards',
+      type: 'POST',
+      data: {reward: data},
+      success: (resp) => {
+        _rewards.push(resp);
+        console.log('post success!');
+      },
+      error: (resp) => {
+        ErrorActions.receiveError('rewards',resp);
+      }
+    });
   }
 
   RewardStore.__emitChange();
@@ -35,7 +46,20 @@ function _updateReward (data) {
       reward.project_reward_key === data.project_reward_key;
   });
 
-  Object.assign(rewardToUpdate[0], data);
+  let rewardUpdate = Object.assign(rewardToUpdate[0], data);
+
+  $.ajax({
+    url: '/api/rewards/' + rewardUpdate.id,
+    type: 'PATCH',
+    data: {reward: rewardUpdate},
+    success: (resp) => {
+      console.log('update success!');
+    },
+    error: (resp) => {
+      ErrorActions.receiveError('rewards',resp);
+    }
+  });
+
   RewardStore.__emitChange();
 }
 

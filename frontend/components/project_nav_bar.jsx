@@ -8,7 +8,7 @@ const ProjectNavBar = React.createClass({
   },
 
   componentDidMount () {
-    this.setState({selected: 'basics'});
+    this.setState({selected: window.location.pathname.split('/')[2]});
   },
 
   _handleClick (e) {

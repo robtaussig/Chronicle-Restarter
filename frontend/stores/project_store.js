@@ -22,7 +22,7 @@ function _removeProject() {
 }
 
 ProjectStore.currentProject = () => {
-  return _project;
+  return _project.project;
 };
 
 ProjectStore.allProjects = () => {
@@ -32,7 +32,7 @@ ProjectStore.allProjects = () => {
 ProjectStore.__onDispatch = (payload) => {
   switch (payload.actionType) {
     case ProjectConstants.PROJECT_RECEIVED:
-      _resetProject(payload);
+      _resetProject(payload.data);
     break;
     case ProjectConstants.PROJECTS_RECEIVED:
       _resetProjects(payload);

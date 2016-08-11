@@ -36256,7 +36256,7 @@
 	}
 	
 	ProjectStore.currentProject = function () {
-	  return _project;
+	  return _project.project;
 	};
 	
 	ProjectStore.allProjects = function () {
@@ -36266,7 +36266,7 @@
 	ProjectStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
 	    case ProjectConstants.PROJECT_RECEIVED:
-	      _resetProject(payload);
+	      _resetProject(payload.data);
 	      break;
 	    case ProjectConstants.PROJECTS_RECEIVED:
 	      _resetProjects(payload);
@@ -36309,7 +36309,18 @@
 	  })) {
 	    _updateReward(data);
 	  } else {
-	    _rewards.push(data);
+	    $.ajax({
+	      url: '/api/rewards',
+	      type: 'POST',
+	      data: { reward: data },
+	      success: function success(resp) {
+	        _rewards.push(resp);
+	        console.log('post success!');
+	      },
+	      error: function error(resp) {
+	        ErrorActions.receiveError('rewards', resp);
+	      }
+	    });
 	  }
 	
 	  RewardStore.__emitChange();
@@ -36320,7 +36331,20 @@
 	    return reward.project_id === data.project_id && reward.project_reward_key === data.project_reward_key;
 	  });
 	
-	  Object.assign(rewardToUpdate[0], data);
+	  var rewardUpdate = Object.assign(rewardToUpdate[0], data);
+	
+	  $.ajax({
+	    url: '/api/rewards/' + rewardUpdate.id,
+	    type: 'PATCH',
+	    data: { reward: rewardUpdate },
+	    success: function success(resp) {
+	      console.log('update success!');
+	    },
+	    error: function error(resp) {
+	      ErrorActions.receiveError('rewards', resp);
+	    }
+	  });
+	
 	  RewardStore.__emitChange();
 	}
 	
@@ -36432,6 +36456,7 @@
 	    if (RewardStore.find(this.state.project_reward_key).length > 0) {
 	      this.setState({ saved: 'saved' });
 	    }
+	    this.forceUpdate();
 	  },
 	  _setTitle: function _setTitle(event) {
 	    event.preventDefault();
@@ -37302,6 +37327,7 @@
 	var SavedProjectStore = __webpack_require__(280);
 	var ProjectActions = __webpack_require__(307);
 	var ProjectStore = __webpack_require__(290);
+	var ProjectShow = __webpack_require__(308);
 	var RewardActions = __webpack_require__(294);
 	var RewardStore = __webpack_require__(291);
 	var RewardItem = __webpack_require__(293);
@@ -37314,28 +37340,13 @@
 	  displayName: 'SubmitProject',
 	  getInitialState: function getInitialState() {
 	    return {
-	      appearance: "entering",
-	      rewards: [],
-	      project_title: "",
-	      full_name: "",
-	      project_img_urls: "",
-	      project_funders: 0,
-	      project_funded: 0,
-	      project_duration: 0,
-	      project_goal: 0,
-	      project_blurb: "",
-	      project_category_id: 0,
-	      user_project_total: 0,
-	      user_pic_url: "",
-	      user_website: "",
-	      user_id: window.myApp.id || UserStore.currentUser().id,
-	      project_content: "",
-	      project_risks: ""
+	      display: "pending"
 	    };
 	  },
 	  componentDidMount: function componentDidMount() {
 	    var _this = this;
 	
+	    this.positions = ["left", "middle", "right"];
 	    this._populate();
 	    this.listener = ProjectStore.addListener(this._onChange);
 	    window.setTimeout(function () {
@@ -37343,43 +37354,67 @@
 	    }, 100);
 	  },
 	  componentWillUnmount: function componentWillUnmount() {
+	    window.clearTimeout(this.timeOut);
 	    this.listener.remove();
 	  },
 	  _onChange: function _onChange() {
-	    debugger;
+	    var _project = ProjectStore.currentProject();
+	    var that = this;
+	    this.timeOut = window.setTimeout(function () {
+	      that._displayProject(_project);
+	    }, 1500);
+	  },
+	  _displayProject: function _displayProject(project) {
+	    this.setState({ display: "project", project: project });
 	  },
 	  _populate: function _populate() {
+	    var _this2 = this;
+	
 	    var project = SavedProjectStore.currentProject();
 	    var rewards = RewardStore.currentRewards();
 	    var user = Object.assign(UserStore.currentUser(), window.myApp);
-	
 	    this.setState({
-	      rewards: rewards,
-	      project_title: project.title || "Title was left empty",
+	      title: project.title || "Title was left empty",
+	      author_id: user.id,
 	      author_full_name: user.full_name || user.username,
 	      website: user.website || "",
-	      project_img_urls: project.project_img_urls || React.createElement('img', { id: 'default-pic', src: window.pug }),
-	      project_funders: project.funders || 0,
-	      project_funded: project.funded || 0,
-	      project_goal: project.goal || 0,
-	      project_duration: project.duration || 0,
-	      project_blurb: project.blurb || "",
-	      project_category_id: project.category_id || 0,
-	      user_project_total: user.project_totals || 0,
-	      user_pic_url: user.pic_url || React.createElement('img', { id: 'prof-pic', src: window.profile_pic }),
-	      project_content: project.content || "",
-	      project_risks: project.risks || ""
+	      project_img_urls: project.project_img_urls || 'window.pug',
+	      goal: project.goal || 0,
+	      location: project.location || "",
+	      duration: project.duration || 0,
+	      blurb: project.blurb || "",
+	      category_id: project.category_id || 0,
+	      content: project.content || "",
+	      risks: project.risks || "",
+	      saved_project_id: project.id
 	    });
-	
-	    ProjectActions.submitProject(this.state);
+	    window.setTimeout(function () {
+	      ProjectActions.submitProject('submit', _this2.state);
+	    }, 500);
 	  },
 	
 	
 	  render: function render() {
+	    var _display = void 0;
+	
+	    if (this.state.display === "pending") {
+	      _display = React.createElement(
+	        'div',
+	        { className: 'pending-wrapper' },
+	        React.createElement(
+	          'div',
+	          { className: 'pending-message' },
+	          'Please wait while we review your project'
+	        )
+	      );
+	    } else {
+	      _display = React.createElement(ProjectShow, { project: this.state.project });
+	    }
+	
 	    return React.createElement(
 	      'div',
-	      { className: this.state.appearance },
-	      'Hello from Submit'
+	      { className: '' + this.state.appearance },
+	      _display
 	    );
 	  }
 	
@@ -37416,6 +37451,7 @@
 	      project_funded: 0,
 	      project_duration: 0,
 	      project_goal: 0,
+	      project_location: "",
 	      project_blurb: "",
 	      project_category_id: 0,
 	      user_project_total: 0,
@@ -37463,6 +37499,7 @@
 	      project_funders: project.funders || 0,
 	      project_funded: project.funded || 0,
 	      project_goal: project.goal || 0,
+	      project_location: project.location || "",
 	      project_duration: project.duration || 0,
 	      project_blurb: project.blurb || "",
 	      project_category_id: project.category_id || 0,
@@ -37619,6 +37656,11 @@
 	            'Era: '
 	          ),
 	          ProjectCategories[this.state.project_category_id].label
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'project-location' },
+	          this.state.project_location
 	        ),
 	        React.createElement(
 	          'div',
@@ -37843,8 +37885,8 @@
 	    this._handleLogin();
 	    this.forceUpdate();
 	    this.deleteMessage = "";
-	    this.header = ProjectMessages['basics header'];
-	    this.message = ProjectMessages['basics'];
+	    this.header = ProjectMessages[window.location.pathname.split('/')[2] + ' header'];
+	    this.message = ProjectMessages[window.location.pathname.split('/')[2]];
 	    // ProjectStore.addListener(this._onChange);
 	    // ErrorStore.addListener(this._handleError);
 	  },
@@ -37874,7 +37916,7 @@
 	    }, 2000);
 	  },
 	  _changePage: function _changePage(pageTarget) {
-	    if (pageTarget === 'preview') {
+	    if (pageTarget === 'preview' || pageTarget === 'submit') {
 	      this.setState({ size: 'wide' });
 	    } else {
 	      this.setState({ size: '' });
@@ -37892,6 +37934,7 @@
 	    this.setState({ size: "wide" });
 	  },
 	  render: function render() {
+	    var _attribute = window.location.pathname === "/finalizeProject/submit" || window.location.pathname === "/finalizeProject/preview" ? 'wide' : '';
 	    return React.createElement(
 	      'div',
 	      null,
@@ -37913,7 +37956,7 @@
 	      ),
 	      React.createElement(
 	        'div',
-	        { className: 'project-create-subpage ' + this.state.size + ' group' },
+	        { className: 'project-create-subpage ' + _attribute + ' group' },
 	        this.props.children
 	      )
 	    );
@@ -37953,7 +37996,7 @@
 	    return { selected: '' };
 	  },
 	  componentDidMount: function componentDidMount() {
-	    this.setState({ selected: 'basics' });
+	    this.setState({ selected: window.location.pathname.split('/')[2] });
 	  },
 	  _handleClick: function _handleClick(e) {
 	    this.props.changePage(e.target.id);
@@ -38071,7 +38114,9 @@
 	  'account header': "Stay informed.",
 	  'account': "Provision of your contact information will be used to notify you of a successful campaign.",
 	  'preview header': "How your project will appear to others:",
-	  'preview': "This isn't your last chance to edit your project, but it is the last chance to edit it before it is made public."
+	  'preview': "This isn't your last chance to edit your project, but it is the last chance to edit it before it is made public.",
+	  'submit': "",
+	  'submit header': ""
 	};
 
 /***/ },
@@ -38276,6 +38321,311 @@
 	};
 	
 	module.exports = ProjectActions;
+
+/***/ },
+/* 308 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(3);
+	var ProjectCategories = __webpack_require__(284);
+	
+	var ProjectShow = React.createClass({
+	  displayName: 'ProjectShow',
+	
+	
+	  render: function render() {
+	
+	    var _rewards = [];
+	
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'div',
+	        { className: 'preview-wrapper' },
+	        React.createElement(
+	          'div',
+	          { className: 'preview-header' },
+	          React.createElement(
+	            'h3',
+	            { className: 'preview-project-title' },
+	            this.props.project.title
+	          ),
+	          React.createElement(
+	            'p',
+	            { className: 'preview-project-name' },
+	            'by ',
+	            React.createElement(
+	              'b',
+	              null,
+	              this.props.project.author_full_name
+	            )
+	          ),
+	          React.createElement('br', null)
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'preview-project-image' },
+	          React.createElement(
+	            'div',
+	            null,
+	            React.createElement('img', { id: 'default-pic', src: this.props.project.project_img_urls === 'window.pug' ? window.pug : this.props.project_img_urls })
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'preview-project-summary' },
+	          React.createElement(
+	            'ul',
+	            { className: 'funders group' },
+	            React.createElement(
+	              'li',
+	              { className: 'funders-num' },
+	              this.props.project_funders || 0
+	            ),
+	            React.createElement(
+	              'li',
+	              { className: 'funders-text' },
+	              'backers'
+	            )
+	          ),
+	          React.createElement(
+	            'ul',
+	            { className: 'funded group' },
+	            React.createElement(
+	              'li',
+	              { className: 'funded-num' },
+	              '$',
+	              this.props.project_funded || 0
+	            ),
+	            React.createElement(
+	              'li',
+	              { className: 'funded-goal' },
+	              'pledged of $',
+	              this.props.project.goal,
+	              ' goal'
+	            )
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'preview-project-duration' },
+	            this.props.project.duration
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'preview-project-remaining' },
+	            'days to go'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'preview-warning' },
+	            React.createElement(
+	              'p',
+	              null,
+	              'THIS PROJECT IS NOT LIVE'
+	            ),
+	            React.createElement('br', null),
+	            React.createElement(
+	              'p',
+	              null,
+	              'This is only a draft that the creator has chosen to share'
+	            ),
+	            React.createElement('br', null)
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { id: 'era-wrapper', className: 'era-field' },
+	          React.createElement(
+	            'b',
+	            null,
+	            'Era: '
+	          ),
+	          ProjectCategories[this.props.project.category_id].label
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'project-location' },
+	          this.props.project.location
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'preview-sub-info' },
+	          React.createElement(
+	            'div',
+	            { className: 'social-links-wrapper' },
+	            React.createElement(
+	              'ul',
+	              { className: 'social-links group' },
+	              React.createElement(
+	                'li',
+	                null,
+	                React.createElement(
+	                  'b',
+	                  null,
+	                  'Share:'
+	                ),
+	                ' '
+	              ),
+	              React.createElement(
+	                'li',
+	                null,
+	                '[Tweet]'
+	              ),
+	              React.createElement(
+	                'li',
+	                null,
+	                '[Facebook]'
+	              ),
+	              React.createElement(
+	                'li',
+	                null,
+	                '[Embed]'
+	              ),
+	              React.createElement(
+	                'li',
+	                null,
+	                '[Email]'
+	              )
+	            )
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'preview-project-blurb' },
+	            this.props.project.blurb
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'user-info' },
+	            React.createElement(
+	              'ul',
+	              { className: 'user-name-pic' },
+	              React.createElement(
+	                'li',
+	                null,
+	                React.createElement(
+	                  'p',
+	                  { className: 'user-full-name' },
+	                  this.props.project.author_full_name
+	                )
+	              ),
+	              React.createElement(
+	                'li',
+	                { className: 'profile-pic' },
+	                this.props.user_pic_url || 'user pic'
+	              )
+	            ),
+	            React.createElement('br', null),
+	            React.createElement(
+	              'p',
+	              { className: 'project-total' },
+	              this.props.user_project_total || 0,
+	              this.props.user_project_total === 1 ? ' project ' : ' projects ',
+	              ' created'
+	            ),
+	            React.createElement('br', null),
+	            React.createElement(
+	              'p',
+	              { className: 'user-website' },
+	              this.props.project.website
+	            ),
+	            React.createElement('br', null),
+	            React.createElement(
+	              'ul',
+	              { className: 'user-contact-info group' },
+	              React.createElement(
+	                'li',
+	                null,
+	                'See full bio'
+	              ),
+	              React.createElement(
+	                'li',
+	                null,
+	                'Contact me'
+	              )
+	            )
+	          )
+	        )
+	      ),
+	      React.createElement('div', { className: 'content-divider' }),
+	      React.createElement(
+	        'div',
+	        { className: 'preview-bottom-page group' },
+	        React.createElement(
+	          'div',
+	          { className: 'project-content-bar' },
+	          React.createElement(
+	            'ul',
+	            { className: 'project-content-nav-bar group' },
+	            React.createElement(
+	              'li',
+	              null,
+	              'Campaign'
+	            ),
+	            React.createElement(
+	              'li',
+	              null,
+	              'Updates'
+	            ),
+	            React.createElement(
+	              'li',
+	              null,
+	              'Comments'
+	            ),
+	            React.createElement(
+	              'li',
+	              null,
+	              'Community'
+	            )
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'project-content-field' },
+	          React.createElement(
+	            'h3',
+	            { className: 'preview-about-field' },
+	            'About this project'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'project-content' },
+	            React.createElement(
+	              'h4',
+	              null,
+	              'Background'
+	            ),
+	            this.props.project.content || "Test Text"
+	          ),
+	          React.createElement('br', null),
+	          React.createElement(
+	            'div',
+	            { className: 'project-risks' },
+	            React.createElement(
+	              'h4',
+	              null,
+	              'Risks'
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'project-risk-content' },
+	              this.props.project.risks
+	            )
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'project-rewards-sidebar' },
+	            _rewards
+	          )
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = ProjectShow;
 
 /***/ }
 /******/ ]);

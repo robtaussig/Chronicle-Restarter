@@ -29,8 +29,8 @@ const FinalizeProject = React.createClass({
     this._handleLogin();
     this.forceUpdate();
     this.deleteMessage="";
-    this.header = ProjectMessages['basics header'];
-    this.message = ProjectMessages['basics'];
+    this.header = ProjectMessages[`${window.location.pathname.split('/')[2]} header`];
+    this.message = ProjectMessages[window.location.pathname.split('/')[2]];
     // ProjectStore.addListener(this._onChange);
     // ErrorStore.addListener(this._handleError);
   },
@@ -63,7 +63,7 @@ const FinalizeProject = React.createClass({
   },
 
   _changePage (pageTarget) {
-    if (pageTarget === 'preview') {
+    if (pageTarget === 'preview' || pageTarget === 'submit') {
       this.setState({size: 'wide'});
     } else {
       this.setState({size: ''});
@@ -87,6 +87,7 @@ const FinalizeProject = React.createClass({
   },
 
   render () {
+    let _attribute = window.location.pathname === "/finalizeProject/submit" || window.location.pathname === "/finalizeProject/preview" ? 'wide' : '';
     return (
       <div>
         <div className="nav-bar-box">
@@ -95,7 +96,7 @@ const FinalizeProject = React.createClass({
           <div className="nav-bar-top-text">{this.header}</div>
           <div className="nav-bar-bottom-text">{this.message}</div>
         </div>
-          <div className={`project-create-subpage ${this.state.size} group`}>
+          <div className={`project-create-subpage ${_attribute} group`}>
             {this.props.children}
         </div>
       </div>

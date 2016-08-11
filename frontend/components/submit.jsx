@@ -2,6 +2,7 @@ const React = require('react');
 const SavedProjectStore = require('../stores/saved_project_store.js');
 const ProjectActions = require('../actions/project_actions.js');
 const ProjectStore = require('../stores/project_store.js');
+const ProjectShow = require('./project_show.jsx');
 const RewardActions = require('../actions/reward_actions.js');
 const RewardStore = require('../stores/reward_store.js');
 const RewardItem = require('./reward_item.jsx');
@@ -14,70 +15,75 @@ const SubmitProject = React.createClass({
 
   getInitialState () {
     return ({
-      appearance: "entering",
-      rewards: [],
-      project_title: "",
-      full_name: "",
-      project_img_urls: "",
-      project_funders: 0,
-      project_funded: 0,
-      project_duration: 0,
-      project_goal: 0,
-      project_blurb: "",
-      project_category_id: 0,
-      user_project_total: 0,
-      user_pic_url: "",
-      user_website: "",
-      user_id: window.myApp.id || UserStore.currentUser().id,
-      project_content: "",
-      project_risks: ""
+      display: "pending"
     });
   },
 
   componentDidMount () {
+    this.positions = ["left", "middle", "right"];
     this._populate();
     this.listener = ProjectStore.addListener(this._onChange);
     window.setTimeout(() => {this.setState({appearance: 'entered'});},100);
   },
 
   componentWillUnmount () {
+    window.clearTimeout(this.timeOut);
     this.listener.remove();
   },
 
   _onChange () {
-    debugger
+    let _project = ProjectStore.currentProject();
+    let that = this;
+    this.timeOut = window.setTimeout(()=> {
+      that._displayProject(_project);
+    },1500);
+  },
+
+  _displayProject (project) {
+    this.setState({display: "project", project: project});
   },
 
   _populate () {
     let project = SavedProjectStore.currentProject();
     let rewards = RewardStore.currentRewards();
     let user = Object.assign(UserStore.currentUser(),window.myApp);
-
     this.setState({
-      rewards: rewards,
-      project_title: project.title || "Title was left empty",
+      title: project.title || "Title was left empty",
+      author_id: user.id,
       author_full_name: user.full_name || user.username,
       website: user.website || "",
-      project_img_urls: project.project_img_urls || <img id="default-pic" src={window.pug}></img>,
-      project_funders: project.funders || 0,
-      project_funded: project.funded || 0,
-      project_goal: project.goal || 0,
-      project_duration: project.duration || 0,
-      project_blurb: project.blurb || "",
-      project_category_id: project.category_id || 0,
-      user_project_total: user.project_totals || 0,
-      user_pic_url: user.pic_url || <img id="prof-pic" src={window.profile_pic}></img>,
-      project_content: project.content || "",
-      project_risks: project.risks || ""
+      project_img_urls: project.project_img_urls || 'window.pug',
+      goal: project.goal || 0,
+      location: project.location || "",
+      duration: project.duration || 0,
+      blurb: project.blurb || "",
+      category_id: project.category_id || 0,
+      content: project.content || "",
+      risks: project.risks || "",
+      saved_project_id: project.id
     });
+    window.setTimeout(() => {
+      ProjectActions.submitProject('submit', this.state);
+    },500);
 
-    ProjectActions.submitProject(this.state);
   },
 
   render: function() {
+    let _display;
+
+    if (this.state.display === "pending") {
+      _display = (
+        <div className="pending-wrapper">
+          <div className="pending-message">Please wait while we review your project</div>
+        </div>
+      );
+    } else {
+      _display = <ProjectShow project={this.state.project} />;
+    }
+
     return (
-      <div className={this.state.appearance}>
-        Hello from Submit
+      <div className={`${this.state.appearance}`}>
+        {_display}
       </div>
     );
   }
