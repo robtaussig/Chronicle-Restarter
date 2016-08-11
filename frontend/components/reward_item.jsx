@@ -139,7 +139,7 @@ const RewardItem = React.createClass({
           <ul className="reward-save-wrapper" onClick={this._handleSave}>
             <li><p>Save</p></li>
             <li>
-              <div className="reward-save-button"><img id="check-mark" src={window.check}></img></div>
+              <div className="reward-save-button"></div>
             </li>
           </ul>
           <button className="reward-delete-button" onClick={this._handleDelete}>X</button>

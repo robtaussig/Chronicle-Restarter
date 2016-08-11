@@ -12,6 +12,7 @@ const Basics = require('./components/basics.jsx');
 const Rewards = require('./components/rewards.jsx');
 const Story = require('./components/story.jsx');
 const AboutYou = require('./components/about_you.jsx');
+const FocusProject = require('./components/focus_project.jsx');
 const FrontPage = require('./components/front_page.jsx');
 const Account = require('./components/account.jsx');
 const SubmitProject = require('./components/submit.jsx');

@@ -24,6 +24,7 @@ const Rewards = React.createClass({
     this._prepopulate();
     window.setTimeout(() => {this.setState({appearance: 'entered'});},100);
     this.projectId = SavedProjectStore.currentProject().id;
+    this._addReward();
     this.forceUpdate();
   },
 
