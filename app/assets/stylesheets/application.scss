@@ -738,6 +738,11 @@ p.delete-message {
   cursor: pointer;
 }
 
+.project-nav-bar li:hover:not(:last-child) {
+  color: #0927e2;
+  font-weight: 700;
+}
+
 .project-nav-bar li span {
   height: 50px;
   width: 85px;
@@ -820,7 +825,7 @@ p.delete-message {
 }
 
 .project-nav-bar span.submit-span:hover {
-  background-color: limegreen;
+  background-color: #46c76b;
 }
 
 .nav-bar-box h1 {
@@ -1902,4 +1907,73 @@ div.pending-wrapper {
   margin-top: -140px;
   font-size: 36px;
   text-align:center;
+}
+
+li.funders-num-final {
+  color: #181819;
+  font-size: 50px;
+  font-weight: 700;
+}
+
+li.funded-num-final {
+  color: #181819;
+  font-size: 50px;
+  font-weight: 700;
+}
+
+div.preview-project-duration-final {
+  margin-top: 20px;
+  color: #181819;
+  font-size: 50px;
+  font-weight: 700;
+}
+
+div.project-location-final {
+  position: absolute;
+  font-weight: bold;
+  font-size: 14px;
+  color: #16163c;
+}
+
+ul.project-content-nav-bar.final li {
+  cursor: pointer;
+}
+
+ul.project-content-nav-bar.final li:hover {
+  color: #0927e2;
+}
+
+div.single-reward-wrapper.final:hover {
+  color: #fff;
+  background-color: rgba(43,222,115,0.9);
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+div.back-project {
+  margin-top: 75px;
+  border: 1px solid #ccc;
+  text-align: center;
+  padding: 35px;
+  width: 100px;
+  font-weight: bold;
+  font-size: 20px;
+  border-radius: 15px;
+  box-shadow: 4px 4px 7px #ccc;
+  color: #fff;
+  letter-spacing: 1px;
+  background-color: #46c76b;
+  cursor: pointer;
+}
+
+div.back-project:hover {
+  background-color: #02a654;
+}
+
+ul.user-contact-info.final li {
+  cursor: pointer;
+}
+
+p.user-website.final {
+  cursor: pointer;
 }

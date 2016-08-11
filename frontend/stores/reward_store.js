@@ -5,6 +5,7 @@ const RewardStore = new Store(AppDispatcher);
 const ErrorActions = require('../actions/error_actions.js');
 
 let _rewards = [];
+let _funding = {};
 
 RewardStore.find = (rewardId) => {
   return _rewards.filter(reward => {
@@ -89,6 +90,10 @@ function _saveRewards () {
   });
 }
 
+function _resetFunding (funding) {
+  _funding = funding;
+}
+
 RewardStore.__onDispatch = (payload) => {
   switch (payload.actionType) {
     case RewardConstants.REWARD_RECEIVED:
@@ -103,6 +108,11 @@ RewardStore.__onDispatch = (payload) => {
     case RewardConstants.SAVE_ALL:
       _saveRewards(payload.data);
     break;
+    case RewardConstants.FUNDING_RECEIVED:
+      _resetFunding(payload.data);
+    break;
+
+
   }
 };
 

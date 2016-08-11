@@ -30,7 +30,7 @@ const NavBar = React.createClass({
   render () {
     let navContent = (this.state.user.hasOwnProperty('id')) ?
       [<li key="user"><Link className="user-link"
-          to='userProfile'>{this.state.user.pic_url ||
+          to='/userProfile'>{this.state.user.pic_url ||
           <img id="nav-prof-pic" src={window.profile_pic}></img>}</Link>
         </li>,
       <li onClick={this._logOut} className="log-out-button" key="logOut">
@@ -39,18 +39,18 @@ const NavBar = React.createClass({
       <li key="search"><Search/></li>] :
         [
           <li key="signup">
-            <Link className="session-link" to='signUp'>Sign Up</Link></li>,
+            <Link className="session-link" to='/signUp'>Sign Up</Link></li>,
           <li key="login">
-            <Link className="session-link" to='logIn'>Log In</Link></li>,
+            <Link className="session-link" to='/logIn'>Log In</Link></li>,
           <li key="search"><Search/></li>
         ];
     return (
       <div className="nav-bar group">
         <div className="site-nav-left" >
           <ul className="nav-bar-items">
-            <li><Link className="nav-link" to='discover'>Discover</Link></li>
-            <li><Link className="nav-link" to='startProject'>Start a project</Link></li>
-            <li><Link className="nav-link" to='about'>About us</Link></li>
+            <li><Link className="nav-link" to='/discover'>Discover</Link></li>
+            <li><Link className="nav-link" to='/startProject'>Start a project</Link></li>
+            <li><Link className="nav-link" to='/about'>About us</Link></li>
           </ul>
         </div>
         <div className="site-nav-middle">

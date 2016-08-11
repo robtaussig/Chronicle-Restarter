@@ -18,6 +18,10 @@ const RewardActions = {
     });
   },
 
+  fundProject (form, rewardId, projectId) {
+    RewardApiUtil.fundProject(form, rewardId, projectId, this.receiveFunding, ErrorActions.receiveError);
+  },
+
   updateReward (rewardInfo) {
     AppDispatcher.dispatch({
       actionType: RewardConstants.REWARD_UPDATED,
@@ -32,6 +36,12 @@ const RewardActions = {
     });
   },
 
+  receiveFunding (fundingInfo) {
+    AppDispatcher.dispatch({
+      actionType: RewardConstants.FUNDING_RECEIVED,
+      data: fundingInfo
+    });
+  },
 };
 
 module.exports = RewardActions;

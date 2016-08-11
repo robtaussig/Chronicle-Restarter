@@ -38,6 +38,16 @@ const RewardApiUtil = {
     });
   },
 
+  fundProject(form, rewardId, projectId, success, error) {
+    $.ajax({
+      url: '/api/fundings/',
+      type: 'CREATE',
+      data: {funding: {reward_id: rewardId, project_id: projectId}},
+      success,
+      error
+    });
+  },
+
 };
 
 module.exports = RewardApiUtil;

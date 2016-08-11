@@ -33,14 +33,15 @@ const SubmitProject = React.createClass({
 
   _onChange () {
     let _project = ProjectStore.currentProject();
+    this.setState(_project);
     let that = this;
     this.timeOut = window.setTimeout(()=> {
       that._displayProject(_project);
     },1500);
   },
 
-  _displayProject (project) {
-    this.setState({display: "project", project: project});
+  _displayProject () {
+    this.setState({display: "project"});
   },
 
   _populate () {
@@ -78,7 +79,7 @@ const SubmitProject = React.createClass({
         </div>
       );
     } else {
-      _display = <ProjectShow project={this.state.project} />;
+      _display = <ProjectShow project={this.state} />;
     }
 
     return (

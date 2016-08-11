@@ -27201,7 +27201,7 @@
 	      React.createElement(
 	        Link,
 	        { className: 'user-link',
-	          to: 'userProfile' },
+	          to: '/userProfile' },
 	        this.state.user.pic_url || React.createElement('img', { id: 'nav-prof-pic', src: window.profile_pic })
 	      )
 	    ), React.createElement(
@@ -27217,7 +27217,7 @@
 	      { key: 'signup' },
 	      React.createElement(
 	        Link,
-	        { className: 'session-link', to: 'signUp' },
+	        { className: 'session-link', to: '/signUp' },
 	        'Sign Up'
 	      )
 	    ), React.createElement(
@@ -27225,7 +27225,7 @@
 	      { key: 'login' },
 	      React.createElement(
 	        Link,
-	        { className: 'session-link', to: 'logIn' },
+	        { className: 'session-link', to: '/logIn' },
 	        'Log In'
 	      )
 	    ), React.createElement(
@@ -27247,7 +27247,7 @@
 	            null,
 	            React.createElement(
 	              Link,
-	              { className: 'nav-link', to: 'discover' },
+	              { className: 'nav-link', to: '/discover' },
 	              'Discover'
 	            )
 	          ),
@@ -27256,7 +27256,7 @@
 	            null,
 	            React.createElement(
 	              Link,
-	              { className: 'nav-link', to: 'startProject' },
+	              { className: 'nav-link', to: '/startProject' },
 	              'Start a project'
 	            )
 	          ),
@@ -27265,7 +27265,7 @@
 	            null,
 	            React.createElement(
 	              Link,
-	              { className: 'nav-link', to: 'about' },
+	              { className: 'nav-link', to: '/about' },
 	              'About us'
 	            )
 	          )
@@ -36292,6 +36292,7 @@
 	var ErrorActions = __webpack_require__(267);
 	
 	var _rewards = [];
+	var _funding = {};
 	
 	RewardStore.find = function (rewardId) {
 	  return _rewards.filter(function (reward) {
@@ -36373,6 +36374,10 @@
 	  });
 	}
 	
+	function _resetFunding(funding) {
+	  _funding = funding;
+	}
+	
 	RewardStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
 	    case RewardConstants.REWARD_RECEIVED:
@@ -36387,6 +36392,10 @@
 	    case RewardConstants.SAVE_ALL:
 	      _saveRewards(payload.data);
 	      break;
+	    case RewardConstants.FUNDING_RECEIVED:
+	      _resetFunding(payload.data);
+	      break;
+	
 	  }
 	};
 	
@@ -36402,7 +36411,8 @@
 	  REWARD_RECEIVED: 'REWARD_RECEIVED',
 	  REWARD_REMOVED: 'REWARD_REMOVED',
 	  REWARD_UPDATED: 'REWARD_UPDATED',
-	  SAVE_ALL: 'SAVE_ALL'
+	  SAVE_ALL: 'SAVE_ALL',
+	  FUNDING_RECEIVED: 'FUNDING_RECEIVED'
 	};
 
 /***/ },
@@ -36641,6 +36651,9 @@
 	      actionType: RewardConstants.SAVE_ALL
 	    });
 	  },
+	  fundProject: function fundProject(form, rewardId, projectId) {
+	    RewardApiUtil.fundProject(form, rewardId, projectId, this.receiveFunding, ErrorActions.receiveError);
+	  },
 	  updateReward: function updateReward(rewardInfo) {
 	    AppDispatcher.dispatch({
 	      actionType: RewardConstants.REWARD_UPDATED,
@@ -36651,6 +36664,12 @@
 	    AppDispatcher.dispatch({
 	      actionType: RewardConstants.REWARD_REMOVED,
 	      data: rewardInfo
+	    });
+	  },
+	  receiveFunding: function receiveFunding(fundingInfo) {
+	    AppDispatcher.dispatch({
+	      actionType: RewardConstants.FUNDING_RECEIVED,
+	      data: fundingInfo
 	    });
 	  }
 	};
@@ -36695,6 +36714,15 @@
 	      url: '/api/rewards/' + id,
 	      type: 'DELETE',
 	      data: { params: id },
+	      success: success,
+	      error: error
+	    });
+	  },
+	  fundProject: function fundProject(form, rewardId, projectId, success, error) {
+	    $.ajax({
+	      url: '/api/fundings/',
+	      type: 'CREATE',
+	      data: { funding: { reward_id: rewardId, project_id: projectId } },
 	      success: success,
 	      error: error
 	    });
@@ -37359,13 +37387,14 @@
 	  },
 	  _onChange: function _onChange() {
 	    var _project = ProjectStore.currentProject();
+	    this.setState(_project);
 	    var that = this;
 	    this.timeOut = window.setTimeout(function () {
 	      that._displayProject(_project);
 	    }, 1500);
 	  },
-	  _displayProject: function _displayProject(project) {
-	    this.setState({ display: "project", project: project });
+	  _displayProject: function _displayProject() {
+	    this.setState({ display: "project" });
 	  },
 	  _populate: function _populate() {
 	    var _this2 = this;
@@ -37408,7 +37437,7 @@
 	        )
 	      );
 	    } else {
-	      _display = React.createElement(ProjectShow, { project: this.state.project });
+	      _display = React.createElement(ProjectShow, { project: this.state });
 	    }
 	
 	    return React.createElement(
@@ -37493,7 +37522,7 @@
 	    this.setState({
 	      rewards: rewards,
 	      project_title: project.title || "Title was left empty",
-	      user_full_name: user.full_name || user.username,
+	      author_full_name: user.full_name || user.username,
 	      user_website: user.website || "",
 	      project_img_urls: project.project_img_urls || React.createElement('img', { id: 'default-pic', src: window.pug }),
 	      project_funders: project.funders || 0,
@@ -37572,7 +37601,7 @@
 	            React.createElement(
 	              'b',
 	              null,
-	              this.state.user_full_name
+	              this.state.author_full_name
 	            )
 	          ),
 	          React.createElement('br', null)
@@ -37720,7 +37749,7 @@
 	                React.createElement(
 	                  'p',
 	                  { className: 'user-full-name' },
-	                  this.state.user_full_name
+	                  this.state.author_full_name
 	                )
 	              ),
 	              React.createElement(
@@ -37828,7 +37857,7 @@
 	          ),
 	          React.createElement(
 	            'div',
-	            { className: 'project-rewards-sidebar' },
+	            { className: 'project-rewards-sidebar group' },
 	            _rewards
 	          )
 	        )
@@ -38328,16 +38357,111 @@
 
 	'use strict';
 	
+	var _reactRouter = __webpack_require__(1);
+	
 	var React = __webpack_require__(3);
 	var ProjectCategories = __webpack_require__(284);
+	var ProjectStore = __webpack_require__(290);
+	var RewardActions = __webpack_require__(294);
+	var RewardStore = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../stores/reward_stores.js\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var UserStore = __webpack_require__(281);
+	var UserActions = __webpack_require__(287);
+	
 	
 	var ProjectShow = React.createClass({
 	  displayName: 'ProjectShow',
+	  getInitialState: function getInitialState() {
+	    return {
+	      user: "",
+	      userProjects: [],
+	      backers: 0,
+	      funded: 0
+	    };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    this.projectListener = ProjectStore.addListener(this._onProjectChange);
+	    var user = this.props.project.author_id;
+	    this.userListener = UserStore.addListener(this._onUserChange);
+	    this.rewardListener = RewardStore.addListener(this._onRewardChange);
+	    UserActions.fetchUser('show', user);
+	    RewardActions.fetchFunding('show', this.props.project.id);
+	  },
+	  componentWillUnmount: function componentWillUnmount() {
+	    this.projectListener.remove();
+	    this.userListener.remove();
+	  },
+	  _onProjectChange: function _onProjectChange() {},
+	  _onRewardChange: function _onRewardChange() {
+	    var funding = RewardStore.currentFunding();
+	    this.setState({ funded: funding.funded, backers: funding.funders });
+	  },
+	  _onUserChange: function _onUserChange() {
+	    var user = UserStore.currentUser();
+	    this.setState({ user: user, userProjects: user.projects });
+	  },
+	  _switchToCampaign: function _switchToCampaign(event) {
+	    debugger;
+	  },
+	  _switchToUpdates: function _switchToUpdates(event) {
+	    debugger;
+	  },
+	  _switchToComments: function _switchToComments(event) {
+	    debugger;
+	  },
+	  _switchToCommunity: function _switchToCommunity(event) {
+	    debugger;
+	  },
+	  _backProject: function _backProject(event) {
+	    debugger;
+	  },
+	  _selectReward: function _selectReward(idx, event) {
+	    debugger;
+	    RewardActions.fundProject('show', rewardId, projectId);
+	  },
 	
 	
 	  render: function render() {
+	    var _this = this;
 	
-	    var _rewards = [];
+	    var _rewards = this.props.project.rewards.slice(0, 4).map(function (reward, idx) {
+	      return React.createElement(
+	        'div',
+	        { onClick: function onClick(event) {
+	            return _this._selectReward(idx, event);
+	          }, className: 'single-reward-wrapper final', key: idx },
+	        React.createElement(
+	          'h3',
+	          null,
+	          'Pledge $',
+	          reward.amount,
+	          ' or more'
+	        ),
+	        React.createElement(
+	          'p',
+	          { className: 'reward-number' },
+	          'Reward #',
+	          idx + 1
+	        ),
+	        React.createElement('br', null),
+	        React.createElement(
+	          'h4',
+	          { className: 'reward-title' },
+	          reward.title
+	        ),
+	        React.createElement('br', null),
+	        React.createElement(
+	          'p',
+	          { className: 'reward-description' },
+	          reward.description
+	        ),
+	        React.createElement('br', null),
+	        React.createElement(
+	          'p',
+	          { className: 'reward-availability' },
+	          'Available for ' + reward.quantity + '\n          backers'
+	        )
+	      );
+	    });
 	
 	    return React.createElement(
 	      'div',
@@ -38360,7 +38484,7 @@
 	            React.createElement(
 	              'b',
 	              null,
-	              this.props.project.author_full_name
+	              this.state.user.full_name || this.state.user.username || "No name"
 	            )
 	          ),
 	          React.createElement('br', null)
@@ -38382,8 +38506,8 @@
 	            { className: 'funders group' },
 	            React.createElement(
 	              'li',
-	              { className: 'funders-num' },
-	              this.props.project_funders || 0
+	              { className: 'funders-num-final' },
+	              this.state.backers || 0
 	            ),
 	            React.createElement(
 	              'li',
@@ -38396,9 +38520,9 @@
 	            { className: 'funded group' },
 	            React.createElement(
 	              'li',
-	              { className: 'funded-num' },
+	              { className: 'funded-num-final' },
 	              '$',
-	              this.props.project_funded || 0
+	              this.state.funded || 0
 	            ),
 	            React.createElement(
 	              'li',
@@ -38410,7 +38534,7 @@
 	          ),
 	          React.createElement(
 	            'div',
-	            { className: 'preview-project-duration' },
+	            { className: 'preview-project-duration-final' },
 	            this.props.project.duration
 	          ),
 	          React.createElement(
@@ -38420,19 +38544,8 @@
 	          ),
 	          React.createElement(
 	            'div',
-	            { className: 'preview-warning' },
-	            React.createElement(
-	              'p',
-	              null,
-	              'THIS PROJECT IS NOT LIVE'
-	            ),
-	            React.createElement('br', null),
-	            React.createElement(
-	              'p',
-	              null,
-	              'This is only a draft that the creator has chosen to share'
-	            ),
-	            React.createElement('br', null)
+	            { onClick: this._backProject, className: 'back-project' },
+	            'Back this project'
 	          )
 	        ),
 	        React.createElement(
@@ -38508,41 +38621,45 @@
 	                React.createElement(
 	                  'p',
 	                  { className: 'user-full-name' },
-	                  this.props.project.author_full_name
+	                  this.state.user.full_name || this.state.user.username || "No name"
 	                )
 	              ),
 	              React.createElement(
 	                'li',
 	                { className: 'profile-pic' },
-	                this.props.user_pic_url || 'user pic'
+	                this.state.user.pic_url || 'user pic'
 	              )
 	            ),
 	            React.createElement('br', null),
 	            React.createElement(
 	              'p',
 	              { className: 'project-total' },
-	              this.props.user_project_total || 0,
-	              this.props.user_project_total === 1 ? ' project ' : ' projects ',
+	              this.state.userProjects.length || 0,
+	              this.state.userProjects.length === 1 ? ' project ' : ' projects ',
 	              ' created'
 	            ),
 	            React.createElement('br', null),
 	            React.createElement(
-	              'p',
-	              { className: 'user-website' },
-	              this.props.project.website
+	              'a',
+	              { href: 'http://' + this.state.user.website },
+	              React.createElement(
+	                'p',
+	                { className: 'user-website final' },
+	                this.state.user.website
+	              )
 	            ),
 	            React.createElement('br', null),
 	            React.createElement(
 	              'ul',
-	              { className: 'user-contact-info group' },
+	              { className: 'user-contact-info final group' },
 	              React.createElement(
 	                'li',
-	                null,
+	                { onClick: this._seeBio },
 	                'See full bio'
 	              ),
 	              React.createElement(
 	                'li',
-	                null,
+	                { onClick: this._contactMe },
 	                'Contact me'
 	              )
 	            )
@@ -38558,25 +38675,25 @@
 	          { className: 'project-content-bar' },
 	          React.createElement(
 	            'ul',
-	            { className: 'project-content-nav-bar group' },
+	            { className: 'project-content-nav-bar final group' },
 	            React.createElement(
 	              'li',
-	              null,
+	              { onClick: this._switchToCampaign },
 	              'Campaign'
 	            ),
 	            React.createElement(
 	              'li',
-	              null,
+	              { onClick: this._switchToUpdates },
 	              'Updates'
 	            ),
 	            React.createElement(
 	              'li',
-	              null,
+	              { onClick: this._switchToComments },
 	              'Comments'
 	            ),
 	            React.createElement(
 	              'li',
-	              null,
+	              { onClick: this._switchToCommunity },
 	              'Community'
 	            )
 	          )

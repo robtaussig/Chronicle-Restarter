@@ -63,7 +63,7 @@ const Preview = React.createClass({
     this.setState({
       rewards: rewards,
       project_title: project.title || "Title was left empty",
-      user_full_name: user.full_name || user.username,
+      author_full_name: user.full_name || user.username,
       user_website: user.website || "",
       project_img_urls: project.project_img_urls || <img id="default-pic" src={window.pug}></img>,
       project_funders: project.funders || 0,
@@ -102,7 +102,7 @@ const Preview = React.createClass({
           <div className="preview-header">
             <h3 className="preview-project-title">{this.state.project_title}</h3>
               <p className="preview-project-name">
-                by <b>{this.state.user_full_name}</b>
+                by <b>{this.state.author_full_name}</b>
               </p>
             <br></br>
           </div>
@@ -149,7 +149,7 @@ const Preview = React.createClass({
             <div className="preview-project-blurb">{this.state.project_blurb}</div>
             <div className="user-info">
               <ul className="user-name-pic">
-                <li><p className="user-full-name">{this.state.user_full_name}</p></li>
+                <li><p className="user-full-name">{this.state.author_full_name}</p></li>
                   <li className="profile-pic">{this.state.user_pic_url}
                   </li>
               </ul>
@@ -187,7 +187,7 @@ const Preview = React.createClass({
               <h4>Risks</h4>
               <div className="project-risk-content">{this.state.project_risks}</div>
             </div>
-            <div className="project-rewards-sidebar">
+            <div className="project-rewards-sidebar group">
               {_rewards}
             </div>
           </div>
