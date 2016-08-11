@@ -36375,10 +36375,12 @@
 	}
 	
 	function _resetFunding(funding) {
+	
 	  _funding = funding;
 	}
 	
 	RewardStore.__onDispatch = function (payload) {
+	  debugger;
 	  switch (payload.actionType) {
 	    case RewardConstants.REWARD_RECEIVED:
 	      _addReward(payload.data);
@@ -36651,8 +36653,9 @@
 	      actionType: RewardConstants.SAVE_ALL
 	    });
 	  },
-	  fundProject: function fundProject(form, rewardId, projectId) {
-	    RewardApiUtil.fundProject(form, rewardId, projectId, this.receiveFunding, ErrorActions.receiveError);
+	  fundProject: function fundProject(form, rewardId) {
+	    debugger;
+	    RewardApiUtil.fundProject(form, rewardId, this.receiveFunding, ErrorActions.receiveError);
 	  },
 	  updateReward: function updateReward(rewardInfo) {
 	    AppDispatcher.dispatch({
@@ -36718,13 +36721,40 @@
 	      error: error
 	    });
 	  },
-	  fundProject: function fundProject(form, rewardId, projectId, success, error) {
+	  fundProject: function fundProject(form, rewardId, success, error) {
+	    debugger;
 	    $.ajax({
 	      url: '/api/fundings/',
 	      type: 'CREATE',
-	      data: { funding: { reward_id: rewardId, project_id: projectId } },
-	      success: success,
-	      error: error
+	      data: { funding: { reward_id: rewardId } },
+	      success: function (_success) {
+	        function success(_x) {
+	          return _success.apply(this, arguments);
+	        }
+	
+	        success.toString = function () {
+	          return _success.toString();
+	        };
+	
+	        return success;
+	      }(function (resp) {
+	        debugger;
+	        success(resp);
+	      }),
+	      error: function (_error) {
+	        function error(_x2) {
+	          return _error.apply(this, arguments);
+	        }
+	
+	        error.toString = function () {
+	          return _error.toString();
+	        };
+	
+	        return error;
+	      }(function (resp) {
+	        debugger;
+	        error(resp);
+	      })
 	    });
 	  }
 	};
@@ -38363,7 +38393,7 @@
 	var ProjectCategories = __webpack_require__(284);
 	var ProjectStore = __webpack_require__(290);
 	var RewardActions = __webpack_require__(294);
-	var RewardStore = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../stores/reward_stores.js\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var RewardStore = __webpack_require__(291);
 	var UserStore = __webpack_require__(281);
 	var UserActions = __webpack_require__(287);
 	
@@ -38384,7 +38414,7 @@
 	    this.userListener = UserStore.addListener(this._onUserChange);
 	    this.rewardListener = RewardStore.addListener(this._onRewardChange);
 	    UserActions.fetchUser('show', user);
-	    RewardActions.fetchFunding('show', this.props.project.id);
+	    // RewardActions.fetchFunding('show', this.props.project.id);
 	  },
 	  componentWillUnmount: function componentWillUnmount() {
 	    this.projectListener.remove();
@@ -38415,8 +38445,9 @@
 	    debugger;
 	  },
 	  _selectReward: function _selectReward(idx, event) {
+	    var rewardId = this.props.project.rewards[idx].id;
 	    debugger;
-	    RewardActions.fundProject('show', rewardId, projectId);
+	    RewardActions.fundProject('show', rewardId);
 	  },
 	
 	

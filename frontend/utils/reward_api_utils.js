@@ -38,13 +38,20 @@ const RewardApiUtil = {
     });
   },
 
-  fundProject(form, rewardId, projectId, success, error) {
+  fundProject(form, rewardId, success, error) {
+    debugger
     $.ajax({
       url: '/api/fundings/',
       type: 'CREATE',
-      data: {funding: {reward_id: rewardId, project_id: projectId}},
-      success,
-      error
+      data: {funding: {reward_id: rewardId}},
+      success: (resp) => {
+        debugger
+        success(resp);
+      },
+      error: (resp) => {
+        debugger
+        error(resp);
+      }
     });
   },
 

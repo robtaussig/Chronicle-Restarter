@@ -26,5 +26,6 @@ Rails.application.routes.draw do
     resources :projects
     resources :saved_projects
     resources :rewards
+    resources :fundings
   end
 end

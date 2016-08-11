@@ -2,7 +2,7 @@ const React = require('react');
 const ProjectCategories = require('../constants/project_category_ids.js');
 const ProjectStore = require('../stores/project_store.js');
 const RewardActions = require('../actions/reward_actions.js');
-const RewardStore = require('../stores/reward_stores.js');
+const RewardStore = require('../stores/reward_store.js');
 const UserStore = require('../stores/user_store.js');
 const UserActions = require('../actions/user_actions.js');
 import { browserHistory } from 'react-router';
@@ -24,7 +24,7 @@ const ProjectShow = React.createClass({
     this.userListener = UserStore.addListener(this._onUserChange);
     this.rewardListener = RewardStore.addListener(this._onRewardChange);
     UserActions.fetchUser('show', user);
-    RewardActions.fetchFunding('show', this.props.project.id);
+    // RewardActions.fetchFunding('show', this.props.project.id);
   },
 
   componentWillUnmount () {
@@ -67,8 +67,9 @@ const ProjectShow = React.createClass({
   },
 
   _selectReward (idx, event) {
+    let rewardId = this.props.project.rewards[idx].id;
     debugger
-    RewardActions.fundProject('show', rewardId, projectId);
+    RewardActions.fundProject('show', rewardId);
   },
 
   render: function() {

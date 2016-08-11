@@ -18,8 +18,9 @@ const RewardActions = {
     });
   },
 
-  fundProject (form, rewardId, projectId) {
-    RewardApiUtil.fundProject(form, rewardId, projectId, this.receiveFunding, ErrorActions.receiveError);
+  fundProject (form, rewardId) {
+    debugger
+    RewardApiUtil.fundProject(form, rewardId, this.receiveFunding, ErrorActions.receiveError);
   },
 
   updateReward (rewardInfo) {

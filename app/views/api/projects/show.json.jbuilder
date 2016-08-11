@@ -4,3 +4,4 @@ json.extract! @project,
   :author_full_name, :risks, :website
 
   json.rewards @project.rewards
+  json.fundings @project.fundings
