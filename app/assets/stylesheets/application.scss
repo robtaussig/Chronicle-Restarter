@@ -1135,7 +1135,7 @@ button.reward-delete-button {
   float: right;
   margin-top: 5px;
   margin-right: 5px;
-  color: darkblue;
+  color: #7887ed;
   font-size: 12px;
   font-weight: 700;
 }
@@ -1147,7 +1147,7 @@ div.reward-title-wrapper {
 }
 
 div.reward-title-field {
-
+  color: #7887ed;
 
 }
 
@@ -1157,16 +1157,28 @@ div.reward-amount-wrapper {
   top: 40px;
 }
 
+div.reward-amount-field {
+  color: #7887ed;
+}
+
 div.reward-description-wrapper {
   margin: 20px;
   position: absolute;
   top: 95px;
 }
 
+div.reward-description-field {
+  color: #7887ed;
+}
+
 div.reward-quantity-wrapper {
   margin: 20px;
   top: 187px;
   position: absolute;
+}
+
+div.reward-quantity-field {
+  color: #7887ed;
 }
 
 /*----------------------------- Story page -----------------------------------*/

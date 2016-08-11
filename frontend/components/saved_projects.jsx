@@ -57,3 +57,6 @@ const SavedProjects = React.createClass({
 });
 
 module.exports = SavedProjects;
+
+
+//Handle login check and saved project check (redirect if no projects)
