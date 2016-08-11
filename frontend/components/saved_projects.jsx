@@ -2,8 +2,12 @@ const React = require('react');
 const SavedProjectActions = require('../actions/saved_project_actions.js');
 const SavedProjectStore = require('../stores/saved_project_store.js');
 const UserStore = require('../stores/user_store.js');
+const SessionStore = require('../stores/session_store.js');
 const FocusProject = require('./focus_project.jsx');
+const ProjectPreview = require('./project_preview.jsx');
 const ProjectCategoryIds = require('../constants/project_category_ids.js');
+const ErrorActions = require('../actions/error_actions.js');
+import { browserHistory } from 'react-router';
 
 const SavedProjects = React.createClass({
 
@@ -12,29 +16,51 @@ const SavedProjects = React.createClass({
   },
 
   componentDidMount () {
-    this.listener = SavedProjectStore.addListener(this._onChange);
-    let userId = window.myApp.id || UserStore.currentUser();
-    SavedProjectActions.fetchAllSavedProjects('start', userId);
+    let userId = window.myApp.id || SessionStore.currentUser().id;
+    if (userId) {
+      SavedProjectActions.fetchAllSavedProjects('start', userId);
+      this.listener = SavedProjectStore.addListener(this._onChange);
+    } else {
+      this._checkStatus();
+    }
   },
 
   componentWillUnmount () {
-    this.listener.remove();
+    if (this.listener) {
+      this.listener.remove();
+    }
+
   },
 
   _onChange () {
     this.setState({savedProjects: SavedProjectStore.allCurrentProjects()});
     this.focusProject = this.state.savedProjects[this.state.savedProjects.length - 1];
-    this.savedProjects = this.state.savedProjects.splice(0, this.state.savedProjects.length - 2);
+    this.savedProjects = this.state.savedProjects.splice(0, this.state.savedProjects.length - 1);
     this.forceUpdate();
+  },
+
+  _checkStatus () {
+      ErrorActions.mustBeSignedIn('');
+      browserHistory.push('/signUp');
   },
 
   render: function() {
     let _focusProject;
+    let _savedProjects;
 
     if (this.focusProject) {
       _focusProject = <FocusProject project={this.focusProject} />;
     } else {
-      _focusProject = [];
+      _focusProject = (<div><h2 className="no-saved-projects-message">{"Sorry, but you don't have any saved projects"}</h2>
+    <button className="new-project-button" onClick={this._newProject}>New Project</button></div>);
+    }
+
+    if (this.savedProjects) {
+      _savedProjects = this.savedProjects.map((project,idx) => {
+        return <ProjectPreview project={project} key={idx} />;
+      });
+    } else {
+      _savedProjects = [];
     }
 
 
@@ -44,9 +70,9 @@ const SavedProjects = React.createClass({
           {_focusProject}
         </div>
         <div className="saved-projects-div">
-          <ul className="saved-projects-list">
-            <li>blah</li>
-            <li>blah</li>
+          <h4 className="saved-project-list-header">Previously saved projects</h4>
+          <ul className="saved-projects-list group">
+            {_savedProjects}
           </ul>
         </div>
 

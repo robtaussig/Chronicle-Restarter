@@ -32,7 +32,7 @@ const ErrorActions = {
       actionType:ErrorConstants.SIGNUP_ERROR_RECEIVED,
       form: 'signup',
       pendingAction: pendingAction,
-      message: "Please sign up (or log in) to continue your project"
+      message: "Please sign up (or log in) to continue."
     });
   },
 

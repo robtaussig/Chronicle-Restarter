@@ -63,7 +63,8 @@ function _saveRewards () {
       }
     });
   });
-};
+  _rewards = {};
+}
 
 RewardStore.__onDispatch = (payload) => {
   switch (payload.actionType) {

@@ -56,20 +56,21 @@
 	var UserProfile = __webpack_require__(273);
 	var SetupApp = __webpack_require__(274);
 	var StartProject = __webpack_require__(275);
-	var CreateProject = __webpack_require__(277);
+	var CreateProject = __webpack_require__(285);
 	var SavedProjects = __webpack_require__(276);
-	var Basics = __webpack_require__(282);
-	var Rewards = __webpack_require__(286);
-	var Story = __webpack_require__(295);
-	var AboutYou = __webpack_require__(296);
-	var FocusProject = __webpack_require__(304);
-	var FrontPage = __webpack_require__(297);
-	var Account = __webpack_require__(298);
-	var SubmitProject = __webpack_require__(299);
-	var Preview = __webpack_require__(300);
-	var RewardStore = __webpack_require__(288);
-	var SavedProjectStore = __webpack_require__(283);
-	var FinalizeProject = __webpack_require__(301);
+	var Basics = __webpack_require__(286);
+	var Rewards = __webpack_require__(289);
+	var Story = __webpack_require__(296);
+	var AboutYou = __webpack_require__(297);
+	var FocusProject = __webpack_require__(283);
+	var ProjectPreview = __webpack_require__(305);
+	var FrontPage = __webpack_require__(298);
+	var Account = __webpack_require__(299);
+	var SubmitProject = __webpack_require__(300);
+	var Preview = __webpack_require__(301);
+	var RewardStore = __webpack_require__(291);
+	var SavedProjectStore = __webpack_require__(280);
+	var FinalizeProject = __webpack_require__(302);
 	
 	
 	var routes = React.createElement(
@@ -34427,7 +34428,7 @@
 	      actionType: ErrorConstants.SIGNUP_ERROR_RECEIVED,
 	      form: 'signup',
 	      pendingAction: pendingAction,
-	      message: "Please sign up (or log in) to continue your project"
+	      message: "Please sign up (or log in) to continue."
 	    });
 	  },
 	  mismatchedEmails: function mismatchedEmails() {
@@ -34933,12 +34934,18 @@
 
 	'use strict';
 	
+	var _reactRouter = __webpack_require__(1);
+	
 	var React = __webpack_require__(3);
-	var SavedProjectActions = __webpack_require__(278);
-	var SavedProjectStore = __webpack_require__(283);
-	var UserStore = __webpack_require__(293);
-	var FocusProject = __webpack_require__(304);
-	var ProjectCategoryIds = __webpack_require__(281);
+	var SavedProjectActions = __webpack_require__(277);
+	var SavedProjectStore = __webpack_require__(280);
+	var UserStore = __webpack_require__(281);
+	var SessionStore = __webpack_require__(241);
+	var FocusProject = __webpack_require__(283);
+	var ProjectPreview = __webpack_require__(305);
+	var ProjectCategoryIds = __webpack_require__(284);
+	var ErrorActions = __webpack_require__(267);
+	
 	
 	var SavedProjects = React.createClass({
 	  displayName: 'SavedProjects',
@@ -34946,28 +34953,60 @@
 	    return { savedProjects: [] };
 	  },
 	  componentDidMount: function componentDidMount() {
-	    this.listener = SavedProjectStore.addListener(this._onChange);
-	    var userId = window.myApp.id || UserStore.currentUser();
-	    SavedProjectActions.fetchAllSavedProjects('start', userId);
+	    var userId = window.myApp.id || SessionStore.currentUser().id;
+	    if (userId) {
+	      SavedProjectActions.fetchAllSavedProjects('start', userId);
+	      this.listener = SavedProjectStore.addListener(this._onChange);
+	    } else {
+	      this._checkStatus();
+	    }
 	  },
 	  componentWillUnmount: function componentWillUnmount() {
-	    this.listener.remove();
+	    if (this.listener) {
+	      this.listener.remove();
+	    }
 	  },
 	  _onChange: function _onChange() {
 	    this.setState({ savedProjects: SavedProjectStore.allCurrentProjects() });
 	    this.focusProject = this.state.savedProjects[this.state.savedProjects.length - 1];
-	    this.savedProjects = this.state.savedProjects.splice(0, this.state.savedProjects.length - 2);
+	    this.savedProjects = this.state.savedProjects.splice(0, this.state.savedProjects.length - 1);
 	    this.forceUpdate();
+	  },
+	  _checkStatus: function _checkStatus() {
+	    ErrorActions.mustBeSignedIn('');
+	    _reactRouter.browserHistory.push('/signUp');
 	  },
 	
 	
 	  render: function render() {
 	    var _focusProject = void 0;
+	    var _savedProjects = void 0;
 	
 	    if (this.focusProject) {
 	      _focusProject = React.createElement(FocusProject, { project: this.focusProject });
 	    } else {
-	      _focusProject = [];
+	      _focusProject = React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          'h2',
+	          { className: 'no-saved-projects-message' },
+	          "Sorry, but you don't have any saved projects"
+	        ),
+	        React.createElement(
+	          'button',
+	          { className: 'new-project-button', onClick: this._newProject },
+	          'New Project'
+	        )
+	      );
+	    }
+	
+	    if (this.savedProjects) {
+	      _savedProjects = this.savedProjects.map(function (project, idx) {
+	        return React.createElement(ProjectPreview, { project: project, key: idx });
+	      });
+	    } else {
+	      _savedProjects = [];
 	    }
 	
 	    return React.createElement(
@@ -34982,18 +35021,14 @@
 	        'div',
 	        { className: 'saved-projects-div' },
 	        React.createElement(
+	          'h4',
+	          { className: 'saved-project-list-header' },
+	          'Previously saved projects'
+	        ),
+	        React.createElement(
 	          'ul',
-	          { className: 'saved-projects-list' },
-	          React.createElement(
-	            'li',
-	            null,
-	            'blah'
-	          ),
-	          React.createElement(
-	            'li',
-	            null,
-	            'blah'
-	          )
+	          { className: 'saved-projects-list group' },
+	          _savedProjects
 	        )
 	      )
 	    );
@@ -35011,13 +35046,414 @@
 
 	'use strict';
 	
+	var AppDispatcher = __webpack_require__(260);
+	var ProjectApiUtil = __webpack_require__(278);
+	var SavedProjectConstants = __webpack_require__(279);
+	var ErrorActions = __webpack_require__(267);
+	
+	var SavedProjectActions = {
+	  submitSavedProject: function submitSavedProject(form, projectInfo) {
+	    ProjectApiUtil.saveProject(form, projectInfo, this.receiveSavedProject, ErrorActions.receiveError);
+	  },
+	  fetchAllSavedProjects: function fetchAllSavedProjects(form, userId) {
+	    ProjectApiUtil.fetchAllSavedProjects(form, userId, this.receiveAllSavedProjects, ErrorActions.receiveError);
+	  },
+	  updateSavedProject: function updateSavedProject(form, projectInfo) {
+	    ProjectApiUtil.updateProject(form, projectInfo, this.receiveUpdatedProject, ErrorActions.receiveError);
+	  },
+	  deleteSavedProject: function deleteSavedProject(form, projectInfo) {
+	    ProjectApiUtil.removeSavedProject(form, projectInfo.id, this.removeSavedProject, ErrorActions.receiveError);
+	  },
+	  receiveSavedProject: function receiveSavedProject(data) {
+	    AppDispatcher.dispatch({
+	      actionType: SavedProjectConstants.SAVED_PROJECT_RECEIVED,
+	      data: data
+	    });
+	  },
+	  receiveAllSavedProjects: function receiveAllSavedProjects(data) {
+	    AppDispatcher.dispatch({
+	      actionType: SavedProjectConstants.SAVED_PROJECTS_RECEIVED,
+	      data: data
+	    });
+	  },
+	  receiveUpdatedProject: function receiveUpdatedProject(data) {
+	    AppDispatcher.dispatch({
+	      actionType: SavedProjectConstants.SAVED_PROJECT_UPDATED,
+	      data: data
+	    });
+	  },
+	  removeSavedProject: function removeSavedProject(data) {
+	    AppDispatcher.dispatch({
+	      actionType: SavedProjectConstants.SAVED_PROJECT_REMOVED,
+	      data: data
+	    });
+	  }
+	};
+	
+	module.exports = SavedProjectActions;
+
+/***/ },
+/* 278 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	var ProjectApiUtil = {
+	  saveProject: function saveProject(form, data, successCB, errorCB) {
+	    $.ajax({
+	      url: '/api/saved_projects',
+	      type: 'POST',
+	      data: { saved_project: data },
+	      success: function success(resp) {
+	        successCB(resp);
+	      },
+	      error: function error(resp) {
+	        errorCB(form, resp);
+	      }
+	    });
+	  },
+	  fetchAllSavedProjects: function fetchAllSavedProjects(form, userId, successCB, errorCB) {
+	    $.ajax({
+	      url: '/api/saved_projects',
+	      type: 'GET',
+	      data: { user_id: userId },
+	      success: function success(resp) {
+	        successCB(resp);
+	      },
+	      error: function error(resp) {
+	        errorCB(form, resp);
+	      }
+	    });
+	  },
+	  updateProject: function updateProject(form, data, successCB, errorCB) {
+	    $.ajax({
+	      url: '/api/saved_projects/' + data.id,
+	      type: 'PATCH',
+	      data: { saved_project: data },
+	      success: function success(resp) {
+	        successCB(resp);
+	      },
+	      error: function error(resp) {
+	        errorCB(form, resp);
+	      }
+	    });
+	  },
+	  removeSavedProject: function removeSavedProject(form, id, success, errorCB) {
+	    $.ajax({
+	      url: '/api/saved_projects/' + id,
+	      type: 'DELETE',
+	      data: { params: id },
+	      success: success,
+	      error: function error(resp) {
+	        errorCB(form, resp);
+	      }
+	    });
+	  }
+	};
+	
+	module.exports = ProjectApiUtil;
+
+/***/ },
+/* 279 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	module.exports = {
+	  SAVED_PROJECT_RECEIVED: 'SAVED_PROJECT_RECEIVED',
+	  SAVED_PROJECT_REMOVED: 'SAVED_PROJECT_REMOVED',
+	  SAVED_PROJECT_UPDATED: 'SAVED_PROJECT_UPDATED',
+	  SAVED_PROJECTS_RECEIVED: 'SAVED_PROJECTS_RECEIVED'
+	};
+
+/***/ },
+/* 280 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var Store = __webpack_require__(242).Store;
+	var AppDispatcher = __webpack_require__(260);
+	var SavedProjectConstants = __webpack_require__(279);
+	var SavedProjectStore = new Store(AppDispatcher);
+	
+	var _blankProject = {
+	  image: "",
+	  title: "",
+	  blurb: "",
+	  location: "",
+	  duration: 0,
+	  goal: 0,
+	  risks: "",
+	  content: "",
+	  saved: '',
+	  errorMessage: ""
+	};
+	
+	var _savedProject = _blankProject;
+	
+	var _savedProjects = [];
+	
+	SavedProjectStore.find = function (id) {};
+	
+	SavedProjectStore.allCurrentProjects = function () {
+	  return _savedProjects;
+	};
+	
+	SavedProjectStore.currentProject = function () {
+	  return _savedProject;
+	};
+	
+	function _resetSavedProject(project) {
+	  _savedProject = project;
+	  SavedProjectStore.__emitChange();
+	}
+	
+	function _updateSavedProject(project) {
+	  for (var item in project) {
+	    if (project.hasOwnProperty(item)) {
+	      _savedProject[item] = project[item];
+	    }
+	  }
+	  SavedProjectStore.__emitChange();
+	}
+	
+	function _removeSavedProject() {
+	  _savedProject = _blankProject;
+	  SavedProjectStore.__emitChange();
+	}
+	
+	function _retrieveAllProjects(projects) {
+	  _savedProjects = projects;
+	  SavedProjectStore.__emitChange();
+	}
+	
+	SavedProjectStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case SavedProjectConstants.SAVED_PROJECT_UPDATED:
+	      _updateSavedProject(payload.data);
+	      break;
+	    case SavedProjectConstants.SAVED_PROJECT_REMOVED:
+	      _removeSavedProject();
+	      break;
+	    case SavedProjectConstants.SAVED_PROJECT_RECEIVED:
+	      _resetSavedProject(payload.data);
+	      break;
+	    case SavedProjectConstants.SAVED_PROJECTS_RECEIVED:
+	      _retrieveAllProjects(payload.data);
+	      break;
+	  }
+	};
+	
+	module.exports = SavedProjectStore;
+
+/***/ },
+/* 281 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var Store = __webpack_require__(242).Store;
+	var AppDispatcher = __webpack_require__(260);
+	var UserConstants = __webpack_require__(282);
+	var UserStore = new Store(AppDispatcher);
+	
+	var _userInfo = {};
+	
+	function _removeUser() {
+	  _userInfo = {};
+	  UserStore.__emitChange();
+	}
+	
+	function _updateUserInfo(user) {
+	  _userInfo = user;
+	  UserStore.__emitChange();
+	}
+	
+	UserStore.currentUser = function () {
+	  return _userInfo;
+	};
+	
+	UserStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case UserConstants.USER_INFO_RECEIVED:
+	      _updateUserInfo(payload.user);
+	      break;
+	    case UserConstants.USER_REMOVED:
+	      _removeUser();
+	      break;
+	  }
+	};
+	
+	module.exports = UserStore;
+
+/***/ },
+/* 282 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	module.exports = {
+	  USER_RECEIVED: 'USER_RECEIVED',
+	  USER_REMOVED: 'USER_REMOVED'
+	};
+
+/***/ },
+/* 283 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(3);
+	var ProjectCategoryIds = __webpack_require__(284);
+	var UserStore = __webpack_require__(281);
+	
+	var FocusProject = React.createClass({
+	  displayName: 'FocusProject',
+	  componentDidMount: function componentDidMount() {},
+	  render: function render() {
+	
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'h1',
+	        { className: 'focal-project-header' },
+	        'Your Latest Saved Project'
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'focal-project-wrapper' },
+	        React.createElement(
+	          'div',
+	          { className: 'focal-project-image' },
+	          React.createElement('img', { id: 'default-pic', src: window.pug })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'focal-right-half' },
+	          React.createElement(
+	            'h3',
+	            { className: 'focal-project-title' },
+	            this.props.project.title || ""
+	          ),
+	          React.createElement(
+	            'p',
+	            { className: 'focal-project-username' },
+	            'by ',
+	            React.createElement(
+	              'b',
+	              null,
+	              UserStore.currentUser().full_name || window.myApp.username
+	            )
+	          ),
+	          React.createElement('br', null),
+	          React.createElement(
+	            'p',
+	            { className: 'focal-project-blurb' },
+	            this.props.project.blurb || "Empty Blurb"
+	          ),
+	          React.createElement('br', null),
+	          React.createElement(
+	            'p',
+	            { className: 'focal-project-location' },
+	            this.props.project.location || "Empty Location"
+	          ),
+	          React.createElement(
+	            'p',
+	            { className: 'focal-project-category' },
+	            ProjectCategoryIds[this.props.project.category_id || 0].label
+	          ),
+	          React.createElement('br', null),
+	          React.createElement('div', { className: 'focal-project-progress-bar' }),
+	          React.createElement(
+	            'ul',
+	            { className: 'focal-project-summary' },
+	            React.createElement(
+	              'li',
+	              { className: 'summary-cat' },
+	              React.createElement(
+	                'ul',
+	                { className: 'focal-project-goal' },
+	                React.createElement(
+	                  'li',
+	                  { id: 'focal-basic-amount' },
+	                  '$',
+	                  this.props.project.goal || 0
+	                ),
+	                React.createElement(
+	                  'li',
+	                  { id: 'focal-basic-text' },
+	                  'goal'
+	                )
+	              )
+	            ),
+	            React.createElement(
+	              'li',
+	              { className: 'summary-cat duration-li' },
+	              React.createElement(
+	                'ul',
+	                { className: 'focal-project-duration' },
+	                React.createElement(
+	                  'li',
+	                  { id: 'focal-basic-amount' },
+	                  this.props.project.duration || 0
+	                ),
+	                React.createElement(
+	                  'li',
+	                  { id: 'focal-basic-text' },
+	                  'days to go'
+	                )
+	              )
+	            ),
+	            React.createElement(
+	              'li',
+	              { className: 'summary-cat' },
+	              React.createElement(
+	                'ul',
+	                { className: 'focal-project-funders' },
+	                React.createElement(
+	                  'li',
+	                  { id: 'focal-basic-amount' },
+	                  this.props.project.funders || 0
+	                ),
+	                React.createElement(
+	                  'li',
+	                  { id: 'focal-basic-text' },
+	                  'backers'
+	                )
+	              )
+	            )
+	          )
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = FocusProject;
+
+/***/ },
+/* 284 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	module.exports = [{ label: 'Before Time', value: 1 }, { label: 'Stone Age', value: 2 }, { label: 'Middle Ages', value: 3 }, { label: 'Present', value: 4 }, { label: 'Future', value: 5 }];
+
+/***/ },
+/* 285 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
 	var _reactRouter = __webpack_require__(1);
 	
 	var React = __webpack_require__(3);
 	
 	var ErrorActions = __webpack_require__(267);
-	var SavedProjectActions = __webpack_require__(278);
-	var ProjectCategories = __webpack_require__(281);
+	var SavedProjectActions = __webpack_require__(277);
+	var ProjectCategories = __webpack_require__(284);
 	var SessionStore = __webpack_require__(241);
 	
 	var CreateProject = React.createClass({
@@ -35170,151 +35606,17 @@
 	module.exports = CreateProject;
 
 /***/ },
-/* 278 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var AppDispatcher = __webpack_require__(260);
-	var ProjectApiUtil = __webpack_require__(279);
-	var SavedProjectConstants = __webpack_require__(280);
-	var ErrorActions = __webpack_require__(267);
-	
-	var SavedProjectActions = {
-	  submitSavedProject: function submitSavedProject(form, projectInfo) {
-	    ProjectApiUtil.saveProject(form, projectInfo, this.receiveSavedProject, ErrorActions.receiveError);
-	  },
-	  fetchAllSavedProjects: function fetchAllSavedProjects(form, userId) {
-	    ProjectApiUtil.fetchAllSavedProjects(form, userId, this.receiveAllSavedProjects, ErrorActions.receiveError);
-	  },
-	  updateSavedProject: function updateSavedProject(form, projectInfo) {
-	    ProjectApiUtil.updateProject(form, projectInfo, this.receiveUpdatedProject, ErrorActions.receiveError);
-	  },
-	  deleteSavedProject: function deleteSavedProject(form, projectInfo) {
-	    ProjectApiUtil.removeSavedProject(form, projectInfo.id, this.removeSavedProject, ErrorActions.receiveError);
-	  },
-	  receiveSavedProject: function receiveSavedProject(data) {
-	    AppDispatcher.dispatch({
-	      actionType: SavedProjectConstants.SAVED_PROJECT_RECEIVED,
-	      data: data
-	    });
-	  },
-	  receiveAllSavedProjects: function receiveAllSavedProjects(data) {
-	    AppDispatcher.dispatch({
-	      actionType: SavedProjectConstants.SAVED_PROJECTS_RECEIVED,
-	      data: data
-	    });
-	  },
-	  receiveUpdatedProject: function receiveUpdatedProject(data) {
-	    AppDispatcher.dispatch({
-	      actionType: SavedProjectConstants.SAVED_PROJECT_UPDATED,
-	      data: data
-	    });
-	  },
-	  removeSavedProject: function removeSavedProject(data) {
-	    AppDispatcher.dispatch({
-	      actionType: SavedProjectConstants.SAVED_PROJECT_REMOVED,
-	      data: data
-	    });
-	  }
-	};
-	
-	module.exports = SavedProjectActions;
-
-/***/ },
-/* 279 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	var ProjectApiUtil = {
-	  saveProject: function saveProject(form, data, successCB, errorCB) {
-	    $.ajax({
-	      url: '/api/saved_projects',
-	      type: 'POST',
-	      data: { saved_project: data },
-	      success: function success(resp) {
-	        successCB(resp);
-	      },
-	      error: function error(resp) {
-	        errorCB(form, resp);
-	      }
-	    });
-	  },
-	  fetchAllSavedProjects: function fetchAllSavedProjects(form, userId, successCB, errorCB) {
-	    $.ajax({
-	      url: '/api/saved_projects',
-	      type: 'GET',
-	      data: { user_id: userId },
-	      success: function success(resp) {
-	        successCB(resp);
-	      },
-	      error: function error(resp) {
-	        errorCB(form, resp);
-	      }
-	    });
-	  },
-	  updateProject: function updateProject(form, data, successCB, errorCB) {
-	    $.ajax({
-	      url: '/api/saved_projects/' + data.id,
-	      type: 'PATCH',
-	      data: { saved_project: data },
-	      success: function success(resp) {
-	        successCB(resp);
-	      },
-	      error: function error(resp) {
-	        errorCB(form, resp);
-	      }
-	    });
-	  },
-	  removeSavedProject: function removeSavedProject(form, id, success, errorCB) {
-	    $.ajax({
-	      url: '/api/saved_projects/' + id,
-	      type: 'DELETE',
-	      data: { params: id },
-	      success: success,
-	      error: function error(resp) {
-	        errorCB(form, resp);
-	      }
-	    });
-	  }
-	};
-	
-	module.exports = ProjectApiUtil;
-
-/***/ },
-/* 280 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	module.exports = {
-	  SAVED_PROJECT_RECEIVED: 'SAVED_PROJECT_RECEIVED',
-	  SAVED_PROJECT_REMOVED: 'SAVED_PROJECT_REMOVED',
-	  SAVED_PROJECT_UPDATED: 'SAVED_PROJECT_UPDATED',
-	  SAVED_PROJECTS_RECEIVED: 'SAVED_PROJECTS_RECEIVED'
-	};
-
-/***/ },
-/* 281 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	module.exports = [{ label: 'Before Time', value: 1 }, { label: 'Stone Age', value: 2 }, { label: 'Middle Ages', value: 3 }, { label: 'Present', value: 4 }, { label: 'Future', value: 5 }];
-
-/***/ },
-/* 282 */
+/* 286 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(3);
-	var SavedProjectActions = __webpack_require__(278);
-	var SavedProjectStore = __webpack_require__(283);
-	var ProjectCategories = __webpack_require__(281);
+	var SavedProjectActions = __webpack_require__(277);
+	var SavedProjectStore = __webpack_require__(280);
+	var ProjectCategories = __webpack_require__(284);
 	var SessionStore = __webpack_require__(241);
-	var UserActions = __webpack_require__(284);
+	var UserActions = __webpack_require__(287);
 	
 	var Basics = React.createClass({
 	  displayName: 'Basics',
@@ -35649,95 +35951,14 @@
 	module.exports = Basics;
 
 /***/ },
-/* 283 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var Store = __webpack_require__(242).Store;
-	var AppDispatcher = __webpack_require__(260);
-	var SavedProjectConstants = __webpack_require__(280);
-	var SavedProjectStore = new Store(AppDispatcher);
-	
-	var _blankProject = {
-	  image: "",
-	  title: "",
-	  blurb: "",
-	  location: "",
-	  duration: 0,
-	  goal: 0,
-	  risks: "",
-	  content: "",
-	  saved: '',
-	  errorMessage: ""
-	};
-	
-	var _savedProject = _blankProject;
-	
-	var _savedProjects = [];
-	
-	SavedProjectStore.find = function (id) {};
-	
-	SavedProjectStore.allCurrentProjects = function () {
-	  return _savedProjects;
-	};
-	
-	SavedProjectStore.currentProject = function () {
-	  return _savedProject;
-	};
-	
-	function _resetSavedProject(project) {
-	  _savedProject = project;
-	  SavedProjectStore.__emitChange();
-	}
-	
-	function _updateSavedProject(project) {
-	  for (var item in project) {
-	    if (project.hasOwnProperty(item)) {
-	      _savedProject[item] = project[item];
-	    }
-	  }
-	  SavedProjectStore.__emitChange();
-	}
-	
-	function _removeSavedProject() {
-	  _savedProject = _blankProject;
-	  SavedProjectStore.__emitChange();
-	}
-	
-	function _retrieveAllProjects(projects) {
-	  _savedProjects = projects;
-	  SavedProjectStore.__emitChange();
-	}
-	
-	SavedProjectStore.__onDispatch = function (payload) {
-	  switch (payload.actionType) {
-	    case SavedProjectConstants.SAVED_PROJECT_UPDATED:
-	      _updateSavedProject(payload.data);
-	      break;
-	    case SavedProjectConstants.SAVED_PROJECT_REMOVED:
-	      _removeSavedProject();
-	      break;
-	    case SavedProjectConstants.SAVED_PROJECT_RECEIVED:
-	      _resetSavedProject(payload.data);
-	      break;
-	    case SavedProjectConstants.SAVED_PROJECTS_RECEIVED:
-	      _retrieveAllProjects(payload.data);
-	      break;
-	  }
-	};
-	
-	module.exports = SavedProjectStore;
-
-/***/ },
-/* 284 */
+/* 287 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var AppDispatcher = __webpack_require__(260);
 	var UserConstants = __webpack_require__(263);
-	var ApiUtil = __webpack_require__(285);
+	var ApiUtil = __webpack_require__(288);
 	var ErrorConstants = __webpack_require__(266);
 	var ErrorActions = __webpack_require__(267);
 	
@@ -35768,7 +35989,7 @@
 	module.exports = UserActions;
 
 /***/ },
-/* 285 */
+/* 288 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -35816,17 +36037,17 @@
 	module.exports = UserApiUtil;
 
 /***/ },
-/* 286 */
+/* 289 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(3);
-	var SavedProjectStore = __webpack_require__(283);
-	var ProjectStore = __webpack_require__(287);
-	var RewardStore = __webpack_require__(288);
-	var RewardItem = __webpack_require__(290);
-	var RewardActions = __webpack_require__(291);
+	var SavedProjectStore = __webpack_require__(280);
+	var ProjectStore = __webpack_require__(290);
+	var RewardStore = __webpack_require__(291);
+	var RewardItem = __webpack_require__(293);
+	var RewardActions = __webpack_require__(294);
 	
 	var Rewards = React.createClass({
 	  displayName: 'Rewards',
@@ -35944,7 +36165,7 @@
 	module.exports = Rewards;
 
 /***/ },
-/* 287 */
+/* 290 */
 /***/ function(module, exports) {
 
 	// const Store = require('flux/utils').Store;
@@ -35990,14 +36211,14 @@
 	"use strict";
 
 /***/ },
-/* 288 */
+/* 291 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var Store = __webpack_require__(242).Store;
 	var AppDispatcher = __webpack_require__(260);
-	var RewardConstants = __webpack_require__(289);
+	var RewardConstants = __webpack_require__(292);
 	var RewardStore = new Store(AppDispatcher);
 	var ErrorActions = __webpack_require__(267);
 	
@@ -36057,7 +36278,8 @@
 	      }
 	    });
 	  });
-	};
+	  _rewards = {};
+	}
 	
 	RewardStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
@@ -36079,7 +36301,7 @@
 	module.exports = RewardStore;
 
 /***/ },
-/* 289 */
+/* 292 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36092,17 +36314,17 @@
 	};
 
 /***/ },
-/* 290 */
+/* 293 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(3);
-	var RewardStore = __webpack_require__(288);
-	var SavedProjectStore = __webpack_require__(283);
-	var SavedProjectActions = __webpack_require__(278);
-	var RewardActions = __webpack_require__(291);
-	var UserStore = __webpack_require__(293);
+	var RewardStore = __webpack_require__(291);
+	var SavedProjectStore = __webpack_require__(280);
+	var SavedProjectActions = __webpack_require__(277);
+	var RewardActions = __webpack_require__(294);
+	var UserStore = __webpack_require__(281);
 	
 	var RewardItem = React.createClass({
 	  displayName: 'RewardItem',
@@ -36304,14 +36526,14 @@
 	module.exports = RewardItem;
 
 /***/ },
-/* 291 */
+/* 294 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var AppDispatcher = __webpack_require__(260);
-	var RewardApiUtil = __webpack_require__(292);
-	var RewardConstants = __webpack_require__(289);
+	var RewardApiUtil = __webpack_require__(295);
+	var RewardConstants = __webpack_require__(292);
 	var ErrorActions = __webpack_require__(267);
 	
 	var RewardActions = {
@@ -36343,7 +36565,7 @@
 	module.exports = RewardActions;
 
 /***/ },
-/* 292 */
+/* 295 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36389,65 +36611,14 @@
 	module.exports = RewardApiUtil;
 
 /***/ },
-/* 293 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var Store = __webpack_require__(242).Store;
-	var AppDispatcher = __webpack_require__(260);
-	var UserConstants = __webpack_require__(294);
-	var UserStore = new Store(AppDispatcher);
-	
-	var _userInfo = {};
-	
-	function _removeUser() {
-	  _userInfo = {};
-	  UserStore.__emitChange();
-	}
-	
-	function _updateUserInfo(user) {
-	  _userInfo = user;
-	  UserStore.__emitChange();
-	}
-	
-	UserStore.currentUser = function () {
-	  return _userInfo;
-	};
-	
-	UserStore.__onDispatch = function (payload) {
-	  switch (payload.actionType) {
-	    case UserConstants.USER_INFO_RECEIVED:
-	      _updateUserInfo(payload.user);
-	      break;
-	    case UserConstants.USER_REMOVED:
-	      _removeUser();
-	      break;
-	  }
-	};
-	
-	module.exports = UserStore;
-
-/***/ },
-/* 294 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	module.exports = {
-	  USER_RECEIVED: 'USER_RECEIVED',
-	  USER_REMOVED: 'USER_REMOVED'
-	};
-
-/***/ },
-/* 295 */
+/* 296 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(3);
-	var SavedProjectStore = __webpack_require__(283);
-	var SavedProjectActions = __webpack_require__(278);
+	var SavedProjectStore = __webpack_require__(280);
+	var SavedProjectActions = __webpack_require__(277);
 	
 	var Story = React.createClass({
 	  displayName: 'Story',
@@ -36634,15 +36805,15 @@
 	module.exports = Story;
 
 /***/ },
-/* 296 */
+/* 297 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(3);
-	var UserStore = __webpack_require__(293);
-	var UserActions = __webpack_require__(284);
-	var SavedProjectStore = __webpack_require__(283);
+	var UserStore = __webpack_require__(281);
+	var UserActions = __webpack_require__(287);
+	var SavedProjectStore = __webpack_require__(280);
 	var SessionStore = __webpack_require__(241);
 	
 	var AboutYou = React.createClass({
@@ -36895,7 +37066,7 @@
 	module.exports = AboutYou;
 
 /***/ },
-/* 297 */
+/* 298 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -36924,15 +37095,15 @@
 	module.exports = FrontPage;
 
 /***/ },
-/* 298 */
+/* 299 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(3);
-	var UserStore = __webpack_require__(293);
-	var UserActions = __webpack_require__(284);
-	var SessionStore = __webpack_require__(293);
+	var UserStore = __webpack_require__(281);
+	var UserActions = __webpack_require__(287);
+	var SessionStore = __webpack_require__(281);
 	
 	var Account = React.createClass({
 	  displayName: 'Account',
@@ -37054,7 +37225,7 @@
 	module.exports = Account;
 
 /***/ },
-/* 299 */
+/* 300 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37078,20 +37249,20 @@
 	module.exports = SubmitProject;
 
 /***/ },
-/* 300 */
+/* 301 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(3);
-	var SavedProjectStore = __webpack_require__(283);
-	var RewardActions = __webpack_require__(291);
-	var RewardStore = __webpack_require__(288);
-	var RewardItem = __webpack_require__(290);
-	var UserStore = __webpack_require__(293);
-	var UserActions = __webpack_require__(284);
-	var SavedProjectActions = __webpack_require__(278);
-	var ProjectCategories = __webpack_require__(281);
+	var SavedProjectStore = __webpack_require__(280);
+	var RewardActions = __webpack_require__(294);
+	var RewardStore = __webpack_require__(291);
+	var RewardItem = __webpack_require__(293);
+	var UserStore = __webpack_require__(281);
+	var UserActions = __webpack_require__(287);
+	var SavedProjectActions = __webpack_require__(277);
+	var ProjectCategories = __webpack_require__(284);
 	
 	var Preview = React.createClass({
 	  displayName: 'Preview',
@@ -37500,7 +37671,7 @@
 	*/
 
 /***/ },
-/* 301 */
+/* 302 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37508,19 +37679,19 @@
 	var _reactRouter = __webpack_require__(1);
 	
 	var React = __webpack_require__(3);
-	var ProjectStore = __webpack_require__(287);
-	var SavedProjectActions = __webpack_require__(278);
-	var SavedProjectStore = __webpack_require__(283);
+	var ProjectStore = __webpack_require__(290);
+	var SavedProjectActions = __webpack_require__(277);
+	var SavedProjectStore = __webpack_require__(280);
 	var ErrorActions = __webpack_require__(267);
 	var ErrorStore = __webpack_require__(268);
-	var ProjectNavBar = __webpack_require__(302);
-	var Basics = __webpack_require__(282);
-	var Rewards = __webpack_require__(286);
-	var Story = __webpack_require__(295);
-	var AboutYou = __webpack_require__(296);
-	var Account = __webpack_require__(298);
-	var Preview = __webpack_require__(300);
-	var ProjectMessages = __webpack_require__(303);
+	var ProjectNavBar = __webpack_require__(303);
+	var Basics = __webpack_require__(286);
+	var Rewards = __webpack_require__(289);
+	var Story = __webpack_require__(296);
+	var AboutYou = __webpack_require__(297);
+	var Account = __webpack_require__(299);
+	var Preview = __webpack_require__(301);
+	var ProjectMessages = __webpack_require__(304);
 	var SessionStore = __webpack_require__(241);
 	
 	var FinalizeProject = React.createClass({
@@ -37628,7 +37799,7 @@
 	*/
 
 /***/ },
-/* 302 */
+/* 303 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37745,7 +37916,7 @@
 	*/
 
 /***/ },
-/* 303 */
+/* 304 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -37766,47 +37937,42 @@
 	};
 
 /***/ },
-/* 304 */
+/* 305 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(3);
-	var ProjectCategoryIds = __webpack_require__(281);
-	var UserStore = __webpack_require__(293);
+	var ProjectCategoryIds = __webpack_require__(284);
+	var UserStore = __webpack_require__(281);
 	
-	var FocusProject = React.createClass({
-	  displayName: 'FocusProject',
-	  componentDidMount: function componentDidMount() {},
+	var ProjectPreview = React.createClass({
+	  displayName: 'ProjectPreview',
+	
+	
 	  render: function render() {
-	
 	    return React.createElement(
 	      'div',
 	      null,
 	      React.createElement(
-	        'h1',
-	        { className: 'focal-project-header' },
-	        'Your Latest Saved Project'
-	      ),
-	      React.createElement(
 	        'div',
-	        { className: 'focal-project-wrapper' },
+	        { className: 'project-preview-wrapper' },
 	        React.createElement(
 	          'div',
-	          { className: 'focal-project-image' },
+	          { className: 'project-preview-image' },
 	          React.createElement('img', { id: 'default-pic', src: window.pug })
 	        ),
 	        React.createElement(
 	          'div',
-	          { className: 'focal-right-half' },
+	          { className: 'preview-bottom-half' },
 	          React.createElement(
 	            'h3',
-	            { className: 'focal-project-title' },
+	            { className: 'project-preview-title' },
 	            this.props.project.title || ""
 	          ),
 	          React.createElement(
 	            'p',
-	            { className: 'focal-project-username' },
+	            { className: 'project-preview-username' },
 	            'by ',
 	            React.createElement(
 	              'b',
@@ -37817,76 +37983,76 @@
 	          React.createElement('br', null),
 	          React.createElement(
 	            'p',
-	            { className: 'focal-project-blurb' },
+	            { className: 'project-preview-blurb' },
 	            this.props.project.blurb || "Empty Blurb"
 	          ),
 	          React.createElement('br', null),
 	          React.createElement(
 	            'p',
-	            { className: 'focal-project-location' },
+	            { className: 'project-preview-location' },
 	            this.props.project.location || "Empty Location"
 	          ),
 	          React.createElement(
 	            'p',
-	            { className: 'focal-project-category' },
+	            { className: 'project-preview-category' },
 	            ProjectCategoryIds[this.props.project.category_id || 0].label
 	          ),
 	          React.createElement('br', null),
-	          React.createElement('div', { className: 'focal-project-progress-bar' }),
+	          React.createElement('div', { className: 'project-preview-progress-bar' }),
 	          React.createElement(
 	            'ul',
-	            { className: 'focal-project-summary' },
+	            { className: 'project-preview-summary' },
 	            React.createElement(
 	              'li',
-	              { className: 'summary-cat' },
+	              { className: 'preview-summary-cat' },
 	              React.createElement(
 	                'ul',
-	                { className: 'focal-project-goal' },
+	                { className: 'project-preview-goal' },
 	                React.createElement(
 	                  'li',
-	                  { id: 'focal-basic-amount' },
+	                  { id: 'preview-basic-amount' },
 	                  '$',
 	                  this.props.project.goal || 0
 	                ),
 	                React.createElement(
 	                  'li',
-	                  { id: 'focal-basic-text' },
+	                  { id: 'preview-basic-text' },
 	                  'goal'
 	                )
 	              )
 	            ),
 	            React.createElement(
 	              'li',
-	              { className: 'summary-cat duration-li' },
+	              { className: 'preview-summary-cat duration-li' },
 	              React.createElement(
 	                'ul',
-	                { className: 'focal-project-duration' },
+	                { className: 'project-preview-duration' },
 	                React.createElement(
 	                  'li',
-	                  { id: 'focal-basic-amount' },
+	                  { id: 'preview-basic-amount' },
 	                  this.props.project.duration || 0
 	                ),
 	                React.createElement(
 	                  'li',
-	                  { id: 'focal-basic-text' },
+	                  { id: 'preview-basic-text' },
 	                  'days to go'
 	                )
 	              )
 	            ),
 	            React.createElement(
 	              'li',
-	              { className: 'summary-cat' },
+	              { className: 'preview-summary-cat' },
 	              React.createElement(
 	                'ul',
-	                { className: 'focal-project-funders' },
+	                { className: 'project-preview-funders' },
 	                React.createElement(
 	                  'li',
-	                  { id: 'focal-basic-amount' },
+	                  { id: 'preview-basic-amount' },
 	                  this.props.project.funders || 0
 	                ),
 	                React.createElement(
 	                  'li',
-	                  { id: 'focal-basic-text' },
+	                  { id: 'preview-basic-text' },
 	                  'backers'
 	                )
 	              )
@@ -37896,9 +38062,10 @@
 	      )
 	    );
 	  }
+	
 	});
 	
-	module.exports = FocusProject;
+	module.exports = ProjectPreview;
 
 /***/ }
 /******/ ]);
