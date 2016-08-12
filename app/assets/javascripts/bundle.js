@@ -37702,7 +37702,7 @@
 	    }
 	  },
 	  _selectReward: function _selectReward(idx, event) {
-	    var _userId = UserStore.currentUser().id || window.myApp.id;
+	    var _userId = SessionStore.currentUser().id || window.myApp.id;
 	    if (this.props.project.author_id === _userId) {
 	      this.setState({ selected: this.positions[idx],
 	        message: "You can't back your own project" });
