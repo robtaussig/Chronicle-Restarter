@@ -223,6 +223,10 @@ ul.three-random-projects {
   justify-content: center;
 }
 
+div.loading {
+  margin-bottom: 75px;
+}
+
 
 div.front-page-content h2 {
   text-align: center;
@@ -269,7 +273,7 @@ h2.under-construction {
 
 /*--------------------------Project-index-show-page---------------------------*/
 
-iv.project-index-wrapper {
+div.project-index-wrapper {
   width: 100%;
   margin: 0 auto;
   height: auto;
@@ -278,7 +282,7 @@ iv.project-index-wrapper {
 div.project-index-wrapper.flex {
   display: flex;
   width: 100%;
-  margin: 0 auto;
+  margin: 0 auto 201px auto;
   height: auto;
   flex-flow: row wrap;
 }
@@ -389,18 +393,21 @@ div.footer-wrapper ul.footer-bottom li{
 .sign-up-form, .login-form {
   width: 400px;
   height: 520px;
-  position: absolute;
+  position: relative;
   left: 50%;
-  top: 375px;
+  top: 300px;
+  margin-bottom: 167px;
   transform: perspective(1px) translate(-50%, -50%);
   border: 0.5px solid #ccc;
   background-color: white;
+
 }
 
 
 .login-form {
   height: 385px;
-  top: 307px;
+  top: 248px;
+  margin-bottom: 300px;
 }
 
 .sign-up-form input, .login-form input  {
@@ -2124,7 +2131,7 @@ div.bottom-page-wrapper {
   width: 985px;
   height: 1014px;
   overflow: hidden;
-  margin: 211px auto 0 auto;
+  margin: 500px auto 0 auto;
 }
 
 div.bottom-page-item {

@@ -8,8 +8,12 @@ import { browserHistory } from 'react-router';
 const ProjectPreview = React.createClass({
 
   _goToPage () {
-    SavedProjectActions.updateSavedProject('savedProject', this.props.project);
-    browserHistory.push('/finalizeProject');
+    if (window.location.pathname === "/savedProjects") {
+      SavedProjectActions.updateSavedProject('savedProject', this.props.project);
+      browserHistory.push('/finalizeProject');
+    } else {
+      browserHistory.push('/projects/' + this.props.project.id);
+    }
   },
 
   render: function() {

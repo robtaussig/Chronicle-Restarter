@@ -28,7 +28,7 @@ const RewardItem = React.createClass({
 
   _handlePreviousRefresh () {
     if (typeof this.props.projectId === "undefined") {
-      let userId = window.myApp.id || UserStore.currentUSer();
+      let userId = window.myApp.id || UserStore.currentUser();
       let projects = SavedProjectActions.fetchAllSavedProjects('rewards', userId);
     }
   },

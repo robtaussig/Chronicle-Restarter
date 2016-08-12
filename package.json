@@ -8,7 +8,8 @@
     "test": "test"
   },
   "scripts": {
-    "webpack": "webpack --watch"
+    "webpack": "webpack --watch",
+    "heroku-postbuild": "webpack --config webpack.config.prod.js"
   },
   "repository": {
     "type": "git",

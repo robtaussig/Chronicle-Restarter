@@ -59,22 +59,22 @@
 	var CreateProject = __webpack_require__(286);
 	var SavedProjects = __webpack_require__(276);
 	var Basics = __webpack_require__(287);
-	var Comments = __webpack_require__(309);
-	var Updates = __webpack_require__(311);
-	var Rewards = __webpack_require__(290);
-	var Story = __webpack_require__(298);
-	var AboutYou = __webpack_require__(299);
+	var Comments = __webpack_require__(290);
+	var Updates = __webpack_require__(291);
+	var Rewards = __webpack_require__(292);
+	var Story = __webpack_require__(300);
+	var AboutYou = __webpack_require__(301);
 	var FocusProject = __webpack_require__(283);
 	var ProjectPreview = __webpack_require__(285);
-	var ProjectIndex = __webpack_require__(313);
-	var ProjectItem = __webpack_require__(314);
-	var FrontPage = __webpack_require__(300);
-	var Account = __webpack_require__(301);
-	var SubmitProject = __webpack_require__(302);
-	var Preview = __webpack_require__(305);
-	var RewardStore = __webpack_require__(293);
+	var ProjectIndex = __webpack_require__(302);
+	var ProjectItem = __webpack_require__(306);
+	var FrontPage = __webpack_require__(307);
+	var Account = __webpack_require__(308);
+	var SubmitProject = __webpack_require__(309);
+	var Preview = __webpack_require__(310);
+	var RewardStore = __webpack_require__(295);
 	var SavedProjectStore = __webpack_require__(280);
-	var FinalizeProject = __webpack_require__(306);
+	var FinalizeProject = __webpack_require__(311);
 	
 	
 	var routes = React.createElement(
@@ -35541,8 +35541,12 @@
 	var ProjectPreview = React.createClass({
 	  displayName: 'ProjectPreview',
 	  _goToPage: function _goToPage() {
-	    SavedProjectActions.updateSavedProject('savedProject', this.props.project);
-	    _reactRouter.browserHistory.push('/finalizeProject');
+	    if (window.location.pathname === "/savedProjects") {
+	      SavedProjectActions.updateSavedProject('savedProject', this.props.project);
+	      _reactRouter.browserHistory.push('/finalizeProject');
+	    } else {
+	      _reactRouter.browserHistory.push('/projects/' + this.props.project.id);
+	    }
 	  },
 	
 	
@@ -36262,14 +36266,64 @@
 /* 290 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+	
+	var React = __webpack_require__(3);
+	
+	var Comments = React.createClass({
+	  displayName: "Comments",
+	  render: function render() {
+	    return React.createElement(
+	      "div",
+	      { className: "bottom-page-item comments-wrapper " + this.props.revealed },
+	      React.createElement(
+	        "h1",
+	        { className: "pending-header" },
+	        "Comments are expected to be the next feature"
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = Comments;
+
+/***/ },
+/* 291 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(3);
+	
+	var Updates = React.createClass({
+	  displayName: "Updates",
+	  render: function render() {
+	    return React.createElement(
+	      "div",
+	      { className: "bottom-page-item updates-wrapper " + this.props.revealed },
+	      React.createElement(
+	        "h1",
+	        { className: "pending-header" },
+	        "Future updates to this project will be logged here."
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = Updates;
+
+/***/ },
+/* 292 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 	
 	var React = __webpack_require__(3);
 	var SavedProjectStore = __webpack_require__(280);
-	var ProjectStore = __webpack_require__(291);
-	var RewardStore = __webpack_require__(293);
-	var RewardItem = __webpack_require__(295);
-	var RewardActions = __webpack_require__(296);
+	var ProjectStore = __webpack_require__(293);
+	var RewardStore = __webpack_require__(295);
+	var RewardItem = __webpack_require__(297);
+	var RewardActions = __webpack_require__(298);
 	
 	var Rewards = React.createClass({
 	  displayName: 'Rewards',
@@ -36390,14 +36444,14 @@
 	module.exports = Rewards;
 
 /***/ },
-/* 291 */
+/* 293 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var Store = __webpack_require__(242).Store;
 	var AppDispatcher = __webpack_require__(260);
-	var ProjectConstants = __webpack_require__(292);
+	var ProjectConstants = __webpack_require__(294);
 	var ProjectStore = new Store(AppDispatcher);
 	
 	var _projects = [];
@@ -36464,7 +36518,7 @@
 	module.exports = ProjectStore;
 
 /***/ },
-/* 292 */
+/* 294 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36476,14 +36530,14 @@
 	};
 
 /***/ },
-/* 293 */
+/* 295 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var Store = __webpack_require__(242).Store;
 	var AppDispatcher = __webpack_require__(260);
-	var RewardConstants = __webpack_require__(294);
+	var RewardConstants = __webpack_require__(296);
 	var RewardStore = new Store(AppDispatcher);
 	var ErrorActions = __webpack_require__(267);
 	
@@ -36604,7 +36658,7 @@
 	module.exports = RewardStore;
 
 /***/ },
-/* 294 */
+/* 296 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36618,16 +36672,16 @@
 	};
 
 /***/ },
-/* 295 */
+/* 297 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(3);
-	var RewardStore = __webpack_require__(293);
+	var RewardStore = __webpack_require__(295);
 	var SavedProjectStore = __webpack_require__(280);
 	var SavedProjectActions = __webpack_require__(277);
-	var RewardActions = __webpack_require__(296);
+	var RewardActions = __webpack_require__(298);
 	var UserStore = __webpack_require__(281);
 	
 	var RewardItem = React.createClass({
@@ -36651,7 +36705,7 @@
 	  },
 	  _handlePreviousRefresh: function _handlePreviousRefresh() {
 	    if (typeof this.props.projectId === "undefined") {
-	      var userId = window.myApp.id || UserStore.currentUSer();
+	      var userId = window.myApp.id || UserStore.currentUser();
 	      var projects = SavedProjectActions.fetchAllSavedProjects('rewards', userId);
 	    }
 	  },
@@ -36832,14 +36886,14 @@
 	module.exports = RewardItem;
 
 /***/ },
-/* 296 */
+/* 298 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var AppDispatcher = __webpack_require__(260);
-	var RewardApiUtil = __webpack_require__(297);
-	var RewardConstants = __webpack_require__(294);
+	var RewardApiUtil = __webpack_require__(299);
+	var RewardConstants = __webpack_require__(296);
 	var ErrorActions = __webpack_require__(267);
 	
 	var RewardActions = {
@@ -36880,7 +36934,7 @@
 	module.exports = RewardActions;
 
 /***/ },
-/* 297 */
+/* 299 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36939,7 +36993,7 @@
 	module.exports = RewardApiUtil;
 
 /***/ },
-/* 298 */
+/* 300 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37133,7 +37187,7 @@
 	module.exports = Story;
 
 /***/ },
-/* 299 */
+/* 301 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37394,350 +37448,57 @@
 	module.exports = AboutYou;
 
 /***/ },
-/* 300 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _reactRouter = __webpack_require__(1);
-	
-	var React = __webpack_require__(3);
-	var ProjectActions = __webpack_require__(303);
-	var ProjectStore = __webpack_require__(291);
-	var ProjectPreview = __webpack_require__(285);
-	var SessionStore = __webpack_require__(241);
-	
-	
-	var FrontPage = React.createClass({
-	  displayName: 'FrontPage',
-	  getInitialState: function getInitialState() {
-	    return { projects: [] };
-	  },
-	  componentDidMount: function componentDidMount() {
-	    this.listener = ProjectStore.addListener(this._onProjectChange);
-	    ProjectActions.fetchAllProjects('front');
-	  },
-	  componentWillUnmount: function componentWillUnmount() {
-	    this.listener.remove();
-	  },
-	  _onProjectChange: function _onProjectChange() {
-	    this.setState({ projects: ProjectStore.allProjects() });
-	    console.log(this.state);
-	  },
-	  _randomPage: function _randomPage() {
-	    var that = this;
-	    if (this.state.projects.length > 0) {
-	      if (this.timeout) {
-	        clearTimeout(this.timeout);
-	      }
-	      var _randomPageNum = Math.floor(Math.random() * this.state.projects.length);
-	      var _project = this.state.projects[_randomPageNum];
-	      _reactRouter.browserHistory.push('/projects/' + _project.id);
-	    } else {
-	      this.timeout = setTimeout(function () {
-	        that._randomPage();
-	      }, 100);
-	    }
-	  },
-	
-	
-	  render: function render() {
-	
-	    this.projects = [];
-	    var _display = void 0;
-	
-	    if (this.state.projects.length > 0) {
-	      for (var i = 0; i < 3; i++) {
-	        this.projects.push(this.state.projects[Math.floor(Math.random() * this.state.projects.length)]);
-	      }
-	      _display = this.projects.map(function (project, idx) {
-	        return React.createElement(
-	          'li',
-	          null,
-	          React.createElement(ProjectPreview, { project: project, key: idx })
-	        );
-	      });
-	    } else {
-	      _display = React.createElement(
-	        'div',
-	        null,
-	        'Loading...'
-	      );
-	    }
-	
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(
-	        'div',
-	        { className: 'splash' },
-	        React.createElement(
-	          'div',
-	          { className: 'front-page-content' },
-	          React.createElement(
-	            'h2',
-	            null,
-	            'Feeling Lucky?'
-	          ),
-	          React.createElement(
-	            'h3',
-	            null,
-	            'Or just too lazy to navigate around? Click below to transport yourself to a random campaign.'
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'front-page-button', onClick: this._randomPage },
-	            'Go.'
-	          )
-	        )
-	      ),
-	      React.createElement(
-	        'h2',
-	        { className: 'front-page-navigation' },
-	        'Check out our absolute three favorite projects at this very moment:'
-	      ),
-	      React.createElement(
-	        'ul',
-	        { className: 'three-random-projects' },
-	        _display
-	      )
-	    );
-	  }
-	
-	});
-	
-	module.exports = FrontPage;
-
-/***/ },
-/* 301 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var React = __webpack_require__(3);
-	var UserStore = __webpack_require__(281);
-	var UserActions = __webpack_require__(288);
-	var SessionStore = __webpack_require__(281);
-	var SavedProjectActions = __webpack_require__(277);
-	
-	var Account = React.createClass({
-	  displayName: 'Account',
-	  getInitialState: function getInitialState() {
-	    return {
-	      id: "",
-	      email: "",
-	      verified: "unverified",
-	      verification_status: "",
-	      appearance: "entering"
-	    };
-	  },
-	  componentDidMount: function componentDidMount() {
-	    var _this = this;
-	
-	    var userId = window.myApp.id || SessionStore.currentUser().id;
-	    this._prepopulate(userId);
-	    this.listener = UserStore.addListener(this._onChange);
-	    UserActions.fetchUser('about', userId);
-	    window.setTimeout(function () {
-	      _this.setState({ appearance: 'entered' });
-	    }, 100);
-	  },
-	  componentWillUnmount: function componentWillUnmount() {
-	    this.listener.remove();
-	  },
-	  _deleteProject: function _deleteProject() {
-	    var _this2 = this;
-	
-	    SavedProjectActions.deleteSavedProject('finalizeProject', SavedProjectStore.currentProject());
-	    if (SavedProjectStore.currentProject().id) {
-	      this.setState({ deleteMessage: "Project deleted" });
-	    } else {
-	      this.setState({ deleteMessage: "No project to delete" });
-	    }
-	
-	    var that = this;
-	    window.setTimeout(function () {
-	      _this2.setState({ deleteMessage: "" });
-	    }, 2000);
-	  },
-	  _prepopulate: function _prepopulate(userId) {
-	    var email = window.myApp.email || SessionStore.currentUser().email;
-	    this.setState({ email: email, id: userId });
-	  },
-	  _setEmail: function _setEmail(event) {
-	    this.setState({ email: event.target.value });
-	  },
-	  _onChange: function _onChange() {
-	    this.setState({ verified: UserStore.currentUser().verified,
-	      verification_status: UserStore.currentUser().verification_status });
-	  },
-	  _handleVerification: function _handleVerification() {
-	    UserActions.saveUser('account', { id: this.state.id, email: this.state.email,
-	      verification_status: "pending" });
-	  },
-	
-	
-	  render: function render() {
-	    var text = "You do not have to enter your email for purposes of this " + "demonstration, but if you do, you will receive a confirmation email, " + "as well as be notified if your project is ever fully funded.";
-	
-	    var verifiedStatus = this.state.verified === "verified" ? "verified" : this.state.verification_status === "pending" ? "pending" : "unverified";
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'account-info-wrapper ' + this.state.appearance },
-	      React.createElement(
-	        'div',
-	        { className: 'account-info-form' },
-	        React.createElement(
-	          'ul',
-	          null,
-	          React.createElement(
-	            'li',
-	            { className: 'email-field' },
-	            React.createElement(
-	              'div',
-	              { className: 'grey-field' },
-	              React.createElement(
-	                'div',
-	                { className: 'attribute-field' },
-	                'Email'
-	              ),
-	              React.createElement(
-	                'div',
-	                { className: 'email-text' },
-	                text
-	              ),
-	              React.createElement(
-	                'div',
-	                { className: 'field-wrapper' },
-	                React.createElement('input', { id: 'account', type: 'text', className: 'user-email',
-	                  onChange: this._setEmail, value: this.state.email || "" })
-	              ),
-	              React.createElement(
-	                'div',
-	                { className: 'status ' + verifiedStatus },
-	                verifiedStatus
-	              ),
-	              React.createElement(
-	                'div',
-	                { className: 'email-button ' + this.state.verification_status },
-	                React.createElement(
-	                  'button',
-	                  {
-	                    onClick: this._handleVerification },
-	                  'Send Confirmation'
-	                )
-	              )
-	            )
-	          )
-	        )
-	      )
-	    );
-	  }
-	
-	});
-	
-	module.exports = Account;
-
-/***/ },
 /* 302 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(3);
-	var SavedProjectStore = __webpack_require__(280);
+	var ProjectStore = __webpack_require__(293);
 	var ProjectActions = __webpack_require__(303);
-	var ProjectStore = __webpack_require__(291);
 	var ProjectShow = __webpack_require__(304);
-	var RewardActions = __webpack_require__(296);
-	var RewardStore = __webpack_require__(293);
-	var RewardItem = __webpack_require__(295);
-	var UserStore = __webpack_require__(281);
-	var UserActions = __webpack_require__(288);
-	var SavedProjectActions = __webpack_require__(277);
-	var ProjectCategories = __webpack_require__(284);
+	var ProjectPreview = __webpack_require__(285);
 	
-	var SubmitProject = React.createClass({
-	  displayName: 'SubmitProject',
+	var ProjectIndex = React.createClass({
+	  displayName: 'ProjectIndex',
 	  getInitialState: function getInitialState() {
-	    return {
-	      display: "pending"
-	    };
+	    return { projects: [], flex: "" };
 	  },
 	  componentDidMount: function componentDidMount() {
-	    var _this = this;
-	
-	    this.positions = ["left", "middle", "right"];
-	    this._populate();
-	    this.listener = ProjectStore.addListener(this._onChange);
-	    window.setTimeout(function () {
-	      _this.setState({ appearance: 'entered' });
-	    }, 100);
+	    this.listener = ProjectStore.addListener(this._onProjectChange);
+	    if (this.props.params.projectId) {
+	      this._showProject();
+	    } else {
+	      this._showProjects();
+	    }
 	  },
 	  componentWillUnmount: function componentWillUnmount() {
-	    window.clearTimeout(this.timeOut);
 	    this.listener.remove();
 	  },
-	  _onChange: function _onChange() {
-	    var _project = ProjectStore.currentProject();
-	    this.setState(_project);
-	    var that = this;
-	    that._displayProject(_project);
+	  _showProject: function _showProject() {
+	    this.setState({ flex: "", projects: ProjectStore.find(parseInt(this.props.params.projectId)) });
 	  },
-	  _displayProject: function _displayProject() {
-	    this.setState({ display: "project" });
+	  _showProjects: function _showProjects() {
+	    this.setState({ flex: "flex", projects: ProjectStore.allProjects() });
 	  },
-	  _populate: function _populate() {
-	    var _this2 = this;
-	
-	    var project = SavedProjectStore.currentProject();
-	    var rewards = RewardStore.currentRewards();
-	    var user = Object.assign(UserStore.currentUser(), window.myApp);
-	    this.setState({
-	      title: project.title || "Title was left empty",
-	      author_id: user.id,
-	      author_full_name: user.full_name || user.username,
-	      website: user.website || "",
-	      project_img_urls: project.project_img_urls || 'window.pug',
-	      goal: project.goal || 0,
-	      location: project.location || "",
-	      duration: project.duration || 0,
-	      blurb: project.blurb || "",
-	      category_id: project.category_id || 0,
-	      content: project.content || "",
-	      risks: project.risks || "",
-	      saved_project_id: project.id
-	    });
-	    window.setTimeout(function () {
-	      ProjectActions.submitProject('submit', _this2.state);
-	    }, 500);
-	  },
-	
-	
 	  render: function render() {
 	    var _display = void 0;
-	
-	    if (this.state.display === "pending") {
-	      React.createElement(
-	        'div',
-	        null,
-	        'Hi'
-	      );
+	    if (this.state.projects.length === 1) {
+	      _display = React.createElement(ProjectShow, { project: this.state.projects[0] });
 	    } else {
-	      _display = React.createElement(ProjectShow, { project: this.state });
+	      _display = this.state.projects.map(function (project, idx) {
+	        return React.createElement(ProjectPreview, { key: idx, project: project });
+	      });
 	    }
-	
 	    return React.createElement(
 	      'div',
-	      { className: '' + this.state.appearance },
+	      { className: 'project-index-wrapper group ' + this.state.flex },
 	      _display
 	    );
 	  }
-	
 	});
 	
-	module.exports = SubmitProject;
+	module.exports = ProjectIndex;
 
 /***/ },
 /* 303 */
@@ -37747,7 +37508,7 @@
 	
 	var AppDispatcher = __webpack_require__(260);
 	var ProjectApiUtil = __webpack_require__(278);
-	var ProjectConstants = __webpack_require__(292);
+	var ProjectConstants = __webpack_require__(294);
 	var ErrorActions = __webpack_require__(267);
 	
 	var ProjectActions = {
@@ -37801,12 +37562,12 @@
 	
 	var React = __webpack_require__(3);
 	var ProjectCategories = __webpack_require__(284);
-	var ProjectStore = __webpack_require__(291);
-	var RewardActions = __webpack_require__(296);
-	var RewardStore = __webpack_require__(293);
-	var Comments = __webpack_require__(309);
-	var Community = __webpack_require__(312);
-	var Updates = __webpack_require__(311);
+	var ProjectStore = __webpack_require__(293);
+	var RewardActions = __webpack_require__(298);
+	var RewardStore = __webpack_require__(295);
+	var Comments = __webpack_require__(290);
+	var Community = __webpack_require__(305);
+	var Updates = __webpack_require__(291);
 	var UserStore = __webpack_require__(281);
 	var SessionStore = __webpack_require__(241);
 	var UserActions = __webpack_require__(288);
@@ -38267,13 +38028,405 @@
 /* 305 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+	
+	var React = __webpack_require__(3);
+	
+	var Community = React.createClass({
+	  displayName: "Community",
+	  render: function render() {
+	    return React.createElement(
+	      "div",
+	      { className: "bottom-page-item community-wrapper " + this.props.revealed },
+	      React.createElement(
+	        "h1",
+	        { className: "pending-header" },
+	        "A community page is coming soon"
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = Community;
+
+/***/ },
+/* 306 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(3);
+	
+	var ProjectItem = React.createClass({
+	  displayName: "ProjectItem",
+	  render: function render() {
+	    return React.createElement(
+	      "div",
+	      { className: "project-item-wrapper" },
+	      "Hello from Project Item"
+	    );
+	  }
+	});
+	
+	module.exports = ProjectItem;
+
+/***/ },
+/* 307 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _reactRouter = __webpack_require__(1);
+	
+	var React = __webpack_require__(3);
+	var ProjectActions = __webpack_require__(303);
+	var ProjectStore = __webpack_require__(293);
+	var ProjectPreview = __webpack_require__(285);
+	var SessionStore = __webpack_require__(241);
+	
+	
+	var FrontPage = React.createClass({
+	  displayName: 'FrontPage',
+	  getInitialState: function getInitialState() {
+	    return { projects: [] };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    this.listener = ProjectStore.addListener(this._onProjectChange);
+	    ProjectActions.fetchAllProjects('front');
+	  },
+	  componentWillUnmount: function componentWillUnmount() {
+	    this.listener.remove();
+	  },
+	  _onProjectChange: function _onProjectChange() {
+	    this.setState({ projects: ProjectStore.allProjects() });
+	    console.log(this.state);
+	  },
+	  _randomPage: function _randomPage() {
+	    var that = this;
+	    if (this.state.projects.length > 0) {
+	      if (this.timeout) {
+	        clearTimeout(this.timeout);
+	      }
+	      var _randomPageNum = Math.floor(Math.random() * this.state.projects.length);
+	      var _project = this.state.projects[_randomPageNum];
+	      _reactRouter.browserHistory.push('/projects/' + _project.id);
+	    } else {
+	      this.timeout = setTimeout(function () {
+	        that._randomPage();
+	      }, 100);
+	    }
+	  },
+	
+	
+	  render: function render() {
+	
+	    this.projects = [];
+	    var _display = void 0;
+	
+	    if (this.state.projects.length > 0) {
+	      for (var i = 0; i < 3; i++) {
+	        this.projects.push(this.state.projects[Math.floor(Math.random() * this.state.projects.length)]);
+	      }
+	      _display = this.projects.map(function (project, idx) {
+	        return React.createElement(
+	          'li',
+	          null,
+	          React.createElement(ProjectPreview, { project: project, key: idx })
+	        );
+	      });
+	    } else {
+	      _display = React.createElement(
+	        'div',
+	        { className: 'loading' },
+	        'Loading...'
+	      );
+	    }
+	
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'div',
+	        { className: 'splash' },
+	        React.createElement(
+	          'div',
+	          { className: 'front-page-content' },
+	          React.createElement(
+	            'h2',
+	            null,
+	            'Feeling Lucky?'
+	          ),
+	          React.createElement(
+	            'h3',
+	            null,
+	            'Or just too lazy to navigate around? Click below to transport yourself to a random campaign.'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'front-page-button', onClick: this._randomPage },
+	            'Go.'
+	          )
+	        )
+	      ),
+	      React.createElement(
+	        'h2',
+	        { className: 'front-page-navigation' },
+	        'Check out our absolute three favorite projects at this very moment:'
+	      ),
+	      React.createElement(
+	        'ul',
+	        { className: 'three-random-projects' },
+	        _display
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = FrontPage;
+
+/***/ },
+/* 308 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(3);
+	var UserStore = __webpack_require__(281);
+	var UserActions = __webpack_require__(288);
+	var SessionStore = __webpack_require__(281);
+	var SavedProjectActions = __webpack_require__(277);
+	
+	var Account = React.createClass({
+	  displayName: 'Account',
+	  getInitialState: function getInitialState() {
+	    return {
+	      id: "",
+	      email: "",
+	      verified: "unverified",
+	      verification_status: "",
+	      appearance: "entering"
+	    };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    var _this = this;
+	
+	    var userId = window.myApp.id || SessionStore.currentUser().id;
+	    this._prepopulate(userId);
+	    this.listener = UserStore.addListener(this._onChange);
+	    UserActions.fetchUser('about', userId);
+	    window.setTimeout(function () {
+	      _this.setState({ appearance: 'entered' });
+	    }, 100);
+	  },
+	  componentWillUnmount: function componentWillUnmount() {
+	    this.listener.remove();
+	  },
+	  _deleteProject: function _deleteProject() {
+	    var _this2 = this;
+	
+	    SavedProjectActions.deleteSavedProject('finalizeProject', SavedProjectStore.currentProject());
+	    if (SavedProjectStore.currentProject().id) {
+	      this.setState({ deleteMessage: "Project deleted" });
+	    } else {
+	      this.setState({ deleteMessage: "No project to delete" });
+	    }
+	
+	    var that = this;
+	    window.setTimeout(function () {
+	      _this2.setState({ deleteMessage: "" });
+	    }, 2000);
+	  },
+	  _prepopulate: function _prepopulate(userId) {
+	    var email = window.myApp.email || SessionStore.currentUser().email;
+	    this.setState({ email: email, id: userId });
+	  },
+	  _setEmail: function _setEmail(event) {
+	    this.setState({ email: event.target.value });
+	  },
+	  _onChange: function _onChange() {
+	    this.setState({ verified: UserStore.currentUser().verified,
+	      verification_status: UserStore.currentUser().verification_status });
+	  },
+	  _handleVerification: function _handleVerification() {
+	    UserActions.saveUser('account', { id: this.state.id, email: this.state.email,
+	      verification_status: "pending" });
+	  },
+	
+	
+	  render: function render() {
+	    var text = "You do not have to enter your email for purposes of this " + "demonstration, but if you do, you will receive a confirmation email, " + "as well as be notified if your project is ever fully funded.";
+	
+	    var verifiedStatus = this.state.verified === "verified" ? "verified" : this.state.verification_status === "pending" ? "pending" : "unverified";
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'account-info-wrapper ' + this.state.appearance },
+	      React.createElement(
+	        'div',
+	        { className: 'account-info-form' },
+	        React.createElement(
+	          'ul',
+	          null,
+	          React.createElement(
+	            'li',
+	            { className: 'email-field' },
+	            React.createElement(
+	              'div',
+	              { className: 'grey-field' },
+	              React.createElement(
+	                'div',
+	                { className: 'attribute-field' },
+	                'Email'
+	              ),
+	              React.createElement(
+	                'div',
+	                { className: 'email-text' },
+	                text
+	              ),
+	              React.createElement(
+	                'div',
+	                { className: 'field-wrapper' },
+	                React.createElement('input', { id: 'account', type: 'text', className: 'user-email',
+	                  onChange: this._setEmail, value: this.state.email || "" })
+	              ),
+	              React.createElement(
+	                'div',
+	                { className: 'status ' + verifiedStatus },
+	                verifiedStatus
+	              ),
+	              React.createElement(
+	                'div',
+	                { className: 'email-button ' + this.state.verification_status },
+	                React.createElement(
+	                  'button',
+	                  {
+	                    onClick: this._handleVerification },
+	                  'Send Confirmation'
+	                )
+	              )
+	            )
+	          )
+	        )
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = Account;
+
+/***/ },
+/* 309 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 	
 	var React = __webpack_require__(3);
 	var SavedProjectStore = __webpack_require__(280);
-	var RewardActions = __webpack_require__(296);
-	var RewardStore = __webpack_require__(293);
-	var RewardItem = __webpack_require__(295);
+	var ProjectActions = __webpack_require__(303);
+	var ProjectStore = __webpack_require__(293);
+	var ProjectShow = __webpack_require__(304);
+	var RewardActions = __webpack_require__(298);
+	var RewardStore = __webpack_require__(295);
+	var RewardItem = __webpack_require__(297);
+	var UserStore = __webpack_require__(281);
+	var UserActions = __webpack_require__(288);
+	var SavedProjectActions = __webpack_require__(277);
+	var ProjectCategories = __webpack_require__(284);
+	
+	var SubmitProject = React.createClass({
+	  displayName: 'SubmitProject',
+	  getInitialState: function getInitialState() {
+	    return {
+	      display: "pending"
+	    };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    var _this = this;
+	
+	    this.positions = ["left", "middle", "right"];
+	    this._populate();
+	    this.listener = ProjectStore.addListener(this._onChange);
+	    window.setTimeout(function () {
+	      _this.setState({ appearance: 'entered' });
+	    }, 100);
+	  },
+	  componentWillUnmount: function componentWillUnmount() {
+	    window.clearTimeout(this.timeOut);
+	    this.listener.remove();
+	  },
+	  _onChange: function _onChange() {
+	    var _project = ProjectStore.currentProject();
+	    this.setState(_project);
+	    var that = this;
+	    that._displayProject(_project);
+	  },
+	  _displayProject: function _displayProject() {
+	    this.setState({ display: "project" });
+	  },
+	  _populate: function _populate() {
+	    var _this2 = this;
+	
+	    var project = SavedProjectStore.currentProject();
+	    var rewards = RewardStore.currentRewards();
+	    var user = Object.assign(UserStore.currentUser(), window.myApp);
+	    this.setState({
+	      title: project.title || "Title was left empty",
+	      author_id: user.id,
+	      author_full_name: user.full_name || user.username,
+	      website: user.website || "",
+	      project_img_urls: project.project_img_urls || 'window.pug',
+	      goal: project.goal || 0,
+	      location: project.location || "",
+	      duration: project.duration || 0,
+	      blurb: project.blurb || "",
+	      category_id: project.category_id || 0,
+	      content: project.content || "",
+	      risks: project.risks || "",
+	      saved_project_id: project.id
+	    });
+	    window.setTimeout(function () {
+	      ProjectActions.submitProject('submit', _this2.state);
+	    }, 500);
+	  },
+	
+	
+	  render: function render() {
+	    var _display = void 0;
+	
+	    if (this.state.display === "pending") {
+	      React.createElement(
+	        'div',
+	        null,
+	        'Hi'
+	      );
+	    } else {
+	      _display = React.createElement(ProjectShow, { project: this.state });
+	    }
+	
+	    return React.createElement(
+	      'div',
+	      { className: '' + this.state.appearance },
+	      _display
+	    );
+	  }
+	
+	});
+	
+	module.exports = SubmitProject;
+
+/***/ },
+/* 310 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(3);
+	var SavedProjectStore = __webpack_require__(280);
+	var RewardActions = __webpack_require__(298);
+	var RewardStore = __webpack_require__(295);
+	var RewardItem = __webpack_require__(297);
 	var UserStore = __webpack_require__(281);
 	var SessionStore = __webpack_require__(241);
 	var UserActions = __webpack_require__(288);
@@ -38299,7 +38452,7 @@
 	      user_project_total: 0,
 	      user_pic_url: "",
 	      user_website: "",
-	      user_id: window.myApp.id || UserStore.currentUser().id,
+	      user_id: window.myApp.id || SessionStore.currentUser().id,
 	      project_content: "",
 	      project_risks: ""
 	    };
@@ -38683,7 +38836,7 @@
 	module.exports = Preview;
 
 /***/ },
-/* 306 */
+/* 311 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38691,19 +38844,19 @@
 	var _reactRouter = __webpack_require__(1);
 	
 	var React = __webpack_require__(3);
-	var ProjectStore = __webpack_require__(291);
+	var ProjectStore = __webpack_require__(293);
 	var SavedProjectActions = __webpack_require__(277);
 	var SavedProjectStore = __webpack_require__(280);
 	var ErrorActions = __webpack_require__(267);
 	var ErrorStore = __webpack_require__(268);
-	var ProjectNavBar = __webpack_require__(307);
+	var ProjectNavBar = __webpack_require__(312);
 	var Basics = __webpack_require__(287);
-	var Rewards = __webpack_require__(290);
-	var Story = __webpack_require__(298);
-	var AboutYou = __webpack_require__(299);
-	var Account = __webpack_require__(301);
-	var Preview = __webpack_require__(305);
-	var ProjectMessages = __webpack_require__(308);
+	var Rewards = __webpack_require__(292);
+	var Story = __webpack_require__(300);
+	var AboutYou = __webpack_require__(301);
+	var Account = __webpack_require__(308);
+	var Preview = __webpack_require__(310);
+	var ProjectMessages = __webpack_require__(313);
 	var SessionStore = __webpack_require__(241);
 	
 	var FinalizeProject = React.createClass({
@@ -38812,7 +38965,7 @@
 	*/
 
 /***/ },
-/* 307 */
+/* 312 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38929,7 +39082,7 @@
 	*/
 
 /***/ },
-/* 308 */
+/* 313 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -38950,156 +39103,6 @@
 	  'submit header': "Your project is ready!",
 	  'submit': "You might have just taken the first step in changing the world. Perhaps."
 	};
-
-/***/ },
-/* 309 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	var React = __webpack_require__(3);
-	
-	var Comments = React.createClass({
-	  displayName: "Comments",
-	  render: function render() {
-	    return React.createElement(
-	      "div",
-	      { className: "bottom-page-item comments-wrapper " + this.props.revealed },
-	      React.createElement(
-	        "h1",
-	        { className: "pending-header" },
-	        "Comments are expected to be the next feature"
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = Comments;
-
-/***/ },
-/* 310 */,
-/* 311 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	var React = __webpack_require__(3);
-	
-	var Updates = React.createClass({
-	  displayName: "Updates",
-	  render: function render() {
-	    return React.createElement(
-	      "div",
-	      { className: "bottom-page-item updates-wrapper " + this.props.revealed },
-	      React.createElement(
-	        "h1",
-	        { className: "pending-header" },
-	        "Future updates to this project will be logged here."
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = Updates;
-
-/***/ },
-/* 312 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	var React = __webpack_require__(3);
-	
-	var Community = React.createClass({
-	  displayName: "Community",
-	  render: function render() {
-	    return React.createElement(
-	      "div",
-	      { className: "bottom-page-item community-wrapper " + this.props.revealed },
-	      React.createElement(
-	        "h1",
-	        { className: "pending-header" },
-	        "A community page is coming soon"
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = Community;
-
-/***/ },
-/* 313 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var React = __webpack_require__(3);
-	var ProjectStore = __webpack_require__(291);
-	var ProjectActions = __webpack_require__(303);
-	var ProjectShow = __webpack_require__(304);
-	var ProjectPreview = __webpack_require__(285);
-	
-	var ProjectIndex = React.createClass({
-	  displayName: 'ProjectIndex',
-	  getInitialState: function getInitialState() {
-	    return { projects: [], flex: "" };
-	  },
-	  componentDidMount: function componentDidMount() {
-	    this.listener = ProjectStore.addListener(this._onProjectChange);
-	    if (this.props.params.projectId) {
-	      this._showProject();
-	    } else {
-	      this._showProjects();
-	    }
-	  },
-	  componentWillUnmount: function componentWillUnmount() {
-	    this.listener.remove();
-	  },
-	  _showProject: function _showProject() {
-	    this.setState({ flex: "", projects: ProjectStore.find(parseInt(this.props.params.projectId)) });
-	  },
-	  _showProjects: function _showProjects() {
-	    this.setState({ flex: "flex", projects: ProjectStore.allProjects() });
-	  },
-	  render: function render() {
-	    var _display = void 0;
-	    if (this.state.projects.length === 1) {
-	      _display = React.createElement(ProjectShow, { project: this.state.projects[0] });
-	    } else {
-	      _display = this.state.projects.map(function (project, idx) {
-	        return React.createElement(ProjectPreview, { key: idx, project: project });
-	      });
-	    }
-	    return React.createElement(
-	      'div',
-	      { className: 'project-index-wrapper group ' + this.state.flex },
-	      _display
-	    );
-	  }
-	});
-	
-	module.exports = ProjectIndex;
-
-/***/ },
-/* 314 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	var React = __webpack_require__(3);
-	
-	var ProjectItem = React.createClass({
-	  displayName: "ProjectItem",
-	  render: function render() {
-	    return React.createElement(
-	      "div",
-	      { className: "project-item-wrapper" },
-	      "Hello from Project Item"
-	    );
-	  }
-	});
-	
-	module.exports = ProjectItem;
 
 /***/ }
 /******/ ]);

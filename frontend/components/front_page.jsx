@@ -54,7 +54,7 @@ const FrontPage = React.createClass({
         return <li><ProjectPreview project={project} key={idx} /></li>;
       });
     } else {
-      _display = <div>Loading...</div>;
+      _display = <div className="loading">Loading...</div>;
     }
 
     return (

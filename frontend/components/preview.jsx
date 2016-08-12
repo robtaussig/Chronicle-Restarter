@@ -28,7 +28,7 @@ const Preview = React.createClass({
       user_project_total: 0,
       user_pic_url: "",
       user_website: "",
-      user_id: window.myApp.id || UserStore.currentUser().id,
+      user_id: window.myApp.id || SessionStore.currentUser().id,
       project_content: "",
       project_risks: ""
     });
