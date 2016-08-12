@@ -160,8 +160,7 @@ const ProjectShow = React.createClass({
           </div>
           <div className="preview-project-image">
             <div>{<img id="default-pic"
-              src={this.props.project.image === 'window.pug' ?
-              window.pug : this.props.project.image}></img>}</div>
+              src={this.props.project.image || window.pug}></img>}</div>
           </div>
           <div className="preview-project-summary">
             <ul className="funders group">

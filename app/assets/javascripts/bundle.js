@@ -37803,7 +37803,7 @@
 	            'div',
 	            null,
 	            React.createElement('img', { id: 'default-pic',
-	              src: this.props.project.image === 'window.pug' ? window.pug : this.props.project.image })
+	              src: this.props.project.image || window.pug })
 	          )
 	        ),
 	        React.createElement(
@@ -38423,7 +38423,7 @@
 	      author_id: user.id,
 	      author_full_name: user.full_name || user.username,
 	      website: user.website || "",
-	      image: project.image || 'window.pug',
+	      image: project.image || window.pug,
 	      goal: project.goal || 0,
 	      location: project.location || "",
 	      duration: project.duration || 0,
