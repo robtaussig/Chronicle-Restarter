@@ -34,7 +34,7 @@ const ProjectShow = React.createClass({
     this.projectListener = ProjectStore.addListener(this._onProjectChange);
     let user = this.props.project.author_id;
     this.userListener = UserStore.addListener(this._onUserChange);
-    UserActions.fetchUser('show', user);
+    UserActions.fetchAllUsers();
     console.log(this.props);
   },
 
@@ -45,7 +45,7 @@ const ProjectShow = React.createClass({
   },
 
   _onUserChange () {
-    let user = UserStore.currentUser();
+    let user = UserStore.find(this.props.project.author_id);
     this.setState({user: user, userProjects: user.projects});
   },
 

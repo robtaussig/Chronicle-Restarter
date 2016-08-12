@@ -3,26 +3,35 @@ const ProjectActions = require('../actions/project_actions.js');
 const ProjectStore = require('../stores/project_store.js');
 const ProjectPreview = require('./project_preview.jsx');
 const SessionStore = require('../stores/session_store.js');
+const UserActions = require('../actions/user_actions.js');
+const UserStore = require('../stores/user_store.js');
 import { browserHistory } from 'react-router';
 
 const FrontPage = React.createClass({
 
   getInitialState () {
-    return ({projects: []});
+    return ({projects: [], users: []});
   },
 
   componentDidMount () {
     this.listener = ProjectStore.addListener(this._onProjectChange);
+    this.userListener = UserStore.addListener(this._onUserChange);
+    UserActions.fetchAllUsers('front');
     ProjectActions.fetchAllProjects('front');
   },
 
   componentWillUnmount () {
     this.listener.remove();
+    this.userListener.remove();
   },
 
   _onProjectChange () {
     this.setState({projects: ProjectStore.allProjects()});
     console.log(this.state);
+  },
+
+  _onUserChange () {
+    this.setState({users: UserStore.allUsers()});
   },
 
   _randomPage () {

@@ -2,13 +2,14 @@ const React = require('react');
 const ProjectCategoryIds = require('../constants/project_category_ids.js');
 const SavedProjectActions = require('../actions/saved_project_actions.js');
 const UserStore = require('../stores/user_store.js');
+const UserActions = require('../actions/user_actions.js');
 const SessionStore = require('../stores/session_store.js');
 import { browserHistory } from 'react-router';
 
 const ProjectPreview = React.createClass({
 
   getInitialState () {
-    return({progressWidth: 0});
+    return({progressWidth: 0, user: {}});
   },
 
   componentDidMount () {
@@ -16,7 +17,17 @@ const ProjectPreview = React.createClass({
       this.props.project.funded / this.props.project.goal;
     this.fundedWidth = (335 * this.fundedPercentage) > 335 ? 335 :
       (335 * this.fundedPercentage);
-    this.setState({progressWidth: this.fundedWidth});
+    this.setState({progressWidth: this.fundedWidth, user: UserStore.find(this.props.author_id)});
+    this.listener = UserStore.addListener(this._handleUser);
+
+  },
+
+  componentWillUnmount () {
+    this.listener.remove();
+  },
+
+  _handleUser () {
+    this.setState({user: UserStore.find(this.props.project.author_id)});
   },
 
   _goToPage () {
@@ -29,6 +40,7 @@ const ProjectPreview = React.createClass({
   },
 
   render: function() {
+    let _user;
     let _width;
     if (this.state.progressWidth) {
       _width = this.state.progressWidth;
@@ -42,7 +54,7 @@ const ProjectPreview = React.createClass({
           <div className="project-preview-image"><img id="default-pic" src={this.props.project.image || window.pug}></img></div>
           <div className="preview-bottom-half">
             <h3 className="project-preview-title">{this.props.project.title || ""}</h3>
-            <p className="project-preview-username">by <b>{UserStore.currentUser().full_name || window.myApp.username}</b></p>
+            <p className="project-preview-username">by <b>{UserStore.find(this.props.project.author_id).full_name || window.myApp.username}</b></p>
             <br></br>
             <p className="project-preview-blurb">{this.props.project.blurb || "Empty Blurb"}</p>
             <br></br>

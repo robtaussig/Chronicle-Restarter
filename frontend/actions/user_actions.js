@@ -14,6 +14,10 @@ const UserActions = {
     ApiUtil.fetchUser(form, userId, this.receiveCurrentUser, ErrorActions.receiveError);
   },
 
+  fetchAllUsers (form) {
+    ApiUtil.fetchAllUsers(form, this.receiveAllUsers, ErrorActions.receiveError);
+  },
+
   deleteUser (form, userId) {
     ApiUtil.deleteUser(form, userId, this.removeUser, ErrorActions.receiveError);
   },
@@ -22,6 +26,13 @@ const UserActions = {
     AppDispatcher.dispatch({
       actionType: UserConstants.USER_INFO_RECEIVED,
       user: data
+    });
+  },
+
+  receiveAllUsers (data) {
+    AppDispatcher.dispatch({
+      actionType: UserConstants.USERS_RECEIVED,
+      users: data
     });
   },
 

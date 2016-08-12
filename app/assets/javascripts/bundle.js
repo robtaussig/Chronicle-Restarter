@@ -35331,6 +35331,7 @@
 	var UserStore = new Store(AppDispatcher);
 	
 	var _userInfo = {};
+	var _users = [];
 	
 	function _removeUser() {
 	  _userInfo = {};
@@ -35342,8 +35343,23 @@
 	  UserStore.__emitChange();
 	}
 	
+	function _resetUsers(users) {
+	  _users = users;
+	  UserStore.__emitChange();
+	}
+	
 	UserStore.currentUser = function () {
 	  return _userInfo;
+	};
+	
+	UserStore.find = function (userId) {
+	  return _users.filter(function (user) {
+	    return user.id === userId;
+	  })[0];
+	};
+	
+	UserStore.allUsers = function () {
+	  return _users;
 	};
 	
 	UserStore.__onDispatch = function (payload) {
@@ -35353,6 +35369,9 @@
 	      break;
 	    case UserConstants.USER_REMOVED:
 	      _removeUser();
+	      break;
+	    case UserConstants.USERS_RECEIVED:
+	      _resetUsers(payload.users);
 	      break;
 	  }
 	};
@@ -35368,7 +35387,8 @@
 	module.exports = {
 	  USER_RECEIVED: 'USER_RECEIVED',
 	  USER_REMOVED: 'USER_REMOVED',
-	  USER_INFO_RECEIVED: 'USER_INFO_RECEIVED'
+	  USER_INFO_RECEIVED: 'USER_INFO_RECEIVED',
+	  USERS_RECEIVED: 'USERS_RECEIVED'
 	};
 
 /***/ },
@@ -35535,18 +35555,26 @@
 	var ProjectCategoryIds = __webpack_require__(284);
 	var SavedProjectActions = __webpack_require__(277);
 	var UserStore = __webpack_require__(281);
+	var UserActions = __webpack_require__(288);
 	var SessionStore = __webpack_require__(241);
 	
 	
 	var ProjectPreview = React.createClass({
 	  displayName: 'ProjectPreview',
 	  getInitialState: function getInitialState() {
-	    return { progressWidth: 0 };
+	    return { progressWidth: 0, user: {} };
 	  },
 	  componentDidMount: function componentDidMount() {
 	    this.fundedPercentage = this.props.project.funded === 0 ? 0 : this.props.project.funded / this.props.project.goal;
 	    this.fundedWidth = 335 * this.fundedPercentage > 335 ? 335 : 335 * this.fundedPercentage;
-	    this.setState({ progressWidth: this.fundedWidth });
+	    this.setState({ progressWidth: this.fundedWidth, user: UserStore.find(this.props.author_id) });
+	    this.listener = UserStore.addListener(this._handleUser);
+	  },
+	  componentWillUnmount: function componentWillUnmount() {
+	    this.listener.remove();
+	  },
+	  _handleUser: function _handleUser() {
+	    this.setState({ user: UserStore.find(this.props.project.author_id) });
 	  },
 	  _goToPage: function _goToPage() {
 	    if (window.location.pathname === "/savedProjects") {
@@ -35559,6 +35587,7 @@
 	
 	
 	  render: function render() {
+	    var _user = void 0;
 	    var _width = void 0;
 	    if (this.state.progressWidth) {
 	      _width = this.state.progressWidth;
@@ -35592,7 +35621,7 @@
 	            React.createElement(
 	              'b',
 	              null,
-	              UserStore.currentUser().full_name || window.myApp.username
+	              UserStore.find(this.props.project.author_id).full_name || window.myApp.username
 	            )
 	          ),
 	          React.createElement('br', null),
@@ -36241,6 +36270,9 @@
 	  fetchUser: function fetchUser(form, userId) {
 	    ApiUtil.fetchUser(form, userId, this.receiveCurrentUser, ErrorActions.receiveError);
 	  },
+	  fetchAllUsers: function fetchAllUsers(form) {
+	    ApiUtil.fetchAllUsers(form, this.receiveAllUsers, ErrorActions.receiveError);
+	  },
 	  deleteUser: function deleteUser(form, userId) {
 	    ApiUtil.deleteUser(form, userId, this.removeUser, ErrorActions.receiveError);
 	  },
@@ -36248,6 +36280,12 @@
 	    AppDispatcher.dispatch({
 	      actionType: UserConstants.USER_INFO_RECEIVED,
 	      user: data
+	    });
+	  },
+	  receiveAllUsers: function receiveAllUsers(data) {
+	    AppDispatcher.dispatch({
+	      actionType: UserConstants.USERS_RECEIVED,
+	      users: data
 	    });
 	  },
 	  removeUser: function removeUser(data) {
@@ -36277,6 +36315,18 @@
 	      },
 	      error: function error(resp) {
 	        errorCB(form, resp);
+	      }
+	    });
+	  },
+	  fetchAllUsers: function fetchAllUsers(form, _success, _error) {
+	    $.ajax({
+	      url: '/api/users',
+	      type: 'GET',
+	      success: function success(resp) {
+	        _success(resp);
+	      },
+	      error: function error(resp) {
+	        _error(form, resp);
 	      }
 	    });
 	  },
@@ -37641,7 +37691,7 @@
 	    this.projectListener = ProjectStore.addListener(this._onProjectChange);
 	    var user = this.props.project.author_id;
 	    this.userListener = UserStore.addListener(this._onUserChange);
-	    UserActions.fetchUser('show', user);
+	    UserActions.fetchAllUsers();
 	    console.log(this.props);
 	  },
 	  componentWillUnmount: function componentWillUnmount() {
@@ -37650,7 +37700,7 @@
 	    clearTimeout(this.timeout);
 	  },
 	  _onUserChange: function _onUserChange() {
-	    var user = UserStore.currentUser();
+	    var user = UserStore.find(this.props.project.author_id);
 	    this.setState({ user: user, userProjects: user.projects });
 	  },
 	  _switchToCampaign: function _switchToCampaign(event) {
@@ -38130,23 +38180,31 @@
 	var ProjectStore = __webpack_require__(293);
 	var ProjectPreview = __webpack_require__(285);
 	var SessionStore = __webpack_require__(241);
+	var UserActions = __webpack_require__(288);
+	var UserStore = __webpack_require__(281);
 	
 	
 	var FrontPage = React.createClass({
 	  displayName: 'FrontPage',
 	  getInitialState: function getInitialState() {
-	    return { projects: [] };
+	    return { projects: [], users: [] };
 	  },
 	  componentDidMount: function componentDidMount() {
 	    this.listener = ProjectStore.addListener(this._onProjectChange);
+	    this.userListener = UserStore.addListener(this._onUserChange);
+	    UserActions.fetchAllUsers('front');
 	    ProjectActions.fetchAllProjects('front');
 	  },
 	  componentWillUnmount: function componentWillUnmount() {
 	    this.listener.remove();
+	    this.userListener.remove();
 	  },
 	  _onProjectChange: function _onProjectChange() {
 	    this.setState({ projects: ProjectStore.allProjects() });
 	    console.log(this.state);
+	  },
+	  _onUserChange: function _onUserChange() {
+	    this.setState({ users: UserStore.allUsers() });
 	  },
 	  _randomPage: function _randomPage() {
 	    var that = this;

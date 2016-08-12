@@ -4,6 +4,7 @@ const UserConstants = require('../constants/user_constants.js');
 const UserStore = new Store(AppDispatcher);
 
 let _userInfo = {};
+let _users = [];
 
 function _removeUser () {
   _userInfo = {};
@@ -15,8 +16,21 @@ function _updateUserInfo (user) {
   UserStore.__emitChange();
 }
 
+function _resetUsers (users) {
+  _users = users;
+  UserStore.__emitChange();
+}
+
 UserStore.currentUser = () => {
   return _userInfo;
+};
+
+UserStore.find = (userId) => {
+  return _users.filter(user => user.id === userId)[0];
+};
+
+UserStore.allUsers = () => {
+  return _users;
 };
 
 UserStore.__onDispatch = (payload) => {
@@ -26,6 +40,9 @@ UserStore.__onDispatch = (payload) => {
     break;
     case UserConstants.USER_REMOVED:
       _removeUser();
+    break;
+    case UserConstants.USERS_RECEIVED:
+      _resetUsers(payload.users);
     break;
   }
 };

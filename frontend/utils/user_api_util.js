@@ -14,6 +14,19 @@ const UserApiUtil = {
     });
   },
 
+  fetchAllUsers (form,success,error) {
+    $.ajax({
+      url: '/api/users',
+      type: 'GET',
+      success: (resp) => {
+        success(resp);
+      },
+      error: (resp) => {
+        error(form, resp);
+      }
+    });
+  },
+
   fetchUser (form, userId, successCB, errorCB) {
     $.ajax({
       url: '/api/users/' + userId,
