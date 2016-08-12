@@ -37373,13 +37373,39 @@
 	
 	var FrontPage = React.createClass({
 	  displayName: "FrontPage",
+	  componentDidMount: function componentDidMount() {},
+	  componentWillUnmount: function componentWillUnmount() {},
+	  _randomPage: function _randomPage() {},
 	
 	
 	  render: function render() {
+	
 	    return React.createElement(
 	      "div",
 	      null,
-	      React.createElement("div", { className: "splash" }),
+	      React.createElement(
+	        "div",
+	        { className: "splash" },
+	        React.createElement(
+	          "div",
+	          { className: "front-page-content" },
+	          React.createElement(
+	            "h2",
+	            null,
+	            "Feeling Lucky?"
+	          ),
+	          React.createElement(
+	            "h3",
+	            null,
+	            "Or just too lazy to navigate around? Jump into the time machine and transport yourself to a random campaign."
+	          ),
+	          React.createElement(
+	            "div",
+	            { className: "front-page-button", onClick: this._randomPage },
+	            "Go."
+	          )
+	        )
+	      ),
 	      React.createElement(
 	        "h2",
 	        { className: "under-construction" },
