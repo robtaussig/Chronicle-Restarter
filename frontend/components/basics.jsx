@@ -10,7 +10,6 @@ const Basics = React.createClass({
   getInitialState () {
     return ({
       author_id: SessionStore.currentUser().id,
-      image: {},
       title: "",
       blurb: "",
       category_id: 0,
@@ -20,7 +19,8 @@ const Basics = React.createClass({
       saved: 'saved',
       errorMessage: "",
       appearance: "entering",
-      visibility: ""
+      visibility: "",
+      image: ""
     });
   },
 
@@ -28,7 +28,7 @@ const Basics = React.createClass({
     this.listener = SavedProjectStore.addListener(this._onChange);
     this.blankState = {
       author_id: SessionStore.currentUser().id,
-      image: {},
+      image: "",
       title: "",
       blurb: "",
       category_id: 0,
@@ -77,8 +77,20 @@ const Basics = React.createClass({
     }
   },
 
-  _setImage (e) {
+  _postImage (img_url) {
+    this.setState({image: img_url});
+    this._resetSavedStatus();
+  },
 
+  _setImage (e) {
+    e.preventDefault();
+    cloudinary.openUploadWidget(window.CLOUDINARY_OPTIONS,(error,img) => {
+      if (error === null) {
+        this._postImage(img[0].url);
+      } else {
+        debugger
+      }
+    });
   },
 
   _setBlurb (e) {
@@ -151,7 +163,7 @@ const Basics = React.createClass({
                 <div className="grey-field">
                   <div className="attribute-field">Project image</div>
                   <div className="field-wrapper">
-                    <button id="project-image" className="project-image">
+                    <button onClick={this._setImage} id="project-image" className="project-image">
                       Choose an image from your computer
                     </button>
                   </div>

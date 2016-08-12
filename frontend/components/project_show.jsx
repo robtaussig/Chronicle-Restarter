@@ -25,7 +25,8 @@ const ProjectShow = React.createClass({
       email: "hidden",
       highlight: "",
       bottomPage: 0,
-      reveal: "campaign"
+      reveal: "campaign",
+      image: ""
     });
   },
 
@@ -159,8 +160,8 @@ const ProjectShow = React.createClass({
           </div>
           <div className="preview-project-image">
             <div>{<img id="default-pic"
-              src={this.props.project.project_imgs === 'window.pug' ?
-              window.pug : this.props.project_imgs}></img>}</div>
+              src={this.props.project.image === 'window.pug' ?
+              window.pug : this.props.project.image}></img>}</div>
           </div>
           <div className="preview-project-summary">
             <ul className="funders group">

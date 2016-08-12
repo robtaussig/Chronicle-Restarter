@@ -1941,12 +1941,28 @@ div.project-preview-progress-bar {
   margin-bottom: 0;
   border: 1px solid #ccc;
   border-radius: 20px;
+  background-color: #fff;
+  overflow: hidden;
+}
+
+p.funded-preview {
+  top: 356px;
+  left: 108px;
+  position: absolute;
+}
+
+div.progress-overflow {
+  z-index: 1;
   background-color: #2bde73;
+  height: 50px;
+  width: 0px;
 }
 
 ul.project-preview-summary {
   height: 60px;
   width: auto;
+  bottom: 12px;
+  left: 10px;
   position: relative;
 }
 

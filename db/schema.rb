@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160812101424) do
+ActiveRecord::Schema.define(version: 20160812151932) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(version: 20160812101424) do
     t.string   "author_full_name"
     t.string   "website"
     t.text     "risks"
+    t.string   "image"
   end
 
   add_index "api_projects", ["author_id"], name: "index_api_projects_on_author_id", using: :btree
@@ -74,6 +75,7 @@ ActiveRecord::Schema.define(version: 20160812101424) do
     t.integer  "duration"
     t.string   "location"
     t.text     "risks"
+    t.string   "image"
   end
 
   create_table "api_sessions", force: :cascade do |t|

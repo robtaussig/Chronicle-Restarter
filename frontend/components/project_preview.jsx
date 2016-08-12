@@ -7,6 +7,18 @@ import { browserHistory } from 'react-router';
 
 const ProjectPreview = React.createClass({
 
+  getInitialState () {
+    return({progressWidth: 0});
+  },
+
+  componentDidMount () {
+    this.fundedPercentage = this.props.project.funded === 0 ? 0 :
+      this.props.project.funded / this.props.project.goal;
+    this.fundedWidth = (335 * this.fundedPercentage) > 335 ? 335 :
+      (335 * this.fundedPercentage);
+    this.setState({progressWidth: this.fundedWidth});
+  },
+
   _goToPage () {
     if (window.location.pathname === "/savedProjects") {
       SavedProjectActions.updateSavedProject('savedProject', this.props.project);
@@ -17,10 +29,17 @@ const ProjectPreview = React.createClass({
   },
 
   render: function() {
+    let _width;
+    if (this.state.progressWidth) {
+      _width = this.state.progressWidth;
+    } else {
+      _width = 0;
+    }
+
     return (
       <div>
         <div onClick={this._goToPage} className="project-preview-wrapper">
-          <div className="project-preview-image"><img id="default-pic" src={window.pug}></img></div>
+          <div className="project-preview-image"><img id="default-pic" src={this.props.project.image || window.pug}></img></div>
           <div className="preview-bottom-half">
             <h3 className="project-preview-title">{this.props.project.title || ""}</h3>
             <p className="project-preview-username">by <b>{UserStore.currentUser().full_name || window.myApp.username}</b></p>
@@ -30,7 +49,11 @@ const ProjectPreview = React.createClass({
             <p className="project-preview-location">{this.props.project.location || "Empty Location"}</p>
             <p className="project-preview-category">{ProjectCategoryIds[this.props.project.category_id || 0].label }</p>
             <br></br>
-            <div className="project-preview-progress-bar"></div>
+            <p className="funded-preview"><b>${this.props.project.funded}</b> funded to-date</p>
+            <br></br>
+            <div className="project-preview-progress-bar">
+              <div style={{width: _width + 'px'}} className="progress-overflow"></div>
+            </div>
             <ul className="project-preview-summary">
               <li className="preview-summary-cat">
                 <ul className="project-preview-goal">

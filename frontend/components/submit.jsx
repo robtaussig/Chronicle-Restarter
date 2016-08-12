@@ -51,7 +51,7 @@ const SubmitProject = React.createClass({
       author_id: user.id,
       author_full_name: user.full_name || user.username,
       website: user.website || "",
-      project_img_urls: project.project_img_urls || 'window.pug',
+      image: project.image || 'window.pug',
       goal: project.goal || 0,
       location: project.location || "",
       duration: project.duration || 0,

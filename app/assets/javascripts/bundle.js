@@ -35250,12 +35250,12 @@
 	var SavedProjectStore = new Store(AppDispatcher);
 	
 	var _blankProject = {
-	  project_img_urls: "",
 	  title: "",
 	  blurb: "",
 	  location: "",
 	  duration: 0,
 	  goal: 0,
+	  image: "",
 	  risks: "",
 	  content: "",
 	  saved: '',
@@ -35540,6 +35540,14 @@
 	
 	var ProjectPreview = React.createClass({
 	  displayName: 'ProjectPreview',
+	  getInitialState: function getInitialState() {
+	    return { progressWidth: 0 };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    this.fundedPercentage = this.props.project.funded === 0 ? 0 : this.props.project.funded / this.props.project.goal;
+	    this.fundedWidth = 335 * this.fundedPercentage > 335 ? 335 : 335 * this.fundedPercentage;
+	    this.setState({ progressWidth: this.fundedWidth });
+	  },
 	  _goToPage: function _goToPage() {
 	    if (window.location.pathname === "/savedProjects") {
 	      SavedProjectActions.updateSavedProject('savedProject', this.props.project);
@@ -35551,6 +35559,13 @@
 	
 	
 	  render: function render() {
+	    var _width = void 0;
+	    if (this.state.progressWidth) {
+	      _width = this.state.progressWidth;
+	    } else {
+	      _width = 0;
+	    }
+	
 	    return React.createElement(
 	      'div',
 	      null,
@@ -35560,7 +35575,7 @@
 	        React.createElement(
 	          'div',
 	          { className: 'project-preview-image' },
-	          React.createElement('img', { id: 'default-pic', src: window.pug })
+	          React.createElement('img', { id: 'default-pic', src: this.props.project.image || window.pug })
 	        ),
 	        React.createElement(
 	          'div',
@@ -35598,7 +35613,23 @@
 	            ProjectCategoryIds[this.props.project.category_id || 0].label
 	          ),
 	          React.createElement('br', null),
-	          React.createElement('div', { className: 'project-preview-progress-bar' }),
+	          React.createElement(
+	            'p',
+	            { className: 'funded-preview' },
+	            React.createElement(
+	              'b',
+	              null,
+	              '$',
+	              this.props.project.funded
+	            ),
+	            ' funded to-date'
+	          ),
+	          React.createElement('br', null),
+	          React.createElement(
+	            'div',
+	            { className: 'project-preview-progress-bar' },
+	            React.createElement('div', { style: { width: _width + 'px' }, className: 'progress-overflow' })
+	          ),
 	          React.createElement(
 	            'ul',
 	            { className: 'project-preview-summary' },
@@ -35849,7 +35880,6 @@
 	  getInitialState: function getInitialState() {
 	    return {
 	      author_id: SessionStore.currentUser().id,
-	      image: {},
 	      title: "",
 	      blurb: "",
 	      category_id: 0,
@@ -35859,7 +35889,8 @@
 	      saved: 'saved',
 	      errorMessage: "",
 	      appearance: "entering",
-	      visibility: ""
+	      visibility: "",
+	      image: ""
 	    };
 	  },
 	  componentDidMount: function componentDidMount() {
@@ -35868,7 +35899,7 @@
 	    this.listener = SavedProjectStore.addListener(this._onChange);
 	    this.blankState = {
 	      author_id: SessionStore.currentUser().id,
-	      image: {},
+	      image: "",
 	      title: "",
 	      blurb: "",
 	      category_id: 0,
@@ -35911,7 +35942,22 @@
 	      this.setState(this.blankState);
 	    }
 	  },
-	  _setImage: function _setImage(e) {},
+	  _postImage: function _postImage(img_url) {
+	    this.setState({ image: img_url });
+	    this._resetSavedStatus();
+	  },
+	  _setImage: function _setImage(e) {
+	    var _this2 = this;
+	
+	    e.preventDefault();
+	    cloudinary.openUploadWidget(window.CLOUDINARY_OPTIONS, function (error, img) {
+	      if (error === null) {
+	        _this2._postImage(img[0].url);
+	      } else {
+	        debugger;
+	      }
+	    });
+	  },
 	  _setBlurb: function _setBlurb(e) {
 	    this.setState({ blurb: e.target.value });
 	    this._resetSavedStatus();
@@ -35992,7 +36038,7 @@
 	                  { className: 'field-wrapper' },
 	                  React.createElement(
 	                    'button',
-	                    { id: 'project-image', className: 'project-image' },
+	                    { onClick: this._setImage, id: 'project-image', className: 'project-image' },
 	                    'Choose an image from your computer'
 	                  )
 	                )
@@ -37587,7 +37633,8 @@
 	      email: "hidden",
 	      highlight: "",
 	      bottomPage: 0,
-	      reveal: "campaign"
+	      reveal: "campaign",
+	      image: ""
 	    };
 	  },
 	  componentDidMount: function componentDidMount() {
@@ -37756,7 +37803,7 @@
 	            'div',
 	            null,
 	            React.createElement('img', { id: 'default-pic',
-	              src: this.props.project.project_imgs === 'window.pug' ? window.pug : this.props.project_imgs })
+	              src: this.props.project.image === 'window.pug' ? window.pug : this.props.project.image })
 	          )
 	        ),
 	        React.createElement(
@@ -38376,7 +38423,7 @@
 	      author_id: user.id,
 	      author_full_name: user.full_name || user.username,
 	      website: user.website || "",
-	      project_img_urls: project.project_img_urls || 'window.pug',
+	      image: project.image || 'window.pug',
 	      goal: project.goal || 0,
 	      location: project.location || "",
 	      duration: project.duration || 0,
@@ -38441,7 +38488,7 @@
 	      rewards: [],
 	      project_title: "",
 	      full_name: "",
-	      project_img_urls: "",
+	      image: "",
 	      project_funders: 0,
 	      project_funded: 0,
 	      project_duration: 0,
@@ -38490,7 +38537,7 @@
 	      project_title: project.title || "Title was left empty",
 	      author_full_name: user.full_name || user.username,
 	      user_website: user.website || "",
-	      project_img_urls: project.project_img_urls || React.createElement('img', { id: 'default-pic', src: window.pug }),
+	      image: project.image || React.createElement('img', { id: 'default-pic', src: window.pug }),
 	      project_funders: project.funders || 0,
 	      project_funded: project.funded || 0,
 	      project_goal: project.goal || 0,
@@ -38578,7 +38625,8 @@
 	          React.createElement(
 	            'div',
 	            null,
-	            this.state.project_img_urls
+	            React.createElement('img', { id: 'default-pic',
+	              src: this.state.image })
 	          )
 	        ),
 	        React.createElement(

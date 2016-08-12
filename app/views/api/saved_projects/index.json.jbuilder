@@ -9,5 +9,5 @@ json.array! @saved_projects do |project|
   json.duration project.duration
   json.location project.location
   json.risks project.risks
-  json.project_imgs project.project_img_urls
+  json.image project.image
 end

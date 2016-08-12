@@ -2,3 +2,6 @@
 *.DS_Store
 *tmp
 *.sprockets
+
+# Ignore application configuration
+/config/application.yml
