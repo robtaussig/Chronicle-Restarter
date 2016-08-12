@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160811225440) do
+ActiveRecord::Schema.define(version: 20160812101424) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,9 +20,11 @@ ActiveRecord::Schema.define(version: 20160811225440) do
     t.integer  "reward_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "user_id"
   end
 
   add_index "api_fundings", ["reward_id"], name: "index_api_fundings_on_reward_id", using: :btree
+  add_index "api_fundings", ["user_id"], name: "index_api_fundings_on_user_id", using: :btree
 
   create_table "api_projects", force: :cascade do |t|
     t.string   "title",            null: false

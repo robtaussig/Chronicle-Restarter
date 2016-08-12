@@ -2,6 +2,7 @@ const React = require('react');
 const ProjectCategoryIds = require('../constants/project_category_ids.js');
 const SavedProjectActions = require('../actions/saved_project_actions.js');
 const UserStore = require('../stores/user_store.js');
+const SessionStore = require('../stores/session_store.js');
 import { browserHistory } from 'react-router';
 
 const ProjectPreview = React.createClass({

@@ -23,6 +23,8 @@ class Api::User < ActiveRecord::Base
 
   has_many :saved_projects, foreign_key: 'author_id'
   has_many :projects, foreign_key: 'author_id'
+  has_many :fundings
+  has_many :funded_projects, through: :fundings, source: :project
 
   def self.generate_session_token
     SecureRandom::urlsafe_base64(16)

@@ -24,5 +24,6 @@ class Api::Project < ActiveRecord::Base
   belongs_to :saved_project, class_name: 'SavedProject', foreign_key: 'saved_project_id'
   has_many :rewards, through: :saved_project
   has_many :fundings, through: :rewards
+  has_many :funders, through: :fundings, source: :user
 
 end

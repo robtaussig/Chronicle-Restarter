@@ -18,8 +18,8 @@ const RewardActions = {
     });
   },
 
-  fundProject (form, rewardId) {
-    RewardApiUtil.fundProject(form, rewardId, this.receiveFunding, ErrorActions.receiveError);
+  fundProject (form, rewardId, userId) {
+    RewardApiUtil.fundProject(form, rewardId, userId, this.receiveFunding, ErrorActions.receiveError);
   },
 
   updateReward (rewardInfo) {

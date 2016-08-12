@@ -48,7 +48,7 @@ const NavBar = React.createClass({
       <div className="nav-bar group">
         <div className="site-nav-left" >
           <ul className="nav-bar-items">
-            <li><Link className="nav-link" to='/discover'>Discover</Link></li>
+            <li><Link className="nav-link" to='/projects'>Discover</Link></li>
             <li><Link className="nav-link" to='/startProject'>Start a project</Link></li>
             <li><Link className="nav-link" to='/about'>About us</Link></li>
           </ul>

@@ -27256,7 +27256,7 @@
 	            null,
 	            React.createElement(
 	              Link,
-	              { className: 'nav-link', to: '/discover' },
+	              { className: 'nav-link', to: '/projects' },
 	              'Discover'
 	            )
 	          ),
@@ -35250,7 +35250,7 @@
 	var SavedProjectStore = new Store(AppDispatcher);
 	
 	var _blankProject = {
-	  image: "",
+	  project_img_urls: "",
 	  title: "",
 	  blurb: "",
 	  location: "",
@@ -35367,7 +35367,8 @@
 	
 	module.exports = {
 	  USER_RECEIVED: 'USER_RECEIVED',
-	  USER_REMOVED: 'USER_REMOVED'
+	  USER_REMOVED: 'USER_REMOVED',
+	  USER_INFO_RECEIVED: 'USER_INFO_RECEIVED'
 	};
 
 /***/ },
@@ -35382,6 +35383,7 @@
 	var ProjectCategoryIds = __webpack_require__(284);
 	var SavedProjectActions = __webpack_require__(277);
 	var UserStore = __webpack_require__(281);
+	var SessionStore = __webpack_require__(241);
 	
 	
 	var FocusProject = React.createClass({
@@ -35424,7 +35426,7 @@
 	            React.createElement(
 	              'b',
 	              null,
-	              UserStore.currentUser().full_name || window.myApp.username
+	              SessionStore.currentUser().full_name || window.myApp.username
 	            )
 	          ),
 	          React.createElement('br', null),
@@ -35533,6 +35535,7 @@
 	var ProjectCategoryIds = __webpack_require__(284);
 	var SavedProjectActions = __webpack_require__(277);
 	var UserStore = __webpack_require__(281);
+	var SessionStore = __webpack_require__(241);
 	
 	
 	var ProjectPreview = React.createClass({
@@ -36435,6 +36438,12 @@
 	  return _projects;
 	};
 	
+	ProjectStore.find = function (projectId) {
+	  return _projects.filter(function (project) {
+	    return project.id === projectId;
+	  });
+	};
+	
 	ProjectStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
 	    case ProjectConstants.PROJECT_RECEIVED:
@@ -36845,8 +36854,8 @@
 	      actionType: RewardConstants.SAVE_ALL
 	    });
 	  },
-	  fundProject: function fundProject(form, rewardId) {
-	    RewardApiUtil.fundProject(form, rewardId, this.receiveFunding, ErrorActions.receiveError);
+	  fundProject: function fundProject(form, rewardId, userId) {
+	    RewardApiUtil.fundProject(form, rewardId, userId, this.receiveFunding, ErrorActions.receiveError);
 	  },
 	  updateReward: function updateReward(rewardInfo) {
 	    AppDispatcher.dispatch({
@@ -36912,11 +36921,11 @@
 	      errorCB: errorCB
 	    });
 	  },
-	  fundProject: function fundProject(form, rewardId, _success, _error) {
+	  fundProject: function fundProject(form, rewardId, userId, _success, _error) {
 	    $.ajax({
 	      url: '/api/fundings',
 	      type: 'POST',
-	      data: { funding: { reward_id: rewardId } },
+	      data: { funding: { reward_id: rewardId, user_id: userId } },
 	      success: function success(resp) {
 	        _success(resp);
 	      },
@@ -37390,14 +37399,45 @@
 
 	'use strict';
 	
+	var _reactRouter = __webpack_require__(1);
+	
 	var React = __webpack_require__(3);
 	var ProjectActions = __webpack_require__(303);
+	var ProjectStore = __webpack_require__(291);
+	var SessionStore = __webpack_require__(241);
+	
 	
 	var FrontPage = React.createClass({
 	  displayName: 'FrontPage',
-	  componentDidMount: function componentDidMount() {},
-	  componentWillUnmount: function componentWillUnmount() {},
-	  _randomPage: function _randomPage() {},
+	  getInitialState: function getInitialState() {
+	    return {};
+	  },
+	  componentDidMount: function componentDidMount() {
+	    this.listener = ProjectStore.addListener(this._onProjectChange);
+	    ProjectActions.fetchAllProjects('front');
+	  },
+	  componentWillUnmount: function componentWillUnmount() {
+	    this.listener.remove();
+	  },
+	  _onProjectChange: function _onProjectChange() {
+	    this.setState({ projects: ProjectStore.allProjects() });
+	    console.log(this.state);
+	  },
+	  _randomPage: function _randomPage() {
+	    var that = this;
+	    if (this.state.projects) {
+	      if (this.timeout) {
+	        clearTimeout(this.timeout);
+	      }
+	      var _randomPageNum = Math.floor(Math.random() * this.state.projects.length);
+	      var _project = this.state.projects[_randomPageNum];
+	      _reactRouter.browserHistory.push('/projects/' + _project.id);
+	    } else {
+	      this.timeout = setTimeout(function () {
+	        that._randomPage();
+	      }, 100);
+	    }
+	  },
 	
 	
 	  render: function render() {
@@ -37419,7 +37459,7 @@
 	          React.createElement(
 	            'h3',
 	            null,
-	            'Or just too lazy to navigate around? Jump into the time machine and transport yourself to a random campaign.'
+	            'Or just too lazy to navigate around? Click below to transport yourself to a random campaign.'
 	          ),
 	          React.createElement(
 	            'div',
@@ -37450,6 +37490,7 @@
 	var UserStore = __webpack_require__(281);
 	var UserActions = __webpack_require__(288);
 	var SessionStore = __webpack_require__(281);
+	var SavedProjectActions = __webpack_require__(277);
 	
 	var Account = React.createClass({
 	  displayName: 'Account',
@@ -37465,7 +37506,7 @@
 	  componentDidMount: function componentDidMount() {
 	    var _this = this;
 	
-	    var userId = SessionStore.currentUser().id || window.myApp.id;
+	    var userId = window.myApp.id || SessionStore.currentUser().id;
 	    this._prepopulate(userId);
 	    this.listener = UserStore.addListener(this._onChange);
 	    UserActions.fetchUser('about', userId);
@@ -37492,7 +37533,7 @@
 	    }, 2000);
 	  },
 	  _prepopulate: function _prepopulate(userId) {
-	    var email = SessionStore.currentUser().email || window.myApp.email;
+	    var email = window.myApp.email || SessionStore.currentUser().email;
 	    this.setState({ email: email, id: userId });
 	  },
 	  _setEmail: function _setEmail(event) {
@@ -37739,6 +37780,7 @@
 	var Community = __webpack_require__(312);
 	var Updates = __webpack_require__(311);
 	var UserStore = __webpack_require__(281);
+	var SessionStore = __webpack_require__(241);
 	var UserActions = __webpack_require__(288);
 	
 	
@@ -37824,12 +37866,13 @@
 	    }
 	  },
 	  _selectReward: function _selectReward(idx, event) {
-	    if (this.props.project.author_id === UserStore.currentUser().id) {
+	    var _userId = UserStore.currentUser().id || window.myApp.id;
+	    if (this.props.project.author_id === _userId) {
 	      this.setState({ selected: this.positions[idx],
 	        message: "You can't back your own project" });
 	    } else {
 	      var reward = this.props.project.rewards[idx];
-	      RewardActions.fundProject('show', reward.id);
+	      RewardActions.fundProject('show', reward.id, _userId);
 	      this.setState({ backers: this.state.backers + 1, funded: this.state.funded + reward.amount, selected: this.positions[idx], message: "You have selected this reward!" });
 	    }
 	  },
@@ -37924,7 +37967,7 @@
 	            'div',
 	            null,
 	            React.createElement('img', { id: 'default-pic',
-	              src: this.props.project.project_img_urls === 'window.pug' ? window.pug : this.props.project_img_urls })
+	              src: this.props.project.project_imgs === 'window.pug' ? window.pug : this.props.project_imgs })
 	          )
 	        ),
 	        React.createElement(
@@ -38204,6 +38247,7 @@
 	var RewardStore = __webpack_require__(293);
 	var RewardItem = __webpack_require__(295);
 	var UserStore = __webpack_require__(281);
+	var SessionStore = __webpack_require__(241);
 	var UserActions = __webpack_require__(288);
 	var SavedProjectActions = __webpack_require__(277);
 	var ProjectCategories = __webpack_require__(284);
@@ -38255,7 +38299,7 @@
 	  _populate: function _populate() {
 	    var project = SavedProjectStore.currentProject();
 	    var rewards = RewardStore.currentRewards();
-	    var user = Object.assign(UserStore.currentUser(), window.myApp);
+	    var user = UserStore.currentUser().hasOwnProperty('id') ? UserStore.currentUser() : window.myApp;
 	    console.log(project);
 	    console.log(rewards);
 	    console.log(user);
@@ -38969,17 +39013,49 @@
 /* 313 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	var React = __webpack_require__(3);
+	var ProjectStore = __webpack_require__(291);
+	var ProjectActions = __webpack_require__(303);
+	var ProjectShow = __webpack_require__(304);
+	var ProjectPreview = __webpack_require__(285);
 	
 	var ProjectIndex = React.createClass({
-	  displayName: "ProjectIndex",
+	  displayName: 'ProjectIndex',
+	  getInitialState: function getInitialState() {
+	    return { projects: [], flex: "" };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    this.listener = ProjectStore.addListener(this._onProjectChange);
+	    if (this.props.params.projectId) {
+	      this._showProject();
+	    } else {
+	      this._showProjects();
+	    }
+	  },
+	  componentWillUnmount: function componentWillUnmount() {
+	    this.listener.remove();
+	  },
+	  _showProject: function _showProject() {
+	    this.setState({ flex: "", projects: ProjectStore.find(parseInt(this.props.params.projectId)) });
+	  },
+	  _showProjects: function _showProjects() {
+	    this.setState({ flex: "flex", projects: ProjectStore.allProjects() });
+	  },
 	  render: function render() {
+	    var _display = void 0;
+	    if (this.state.projects.length === 1) {
+	      _display = React.createElement(ProjectShow, { project: this.state.projects[0] });
+	    } else {
+	      _display = this.state.projects.map(function (project, idx) {
+	        return React.createElement(ProjectPreview, { key: idx, project: project });
+	      });
+	    }
 	    return React.createElement(
-	      "div",
-	      { className: "project-index-wrapper" },
-	      "Hello from Project Index"
+	      'div',
+	      { className: 'project-index-wrapper group ' + this.state.flex },
+	      _display
 	    );
 	  }
 	});

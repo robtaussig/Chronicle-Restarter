@@ -39,6 +39,10 @@ ProjectStore.allProjects = () => {
   return _projects;
 };
 
+ProjectStore.find = (projectId) => {
+  return _projects.filter(project => project.id === projectId);
+};
+
 ProjectStore.__onDispatch = (payload) => {
   switch (payload.actionType) {
     case ProjectConstants.PROJECT_RECEIVED:

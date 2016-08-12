@@ -244,11 +244,28 @@ background-color: #02a654;
 }
 
 h2.under-construction {
-  position: absolute;
+  margin-bottom: 50px;
   text-align: center;
   font-size: 24px;
   width: 100%;
   cursor: default;
+}
+
+
+/*--------------------------Project-index-show-page---------------------------*/
+
+iv.project-index-wrapper {
+  width: 100%;
+  margin: 0 auto;
+  height: auto;
+}
+
+div.project-index-wrapper.flex {
+  display: flex;
+  width: 100%;
+  margin: 0 auto;
+  height: auto;
+  flex-flow: row wrap;
 }
 
 /*---------------------------------- error box -------------------------------*/
@@ -306,7 +323,6 @@ div.footer-wrapper {
   border-top: 1px solid limegreen;
   height: 200px;
   width: 100%;
-  position: absolute;
   bottom: 0;
   color: white;
   background-color: #16163c;
@@ -420,12 +436,13 @@ div.footer-wrapper ul.footer-bottom li{
   height: 600px;
   width: auto;
   position: relative;
-  background-image: image-url("splash2.jpeg");
+  background-image: url(/assets/splash2-fcd627d18a303ca97bd637caaf2aaab9e50c233f5f23bf1641992567d91fdc0f.jpg);
   background-size: cover;
   background-repeat: no-repeat;
   overflow: hidden;
   background-position: 50% 50%;
   top: -54px;
+  margin-bottom: 85px;
 }
 
 .start-project ul:first-child {
@@ -531,6 +548,7 @@ ul.buttons-wrapper li.new-project-button:hover {
   border-bottom: 1px solid #ccc;
   background-size: cover;
   top: -54px;
+  margin-bottom: 85px;
 }
 
 .select-era img {
@@ -1609,6 +1627,10 @@ div.project-content, div.project-risks {
   line-height: 23px;
 }
 
+div.project-risks {
+  margin-bottom: 200px;
+}
+
 div.project-content-field h4 {
   font-size: 24px;
   font-weight: 400;
@@ -1659,7 +1681,7 @@ div.saved-projects-wrapper {
   width: 100%;
   min-height: 200px;
   margin: 0 auto;
-  margin-bottom: 200px;
+  margin-bottom: 800px;
   padding-bottom: 15px;
   flex: 1;
 }

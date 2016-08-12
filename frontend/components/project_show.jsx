@@ -7,6 +7,7 @@ const Comments = require('./comments.jsx');
 const Community = require('./community.jsx');
 const Updates = require('./updates.jsx');
 const UserStore = require('../stores/user_store.js');
+const SessionStore = require('../stores/session_store.js');
 const UserActions = require('../actions/user_actions.js');
 import { browserHistory } from 'react-router';
 
@@ -97,12 +98,13 @@ const ProjectShow = React.createClass({
   },
 
   _selectReward (idx, event) {
-    if (this.props.project.author_id === UserStore.currentUser().id) {
+    let _userId = UserStore.currentUser().id || window.myApp.id;
+    if (this.props.project.author_id === _userId) {
       this.setState({selected: this.positions[idx],
         message: "You can't back your own project"});
     } else {
       let reward = this.props.project.rewards[idx];
-      RewardActions.fundProject('show', reward.id);
+      RewardActions.fundProject('show', reward.id, _userId);
       this.setState({backers: this.state.backers + 1, funded: this.state.funded
         + reward.amount, selected: this.positions[idx], message:
         "You have selected this reward!"});
@@ -140,6 +142,8 @@ const ProjectShow = React.createClass({
       <Community revealed={this.state.reveal} />
     ][this.state.bottomPage || 0];
 
+
+
     return (
       <div onClick={this._resetReveals}>
         <div id="top" className="preview-wrapper">
@@ -155,8 +159,8 @@ const ProjectShow = React.createClass({
           </div>
           <div className="preview-project-image">
             <div>{<img id="default-pic"
-              src={this.props.project.project_img_urls === 'window.pug' ?
-              window.pug : this.props.project_img_urls}></img>}</div>
+              src={this.props.project.project_imgs === 'window.pug' ?
+              window.pug : this.props.project_imgs}></img>}</div>
           </div>
           <div className="preview-project-summary">
             <ul className="funders group">

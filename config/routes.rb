@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   get "/createProject", to: 'static_pages#root'
   get "/finalizeProject", to: 'static_pages#root'
   get "/focusProject", to: 'static_pages#root'
+  get "/projects", to: 'static_pages#root'
+  get "/projects/:projectId", to: 'static_pages#root'
   get "/finalizeProject/createProject", to: 'static_pages#root'
   get "/finalizeProject/startProject", to: 'static_pages#root'
   get "/finalizeProject/basics", to: 'static_pages#root'

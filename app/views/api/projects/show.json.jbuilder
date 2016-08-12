@@ -14,3 +14,4 @@ json.extract! @project,
   total = amount_array.inject(0){|sum,x| sum + x }
 
   json.funded total
+  json.backers @project.funders

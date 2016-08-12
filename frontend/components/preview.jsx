@@ -4,6 +4,7 @@ const RewardActions = require('../actions/reward_actions.js');
 const RewardStore = require('../stores/reward_store.js');
 const RewardItem = require('./reward_item.jsx');
 const UserStore = require('../stores/user_store.js');
+const SessionStore = require('../stores/session_store.js');
 const UserActions = require('../actions/user_actions.js');
 const SavedProjectActions = require('../actions/saved_project_actions.js');
 const ProjectCategories = require('../constants/project_category_ids');
@@ -55,7 +56,7 @@ const Preview = React.createClass({
   _populate () {
     let project = SavedProjectStore.currentProject();
     let rewards = RewardStore.currentRewards();
-    let user = Object.assign(UserStore.currentUser(),window.myApp);
+    let user = UserStore.currentUser().hasOwnProperty('id') ? UserStore.currentUser() : window.myApp;
     console.log(project);
     console.log(rewards);
     console.log(user);

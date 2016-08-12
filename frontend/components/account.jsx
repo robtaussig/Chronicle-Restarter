@@ -2,6 +2,7 @@ const React = require('react');
 const UserStore = require('../stores/user_store.js');
 const UserActions = require('../actions/user_actions.js');
 const SessionStore = require('../stores/user_store.js');
+const SavedProjectActions = require('../actions/saved_project_actions.js');
 
 const Account = React.createClass({
 
@@ -16,7 +17,7 @@ const Account = React.createClass({
   },
 
   componentDidMount () {
-    let userId = SessionStore.currentUser().id || window.myApp.id;
+    let userId = window.myApp.id || SessionStore.currentUser().id;
     this._prepopulate(userId);
     this.listener = UserStore.addListener(this._onChange);
     UserActions.fetchUser('about', userId);
@@ -43,7 +44,7 @@ const Account = React.createClass({
   },
 
   _prepopulate (userId) {
-    let email = SessionStore.currentUser().email || window.myApp.email;
+    let email = window.myApp.email || SessionStore.currentUser().email;
     this.setState({email: email, id: userId});
   },
 

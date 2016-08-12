@@ -2,6 +2,7 @@ const React = require('react');
 const ProjectCategoryIds = require('../constants/project_category_ids.js');
 const SavedProjectActions = require('../actions/saved_project_actions.js');
 const UserStore = require('../stores/user_store.js');
+const SessionStore = require('../stores/session_store.js');
 import { browserHistory } from 'react-router';
 
 const FocusProject = React.createClass({
@@ -24,7 +25,7 @@ const FocusProject = React.createClass({
           <div className="focal-project-image"><img id="default-pic" src={window.pug}></img></div>
           <div className="focal-right-half">
             <h3 className="focal-project-title">{this.props.project.title || ""}</h3>
-            <p className="focal-project-username">by <b>{UserStore.currentUser().full_name || window.myApp.username}</b></p>
+            <p className="focal-project-username">by <b>{SessionStore.currentUser().full_name || window.myApp.username}</b></p>
             <br></br>
             <p className="focal-project-blurb">{this.props.project.blurb || "Empty Blurb"}</p>
             <br></br>

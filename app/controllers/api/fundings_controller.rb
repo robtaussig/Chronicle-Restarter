@@ -29,6 +29,6 @@ class Api::FundingsController < ApplicationController
   end
 
   def funding_params
-    params.require(:funding).permit(:reward_id, :project_id)
+    params.require(:funding).permit(:reward_id, :project_id, :user_id)
   end
 end

@@ -38,11 +38,11 @@ const RewardApiUtil = {
     });
   },
 
-  fundProject(form, rewardId, success, error) {
+  fundProject(form, rewardId, userId, success, error) {
     $.ajax({
       url: '/api/fundings',
       type: 'POST',
-      data: {funding: {reward_id: rewardId}},
+      data: {funding: {reward_id: rewardId, user_id: userId}},
       success: (resp) => {
         success(resp);
       },
