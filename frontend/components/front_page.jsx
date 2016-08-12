@@ -1,13 +1,14 @@
 const React = require('react');
 const ProjectActions = require('../actions/project_actions.js');
 const ProjectStore = require('../stores/project_store.js');
+const ProjectPreview = require('./project_preview.jsx');
 const SessionStore = require('../stores/session_store.js');
 import { browserHistory } from 'react-router';
 
 const FrontPage = React.createClass({
 
   getInitialState () {
-    return ({});
+    return ({projects: []});
   },
 
   componentDidMount () {
@@ -26,7 +27,7 @@ const FrontPage = React.createClass({
 
   _randomPage () {
     let that = this;
-    if (this.state.projects) {
+    if (this.state.projects.length > 0) {
       if (this.timeout) {
         clearTimeout(this.timeout);
       }
@@ -42,6 +43,20 @@ const FrontPage = React.createClass({
 
   render: function() {
 
+    this.projects = [];
+    let _display;
+
+    if (this.state.projects.length > 0) {
+      for (let i = 0; i < 3; i++) {
+        this.projects.push(this.state.projects[Math.floor(Math.random() * this.state.projects.length)]);
+      }
+      _display = this.projects.map((project,idx) => {
+        return <li><ProjectPreview project={project} key={idx} /></li>;
+      });
+    } else {
+      _display = <div>Loading...</div>;
+    }
+
     return (
       <div>
         <div className="splash">
@@ -53,10 +68,12 @@ const FrontPage = React.createClass({
             </div>
           </div>
         </div>
-        <h2 className="under-construction">
-          Project Navigation is currently under construction...
-          Please check back later.
+        <h2 className="front-page-navigation">
+          Check out our absolute three favorite projects at this very moment:
         </h2>
+        <ul className="three-random-projects">
+          {_display}
+        </ul>
       </div>
     );
   }

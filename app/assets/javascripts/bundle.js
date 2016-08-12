@@ -37404,13 +37404,14 @@
 	var React = __webpack_require__(3);
 	var ProjectActions = __webpack_require__(303);
 	var ProjectStore = __webpack_require__(291);
+	var ProjectPreview = __webpack_require__(285);
 	var SessionStore = __webpack_require__(241);
 	
 	
 	var FrontPage = React.createClass({
 	  displayName: 'FrontPage',
 	  getInitialState: function getInitialState() {
-	    return {};
+	    return { projects: [] };
 	  },
 	  componentDidMount: function componentDidMount() {
 	    this.listener = ProjectStore.addListener(this._onProjectChange);
@@ -37425,7 +37426,7 @@
 	  },
 	  _randomPage: function _randomPage() {
 	    var that = this;
-	    if (this.state.projects) {
+	    if (this.state.projects.length > 0) {
 	      if (this.timeout) {
 	        clearTimeout(this.timeout);
 	      }
@@ -37441,6 +37442,28 @@
 	
 	
 	  render: function render() {
+	
+	    this.projects = [];
+	    var _display = void 0;
+	
+	    if (this.state.projects.length > 0) {
+	      for (var i = 0; i < 3; i++) {
+	        this.projects.push(this.state.projects[Math.floor(Math.random() * this.state.projects.length)]);
+	      }
+	      _display = this.projects.map(function (project, idx) {
+	        return React.createElement(
+	          'li',
+	          null,
+	          React.createElement(ProjectPreview, { project: project, key: idx })
+	        );
+	      });
+	    } else {
+	      _display = React.createElement(
+	        'div',
+	        null,
+	        'Loading...'
+	      );
+	    }
 	
 	    return React.createElement(
 	      'div',
@@ -37470,8 +37493,13 @@
 	      ),
 	      React.createElement(
 	        'h2',
-	        { className: 'under-construction' },
-	        'Project Navigation is currently under construction... Please check back later.'
+	        { className: 'front-page-navigation' },
+	        'Check out our absolute three favorite projects at this very moment:'
+	      ),
+	      React.createElement(
+	        'ul',
+	        { className: 'three-random-projects' },
+	        _display
 	      )
 	    );
 	  }

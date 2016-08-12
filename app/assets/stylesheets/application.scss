@@ -209,6 +209,21 @@ div.splash {
   top: -54px;
 }
 
+h2.front-page-navigation {
+  font-size: 23px;
+  margin-bottom: 30px;
+  margin-top: -35px;
+  text-align: center;
+}
+
+ul.three-random-projects {
+  flex-flow: row wrap;
+  display: flex;
+  margin-bottom: 22px;
+  justify-content: center;
+}
+
+
 div.front-page-content h2 {
   text-align: center;
   font-size: 72px;
