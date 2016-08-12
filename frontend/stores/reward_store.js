@@ -90,13 +90,17 @@ function _saveRewards () {
   });
 }
 
+RewardStore.currentFunding = () => {
+  return _funding;
+};
+
 function _resetFunding (funding) {
 
   _funding = funding;
+  RewardStore.__emitChange();
 }
 
 RewardStore.__onDispatch = (payload) => {
-  debugger
   switch (payload.actionType) {
     case RewardConstants.REWARD_RECEIVED:
       _addReward(payload.data);

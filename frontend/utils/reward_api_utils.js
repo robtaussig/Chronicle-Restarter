@@ -33,23 +33,20 @@ const RewardApiUtil = {
       url: '/api/rewards/' + id,
       type: 'DELETE',
       data: {params: id},
-      success,
-      error
+      successCB,
+      errorCB
     });
   },
 
   fundProject(form, rewardId, success, error) {
-    debugger
     $.ajax({
-      url: '/api/fundings/',
-      type: 'CREATE',
+      url: '/api/fundings',
+      type: 'POST',
       data: {funding: {reward_id: rewardId}},
       success: (resp) => {
-        debugger
         success(resp);
       },
       error: (resp) => {
-        debugger
         error(resp);
       }
     });

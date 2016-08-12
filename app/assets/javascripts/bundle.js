@@ -56,21 +56,21 @@
 	var UserProfile = __webpack_require__(273);
 	var SetupApp = __webpack_require__(274);
 	var StartProject = __webpack_require__(275);
-	var CreateProject = __webpack_require__(285);
+	var CreateProject = __webpack_require__(286);
 	var SavedProjects = __webpack_require__(276);
-	var Basics = __webpack_require__(286);
-	var Rewards = __webpack_require__(289);
-	var Story = __webpack_require__(296);
-	var AboutYou = __webpack_require__(297);
+	var Basics = __webpack_require__(287);
+	var Rewards = __webpack_require__(290);
+	var Story = __webpack_require__(298);
+	var AboutYou = __webpack_require__(299);
 	var FocusProject = __webpack_require__(283);
-	var ProjectPreview = __webpack_require__(305);
-	var FrontPage = __webpack_require__(298);
-	var Account = __webpack_require__(299);
-	var SubmitProject = __webpack_require__(300);
-	var Preview = __webpack_require__(301);
-	var RewardStore = __webpack_require__(291);
+	var ProjectPreview = __webpack_require__(285);
+	var FrontPage = __webpack_require__(300);
+	var Account = __webpack_require__(301);
+	var SubmitProject = __webpack_require__(302);
+	var Preview = __webpack_require__(305);
+	var RewardStore = __webpack_require__(293);
 	var SavedProjectStore = __webpack_require__(280);
-	var FinalizeProject = __webpack_require__(302);
+	var FinalizeProject = __webpack_require__(306);
 	
 	
 	var routes = React.createElement(
@@ -34942,7 +34942,7 @@
 	var UserStore = __webpack_require__(281);
 	var SessionStore = __webpack_require__(241);
 	var FocusProject = __webpack_require__(283);
-	var ProjectPreview = __webpack_require__(305);
+	var ProjectPreview = __webpack_require__(285);
 	var ProjectCategoryIds = __webpack_require__(284);
 	var ErrorActions = __webpack_require__(267);
 	
@@ -34965,6 +34965,9 @@
 	    if (this.listener) {
 	      this.listener.remove();
 	    }
+	  },
+	  _newProject: function _newProject() {
+	    _reactRouter.browserHistory.push('/createProject');
 	  },
 	  _onChange: function _onChange() {
 	    this.setState({ savedProjects: SavedProjectStore.allCurrentProjects() });
@@ -35009,6 +35012,8 @@
 	      _savedProjects = [];
 	    }
 	
+	    var _savedProjectsMessage = this.focusProject ? "Previously saved projects" : "";
+	
 	    return React.createElement(
 	      'div',
 	      { className: 'saved-projects-wrapper' },
@@ -35023,7 +35028,7 @@
 	        React.createElement(
 	          'h4',
 	          { className: 'saved-project-list-header' },
-	          'Previously saved projects'
+	          _savedProjectsMessage
 	        ),
 	        React.createElement(
 	          'ul',
@@ -35509,6 +35514,145 @@
 	var _reactRouter = __webpack_require__(1);
 	
 	var React = __webpack_require__(3);
+	var ProjectCategoryIds = __webpack_require__(284);
+	var SavedProjectActions = __webpack_require__(277);
+	var UserStore = __webpack_require__(281);
+	
+	
+	var ProjectPreview = React.createClass({
+	  displayName: 'ProjectPreview',
+	  _goToPage: function _goToPage() {
+	    SavedProjectActions.updateSavedProject('savedProject', this.props.project);
+	    _reactRouter.browserHistory.push('/finalizeProject');
+	  },
+	
+	
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'div',
+	        { onClick: this._goToPage, className: 'project-preview-wrapper' },
+	        React.createElement(
+	          'div',
+	          { className: 'project-preview-image' },
+	          React.createElement('img', { id: 'default-pic', src: window.pug })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'preview-bottom-half' },
+	          React.createElement(
+	            'h3',
+	            { className: 'project-preview-title' },
+	            this.props.project.title || ""
+	          ),
+	          React.createElement(
+	            'p',
+	            { className: 'project-preview-username' },
+	            'by ',
+	            React.createElement(
+	              'b',
+	              null,
+	              UserStore.currentUser().full_name || window.myApp.username
+	            )
+	          ),
+	          React.createElement('br', null),
+	          React.createElement(
+	            'p',
+	            { className: 'project-preview-blurb' },
+	            this.props.project.blurb || "Empty Blurb"
+	          ),
+	          React.createElement('br', null),
+	          React.createElement(
+	            'p',
+	            { className: 'project-preview-location' },
+	            this.props.project.location || "Empty Location"
+	          ),
+	          React.createElement(
+	            'p',
+	            { className: 'project-preview-category' },
+	            ProjectCategoryIds[this.props.project.category_id || 0].label
+	          ),
+	          React.createElement('br', null),
+	          React.createElement('div', { className: 'project-preview-progress-bar' }),
+	          React.createElement(
+	            'ul',
+	            { className: 'project-preview-summary' },
+	            React.createElement(
+	              'li',
+	              { className: 'preview-summary-cat' },
+	              React.createElement(
+	                'ul',
+	                { className: 'project-preview-goal' },
+	                React.createElement(
+	                  'li',
+	                  { id: 'preview-basic-amount' },
+	                  '$',
+	                  this.props.project.goal || 0
+	                ),
+	                React.createElement(
+	                  'li',
+	                  { id: 'preview-basic-text' },
+	                  'goal'
+	                )
+	              )
+	            ),
+	            React.createElement(
+	              'li',
+	              { className: 'preview-summary-cat duration-li' },
+	              React.createElement(
+	                'ul',
+	                { className: 'project-preview-duration' },
+	                React.createElement(
+	                  'li',
+	                  { id: 'preview-basic-amount' },
+	                  this.props.project.duration || 0
+	                ),
+	                React.createElement(
+	                  'li',
+	                  { id: 'preview-basic-text' },
+	                  'days to go'
+	                )
+	              )
+	            ),
+	            React.createElement(
+	              'li',
+	              { className: 'preview-summary-cat' },
+	              React.createElement(
+	                'ul',
+	                { className: 'project-preview-funders' },
+	                React.createElement(
+	                  'li',
+	                  { id: 'preview-basic-amount' },
+	                  this.props.project.funders || 0
+	                ),
+	                React.createElement(
+	                  'li',
+	                  { id: 'preview-basic-text' },
+	                  'backers'
+	                )
+	              )
+	            )
+	          )
+	        )
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = ProjectPreview;
+
+/***/ },
+/* 286 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _reactRouter = __webpack_require__(1);
+	
+	var React = __webpack_require__(3);
 	
 	var ErrorActions = __webpack_require__(267);
 	var SavedProjectActions = __webpack_require__(277);
@@ -35665,7 +35809,7 @@
 	module.exports = CreateProject;
 
 /***/ },
-/* 286 */
+/* 287 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35675,7 +35819,7 @@
 	var SavedProjectStore = __webpack_require__(280);
 	var ProjectCategories = __webpack_require__(284);
 	var SessionStore = __webpack_require__(241);
-	var UserActions = __webpack_require__(287);
+	var UserActions = __webpack_require__(288);
 	
 	var Basics = React.createClass({
 	  displayName: 'Basics',
@@ -36010,14 +36154,14 @@
 	module.exports = Basics;
 
 /***/ },
-/* 287 */
+/* 288 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var AppDispatcher = __webpack_require__(260);
 	var UserConstants = __webpack_require__(263);
-	var ApiUtil = __webpack_require__(288);
+	var ApiUtil = __webpack_require__(289);
 	var ErrorConstants = __webpack_require__(266);
 	var ErrorActions = __webpack_require__(267);
 	
@@ -36048,7 +36192,7 @@
 	module.exports = UserActions;
 
 /***/ },
-/* 288 */
+/* 289 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36096,17 +36240,17 @@
 	module.exports = UserApiUtil;
 
 /***/ },
-/* 289 */
+/* 290 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(3);
 	var SavedProjectStore = __webpack_require__(280);
-	var ProjectStore = __webpack_require__(290);
-	var RewardStore = __webpack_require__(291);
-	var RewardItem = __webpack_require__(293);
-	var RewardActions = __webpack_require__(294);
+	var ProjectStore = __webpack_require__(291);
+	var RewardStore = __webpack_require__(293);
+	var RewardItem = __webpack_require__(295);
+	var RewardActions = __webpack_require__(296);
 	
 	var Rewards = React.createClass({
 	  displayName: 'Rewards',
@@ -36227,14 +36371,14 @@
 	module.exports = Rewards;
 
 /***/ },
-/* 290 */
+/* 291 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var Store = __webpack_require__(242).Store;
 	var AppDispatcher = __webpack_require__(260);
-	var ProjectConstants = __webpack_require__(306);
+	var ProjectConstants = __webpack_require__(292);
 	var ProjectStore = new Store(AppDispatcher);
 	
 	var _projects = [];
@@ -36280,14 +36424,26 @@
 	module.exports = ProjectStore;
 
 /***/ },
-/* 291 */
+/* 292 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	module.exports = {
+	  PROJECT_RECEIVED: 'PROJECT_RECEIVED',
+	  PROJECT_REMOVED: 'PROJECT_REMOVED',
+	  PROJECT_UPDATED: 'PROJECT_UPDATED'
+	};
+
+/***/ },
+/* 293 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var Store = __webpack_require__(242).Store;
 	var AppDispatcher = __webpack_require__(260);
-	var RewardConstants = __webpack_require__(292);
+	var RewardConstants = __webpack_require__(294);
 	var RewardStore = new Store(AppDispatcher);
 	var ErrorActions = __webpack_require__(267);
 	
@@ -36374,13 +36530,17 @@
 	  });
 	}
 	
+	RewardStore.currentFunding = function () {
+	  return _funding;
+	};
+	
 	function _resetFunding(funding) {
 	
 	  _funding = funding;
+	  RewardStore.__emitChange();
 	}
 	
 	RewardStore.__onDispatch = function (payload) {
-	  debugger;
 	  switch (payload.actionType) {
 	    case RewardConstants.REWARD_RECEIVED:
 	      _addReward(payload.data);
@@ -36404,7 +36564,7 @@
 	module.exports = RewardStore;
 
 /***/ },
-/* 292 */
+/* 294 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36418,16 +36578,16 @@
 	};
 
 /***/ },
-/* 293 */
+/* 295 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(3);
-	var RewardStore = __webpack_require__(291);
+	var RewardStore = __webpack_require__(293);
 	var SavedProjectStore = __webpack_require__(280);
 	var SavedProjectActions = __webpack_require__(277);
-	var RewardActions = __webpack_require__(294);
+	var RewardActions = __webpack_require__(296);
 	var UserStore = __webpack_require__(281);
 	
 	var RewardItem = React.createClass({
@@ -36631,14 +36791,14 @@
 	module.exports = RewardItem;
 
 /***/ },
-/* 294 */
+/* 296 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var AppDispatcher = __webpack_require__(260);
-	var RewardApiUtil = __webpack_require__(295);
-	var RewardConstants = __webpack_require__(292);
+	var RewardApiUtil = __webpack_require__(297);
+	var RewardConstants = __webpack_require__(294);
 	var ErrorActions = __webpack_require__(267);
 	
 	var RewardActions = {
@@ -36654,7 +36814,6 @@
 	    });
 	  },
 	  fundProject: function fundProject(form, rewardId) {
-	    debugger;
 	    RewardApiUtil.fundProject(form, rewardId, this.receiveFunding, ErrorActions.receiveError);
 	  },
 	  updateReward: function updateReward(rewardInfo) {
@@ -36680,7 +36839,7 @@
 	module.exports = RewardActions;
 
 /***/ },
-/* 295 */
+/* 297 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36717,44 +36876,21 @@
 	      url: '/api/rewards/' + id,
 	      type: 'DELETE',
 	      data: { params: id },
-	      success: success,
-	      error: error
+	      successCB: successCB,
+	      errorCB: errorCB
 	    });
 	  },
-	  fundProject: function fundProject(form, rewardId, success, error) {
-	    debugger;
+	  fundProject: function fundProject(form, rewardId, _success, _error) {
 	    $.ajax({
-	      url: '/api/fundings/',
-	      type: 'CREATE',
+	      url: '/api/fundings',
+	      type: 'POST',
 	      data: { funding: { reward_id: rewardId } },
-	      success: function (_success) {
-	        function success(_x) {
-	          return _success.apply(this, arguments);
-	        }
-	
-	        success.toString = function () {
-	          return _success.toString();
-	        };
-	
-	        return success;
-	      }(function (resp) {
-	        debugger;
-	        success(resp);
-	      }),
-	      error: function (_error) {
-	        function error(_x2) {
-	          return _error.apply(this, arguments);
-	        }
-	
-	        error.toString = function () {
-	          return _error.toString();
-	        };
-	
-	        return error;
-	      }(function (resp) {
-	        debugger;
-	        error(resp);
-	      })
+	      success: function success(resp) {
+	        _success(resp);
+	      },
+	      error: function error(resp) {
+	        _error(resp);
+	      }
 	    });
 	  }
 	};
@@ -36762,7 +36898,7 @@
 	module.exports = RewardApiUtil;
 
 /***/ },
-/* 296 */
+/* 298 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -36956,14 +37092,14 @@
 	module.exports = Story;
 
 /***/ },
-/* 297 */
+/* 299 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(3);
 	var UserStore = __webpack_require__(281);
-	var UserActions = __webpack_require__(287);
+	var UserActions = __webpack_require__(288);
 	var SavedProjectStore = __webpack_require__(280);
 	var SessionStore = __webpack_require__(241);
 	
@@ -37217,7 +37353,7 @@
 	module.exports = AboutYou;
 
 /***/ },
-/* 298 */
+/* 300 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -37246,14 +37382,14 @@
 	module.exports = FrontPage;
 
 /***/ },
-/* 299 */
+/* 301 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(3);
 	var UserStore = __webpack_require__(281);
-	var UserActions = __webpack_require__(287);
+	var UserActions = __webpack_require__(288);
 	var SessionStore = __webpack_require__(281);
 	
 	var Account = React.createClass({
@@ -37376,21 +37512,21 @@
 	module.exports = Account;
 
 /***/ },
-/* 300 */
+/* 302 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(3);
 	var SavedProjectStore = __webpack_require__(280);
-	var ProjectActions = __webpack_require__(307);
-	var ProjectStore = __webpack_require__(290);
-	var ProjectShow = __webpack_require__(308);
-	var RewardActions = __webpack_require__(294);
-	var RewardStore = __webpack_require__(291);
-	var RewardItem = __webpack_require__(293);
+	var ProjectActions = __webpack_require__(303);
+	var ProjectStore = __webpack_require__(291);
+	var ProjectShow = __webpack_require__(304);
+	var RewardActions = __webpack_require__(296);
+	var RewardStore = __webpack_require__(293);
+	var RewardItem = __webpack_require__(295);
 	var UserStore = __webpack_require__(281);
-	var UserActions = __webpack_require__(287);
+	var UserActions = __webpack_require__(288);
 	var SavedProjectActions = __webpack_require__(277);
 	var ProjectCategories = __webpack_require__(284);
 	
@@ -37482,18 +37618,471 @@
 	module.exports = SubmitProject;
 
 /***/ },
-/* 301 */
+/* 303 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var AppDispatcher = __webpack_require__(260);
+	var ProjectApiUtil = __webpack_require__(278);
+	var ProjectConstants = __webpack_require__(292);
+	var ErrorActions = __webpack_require__(267);
+	
+	var ProjectActions = {
+	  submitProject: function submitProject(form, projectInfo) {
+	    ProjectApiUtil.submitProject(form, projectInfo, this.receiveProject, ErrorActions.receiveError);
+	  },
+	  updateProject: function updateProject(form, projectInfo) {
+	    ProjectApiUtil.updateProject(form, projectInfo, this.receiveUpdatedProject, ErrorActions.receiveError);
+	  },
+	  deleteProject: function deleteProject(form, projectId) {
+	    ProjectApiUtil.removeProject(form, projectId, this.removeProject, ErrorActions.receiveError);
+	  },
+	  fetchAllProjects: function fetchAllProjects(form) {
+	    ProjectApiUtil.fetchAllProjects(form, this.receiveAllProjects, ErrorActions.receiveError);
+	  },
+	  receiveProject: function receiveProject(data) {
+	    AppDispatcher.dispatch({
+	      actionType: ProjectConstants.PROJECT_RECEIVED,
+	      data: data
+	    });
+	  },
+	  receiveAllProjects: function receiveAllProjects(data) {
+	    AppDispatcher.dispatch({
+	      actionType: ProjectConstants.PROJECTS_RECEIVED,
+	      data: data
+	    });
+	  },
+	  receiveUpdatedProject: function receiveUpdatedProject(data) {
+	    AppDispatcher.dispatch({
+	      actionType: ProjectConstants.PROJECT_RECEIVED,
+	      data: data
+	    });
+	  },
+	  removeProject: function removeProject(data) {
+	    AppDispatcher.dispatch({
+	      actionType: ProjectConstants.PROJECT_REMOVED,
+	      data: data
+	    });
+	  }
+	};
+	
+	module.exports = ProjectActions;
+
+/***/ },
+/* 304 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _reactRouter = __webpack_require__(1);
+	
+	var React = __webpack_require__(3);
+	var ProjectCategories = __webpack_require__(284);
+	var ProjectStore = __webpack_require__(291);
+	var RewardActions = __webpack_require__(296);
+	var RewardStore = __webpack_require__(293);
+	var UserStore = __webpack_require__(281);
+	var UserActions = __webpack_require__(288);
+	
+	
+	var ProjectShow = React.createClass({
+	  displayName: 'ProjectShow',
+	  getInitialState: function getInitialState() {
+	    return {
+	      user: "",
+	      userProjects: [],
+	      backers: 0,
+	      funded: 0
+	    };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    this.projectListener = ProjectStore.addListener(this._onProjectChange);
+	    var user = this.props.project.author_id;
+	    this.userListener = UserStore.addListener(this._onUserChange);
+	    UserActions.fetchUser('show', user);
+	    this._countFunding();
+	  },
+	  componentWillUnmount: function componentWillUnmount() {
+	    this.projectListener.remove();
+	    this.userListener.remove();
+	  },
+	  _onProjectChange: function _onProjectChange() {},
+	  _countFunding: function _countFunding() {
+	    var _this = this;
+	
+	    var _funders = this.props.project.fundings.length;
+	    var _funded = this.props.project.fundings.map(function (funding) {
+	      return _this.props.project.rewards.filter(function (reward) {
+	        return reward.id === funding.reward_id;
+	      })[0].amount;
+	    }).reduce(function (a, b) {
+	      return a + b;
+	    });
+	    this.setState({ backers: _funders, funded: _funded });
+	  },
+	  _onUserChange: function _onUserChange() {
+	    var user = UserStore.currentUser();
+	    this.setState({ user: user, userProjects: user.projects });
+	  },
+	  _switchToCampaign: function _switchToCampaign(event) {
+	    debugger;
+	  },
+	  _switchToUpdates: function _switchToUpdates(event) {
+	    debugger;
+	  },
+	  _switchToComments: function _switchToComments(event) {
+	    debugger;
+	  },
+	  _switchToCommunity: function _switchToCommunity(event) {
+	    debugger;
+	  },
+	  _backProject: function _backProject(event) {
+	    debugger;
+	  },
+	  _selectReward: function _selectReward(idx, event) {
+	    var amount = this.props.project.rewards[idx].amount;
+	    this.setState({ backers: this.state.backers + 1, funded: this.state.funded + amount });
+	  },
+	
+	
+	  render: function render() {
+	    var _this2 = this;
+	
+	    var _rewards = this.props.project.rewards.slice(0, 4).map(function (reward, idx) {
+	      return React.createElement(
+	        'div',
+	        { onClick: function onClick(event) {
+	            return _this2._selectReward(idx, event);
+	          }, className: 'single-reward-wrapper final', key: idx },
+	        React.createElement(
+	          'h3',
+	          null,
+	          'Pledge $',
+	          reward.amount,
+	          ' or more'
+	        ),
+	        React.createElement(
+	          'p',
+	          { className: 'reward-number' },
+	          'Reward #',
+	          idx + 1
+	        ),
+	        React.createElement('br', null),
+	        React.createElement(
+	          'h4',
+	          { className: 'reward-title' },
+	          reward.title
+	        ),
+	        React.createElement('br', null),
+	        React.createElement(
+	          'p',
+	          { className: 'reward-description' },
+	          reward.description
+	        ),
+	        React.createElement('br', null),
+	        React.createElement(
+	          'p',
+	          { className: 'reward-availability' },
+	          'Available for ' + reward.quantity + '\n          backers'
+	        )
+	      );
+	    });
+	
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'div',
+	        { className: 'preview-wrapper' },
+	        React.createElement(
+	          'div',
+	          { className: 'preview-header' },
+	          React.createElement(
+	            'h3',
+	            { className: 'preview-project-title' },
+	            this.props.project.title
+	          ),
+	          React.createElement(
+	            'p',
+	            { className: 'preview-project-name' },
+	            'by ',
+	            React.createElement(
+	              'b',
+	              null,
+	              this.state.user.full_name || this.state.user.username || "No name"
+	            )
+	          ),
+	          React.createElement('br', null)
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'preview-project-image' },
+	          React.createElement(
+	            'div',
+	            null,
+	            React.createElement('img', { id: 'default-pic', src: this.props.project.project_img_urls === 'window.pug' ? window.pug : this.props.project_img_urls })
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'preview-project-summary' },
+	          React.createElement(
+	            'ul',
+	            { className: 'funders group' },
+	            React.createElement(
+	              'li',
+	              { className: 'funders-num-final' },
+	              this.state.backers || 0
+	            ),
+	            React.createElement(
+	              'li',
+	              { className: 'funders-text' },
+	              'backers'
+	            )
+	          ),
+	          React.createElement(
+	            'ul',
+	            { className: 'funded group' },
+	            React.createElement(
+	              'li',
+	              { className: 'funded-num-final' },
+	              '$',
+	              this.state.funded || 0
+	            ),
+	            React.createElement(
+	              'li',
+	              { className: 'funded-goal' },
+	              'pledged of $',
+	              this.props.project.goal,
+	              ' goal'
+	            )
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'preview-project-duration-final' },
+	            this.props.project.duration
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'preview-project-remaining' },
+	            'days to go'
+	          ),
+	          React.createElement(
+	            'div',
+	            { onClick: this._backProject, className: 'back-project' },
+	            'Back this project'
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { id: 'era-wrapper', className: 'era-field' },
+	          React.createElement(
+	            'b',
+	            null,
+	            'Era: '
+	          ),
+	          ProjectCategories[this.props.project.category_id].label
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'project-location' },
+	          this.props.project.location
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'preview-sub-info' },
+	          React.createElement(
+	            'div',
+	            { className: 'social-links-wrapper' },
+	            React.createElement(
+	              'ul',
+	              { className: 'social-links group' },
+	              React.createElement(
+	                'li',
+	                null,
+	                React.createElement(
+	                  'b',
+	                  null,
+	                  'Share:'
+	                ),
+	                ' '
+	              ),
+	              React.createElement(
+	                'li',
+	                null,
+	                '[Tweet]'
+	              ),
+	              React.createElement(
+	                'li',
+	                null,
+	                '[Facebook]'
+	              ),
+	              React.createElement(
+	                'li',
+	                null,
+	                '[Embed]'
+	              ),
+	              React.createElement(
+	                'li',
+	                null,
+	                '[Email]'
+	              )
+	            )
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'preview-project-blurb' },
+	            this.props.project.blurb
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'user-info' },
+	            React.createElement(
+	              'ul',
+	              { className: 'user-name-pic' },
+	              React.createElement(
+	                'li',
+	                null,
+	                React.createElement(
+	                  'p',
+	                  { className: 'user-full-name' },
+	                  this.state.user.full_name || this.state.user.username || "No name"
+	                )
+	              ),
+	              React.createElement(
+	                'li',
+	                { className: 'profile-pic' },
+	                this.state.user.pic_url || 'user pic'
+	              )
+	            ),
+	            React.createElement('br', null),
+	            React.createElement(
+	              'p',
+	              { className: 'project-total' },
+	              this.state.userProjects.length || 0,
+	              this.state.userProjects.length === 1 ? ' project ' : ' projects ',
+	              ' created'
+	            ),
+	            React.createElement('br', null),
+	            React.createElement(
+	              'a',
+	              { href: 'http://' + this.state.user.website },
+	              React.createElement(
+	                'p',
+	                { className: 'user-website final' },
+	                this.state.user.website
+	              )
+	            ),
+	            React.createElement('br', null),
+	            React.createElement(
+	              'ul',
+	              { className: 'user-contact-info final group' },
+	              React.createElement(
+	                'li',
+	                { onClick: this._seeBio },
+	                'See full bio'
+	              ),
+	              React.createElement(
+	                'li',
+	                { onClick: this._contactMe },
+	                'Contact me'
+	              )
+	            )
+	          )
+	        )
+	      ),
+	      React.createElement('div', { className: 'content-divider' }),
+	      React.createElement(
+	        'div',
+	        { className: 'preview-bottom-page group' },
+	        React.createElement(
+	          'div',
+	          { className: 'project-content-bar' },
+	          React.createElement(
+	            'ul',
+	            { className: 'project-content-nav-bar final group' },
+	            React.createElement(
+	              'li',
+	              { onClick: this._switchToCampaign },
+	              'Campaign'
+	            ),
+	            React.createElement(
+	              'li',
+	              { onClick: this._switchToUpdates },
+	              'Updates'
+	            ),
+	            React.createElement(
+	              'li',
+	              { onClick: this._switchToComments },
+	              'Comments'
+	            ),
+	            React.createElement(
+	              'li',
+	              { onClick: this._switchToCommunity },
+	              'Community'
+	            )
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'project-content-field' },
+	          React.createElement(
+	            'h3',
+	            { className: 'preview-about-field' },
+	            'About this project'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'project-content' },
+	            React.createElement(
+	              'h4',
+	              null,
+	              'Background'
+	            ),
+	            this.props.project.content || "Test Text"
+	          ),
+	          React.createElement('br', null),
+	          React.createElement(
+	            'div',
+	            { className: 'project-risks' },
+	            React.createElement(
+	              'h4',
+	              null,
+	              'Risks'
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'project-risk-content' },
+	              this.props.project.risks
+	            )
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'project-rewards-sidebar' },
+	            _rewards
+	          )
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = ProjectShow;
+
+/***/ },
+/* 305 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(3);
 	var SavedProjectStore = __webpack_require__(280);
-	var RewardActions = __webpack_require__(294);
-	var RewardStore = __webpack_require__(291);
-	var RewardItem = __webpack_require__(293);
+	var RewardActions = __webpack_require__(296);
+	var RewardStore = __webpack_require__(293);
+	var RewardItem = __webpack_require__(295);
 	var UserStore = __webpack_require__(281);
-	var UserActions = __webpack_require__(287);
+	var UserActions = __webpack_require__(288);
 	var SavedProjectActions = __webpack_require__(277);
 	var ProjectCategories = __webpack_require__(284);
 	
@@ -37910,7 +38499,7 @@
 	*/
 
 /***/ },
-/* 302 */
+/* 306 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37918,19 +38507,19 @@
 	var _reactRouter = __webpack_require__(1);
 	
 	var React = __webpack_require__(3);
-	var ProjectStore = __webpack_require__(290);
+	var ProjectStore = __webpack_require__(291);
 	var SavedProjectActions = __webpack_require__(277);
 	var SavedProjectStore = __webpack_require__(280);
 	var ErrorActions = __webpack_require__(267);
 	var ErrorStore = __webpack_require__(268);
-	var ProjectNavBar = __webpack_require__(303);
-	var Basics = __webpack_require__(286);
-	var Rewards = __webpack_require__(289);
-	var Story = __webpack_require__(296);
-	var AboutYou = __webpack_require__(297);
-	var Account = __webpack_require__(299);
-	var Preview = __webpack_require__(301);
-	var ProjectMessages = __webpack_require__(304);
+	var ProjectNavBar = __webpack_require__(307);
+	var Basics = __webpack_require__(287);
+	var Rewards = __webpack_require__(290);
+	var Story = __webpack_require__(298);
+	var AboutYou = __webpack_require__(299);
+	var Account = __webpack_require__(301);
+	var Preview = __webpack_require__(305);
+	var ProjectMessages = __webpack_require__(308);
 	var SessionStore = __webpack_require__(241);
 	
 	var FinalizeProject = React.createClass({
@@ -38039,7 +38628,7 @@
 	*/
 
 /***/ },
-/* 303 */
+/* 307 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38156,7 +38745,7 @@
 	*/
 
 /***/ },
-/* 304 */
+/* 308 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -38177,603 +38766,6 @@
 	  'submit': "",
 	  'submit header': ""
 	};
-
-/***/ },
-/* 305 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _reactRouter = __webpack_require__(1);
-	
-	var React = __webpack_require__(3);
-	var ProjectCategoryIds = __webpack_require__(284);
-	var SavedProjectActions = __webpack_require__(277);
-	var UserStore = __webpack_require__(281);
-	
-	
-	var ProjectPreview = React.createClass({
-	  displayName: 'ProjectPreview',
-	  _goToPage: function _goToPage() {
-	    SavedProjectActions.updateSavedProject('savedProject', this.props.project);
-	    _reactRouter.browserHistory.push('/finalizeProject');
-	  },
-	
-	
-	  render: function render() {
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(
-	        'div',
-	        { onClick: this._goToPage, className: 'project-preview-wrapper' },
-	        React.createElement(
-	          'div',
-	          { className: 'project-preview-image' },
-	          React.createElement('img', { id: 'default-pic', src: window.pug })
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'preview-bottom-half' },
-	          React.createElement(
-	            'h3',
-	            { className: 'project-preview-title' },
-	            this.props.project.title || ""
-	          ),
-	          React.createElement(
-	            'p',
-	            { className: 'project-preview-username' },
-	            'by ',
-	            React.createElement(
-	              'b',
-	              null,
-	              UserStore.currentUser().full_name || window.myApp.username
-	            )
-	          ),
-	          React.createElement('br', null),
-	          React.createElement(
-	            'p',
-	            { className: 'project-preview-blurb' },
-	            this.props.project.blurb || "Empty Blurb"
-	          ),
-	          React.createElement('br', null),
-	          React.createElement(
-	            'p',
-	            { className: 'project-preview-location' },
-	            this.props.project.location || "Empty Location"
-	          ),
-	          React.createElement(
-	            'p',
-	            { className: 'project-preview-category' },
-	            ProjectCategoryIds[this.props.project.category_id || 0].label
-	          ),
-	          React.createElement('br', null),
-	          React.createElement('div', { className: 'project-preview-progress-bar' }),
-	          React.createElement(
-	            'ul',
-	            { className: 'project-preview-summary' },
-	            React.createElement(
-	              'li',
-	              { className: 'preview-summary-cat' },
-	              React.createElement(
-	                'ul',
-	                { className: 'project-preview-goal' },
-	                React.createElement(
-	                  'li',
-	                  { id: 'preview-basic-amount' },
-	                  '$',
-	                  this.props.project.goal || 0
-	                ),
-	                React.createElement(
-	                  'li',
-	                  { id: 'preview-basic-text' },
-	                  'goal'
-	                )
-	              )
-	            ),
-	            React.createElement(
-	              'li',
-	              { className: 'preview-summary-cat duration-li' },
-	              React.createElement(
-	                'ul',
-	                { className: 'project-preview-duration' },
-	                React.createElement(
-	                  'li',
-	                  { id: 'preview-basic-amount' },
-	                  this.props.project.duration || 0
-	                ),
-	                React.createElement(
-	                  'li',
-	                  { id: 'preview-basic-text' },
-	                  'days to go'
-	                )
-	              )
-	            ),
-	            React.createElement(
-	              'li',
-	              { className: 'preview-summary-cat' },
-	              React.createElement(
-	                'ul',
-	                { className: 'project-preview-funders' },
-	                React.createElement(
-	                  'li',
-	                  { id: 'preview-basic-amount' },
-	                  this.props.project.funders || 0
-	                ),
-	                React.createElement(
-	                  'li',
-	                  { id: 'preview-basic-text' },
-	                  'backers'
-	                )
-	              )
-	            )
-	          )
-	        )
-	      )
-	    );
-	  }
-	
-	});
-	
-	module.exports = ProjectPreview;
-
-/***/ },
-/* 306 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	module.exports = {
-	  PROJECT_RECEIVED: 'PROJECT_RECEIVED',
-	  PROJECT_REMOVED: 'PROJECT_REMOVED',
-	  PROJECT_UPDATED: 'PROJECT_UPDATED'
-	};
-
-/***/ },
-/* 307 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var AppDispatcher = __webpack_require__(260);
-	var ProjectApiUtil = __webpack_require__(278);
-	var ProjectConstants = __webpack_require__(306);
-	var ErrorActions = __webpack_require__(267);
-	
-	var ProjectActions = {
-	  submitProject: function submitProject(form, projectInfo) {
-	    ProjectApiUtil.submitProject(form, projectInfo, this.receiveProject, ErrorActions.receiveError);
-	  },
-	  updateProject: function updateProject(form, projectInfo) {
-	    ProjectApiUtil.updateProject(form, projectInfo, this.receiveUpdatedProject, ErrorActions.receiveError);
-	  },
-	  deleteProject: function deleteProject(form, projectId) {
-	    ProjectApiUtil.removeProject(form, projectId, this.removeProject, ErrorActions.receiveError);
-	  },
-	  fetchAllProjects: function fetchAllProjects(form) {
-	    ProjectApiUtil.fetchAllProjects(form, this.receiveAllProjects, ErrorActions.receiveError);
-	  },
-	  receiveProject: function receiveProject(data) {
-	    AppDispatcher.dispatch({
-	      actionType: ProjectConstants.PROJECT_RECEIVED,
-	      data: data
-	    });
-	  },
-	  receiveAllProjects: function receiveAllProjects(data) {
-	    AppDispatcher.dispatch({
-	      actionType: ProjectConstants.PROJECTS_RECEIVED,
-	      data: data
-	    });
-	  },
-	  receiveUpdatedProject: function receiveUpdatedProject(data) {
-	    AppDispatcher.dispatch({
-	      actionType: ProjectConstants.PROJECT_RECEIVED,
-	      data: data
-	    });
-	  },
-	  removeProject: function removeProject(data) {
-	    AppDispatcher.dispatch({
-	      actionType: ProjectConstants.PROJECT_REMOVED,
-	      data: data
-	    });
-	  }
-	};
-	
-	module.exports = ProjectActions;
-
-/***/ },
-/* 308 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _reactRouter = __webpack_require__(1);
-	
-	var React = __webpack_require__(3);
-	var ProjectCategories = __webpack_require__(284);
-	var ProjectStore = __webpack_require__(290);
-	var RewardActions = __webpack_require__(294);
-	var RewardStore = __webpack_require__(291);
-	var UserStore = __webpack_require__(281);
-	var UserActions = __webpack_require__(287);
-	
-	
-	var ProjectShow = React.createClass({
-	  displayName: 'ProjectShow',
-	  getInitialState: function getInitialState() {
-	    return {
-	      user: "",
-	      userProjects: [],
-	      backers: 0,
-	      funded: 0
-	    };
-	  },
-	  componentDidMount: function componentDidMount() {
-	    this.projectListener = ProjectStore.addListener(this._onProjectChange);
-	    var user = this.props.project.author_id;
-	    this.userListener = UserStore.addListener(this._onUserChange);
-	    this.rewardListener = RewardStore.addListener(this._onRewardChange);
-	    UserActions.fetchUser('show', user);
-	    // RewardActions.fetchFunding('show', this.props.project.id);
-	  },
-	  componentWillUnmount: function componentWillUnmount() {
-	    this.projectListener.remove();
-	    this.userListener.remove();
-	  },
-	  _onProjectChange: function _onProjectChange() {},
-	  _onRewardChange: function _onRewardChange() {
-	    var funding = RewardStore.currentFunding();
-	    this.setState({ funded: funding.funded, backers: funding.funders });
-	  },
-	  _onUserChange: function _onUserChange() {
-	    var user = UserStore.currentUser();
-	    this.setState({ user: user, userProjects: user.projects });
-	  },
-	  _switchToCampaign: function _switchToCampaign(event) {
-	    debugger;
-	  },
-	  _switchToUpdates: function _switchToUpdates(event) {
-	    debugger;
-	  },
-	  _switchToComments: function _switchToComments(event) {
-	    debugger;
-	  },
-	  _switchToCommunity: function _switchToCommunity(event) {
-	    debugger;
-	  },
-	  _backProject: function _backProject(event) {
-	    debugger;
-	  },
-	  _selectReward: function _selectReward(idx, event) {
-	    var rewardId = this.props.project.rewards[idx].id;
-	    debugger;
-	    RewardActions.fundProject('show', rewardId);
-	  },
-	
-	
-	  render: function render() {
-	    var _this = this;
-	
-	    var _rewards = this.props.project.rewards.slice(0, 4).map(function (reward, idx) {
-	      return React.createElement(
-	        'div',
-	        { onClick: function onClick(event) {
-	            return _this._selectReward(idx, event);
-	          }, className: 'single-reward-wrapper final', key: idx },
-	        React.createElement(
-	          'h3',
-	          null,
-	          'Pledge $',
-	          reward.amount,
-	          ' or more'
-	        ),
-	        React.createElement(
-	          'p',
-	          { className: 'reward-number' },
-	          'Reward #',
-	          idx + 1
-	        ),
-	        React.createElement('br', null),
-	        React.createElement(
-	          'h4',
-	          { className: 'reward-title' },
-	          reward.title
-	        ),
-	        React.createElement('br', null),
-	        React.createElement(
-	          'p',
-	          { className: 'reward-description' },
-	          reward.description
-	        ),
-	        React.createElement('br', null),
-	        React.createElement(
-	          'p',
-	          { className: 'reward-availability' },
-	          'Available for ' + reward.quantity + '\n          backers'
-	        )
-	      );
-	    });
-	
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(
-	        'div',
-	        { className: 'preview-wrapper' },
-	        React.createElement(
-	          'div',
-	          { className: 'preview-header' },
-	          React.createElement(
-	            'h3',
-	            { className: 'preview-project-title' },
-	            this.props.project.title
-	          ),
-	          React.createElement(
-	            'p',
-	            { className: 'preview-project-name' },
-	            'by ',
-	            React.createElement(
-	              'b',
-	              null,
-	              this.state.user.full_name || this.state.user.username || "No name"
-	            )
-	          ),
-	          React.createElement('br', null)
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'preview-project-image' },
-	          React.createElement(
-	            'div',
-	            null,
-	            React.createElement('img', { id: 'default-pic', src: this.props.project.project_img_urls === 'window.pug' ? window.pug : this.props.project_img_urls })
-	          )
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'preview-project-summary' },
-	          React.createElement(
-	            'ul',
-	            { className: 'funders group' },
-	            React.createElement(
-	              'li',
-	              { className: 'funders-num-final' },
-	              this.state.backers || 0
-	            ),
-	            React.createElement(
-	              'li',
-	              { className: 'funders-text' },
-	              'backers'
-	            )
-	          ),
-	          React.createElement(
-	            'ul',
-	            { className: 'funded group' },
-	            React.createElement(
-	              'li',
-	              { className: 'funded-num-final' },
-	              '$',
-	              this.state.funded || 0
-	            ),
-	            React.createElement(
-	              'li',
-	              { className: 'funded-goal' },
-	              'pledged of $',
-	              this.props.project.goal,
-	              ' goal'
-	            )
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'preview-project-duration-final' },
-	            this.props.project.duration
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'preview-project-remaining' },
-	            'days to go'
-	          ),
-	          React.createElement(
-	            'div',
-	            { onClick: this._backProject, className: 'back-project' },
-	            'Back this project'
-	          )
-	        ),
-	        React.createElement(
-	          'div',
-	          { id: 'era-wrapper', className: 'era-field' },
-	          React.createElement(
-	            'b',
-	            null,
-	            'Era: '
-	          ),
-	          ProjectCategories[this.props.project.category_id].label
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'project-location' },
-	          this.props.project.location
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'preview-sub-info' },
-	          React.createElement(
-	            'div',
-	            { className: 'social-links-wrapper' },
-	            React.createElement(
-	              'ul',
-	              { className: 'social-links group' },
-	              React.createElement(
-	                'li',
-	                null,
-	                React.createElement(
-	                  'b',
-	                  null,
-	                  'Share:'
-	                ),
-	                ' '
-	              ),
-	              React.createElement(
-	                'li',
-	                null,
-	                '[Tweet]'
-	              ),
-	              React.createElement(
-	                'li',
-	                null,
-	                '[Facebook]'
-	              ),
-	              React.createElement(
-	                'li',
-	                null,
-	                '[Embed]'
-	              ),
-	              React.createElement(
-	                'li',
-	                null,
-	                '[Email]'
-	              )
-	            )
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'preview-project-blurb' },
-	            this.props.project.blurb
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'user-info' },
-	            React.createElement(
-	              'ul',
-	              { className: 'user-name-pic' },
-	              React.createElement(
-	                'li',
-	                null,
-	                React.createElement(
-	                  'p',
-	                  { className: 'user-full-name' },
-	                  this.state.user.full_name || this.state.user.username || "No name"
-	                )
-	              ),
-	              React.createElement(
-	                'li',
-	                { className: 'profile-pic' },
-	                this.state.user.pic_url || 'user pic'
-	              )
-	            ),
-	            React.createElement('br', null),
-	            React.createElement(
-	              'p',
-	              { className: 'project-total' },
-	              this.state.userProjects.length || 0,
-	              this.state.userProjects.length === 1 ? ' project ' : ' projects ',
-	              ' created'
-	            ),
-	            React.createElement('br', null),
-	            React.createElement(
-	              'a',
-	              { href: 'http://' + this.state.user.website },
-	              React.createElement(
-	                'p',
-	                { className: 'user-website final' },
-	                this.state.user.website
-	              )
-	            ),
-	            React.createElement('br', null),
-	            React.createElement(
-	              'ul',
-	              { className: 'user-contact-info final group' },
-	              React.createElement(
-	                'li',
-	                { onClick: this._seeBio },
-	                'See full bio'
-	              ),
-	              React.createElement(
-	                'li',
-	                { onClick: this._contactMe },
-	                'Contact me'
-	              )
-	            )
-	          )
-	        )
-	      ),
-	      React.createElement('div', { className: 'content-divider' }),
-	      React.createElement(
-	        'div',
-	        { className: 'preview-bottom-page group' },
-	        React.createElement(
-	          'div',
-	          { className: 'project-content-bar' },
-	          React.createElement(
-	            'ul',
-	            { className: 'project-content-nav-bar final group' },
-	            React.createElement(
-	              'li',
-	              { onClick: this._switchToCampaign },
-	              'Campaign'
-	            ),
-	            React.createElement(
-	              'li',
-	              { onClick: this._switchToUpdates },
-	              'Updates'
-	            ),
-	            React.createElement(
-	              'li',
-	              { onClick: this._switchToComments },
-	              'Comments'
-	            ),
-	            React.createElement(
-	              'li',
-	              { onClick: this._switchToCommunity },
-	              'Community'
-	            )
-	          )
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'project-content-field' },
-	          React.createElement(
-	            'h3',
-	            { className: 'preview-about-field' },
-	            'About this project'
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'project-content' },
-	            React.createElement(
-	              'h4',
-	              null,
-	              'Background'
-	            ),
-	            this.props.project.content || "Test Text"
-	          ),
-	          React.createElement('br', null),
-	          React.createElement(
-	            'div',
-	            { className: 'project-risks' },
-	            React.createElement(
-	              'h4',
-	              null,
-	              'Risks'
-	            ),
-	            React.createElement(
-	              'div',
-	              { className: 'project-risk-content' },
-	              this.props.project.risks
-	            )
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'project-rewards-sidebar' },
-	            _rewards
-	          )
-	        )
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = ProjectShow;
 
 /***/ }
 /******/ ]);

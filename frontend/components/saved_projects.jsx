@@ -29,7 +29,10 @@ const SavedProjects = React.createClass({
     if (this.listener) {
       this.listener.remove();
     }
+  },
 
+  _newProject () {
+    browserHistory.push('/createProject');
   },
 
   _onChange () {
@@ -63,6 +66,7 @@ const SavedProjects = React.createClass({
       _savedProjects = [];
     }
 
+    let _savedProjectsMessage = this.focusProject ? "Previously saved projects" : "";
 
     return (
       <div className="saved-projects-wrapper">
@@ -70,7 +74,7 @@ const SavedProjects = React.createClass({
           {_focusProject}
         </div>
         <div className="saved-projects-div">
-          <h4 className="saved-project-list-header">Previously saved projects</h4>
+          <h4 className="saved-project-list-header">{_savedProjectsMessage}</h4>
           <ul className="saved-projects-list group">
             {_savedProjects}
           </ul>

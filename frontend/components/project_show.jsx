@@ -22,9 +22,8 @@ const ProjectShow = React.createClass({
     this.projectListener = ProjectStore.addListener(this._onProjectChange);
     let user = this.props.project.author_id;
     this.userListener = UserStore.addListener(this._onUserChange);
-    this.rewardListener = RewardStore.addListener(this._onRewardChange);
     UserActions.fetchUser('show', user);
-    // RewardActions.fetchFunding('show', this.props.project.id);
+    this._countFunding();
   },
 
   componentWillUnmount () {
@@ -36,9 +35,10 @@ const ProjectShow = React.createClass({
 
   },
 
-  _onRewardChange () {
-    let funding = RewardStore.currentFunding();
-    this.setState({funded: funding.funded, backers: funding.funders});
+  _countFunding () {
+    let _funders = this.props.project.fundings.length;
+    let _funded = this.props.project.fundings.map(funding => this.props.project.rewards.filter(reward => reward.id === funding.reward_id)[0].amount).reduce((a, b) => a + b );
+    this.setState({backers: _funders, funded: _funded});
   },
 
   _onUserChange () {
@@ -47,29 +47,28 @@ const ProjectShow = React.createClass({
   },
 
   _switchToCampaign (event) {
-    debugger
+    debugger;
   },
 
   _switchToUpdates (event) {
-    debugger
+    debugger;
   },
 
   _switchToComments (event) {
-    debugger
+    debugger;
   },
 
   _switchToCommunity (event) {
-    debugger
+    debugger;
   },
 
   _backProject (event) {
-    debugger
+    debugger;
   },
 
   _selectReward (idx, event) {
-    let rewardId = this.props.project.rewards[idx].id;
-    debugger
-    RewardActions.fundProject('show', rewardId);
+    let amount = this.props.project.rewards[idx].amount;
+    this.setState({backers: this.state.backers + 1, funded: this.state.funded + amount});
   },
 
   render: function() {
