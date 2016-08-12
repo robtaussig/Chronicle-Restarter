@@ -13,8 +13,8 @@ const ProjectShow = React.createClass({
     return ({
       user: "",
       userProjects: [],
-      backers: 0,
-      funded: 0,
+      backers: this.props.project.funders,
+      funded: this.props.project.funded,
     });
   },
 
@@ -23,7 +23,7 @@ const ProjectShow = React.createClass({
     let user = this.props.project.author_id;
     this.userListener = UserStore.addListener(this._onUserChange);
     UserActions.fetchUser('show', user);
-    this._countFunding();
+    console.log(this.props.project.id);
   },
 
   componentWillUnmount () {
@@ -33,12 +33,6 @@ const ProjectShow = React.createClass({
 
   _onProjectChange () {
 
-  },
-
-  _countFunding () {
-    let _funders = this.props.project.fundings.length;
-    let _funded = this.props.project.fundings.map(funding => this.props.project.rewards.filter(reward => reward.id === funding.reward_id)[0].amount).reduce((a, b) => a + b );
-    this.setState({backers: _funders, funded: _funded});
   },
 
   _onUserChange () {
@@ -67,8 +61,9 @@ const ProjectShow = React.createClass({
   },
 
   _selectReward (idx, event) {
-    let amount = this.props.project.rewards[idx].amount;
-    this.setState({backers: this.state.backers + 1, funded: this.state.funded + amount});
+    let reward = this.props.project.rewards[idx];
+    RewardActions.fundProject('show', reward.id);
+    this.setState({backers: this.state.backers + 1, funded: this.state.funded + reward.amount});
   },
 
   render: function() {

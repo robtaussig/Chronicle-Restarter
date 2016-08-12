@@ -4,4 +4,13 @@ json.extract! @project,
   :author_full_name, :risks, :website
 
   json.rewards @project.rewards
-  json.fundings @project.fundings
+  json.funders @project.fundings.length
+
+  amount_array = []
+  @project.fundings.each do |funding|
+    amount_array << Api::Reward.find(funding.reward_id).amount
+  end
+
+  total = amount_array.inject(0){|sum,x| sum + x }
+
+  json.funded total

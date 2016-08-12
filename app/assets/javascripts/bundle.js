@@ -37692,8 +37692,8 @@
 	    return {
 	      user: "",
 	      userProjects: [],
-	      backers: 0,
-	      funded: 0
+	      backers: this.props.project.funders,
+	      funded: this.props.project.funded
 	    };
 	  },
 	  componentDidMount: function componentDidMount() {
@@ -37701,26 +37701,13 @@
 	    var user = this.props.project.author_id;
 	    this.userListener = UserStore.addListener(this._onUserChange);
 	    UserActions.fetchUser('show', user);
-	    this._countFunding();
+	    console.log(this.props.project.id);
 	  },
 	  componentWillUnmount: function componentWillUnmount() {
 	    this.projectListener.remove();
 	    this.userListener.remove();
 	  },
 	  _onProjectChange: function _onProjectChange() {},
-	  _countFunding: function _countFunding() {
-	    var _this = this;
-	
-	    var _funders = this.props.project.fundings.length;
-	    var _funded = this.props.project.fundings.map(function (funding) {
-	      return _this.props.project.rewards.filter(function (reward) {
-	        return reward.id === funding.reward_id;
-	      })[0].amount;
-	    }).reduce(function (a, b) {
-	      return a + b;
-	    });
-	    this.setState({ backers: _funders, funded: _funded });
-	  },
 	  _onUserChange: function _onUserChange() {
 	    var user = UserStore.currentUser();
 	    this.setState({ user: user, userProjects: user.projects });
@@ -37741,19 +37728,20 @@
 	    debugger;
 	  },
 	  _selectReward: function _selectReward(idx, event) {
-	    var amount = this.props.project.rewards[idx].amount;
-	    this.setState({ backers: this.state.backers + 1, funded: this.state.funded + amount });
+	    var reward = this.props.project.rewards[idx];
+	    RewardActions.fundProject('show', reward.id);
+	    this.setState({ backers: this.state.backers + 1, funded: this.state.funded + reward.amount });
 	  },
 	
 	
 	  render: function render() {
-	    var _this2 = this;
+	    var _this = this;
 	
 	    var _rewards = this.props.project.rewards.slice(0, 4).map(function (reward, idx) {
 	      return React.createElement(
 	        'div',
 	        { onClick: function onClick(event) {
-	            return _this2._selectReward(idx, event);
+	            return _this._selectReward(idx, event);
 	          }, className: 'single-reward-wrapper final', key: idx },
 	        React.createElement(
 	          'h3',
