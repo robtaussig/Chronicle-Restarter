@@ -1950,6 +1950,29 @@ div.single-reward-wrapper.final:hover {
   cursor: pointer;
 }
 
+div.funded-message {
+  padding: 15px;
+  text-align: center;
+  font-weight: bold;
+  display: none;
+}
+
+div#zero.zero.funded-message {
+  display: block;
+}
+
+div#one.one.funded-message {
+  display: block;
+}
+
+div#two.two.funded-message {
+  display: block;
+}
+
+div#three.three.funded-message {
+  display: block;
+}
+
 div.back-project {
   margin-top: 75px;
   border: 1px solid #ccc;
@@ -1976,4 +1999,48 @@ ul.user-contact-info.final li {
 
 p.user-website.final {
   cursor: pointer;
+}
+
+div.user-biography {
+  opacity: 0;
+  position: absolute;
+  z-index: 1;
+  border: 1px solid #46c76b;
+  width: 400px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 20px 10px;
+  border-radius: 10px;
+  box-shadow: -11px 19px 12px #ccc;
+  top: -86px;
+  left: 2px;
+  line-height: 21px;
+  background-color: white;
+}
+
+div.user-biography.revealed {
+  opacity: 1;
+  transition: 0.3s;
+}
+
+div.user-email {
+  opacity: 0;
+  position: absolute;
+  z-index: 1;
+  border: 1px solid #46c76b;
+  width: 400px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 20px 10px;
+  border-radius: 10px;
+  box-shadow: -11px 19px 12px #ccc;
+  top: 63px;
+  left: -2px;
+  line-height: 21px;
+  background-color: white;
+}
+
+div.user-email.revealed {
+  opacity: 1;
+  transition: 0.3s;
 }

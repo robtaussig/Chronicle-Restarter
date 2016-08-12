@@ -27312,7 +27312,8 @@
 	  getInitialState: function getInitialState() {
 	    return {
 	      form: "signup", id: "", username: "", email: "", confirmEmail: "",
-	      password: "", confirmPassword: "", logged_in: false, errors: []
+	      password: "", confirmPassword: "", logged_in: false, errors: [],
+	      emailMessage: "Email"
 	    };
 	  },
 	  componentWillReceiveProps: function componentWillReceiveProps() {
@@ -27358,6 +27359,9 @@
 	  },
 	  _setEmail: function _setEmail(event) {
 	    this.setState({ email: event.currentTarget.value });
+	    if (this.state.email.includes("@") && this.state.email.includes(".")) {
+	      this.setState({ emailMessage: "Email" });
+	    }
 	  },
 	  _confirmEmail: function _confirmEmail(event) {
 	    this.setState({ confirmEmail: event.currentTarget.value });
@@ -27393,7 +27397,10 @@
 	  _handleSubmit: function _handleSubmit(event) {
 	    event.preventDefault();
 	    this.errors = [];
-	    if (this._checkSyncedForms()) {
+	    if (!this.state.email.includes('@') || !this.state.email.includes('.')) {
+	      this.setState({ email: "", emailMessage: "Please input a proper email address." });
+	      this.errors.push("email");
+	    } else if (this._checkSyncedForms()) {
 	      SessionActions.signUp(this.state.form, {
 	        username: this.state.username,
 	        password: this.state.password,
@@ -27419,7 +27426,7 @@
 	        React.createElement('input', { type: 'text', placeholder: 'Name', onChange: this._setName }),
 	        React.createElement('br', null),
 	        React.createElement('input', { type: 'text', id: 'email', className: this.state.errors,
-	          placeholder: 'Email', onChange: this._setEmail }),
+	          placeholder: this.state.emailMessage, value: this.state.email, onChange: this._setEmail }),
 	        React.createElement('br', null),
 	        React.createElement('input', { type: 'text', id: 'email', className: this.state.errors,
 	          placeholder: 'Re-enter email', onChange: this._confirmEmail }),
@@ -37557,7 +37564,7 @@
 	    var that = this;
 	    this.timeOut = window.setTimeout(function () {
 	      that._displayProject(_project);
-	    }, 1500);
+	    }, 750);
 	  },
 	  _displayProject: function _displayProject() {
 	    this.setState({ display: "project" });
@@ -37693,7 +37700,11 @@
 	      user: "",
 	      userProjects: [],
 	      backers: this.props.project.funders,
-	      funded: this.props.project.funded
+	      funded: this.props.project.funded,
+	      selected: "",
+	      message: "",
+	      userBio: "hidden",
+	      email: "hidden"
 	    };
 	  },
 	  componentDidMount: function componentDidMount() {
@@ -37707,7 +37718,6 @@
 	    this.projectListener.remove();
 	    this.userListener.remove();
 	  },
-	  _onProjectChange: function _onProjectChange() {},
 	  _onUserChange: function _onUserChange() {
 	    var user = UserStore.currentUser();
 	    this.setState({ user: user, userProjects: user.projects });
@@ -37724,25 +37734,43 @@
 	  _switchToCommunity: function _switchToCommunity(event) {
 	    debugger;
 	  },
-	  _backProject: function _backProject(event) {
-	    debugger;
+	  _emailAuthor: function _emailAuthor(event) {
+	    this.setState({ email: "revealed" });
+	  },
+	  _seeBio: function _seeBio(event) {
+	    this.setState({ userBio: "revealed" });
+	  },
+	  _resetReveals: function _resetReveals(event) {
+	    if (event.target.innerHTML === "See full bio" || event.target.innerHTML === "Contact me") {
+	      return;
+	    } else {
+	      this.setState({ userBio: "hidden", email: "hidden" });
+	    }
 	  },
 	  _selectReward: function _selectReward(idx, event) {
-	    var reward = this.props.project.rewards[idx];
-	    RewardActions.fundProject('show', reward.id);
-	    this.setState({ backers: this.state.backers + 1, funded: this.state.funded + reward.amount });
+	    if (this.props.project.author_id === UserStore.currentUser().id) {
+	      this.setState({ selected: this.positions[idx],
+	        message: "You can't back your own project" });
+	    } else {
+	      var reward = this.props.project.rewards[idx];
+	      RewardActions.fundProject('show', reward.id);
+	      this.setState({ backers: this.state.backers + 1, funded: this.state.funded + reward.amount, selected: this.positions[idx], message: "You have selected this reward!" });
+	    }
 	  },
 	
 	
 	  render: function render() {
 	    var _this = this;
 	
+	    this.positions = ['zero', 'one', 'two', 'three'];
+	
 	    var _rewards = this.props.project.rewards.slice(0, 4).map(function (reward, idx) {
 	      return React.createElement(
 	        'div',
 	        { onClick: function onClick(event) {
 	            return _this._selectReward(idx, event);
-	          }, className: 'single-reward-wrapper final', key: idx },
+	          },
+	          className: 'single-reward-wrapper final', key: idx },
 	        React.createElement(
 	          'h3',
 	          null,
@@ -37773,13 +37801,19 @@
 	          'p',
 	          { className: 'reward-availability' },
 	          'Available for ' + reward.quantity + '\n          backers'
+	        ),
+	        React.createElement(
+	          'div',
+	          { id: _this.positions[idx] || idx,
+	            className: (_this.state.selected || idx) + ' funded-message' },
+	          _this.state.message
 	        )
 	      );
 	    });
 	
 	    return React.createElement(
 	      'div',
-	      null,
+	      { onClick: this._resetReveals },
 	      React.createElement(
 	        'div',
 	        { className: 'preview-wrapper' },
@@ -37809,7 +37843,8 @@
 	          React.createElement(
 	            'div',
 	            null,
-	            React.createElement('img', { id: 'default-pic', src: this.props.project.project_img_urls === 'window.pug' ? window.pug : this.props.project_img_urls })
+	            React.createElement('img', { id: 'default-pic',
+	              src: this.props.project.project_img_urls === 'window.pug' ? window.pug : this.props.project_img_urls })
 	          )
 	        ),
 	        React.createElement(
@@ -37972,10 +38007,20 @@
 	                'See full bio'
 	              ),
 	              React.createElement(
+	                'div',
+	                { className: 'user-biography ' + this.state.userBio },
+	                this.state.user.biography
+	              ),
+	              React.createElement(
 	                'li',
-	                { onClick: this._contactMe },
+	                { onClick: this._emailAuthor },
 	                'Contact me'
 	              )
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'user-email ' + this.state.email },
+	              this.state.user.email
 	            )
 	          )
 	        )

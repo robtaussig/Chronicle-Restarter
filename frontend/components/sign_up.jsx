@@ -11,7 +11,8 @@ const SignUp = React.createClass({
   getInitialState () {
     return ({
       form: "signup", id: "", username: "", email: "", confirmEmail: "",
-      password: "", confirmPassword: "", logged_in: false, errors: []
+      password: "", confirmPassword: "", logged_in: false, errors: [],
+      emailMessage: "Email"
     });
   },
 
@@ -65,6 +66,9 @@ const SignUp = React.createClass({
 
   _setEmail (event) {
     this.setState({email: event.currentTarget.value});
+    if (this.state.email.includes("@") && this.state.email.includes(".")) {
+      this.setState({emailMessage: "Email"});
+    }
   },
 
   _confirmEmail (event) {
@@ -108,11 +112,14 @@ const SignUp = React.createClass({
   _handleSubmit (event) {
     event.preventDefault();
     this.errors = [];
-    if (this._checkSyncedForms()) {
+    if (!this.state.email.includes('@') || !this.state.email.includes('.')) {
+      this.setState({email: "", emailMessage: "Please input a proper email address."});
+      this.errors.push("email");
+    } else if (this._checkSyncedForms()) {
       SessionActions.signUp(this.state.form,{
-          username: this.state.username,
-          password: this.state.password,
-          email: this.state.email
+        username: this.state.username,
+        password: this.state.password,
+        email: this.state.email
       });
     } else {
       this._handleMisMatch();
@@ -128,7 +135,7 @@ const SignUp = React.createClass({
           <input type="text" placeholder="Name" onChange={this._setName}/>
           <br></br>
           <input type="text" id="email" className={this.state.errors}
-            placeholder="Email" onChange={this._setEmail}/>
+            placeholder={this.state.emailMessage} value={this.state.email} onChange={this._setEmail}/>
           <br></br>
           <input type="text" id="email" className={this.state.errors}
             placeholder="Re-enter email" onChange={this._confirmEmail}/>

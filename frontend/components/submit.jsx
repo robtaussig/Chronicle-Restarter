@@ -37,7 +37,7 @@ const SubmitProject = React.createClass({
     let that = this;
     this.timeOut = window.setTimeout(()=> {
       that._displayProject(_project);
-    },1500);
+    },750);
   },
 
   _displayProject () {
@@ -75,7 +75,9 @@ const SubmitProject = React.createClass({
     if (this.state.display === "pending") {
       _display = (
         <div className="pending-wrapper">
-          <div className="pending-message">Please wait while we review your project</div>
+          <div className="pending-message">
+            Please wait while we review your project
+          </div>
         </div>
       );
     } else {
