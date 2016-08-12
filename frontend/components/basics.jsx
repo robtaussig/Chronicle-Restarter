@@ -88,7 +88,7 @@ const Basics = React.createClass({
       if (error === null) {
         this._postImage(img[0].url);
       } else {
-        debugger
+        return;
       }
     });
   },

@@ -1,5 +1,5 @@
 const AppDispatcher = require('../dispatcher/dispatcher.js');
-const UserConstants = require('../constants/session_constants.js');
+const UserConstants = require('../constants/user_constants.js');
 const ApiUtil = require('../utils/user_api_util.js');
 const ErrorConstants = require('../constants/error_constants.js');
 const ErrorActions = require('./error_actions.js');

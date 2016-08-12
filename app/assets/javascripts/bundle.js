@@ -35954,7 +35954,7 @@
 	      if (error === null) {
 	        _this2._postImage(img[0].url);
 	      } else {
-	        debugger;
+	        return;
 	      }
 	    });
 	  },
@@ -36229,7 +36229,7 @@
 	'use strict';
 	
 	var AppDispatcher = __webpack_require__(260);
-	var UserConstants = __webpack_require__(263);
+	var UserConstants = __webpack_require__(282);
 	var ApiUtil = __webpack_require__(289);
 	var ErrorConstants = __webpack_require__(266);
 	var ErrorActions = __webpack_require__(267);
@@ -37274,8 +37274,8 @@
 	    };
 	    var userId = SessionStore.currentUser().id || window.myApp.id;
 	    this.setState({ id: userId });
-	    UserActions.fetchUser('about', userId);
 	    this.listener = UserStore.addListener(this._onChange);
+	    UserActions.fetchUser('about', userId);
 	    window.setTimeout(function () {
 	      _this.setState({ appearance: 'entered' });
 	    }, 100);

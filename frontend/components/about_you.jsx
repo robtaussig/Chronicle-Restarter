@@ -33,8 +33,8 @@ const AboutYou = React.createClass({
     };
     let userId = SessionStore.currentUser().id || window.myApp.id;
     this.setState({id: userId});
-    UserActions.fetchUser('about', userId);
     this.listener = UserStore.addListener(this._onChange);
+    UserActions.fetchUser('about', userId);
     window.setTimeout(() => {this.setState({appearance: 'entered'});},100);
   },
 

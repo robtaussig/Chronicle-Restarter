@@ -1448,6 +1448,13 @@ div.preview-project-image {
   margin: 30px 30px 30px 0
 }
 
+div.preview-project-image img {
+  display: block;
+  max-width: 600px;
+  max-height: 600px;
+  margin: 0 auto;
+}
+
 div.preview-project-summary {
   position: absolute;
   right: 0;
@@ -2145,9 +2152,9 @@ div.single-reward-wrapper.highlight {
 
 div.bottom-page-wrapper {
   width: 985px;
-  height: 1014px;
+  height: 1416px;
   overflow: hidden;
-  margin: 500px auto 0 auto;
+  margin: 211px auto 0 auto;
 }
 
 div.bottom-page-item {
