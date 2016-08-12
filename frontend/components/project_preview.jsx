@@ -51,7 +51,7 @@ const ProjectPreview = React.createClass({
     return (
       <div>
         <div onClick={this._goToPage} className="project-preview-wrapper">
-          <div className="project-preview-image"><img id="default-pic" src={this.props.project.image || window.pug}></img></div>
+          <div className="project-preview-image"><img id="default-pic" src={this.props.project.image || ""}></img></div>
           <div className="preview-bottom-half">
             <h3 className="project-preview-title">{this.props.project.title || ""}</h3>
             <p className="project-preview-username">by <b>{UserStore.find(this.props.project.author_id).full_name || window.myApp.username}</b></p>

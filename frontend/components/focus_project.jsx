@@ -22,7 +22,7 @@ const FocusProject = React.createClass({
       <div>
         <h1 className="focal-project-header">Your Latest Saved Project</h1>
         <div onClick={this._goToPage} className="focal-project-wrapper">
-          <div className="focal-project-image"><img id="default-pic" src={window.pug}></img></div>
+          <div className="focal-project-image"><img id="default-pic" src={this.props.project.image}></img></div>
           <div className="focal-right-half">
             <h3 className="focal-project-title">{this.props.project.title || ""}</h3>
             <p className="focal-project-username">by <b>{SessionStore.currentUser().full_name || window.myApp.username}</b></p>

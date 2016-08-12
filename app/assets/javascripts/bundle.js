@@ -35429,7 +35429,7 @@
 	        React.createElement(
 	          'div',
 	          { className: 'focal-project-image' },
-	          React.createElement('img', { id: 'default-pic', src: window.pug })
+	          React.createElement('img', { id: 'default-pic', src: this.props.project.image })
 	        ),
 	        React.createElement(
 	          'div',
@@ -35604,7 +35604,7 @@
 	        React.createElement(
 	          'div',
 	          { className: 'project-preview-image' },
-	          React.createElement('img', { id: 'default-pic', src: this.props.project.image || window.pug })
+	          React.createElement('img', { id: 'default-pic', src: this.props.project.image || "" })
 	        ),
 	        React.createElement(
 	          'div',
@@ -37853,7 +37853,7 @@
 	            'div',
 	            null,
 	            React.createElement('img', { id: 'default-pic',
-	              src: this.props.project.image || window.pug })
+	              src: this.props.project.image || "" })
 	          )
 	        ),
 	        React.createElement(
@@ -38481,7 +38481,7 @@
 	      author_id: user.id,
 	      author_full_name: user.full_name || user.username,
 	      website: user.website || "",
-	      image: project.image || window.pug,
+	      image: project.image || "",
 	      goal: project.goal || 0,
 	      location: project.location || "",
 	      duration: project.duration || 0,
@@ -38595,7 +38595,7 @@
 	      project_title: project.title || "Title was left empty",
 	      author_full_name: user.full_name || user.username,
 	      user_website: user.website || "",
-	      image: project.image || React.createElement('img', { id: 'default-pic', src: window.pug }),
+	      image: React.createElement('img', { id: 'default-pic', src: project.image }),
 	      project_funders: project.funders || 0,
 	      project_funded: project.funded || 0,
 	      project_goal: project.goal || 0,
