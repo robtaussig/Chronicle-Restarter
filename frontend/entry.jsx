@@ -16,6 +16,8 @@ const Story = require('./components/story.jsx');
 const AboutYou = require('./components/about_you.jsx');
 const FocusProject = require('./components/focus_project.jsx');
 const ProjectPreview = require('./components/project_preview.jsx');
+const ProjectIndex = require('./components/project_index.jsx');
+const ProjectItem = require('./components/project_item.jsx');
 const FrontPage = require('./components/front_page.jsx');
 const Account = require('./components/account.jsx');
 const SubmitProject = require('./components/submit.jsx');
@@ -32,6 +34,9 @@ const routes = (
     <Route path="signUp" component={SignUp} />
     <Route path="logIn" component={LogIn} />
     <Route path="userProfile" component={UserProfile} />
+    <Route path="projects" component={ProjectIndex}>
+      <Route path=":projectId" component={ProjectItem} />
+    </Route>
     <Route path="savedProjects" component={SavedProjects} />
     <Route path="startProject" component={StartProject} />
     <Route path="createProject" component={CreateProject} />

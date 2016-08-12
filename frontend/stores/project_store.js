@@ -13,7 +13,9 @@ function _resetProject(project) {
 }
 
 function _resetProjects(projects) {
-  _projects = projects;
+  if (projects) {
+    _projects = projects;
+  }
   ProjectStore.__emitChange();
 }
 

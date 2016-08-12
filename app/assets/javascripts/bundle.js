@@ -66,6 +66,8 @@
 	var AboutYou = __webpack_require__(299);
 	var FocusProject = __webpack_require__(283);
 	var ProjectPreview = __webpack_require__(285);
+	var ProjectIndex = __webpack_require__(313);
+	var ProjectItem = __webpack_require__(314);
 	var FrontPage = __webpack_require__(300);
 	var Account = __webpack_require__(301);
 	var SubmitProject = __webpack_require__(302);
@@ -83,6 +85,11 @@
 	  React.createElement(_reactRouter.Route, { path: 'signUp', component: SignUp }),
 	  React.createElement(_reactRouter.Route, { path: 'logIn', component: LogIn }),
 	  React.createElement(_reactRouter.Route, { path: 'userProfile', component: UserProfile }),
+	  React.createElement(
+	    _reactRouter.Route,
+	    { path: 'projects', component: ProjectIndex },
+	    React.createElement(_reactRouter.Route, { path: ':projectId', component: ProjectItem })
+	  ),
 	  React.createElement(_reactRouter.Route, { path: 'savedProjects', component: SavedProjects }),
 	  React.createElement(_reactRouter.Route, { path: 'startProject', component: StartProject }),
 	  React.createElement(_reactRouter.Route, { path: 'createProject', component: CreateProject }),
@@ -36400,7 +36407,9 @@
 	}
 	
 	function _resetProjects(projects) {
-	  _projects = projects;
+	  if (projects) {
+	    _projects = projects;
+	  }
 	  ProjectStore.__emitChange();
 	}
 	
@@ -37379,12 +37388,13 @@
 /* 300 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	var React = __webpack_require__(3);
+	var ProjectActions = __webpack_require__(303);
 	
 	var FrontPage = React.createClass({
-	  displayName: "FrontPage",
+	  displayName: 'FrontPage',
 	  componentDidMount: function componentDidMount() {},
 	  componentWillUnmount: function componentWillUnmount() {},
 	  _randomPage: function _randomPage() {},
@@ -37393,35 +37403,35 @@
 	  render: function render() {
 	
 	    return React.createElement(
-	      "div",
+	      'div',
 	      null,
 	      React.createElement(
-	        "div",
-	        { className: "splash" },
+	        'div',
+	        { className: 'splash' },
 	        React.createElement(
-	          "div",
-	          { className: "front-page-content" },
+	          'div',
+	          { className: 'front-page-content' },
 	          React.createElement(
-	            "h2",
+	            'h2',
 	            null,
-	            "Feeling Lucky?"
+	            'Feeling Lucky?'
 	          ),
 	          React.createElement(
-	            "h3",
+	            'h3',
 	            null,
-	            "Or just too lazy to navigate around? Jump into the time machine and transport yourself to a random campaign."
+	            'Or just too lazy to navigate around? Jump into the time machine and transport yourself to a random campaign.'
 	          ),
 	          React.createElement(
-	            "div",
-	            { className: "front-page-button", onClick: this._randomPage },
-	            "Go."
+	            'div',
+	            { className: 'front-page-button', onClick: this._randomPage },
+	            'Go.'
 	          )
 	        )
 	      ),
 	      React.createElement(
-	        "h2",
-	        { className: "under-construction" },
-	        "Project Navigation is currently under construction... Please check back later."
+	        'h2',
+	        { className: 'under-construction' },
+	        'Project Navigation is currently under construction... Please check back later.'
 	      )
 	    );
 	  }
@@ -37602,7 +37612,6 @@
 	  },
 	  _onChange: function _onChange() {
 	    var _project = ProjectStore.currentProject();
-	    debugger;
 	    this.setState(_project);
 	    var that = this;
 	    that._displayProject(_project);
@@ -38876,8 +38885,8 @@
 	  'account': "Provision of your contact information will be used to notify you of a successful campaign.",
 	  'preview header': "How your project will appear to others:",
 	  'preview': "This isn't your last chance to edit your project, but it is the last chance to edit it before it is made public.",
-	  'submit': "Your project is ready!",
-	  'submit header': "You might have just taken the first step in changing the world. Perhaps."
+	  'submit header': "Your project is ready!",
+	  'submit': "You might have just taken the first step in changing the world. Perhaps."
 	};
 
 /***/ },
@@ -38955,6 +38964,48 @@
 	});
 	
 	module.exports = Community;
+
+/***/ },
+/* 313 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(3);
+	
+	var ProjectIndex = React.createClass({
+	  displayName: "ProjectIndex",
+	  render: function render() {
+	    return React.createElement(
+	      "div",
+	      { className: "project-index-wrapper" },
+	      "Hello from Project Index"
+	    );
+	  }
+	});
+	
+	module.exports = ProjectIndex;
+
+/***/ },
+/* 314 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(3);
+	
+	var ProjectItem = React.createClass({
+	  displayName: "ProjectItem",
+	  render: function render() {
+	    return React.createElement(
+	      "div",
+	      { className: "project-item-wrapper" },
+	      "Hello from Project Item"
+	    );
+	  }
+	});
+	
+	module.exports = ProjectItem;
 
 /***/ }
 /******/ ]);

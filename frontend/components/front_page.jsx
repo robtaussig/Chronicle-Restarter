@@ -1,9 +1,10 @@
 const React = require('react');
+const ProjectActions = require('../actions/project_actions.js');
 
 const FrontPage = React.createClass({
 
   componentDidMount () {
-    
+
   },
 
   componentWillUnmount () {
