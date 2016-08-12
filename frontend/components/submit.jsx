@@ -35,9 +35,7 @@ const SubmitProject = React.createClass({
     let _project = ProjectStore.currentProject();
     this.setState(_project);
     let that = this;
-    this.timeOut = window.setTimeout(()=> {
-      that._displayProject(_project);
-    },750);
+    that._displayProject(_project);
   },
 
   _displayProject () {
@@ -73,13 +71,7 @@ const SubmitProject = React.createClass({
     let _display;
 
     if (this.state.display === "pending") {
-      _display = (
-        <div className="pending-wrapper">
-          <div className="pending-message">
-            Please wait while we review your project
-          </div>
-        </div>
-      );
+      <div>Hi</div>
     } else {
       _display = <ProjectShow project={this.state} />;
     }

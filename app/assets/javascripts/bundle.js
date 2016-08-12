@@ -59,6 +59,9 @@
 	var CreateProject = __webpack_require__(286);
 	var SavedProjects = __webpack_require__(276);
 	var Basics = __webpack_require__(287);
+	var Comments = __webpack_require__(309);
+	var Community = __webpack_require__(310);
+	var Updates = __webpack_require__(311);
 	var Rewards = __webpack_require__(290);
 	var Story = __webpack_require__(298);
 	var AboutYou = __webpack_require__(299);
@@ -36662,6 +36665,7 @@
 	    event.preventDefault();
 	    if (this.state.quantity > 0 && this.state.amount > 0 && this.state.description !== "" && this.state.title !== "") {
 	      RewardActions.createReward(this.state);
+	      this.setState({ saved: 'saved' });
 	    } else {
 	      this._handleError();
 	    }
@@ -37562,9 +37566,7 @@
 	    var _project = ProjectStore.currentProject();
 	    this.setState(_project);
 	    var that = this;
-	    this.timeOut = window.setTimeout(function () {
-	      that._displayProject(_project);
-	    }, 750);
+	    that._displayProject(_project);
 	  },
 	  _displayProject: function _displayProject() {
 	    this.setState({ display: "project" });
@@ -37600,14 +37602,10 @@
 	    var _display = void 0;
 	
 	    if (this.state.display === "pending") {
-	      _display = React.createElement(
+	      React.createElement(
 	        'div',
-	        { className: 'pending-wrapper' },
-	        React.createElement(
-	          'div',
-	          { className: 'pending-message' },
-	          'Please wait while we review your project'
-	        )
+	        null,
+	        'Hi'
 	      );
 	    } else {
 	      _display = React.createElement(ProjectShow, { project: this.state });
@@ -37689,6 +37687,9 @@
 	var ProjectStore = __webpack_require__(291);
 	var RewardActions = __webpack_require__(296);
 	var RewardStore = __webpack_require__(293);
+	var Comments = __webpack_require__(309);
+	var Community = __webpack_require__(312);
+	var Updates = __webpack_require__(311);
 	var UserStore = __webpack_require__(281);
 	var UserActions = __webpack_require__(288);
 	
@@ -37704,7 +37705,10 @@
 	      selected: "",
 	      message: "",
 	      userBio: "hidden",
-	      email: "hidden"
+	      email: "hidden",
+	      highlight: "",
+	      bottomPage: 0,
+	      reveal: "campaign"
 	    };
 	  },
 	  componentDidMount: function componentDidMount() {
@@ -37717,22 +37721,46 @@
 	  componentWillUnmount: function componentWillUnmount() {
 	    this.projectListener.remove();
 	    this.userListener.remove();
+	    clearTimeout(this.timeout);
 	  },
 	  _onUserChange: function _onUserChange() {
 	    var user = UserStore.currentUser();
 	    this.setState({ user: user, userProjects: user.projects });
 	  },
 	  _switchToCampaign: function _switchToCampaign(event) {
-	    debugger;
+	    this.setState({ bottomPage: 0, reveal: "campaign" });
 	  },
 	  _switchToUpdates: function _switchToUpdates(event) {
-	    debugger;
+	    var _this = this;
+	
+	    this.setState({ bottomPage: 2 });
+	    window.setTimeout(function () {
+	      _this.setState({ reveal: "updates" });
+	    }, 100);
 	  },
 	  _switchToComments: function _switchToComments(event) {
-	    debugger;
+	    var _this2 = this;
+	
+	    this.setState({ bottomPage: 1 });
+	    window.setTimeout(function () {
+	      _this2.setState({ reveal: "comments" });
+	    }, 100);
 	  },
 	  _switchToCommunity: function _switchToCommunity(event) {
-	    debugger;
+	    var _this3 = this;
+	
+	    this.setState({ bottomPage: 3 });
+	    window.setTimeout(function () {
+	      _this3.setState({ reveal: "community" });
+	    }, 100);
+	  },
+	  _highlightRewards: function _highlightRewards(event) {
+	    var _this4 = this;
+	
+	    this.setState({ highlight: "highlight" });
+	    window.setTimeout(function () {
+	      _this4.timeout = _this4.setState({ highlight: "" });
+	    }, 1500);
 	  },
 	  _emailAuthor: function _emailAuthor(event) {
 	    this.setState({ email: "revealed" });
@@ -37760,17 +37788,19 @@
 	
 	
 	  render: function render() {
-	    var _this = this;
+	    var _this5 = this;
 	
 	    this.positions = ['zero', 'one', 'two', 'three'];
+	    var _revealReward = this.state.reveal === 'campaign' ? 'reveal-reward' : "";
 	
 	    var _rewards = this.props.project.rewards.slice(0, 4).map(function (reward, idx) {
 	      return React.createElement(
 	        'div',
 	        { onClick: function onClick(event) {
-	            return _this._selectReward(idx, event);
+	            return _this5._selectReward(idx, event);
 	          },
-	          className: 'single-reward-wrapper final', key: idx },
+	          className: 'single-reward-wrapper final ' + _this5.state.highlight + ' ' + _revealReward,
+	          key: idx },
 	        React.createElement(
 	          'h3',
 	          null,
@@ -37804,19 +37834,21 @@
 	        ),
 	        React.createElement(
 	          'div',
-	          { id: _this.positions[idx] || idx,
-	            className: (_this.state.selected || idx) + ' funded-message' },
-	          _this.state.message
+	          { id: _this5.positions[idx] || idx,
+	            className: (_this5.state.selected || idx) + ' funded-message' },
+	          _this5.state.message
 	        )
 	      );
 	    });
+	
+	    var _currentBottomPage = [[], React.createElement(Comments, { revealed: this.state.reveal }), React.createElement(Updates, { revealed: this.state.reveal }), React.createElement(Community, { revealed: this.state.reveal })][this.state.bottomPage || 0];
 	
 	    return React.createElement(
 	      'div',
 	      { onClick: this._resetReveals },
 	      React.createElement(
 	        'div',
-	        { className: 'preview-wrapper' },
+	        { id: 'top', className: 'preview-wrapper' },
 	        React.createElement(
 	          'div',
 	          { className: 'preview-header' },
@@ -37892,9 +37924,13 @@
 	            'days to go'
 	          ),
 	          React.createElement(
-	            'div',
-	            { onClick: this._backProject, className: 'back-project' },
-	            'Back this project'
+	            'a',
+	            { href: '#back-project', onClick: this._highlightRewards },
+	            React.createElement(
+	              'div',
+	              { className: 'back-project' },
+	              'Back this project'
+	            )
 	          )
 	        ),
 	        React.createElement(
@@ -38031,28 +38067,28 @@
 	        { className: 'preview-bottom-page group' },
 	        React.createElement(
 	          'div',
-	          { className: 'project-content-bar' },
+	          { id: 'back-project', className: 'project-content-bar' },
 	          React.createElement(
 	            'ul',
 	            { className: 'project-content-nav-bar final group' },
 	            React.createElement(
 	              'li',
-	              { onClick: this._switchToCampaign },
+	              { id: 'campaign', className: this.state.reveal, onClick: this._switchToCampaign },
 	              'Campaign'
 	            ),
 	            React.createElement(
 	              'li',
-	              { onClick: this._switchToUpdates },
+	              { id: 'updates', className: this.state.reveal, onClick: this._switchToUpdates },
 	              'Updates'
 	            ),
 	            React.createElement(
 	              'li',
-	              { onClick: this._switchToComments },
+	              { id: 'comments', className: this.state.reveal, onClick: this._switchToComments },
 	              'Comments'
 	            ),
 	            React.createElement(
 	              'li',
-	              { onClick: this._switchToCommunity },
+	              { id: 'community', className: this.state.reveal, onClick: this._switchToCommunity },
 	              'Community'
 	            )
 	          )
@@ -38096,6 +38132,11 @@
 	            _rewards
 	          )
 	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'bottom-page-wrapper' },
+	        _currentBottomPage
 	      )
 	    );
 	  }
@@ -38796,9 +38837,109 @@
 	  'account': "Provision of your contact information will be used to notify you of a successful campaign.",
 	  'preview header': "How your project will appear to others:",
 	  'preview': "This isn't your last chance to edit your project, but it is the last chance to edit it before it is made public.",
-	  'submit': "",
-	  'submit header': ""
+	  'submit': "Your project is ready!",
+	  'submit header': "You might have just taken the first step in changing the world. Perhaps."
 	};
+
+/***/ },
+/* 309 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(3);
+	
+	var Comments = React.createClass({
+	  displayName: "Comments",
+	  render: function render() {
+	    return React.createElement(
+	      "div",
+	      { className: "bottom-page-item comments-wrapper " + this.props.revealed },
+	      React.createElement(
+	        "h1",
+	        { className: "pending-header" },
+	        "Comments are expected to be the next feature"
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = Comments;
+
+/***/ },
+/* 310 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(3);
+	
+	var Community = React.createClass({
+	  displayName: "Community",
+	  render: function render() {
+	    return React.createElement(
+	      "div",
+	      { className: "bottom-page-item community-wrapper " + this.props.revealed },
+	      React.createElement(
+	        "h1",
+	        { className: "pending-header" },
+	        "A community page is coming soon"
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = Community;
+
+/***/ },
+/* 311 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(3);
+	
+	var Updates = React.createClass({
+	  displayName: "Updates",
+	  render: function render() {
+	    return React.createElement(
+	      "div",
+	      { className: "bottom-page-item updates-wrapper " + this.props.revealed },
+	      React.createElement(
+	        "h1",
+	        { className: "pending-header" },
+	        "Future updates to this project will be logged here."
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = Updates;
+
+/***/ },
+/* 312 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(3);
+	
+	var Community = React.createClass({
+	  displayName: "Community",
+	  render: function render() {
+	    return React.createElement(
+	      "div",
+	      { className: "bottom-page-item community-wrapper " + this.props.revealed },
+	      React.createElement(
+	        "h1",
+	        { className: "pending-header" },
+	        "A community page is coming soon"
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = Community;
 
 /***/ }
 /******/ ]);

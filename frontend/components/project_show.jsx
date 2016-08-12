@@ -3,6 +3,9 @@ const ProjectCategories = require('../constants/project_category_ids.js');
 const ProjectStore = require('../stores/project_store.js');
 const RewardActions = require('../actions/reward_actions.js');
 const RewardStore = require('../stores/reward_store.js');
+const Comments = require('./comments.jsx');
+const Community = require('./community.jsx');
+const Updates = require('./updates.jsx');
 const UserStore = require('../stores/user_store.js');
 const UserActions = require('../actions/user_actions.js');
 import { browserHistory } from 'react-router';
@@ -18,7 +21,10 @@ const ProjectShow = React.createClass({
       selected: "",
       message: "",
       userBio: "hidden",
-      email: "hidden"
+      email: "hidden",
+      highlight: "",
+      bottomPage: 0,
+      reveal: "campaign"
     });
   },
 
@@ -33,6 +39,7 @@ const ProjectShow = React.createClass({
   componentWillUnmount () {
     this.projectListener.remove();
     this.userListener.remove();
+    clearTimeout(this.timeout);
   },
 
   _onUserChange () {
@@ -41,19 +48,35 @@ const ProjectShow = React.createClass({
   },
 
   _switchToCampaign (event) {
-    debugger;
+    this.setState({bottomPage: 0, reveal: "campaign"});
   },
 
   _switchToUpdates (event) {
-    debugger;
+    this.setState({bottomPage: 2});
+    window.setTimeout(() => {
+      this.setState({reveal: "updates"});
+    },100);
   },
 
   _switchToComments (event) {
-    debugger;
+    this.setState({bottomPage: 1});
+    window.setTimeout(() => {
+      this.setState({reveal: "comments"});
+    },100);
   },
 
   _switchToCommunity (event) {
-    debugger;
+    this.setState({bottomPage: 3});
+    window.setTimeout(() => {
+      this.setState({reveal: "community"});
+    },100);
+  },
+
+  _highlightRewards (event) {
+    this.setState({highlight: "highlight"});
+    window.setTimeout(() => {
+      this.timeout = this.setState({highlight: ""});
+    },1500);
   },
 
   _emailAuthor (event) {
@@ -89,10 +112,12 @@ const ProjectShow = React.createClass({
   render: function() {
 
     this.positions = ['zero', 'one', 'two', 'three'];
+    let _revealReward = this.state.reveal === 'campaign' ? 'reveal-reward' : "";
 
     let _rewards = this.props.project.rewards.slice(0,4).map((reward,idx) => {
       return <div onClick={(event) => this._selectReward(idx, event)}
-        className="single-reward-wrapper final" key={idx}>
+        className={`single-reward-wrapper final ${this.state.highlight} ${_revealReward}`}
+          key={idx}>
         <h3>Pledge ${reward.amount} or more</h3>
         <p className="reward-number">Reward #{idx + 1}</p>
         <br></br>
@@ -108,9 +133,16 @@ const ProjectShow = React.createClass({
       </div>;
     });
 
+    let _currentBottomPage = [
+      [],
+      <Comments revealed={this.state.reveal} />,
+      <Updates revealed={this.state.reveal} />,
+      <Community revealed={this.state.reveal} />
+    ][this.state.bottomPage || 0];
+
     return (
       <div onClick={this._resetReveals}>
-        <div className="preview-wrapper">
+        <div id="top" className="preview-wrapper">
           <div className="preview-header">
             <h3 className="preview-project-title">
               {this.props.project.title}
@@ -143,9 +175,11 @@ const ProjectShow = React.createClass({
             <div className="preview-project-remaining">
               days to go
             </div>
-            <div onClick={this._backProject} className="back-project">
-              Back this project
-            </div>
+            <a href="#back-project" onClick={this._highlightRewards}>
+              <div className="back-project">
+                Back this project
+              </div>
+            </a>
           </div>
           <div id="era-wrapper" className="era-field"><b>{'Era: '}</b>
             {ProjectCategories[this.props.project.category_id].label}</div>
@@ -197,14 +231,15 @@ const ProjectShow = React.createClass({
         </div>
         <div className="content-divider"></div>
         <div className="preview-bottom-page group">
-          <div className="project-content-bar">
+          <div id="back-project" className="project-content-bar">
             <ul className="project-content-nav-bar final group">
-              <li onClick={this._switchToCampaign}>Campaign</li>
-              <li onClick={this._switchToUpdates}>Updates</li>
-              <li onClick={this._switchToComments}>Comments</li>
-              <li onClick={this._switchToCommunity}>Community</li>
+              <li id="campaign" className={this.state.reveal} onClick={this._switchToCampaign}>Campaign</li>
+              <li id="updates" className={this.state.reveal} onClick={this._switchToUpdates}>Updates</li>
+              <li id="comments" className={this.state.reveal} onClick={this._switchToComments}>Comments</li>
+              <li id="community" className={this.state.reveal} onClick={this._switchToCommunity}>Community</li>
             </ul>
           </div>
+
           <div className="project-content-field">
             <h3 className="preview-about-field">About this project</h3>
             <div className="project-content">
@@ -221,6 +256,9 @@ const ProjectShow = React.createClass({
               {_rewards}
             </div>
           </div>
+        </div>
+        <div className="bottom-page-wrapper">
+          {_currentBottomPage}
         </div>
       </div>
     );
