@@ -10,7 +10,6 @@ const CreateProject = require('./components/create_project.jsx');
 const SavedProjects = require('./components/saved_projects.jsx');
 const Basics = require('./components/basics.jsx');
 const Comments = require('./components/comments.jsx');
-const Community = require('./components/Community.jsx');
 const Updates = require('./components/updates.jsx');
 const Rewards = require('./components/rewards.jsx');
 const Story = require('./components/story.jsx');

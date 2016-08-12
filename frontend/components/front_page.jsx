@@ -3,7 +3,7 @@ const React = require('react');
 const FrontPage = React.createClass({
 
   componentDidMount () {
-
+    
   },
 
   componentWillUnmount () {

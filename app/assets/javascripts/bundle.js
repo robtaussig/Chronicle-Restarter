@@ -60,7 +60,6 @@
 	var SavedProjects = __webpack_require__(276);
 	var Basics = __webpack_require__(287);
 	var Comments = __webpack_require__(309);
-	var Community = __webpack_require__(310);
 	var Updates = __webpack_require__(311);
 	var Rewards = __webpack_require__(290);
 	var Story = __webpack_require__(298);
@@ -36395,22 +36394,32 @@
 	var _project = {};
 	
 	function _resetProject(project) {
-	  _project = { project: project };
+	  _project = project;
+	  _projects.push(project);
 	  ProjectStore.__emitChange();
 	}
 	
 	function _resetProjects(projects) {
-	  _projects = { projects: projects };
+	  _projects = projects;
 	  ProjectStore.__emitChange();
 	}
 	
-	function _removeProject() {
-	  _project = {};
+	function _removeProject(project) {
+	  _projects = _projects.slice(_projects.indexOf(project), 1);
 	  ProjectStore.__emitChange();
+	}
+	
+	function _updateProject(project) {
+	  var _toRemove = _projects.filter(function (oldProject) {
+	    return oldProject.id === project.id;
+	  });
+	  _projects = _projects.slice(_projects.indexOf(_toRemove), 1);
+	  _projects.push(project);
+	  ProjectStore.emitChange();
 	}
 	
 	ProjectStore.currentProject = function () {
-	  return _project.project;
+	  return _project;
 	};
 	
 	ProjectStore.allProjects = function () {
@@ -36423,10 +36432,13 @@
 	      _resetProject(payload.data);
 	      break;
 	    case ProjectConstants.PROJECTS_RECEIVED:
-	      _resetProjects(payload);
+	      _resetProjects(payload.data);
 	      break;
 	    case ProjectConstants.PROJECT_REMOVED:
-	      _removeProject();
+	      _removeProject(payload.data);
+	      break;
+	    case ProjectConstants.PROJECT_UPDATED:
+	      _updateProject(payload.data);
 	      break;
 	  }
 	};
@@ -37590,6 +37602,7 @@
 	  },
 	  _onChange: function _onChange() {
 	    var _project = ProjectStore.currentProject();
+	    debugger;
 	    this.setState(_project);
 	    var that = this;
 	    that._displayProject(_project);
@@ -37686,7 +37699,7 @@
 	  },
 	  receiveUpdatedProject: function receiveUpdatedProject(data) {
 	    AppDispatcher.dispatch({
-	      actionType: ProjectConstants.PROJECT_RECEIVED,
+	      actionType: ProjectConstants.PROJECT_UPDATED,
 	      data: data
 	    });
 	  },
@@ -37742,7 +37755,7 @@
 	    var user = this.props.project.author_id;
 	    this.userListener = UserStore.addListener(this._onUserChange);
 	    UserActions.fetchUser('show', user);
-	    console.log(this.props.project.id);
+	    console.log(this.props);
 	  },
 	  componentWillUnmount: function componentWillUnmount() {
 	    this.projectListener.remove();
@@ -38893,31 +38906,7 @@
 	module.exports = Comments;
 
 /***/ },
-/* 310 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	var React = __webpack_require__(3);
-	
-	var Community = React.createClass({
-	  displayName: "Community",
-	  render: function render() {
-	    return React.createElement(
-	      "div",
-	      { className: "bottom-page-item community-wrapper " + this.props.revealed },
-	      React.createElement(
-	        "h1",
-	        { className: "pending-header" },
-	        "A community page is coming soon"
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = Community;
-
-/***/ },
+/* 310 */,
 /* 311 */
 /***/ function(module, exports, __webpack_require__) {
 

@@ -41,7 +41,7 @@ const ProjectActions = {
 
   receiveUpdatedProject (data) {
     AppDispatcher.dispatch({
-      actionType: ProjectConstants.PROJECT_RECEIVED,
+      actionType: ProjectConstants.PROJECT_UPDATED,
       data: data
     });
   },

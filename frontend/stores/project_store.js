@@ -7,22 +7,30 @@ let _projects = [];
 let _project = {};
 
 function _resetProject(project) {
-  _project = {project};
+  _project = project;
+  _projects.push(project);
   ProjectStore.__emitChange();
 }
 
 function _resetProjects(projects) {
-  _projects = {projects};
+  _projects = projects;
   ProjectStore.__emitChange();
 }
 
-function _removeProject() {
-  _project = {};
+function _removeProject(project) {
+  _projects = _projects.slice(_projects.indexOf(project),1);
   ProjectStore.__emitChange();
+}
+
+function _updateProject(project) {
+  let _toRemove = _projects.filter(oldProject => oldProject.id === project.id);
+  _projects = _projects.slice(_projects.indexOf(_toRemove),1);
+  _projects.push(project);
+  ProjectStore.emitChange();
 }
 
 ProjectStore.currentProject = () => {
-  return _project.project;
+  return _project;
 };
 
 ProjectStore.allProjects = () => {
@@ -35,10 +43,13 @@ ProjectStore.__onDispatch = (payload) => {
       _resetProject(payload.data);
     break;
     case ProjectConstants.PROJECTS_RECEIVED:
-      _resetProjects(payload);
+      _resetProjects(payload.data);
     break;
     case ProjectConstants.PROJECT_REMOVED:
-      _removeProject();
+      _removeProject(payload.data);
+    break;
+    case ProjectConstants.PROJECT_UPDATED:
+      _updateProject(payload.data);
     break;
   }
 };

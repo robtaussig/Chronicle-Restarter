@@ -33,7 +33,7 @@ const ProjectShow = React.createClass({
     let user = this.props.project.author_id;
     this.userListener = UserStore.addListener(this._onUserChange);
     UserActions.fetchUser('show', user);
-    console.log(this.props.project.id);
+    console.log(this.props);
   },
 
   componentWillUnmount () {
