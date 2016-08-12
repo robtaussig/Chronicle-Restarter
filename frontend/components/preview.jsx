@@ -200,15 +200,3 @@ const Preview = React.createClass({
 });
 
 module.exports = Preview;
-
-
-
-/* TODO
-
-1) Handle funders
-2) Count current funding amount
-3) Handle project and user pictures (user pic next to name in user info)
-4) Create a project_count attribute
-5) Display website below name on social links (or replace test text)
-6) Look into flex box for subpage so it moves with preview page
-*/
