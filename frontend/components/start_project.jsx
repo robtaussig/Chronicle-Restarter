@@ -76,7 +76,3 @@ const StartProject = React.createClass({
 });
 
 module.exports = StartProject;
-
-/*
-
- */

@@ -43,12 +43,3 @@ const ProjectNavBar = React.createClass({
 });
 
 module.exports = ProjectNavBar;
-
-/* TODO
-
-1) Submit hover color should be red until mandatory fields are complete.
-
-
-
-
-*/

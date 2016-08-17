@@ -1,9 +1,6 @@
 const Store = require('flux/utils').Store;
 const AppDispatcher = require('../dispatcher/dispatcher.js');
 const ErrorConstants = require('../constants/error_constants.js');
-// const ProjectConstants = require('../constants/project_constants.js');
-// const SavedProjectConstants = require('../constants/saved_project_constants.js');
-// const SessionConstants = require('../constants/session_constants.js');
 const ErrorStore = new Store(AppDispatcher);
 
 let _errors = [];

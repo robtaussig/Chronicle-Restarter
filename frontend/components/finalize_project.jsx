@@ -31,8 +31,6 @@ const FinalizeProject = React.createClass({
     this.deleteMessage="";
     this.header = ProjectMessages[`${window.location.pathname.split('/')[2]} header`];
     this.message = ProjectMessages[window.location.pathname.split('/')[2]];
-    // ProjectStore.addListener(this._onChange);
-    // ErrorStore.addListener(this._handleError);
   },
 
   componentWillUnmount () {
@@ -106,18 +104,3 @@ const FinalizeProject = React.createClass({
 });
 
 module.exports = FinalizeProject;
-
-
-/*
-TODO
-
-1) Add save functionality (will require saved_project model and new logic to prepopulate info)
-2) Replace 'us' with apostrophe once syntax highlighting is fixed
-
-
-
-
-
-
-
-*/
