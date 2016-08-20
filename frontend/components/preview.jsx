@@ -66,7 +66,7 @@ const Preview = React.createClass({
       project_title: project.title || "Title was left empty",
       author_full_name: user.full_name || user.username,
       user_website: user.website || "",
-      image: <img id="default-pic" src={project.image}></img>,
+      image: project.image || "",
       project_funders: project.funders || 0,
       project_funded: project.funded || 0,
       project_goal: project.goal || 0,
@@ -109,7 +109,7 @@ const Preview = React.createClass({
           </div>
           <div className="preview-project-image">
             <div>{<img id="default-pic"
-              src={this.state.image}></img>}</div>
+              src={this.state.image === "" ? window.default_pic : this.state.image}></img>}</div>
           </div>
           <div className="preview-project-summary">
             <ul className="funders group">

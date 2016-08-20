@@ -2159,8 +2159,10 @@ div.bottom-page-wrapper {
 }
 
 div.bottom-page-item {
-  width: 100%;
+  position: absolute;
   height: 100%;
+  width: 100%;
+  top: 0;
   background-color: #fff;
   box-sizing: border-box;
   border: 1px solid #ccc;
@@ -2168,7 +2170,7 @@ div.bottom-page-item {
   text-align: center;
   font-size: 36px;
   font-weight: bold;
-  transform: translateY(1500px);
+  transform: translateX(1500px);
   transition:0.3s;
 }
 

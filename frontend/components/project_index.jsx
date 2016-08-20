@@ -34,7 +34,7 @@ const ProjectIndex = React.createClass({
   render () {
     let _display;
     if (this.state.projects.length === 1) {
-      _display = <ProjectShow project={this.state.projects[0]} />;
+      _display = <ProjectShow key="solo" project={this.state.projects[0]} />;
     } else {
       _display = this.state.projects.map((project,idx) => {
         return <ProjectPreview key={idx} project={project} />;

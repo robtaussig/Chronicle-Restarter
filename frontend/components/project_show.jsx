@@ -160,7 +160,7 @@ const ProjectShow = React.createClass({
           </div>
           <div className="preview-project-image">
             <div>{<img id="default-pic"
-              src={this.props.project.image || ""}></img>}</div>
+              src={this.props.project.image === "" ? window.default_pic : this.props.project.image}></img>}</div>
           </div>
           <div className="preview-project-summary">
             <ul className="funders group">
@@ -259,10 +259,11 @@ const ProjectShow = React.createClass({
             <div className="project-rewards-sidebar">
               {_rewards}
             </div>
+            {_currentBottomPage}
           </div>
         </div>
         <div className="bottom-page-wrapper">
-          {_currentBottomPage}
+
         </div>
       </div>
     );

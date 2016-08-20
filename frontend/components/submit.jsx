@@ -34,8 +34,7 @@ const SubmitProject = React.createClass({
   _onChange () {
     let _project = ProjectStore.currentProject();
     this.setState(_project);
-    let that = this;
-    that._displayProject(_project);
+    this._displayProject(_project);
   },
 
   _displayProject () {
