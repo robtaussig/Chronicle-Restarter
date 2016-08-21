@@ -26,7 +26,6 @@ const Rewards = React.createClass({
     this.rewards = SavedProjectStore.currentProject().rewards;
     debugger
     this._prepopulate();
-    this._addReward();
     this.forceUpdate();
   },
 
