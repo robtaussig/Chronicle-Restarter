@@ -26,10 +26,6 @@ const Account = React.createClass({
 
   componentWillUnmount () {
     this.listener.remove();
-    if (this.state.verification_status === "pending") {
-      UserActions.saveUser('account', {id: this.state.id,
-        email: this.state.email, verified: "verified"});
-    }
   },
 
   _deleteProject () {
@@ -63,7 +59,7 @@ const Account = React.createClass({
 
   _handleVerification () {
     UserActions.saveUser('account', {id: this.state.id, email: this.state.email,
-      verification_status: "pending"});
+      verification_status: "verified", verified: "verified"});
   },
 
   render: function() {
