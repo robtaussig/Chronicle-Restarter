@@ -10,4 +10,5 @@ json.array! @saved_projects do |project|
   json.location project.location
   json.risks project.risks
   json.image project.image
+  json.author project.author
 end

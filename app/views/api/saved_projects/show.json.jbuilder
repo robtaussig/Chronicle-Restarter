@@ -3,3 +3,4 @@ json.extract! @saved_project,
   :goal, :duration, :location, :blurb, :risks, :image
 
 json.rewards @saved_project.rewards
+json.author @saved_project.author

@@ -7,11 +7,11 @@ const ErrorActions = require('./error_actions.js');
 const UserActions = {
 
   saveUser (form, userInfo) {
-    ApiUtil.saveUser(form, userInfo, this.receiveCurrentUser, ErrorActions.receiveError);
+    ApiUtil.saveUser(form, userInfo, this.receiveUser, ErrorActions.receiveError);
   },
 
   fetchUser (form, userId) {
-    ApiUtil.fetchUser(form, userId, this.receiveCurrentUser, ErrorActions.receiveError);
+    ApiUtil.fetchUser(form, userId, this.receiveUser, ErrorActions.receiveError);
   },
 
   fetchAllUsers (form) {
@@ -22,7 +22,7 @@ const UserActions = {
     ApiUtil.deleteUser(form, userId, this.removeUser, ErrorActions.receiveError);
   },
 
-  receiveCurrentUser (data) {
+  receiveUser (data) {
     AppDispatcher.dispatch({
       actionType: UserConstants.USER_INFO_RECEIVED,
       user: data

@@ -35531,19 +35531,12 @@
 	var ProjectPreview = React.createClass({
 	  displayName: 'ProjectPreview',
 	  getInitialState: function getInitialState() {
-	    return { progressWidth: 0, user: {} };
+	    return { progressWidth: 0, user: "" };
 	  },
 	  componentDidMount: function componentDidMount() {
 	    this.fundedPercentage = this.props.project.funded === 0 ? 0 : this.props.project.funded / this.props.project.goal;
 	    this.fundedWidth = 335 * this.fundedPercentage > 335 ? 335 : 335 * this.fundedPercentage;
-	    this.setState({ progressWidth: this.fundedWidth, user: UserStore.find(this.props.author_id) });
-	    this.listener = UserStore.addListener(this._handleUser);
-	  },
-	  componentWillUnmount: function componentWillUnmount() {
-	    this.listener.remove();
-	  },
-	  _handleUser: function _handleUser() {
-	    this.setState({ user: UserStore.find(this.props.project.author_id) });
+	    this.setState({ progressWidth: this.fundedWidth, user: this.props.project.author_full_name || this.props.project.author.username });
 	  },
 	  _goToPage: function _goToPage() {
 	    if (window.location.pathname === "/savedProjects") {
@@ -35562,6 +35555,10 @@
 	      _width = this.state.progressWidth;
 	    } else {
 	      _width = 0;
+	    }
+	
+	    if (this.state.user) {
+	      _user = this.state.user;
 	    }
 	
 	    return React.createElement(
@@ -35590,7 +35587,7 @@
 	            React.createElement(
 	              'b',
 	              null,
-	              UserStore.find(this.props.project.author_id).full_name || window.myApp.username
+	              _user
 	            )
 	          ),
 	          React.createElement('br', null),
@@ -35710,10 +35707,10 @@
 	
 	var UserActions = {
 	  saveUser: function saveUser(form, userInfo) {
-	    ApiUtil.saveUser(form, userInfo, this.receiveCurrentUser, ErrorActions.receiveError);
+	    ApiUtil.saveUser(form, userInfo, this.receiveUser, ErrorActions.receiveError);
 	  },
 	  fetchUser: function fetchUser(form, userId) {
-	    ApiUtil.fetchUser(form, userId, this.receiveCurrentUser, ErrorActions.receiveError);
+	    ApiUtil.fetchUser(form, userId, this.receiveUser, ErrorActions.receiveError);
 	  },
 	  fetchAllUsers: function fetchAllUsers(form) {
 	    ApiUtil.fetchAllUsers(form, this.receiveAllUsers, ErrorActions.receiveError);
@@ -35721,7 +35718,7 @@
 	  deleteUser: function deleteUser(form, userId) {
 	    ApiUtil.deleteUser(form, userId, this.removeUser, ErrorActions.receiveError);
 	  },
-	  receiveCurrentUser: function receiveCurrentUser(data) {
+	  receiveUser: function receiveUser(data) {
 	    AppDispatcher.dispatch({
 	      actionType: UserConstants.USER_INFO_RECEIVED,
 	      user: data

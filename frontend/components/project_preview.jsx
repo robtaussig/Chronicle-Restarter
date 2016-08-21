@@ -9,7 +9,7 @@ import { browserHistory } from 'react-router';
 const ProjectPreview = React.createClass({
 
   getInitialState () {
-    return({progressWidth: 0, user: {}});
+    return({progressWidth: 0, user: ""});
   },
 
   componentDidMount () {
@@ -17,17 +17,7 @@ const ProjectPreview = React.createClass({
       this.props.project.funded / this.props.project.goal;
     this.fundedWidth = (335 * this.fundedPercentage) > 335 ? 335 :
       (335 * this.fundedPercentage);
-    this.setState({progressWidth: this.fundedWidth, user: UserStore.find(this.props.author_id)});
-    this.listener = UserStore.addListener(this._handleUser);
-
-  },
-
-  componentWillUnmount () {
-    this.listener.remove();
-  },
-
-  _handleUser () {
-    this.setState({user: UserStore.find(this.props.project.author_id)});
+    this.setState({progressWidth: this.fundedWidth, user: this.props.project.author_full_name || this.props.project.author.username});
   },
 
   _goToPage () {
@@ -48,13 +38,17 @@ const ProjectPreview = React.createClass({
       _width = 0;
     }
 
+    if (this.state.user) {
+      _user = this.state.user;
+    }
+
     return (
       <div>
         <div onClick={this._goToPage} className="project-preview-wrapper">
           <div className="project-preview-image"><img id="default-pic" src={this.props.project.image === "" ? window.default_pic : this.props.project.image}></img></div>
           <div className="preview-bottom-half">
             <h3 className="project-preview-title">{this.props.project.title || ""}</h3>
-            <p className="project-preview-username">by <b>{UserStore.find(this.props.project.author_id).full_name || window.myApp.username}</b></p>
+            <p className="project-preview-username">by <b>{_user}</b></p>
             <br></br>
             <p className="project-preview-blurb">{this.props.project.blurb || "Empty Blurb"}</p>
             <br></br>
