@@ -24,7 +24,8 @@ const NavBar = React.createClass({
   },
 
   _handleUserChange () {
-    this.setState({user: UserStore.currentUser()});
+    this.user_pic = UserStore.currentUser().pic_url;
+    this.forceUpdate();
   },
 
   _logOut (e) {
@@ -37,7 +38,7 @@ const NavBar = React.createClass({
     let navContent = (this.state.user.hasOwnProperty('id')) ?
       [<li key="user"><Link className="user-link"
           to='/userProfile'>{
-          <img id="nav-prof-pic" src={this.state.user.pic_url || window.profile_pic}></img>}</Link>
+          <img id="nav-prof-pic" src={this.state.user.pic_url || this.user_pic || window.profile_pic}></img>}</Link>
         </li>,
       <li onClick={this._logOut} className="log-out-button" key="logOut">
         <img id="log-out-icon" src={window.logout}></img>
