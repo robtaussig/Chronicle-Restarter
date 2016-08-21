@@ -278,11 +278,11 @@ div.index-container {
 }
 
 div.index-container ul.categories-list {
-  color:black;
-  max-width:1000px;
-  margin:0 auto;
+  max-width: 1000px;
+  width: 100%;
+  margin: 0 auto;
   display: flex;
-  justify-content: center
+  justify-content: center;
 }
 
 ul.categories-list li {

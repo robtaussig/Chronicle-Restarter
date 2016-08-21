@@ -45,19 +45,20 @@ const ProjectIndex = React.createClass({
     if (this.state.projects.length === 1) {
       _display = <ProjectShow key="solo" project={this.state.projects[0]} />;
     } else {
-      _display = this.state.projects.map((project,idx) => {
-        return <ProjectPreview key={idx} project={project} />;
-      });
+      _display = [
+        <ul className="categories-list group">
+        <li className="category-item" onClick={this._handleCategory}>Before Time</li>
+        <li className="category-item" onClick={this._handleCategory}>Stone Age</li>
+        <li className="category-item" onClick={this._handleCategory}>Middle Ages</li>
+        <li className="category-item" onClick={this._handleCategory}>Present</li>
+        <li className="category-item" onClick={this._handleCategory}>Future</li>
+        </ul>].concat(this.state.projects.map((project,idx) => {
+          return <ProjectPreview key={idx} project={project} />;
+        }));
+
     }
     return (
       <div className="index-container">
-        <ul className="categories-list group">
-          <li className="category-item" onClick={this._handleCategory}>Before Time</li>
-          <li className="category-item" onClick={this._handleCategory}>Stone Age</li>
-          <li className="category-item" onClick={this._handleCategory}>Middle Ages</li>
-          <li className="category-item" onClick={this._handleCategory}>Present</li>
-          <li className="category-item" onClick={this._handleCategory}>Future</li>
-        </ul>
         <div className={`project-index-wrapper group ${this.state.flex}`}>
           {_display}
         </div>
