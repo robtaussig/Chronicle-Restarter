@@ -40,10 +40,26 @@ const AboutYou = React.createClass({
 
   componentWillUnmount () {
     this.listener.remove();
+    this._saveUserInfo();
   },
 
   _onChange () {
     this.setState(UserStore.currentUser());
+  },
+
+  _setUserPic (e) {
+    e.preventDefault();
+    cloudinary.openUploadWidget(window.CLOUDINARY_OPTIONS,(error,img) => {
+      if (error === null) {
+        this._setImage(img[0].url);
+      } else {
+        return;
+      }
+    });
+  },
+
+  _setImage (img_url) {
+    this.setState({pic_url: img_url});
   },
 
   _resetSavedStatus () {
@@ -107,7 +123,7 @@ const AboutYou = React.createClass({
                 <div className="grey-field">
                   <div className="attribute-field">Profile photo</div>
                   <div className="field-wrapper">
-                    <button id="about-you-image" className="about-you-image">
+                    <button onClick={this._setUserPic} id="about-you-image" className="about-you-image">
                       Choose an image from your computer
                     </button>
                   </div>

@@ -56,8 +56,7 @@ const FrontPage = React.createClass({
     let _display;
 
     if (this.state.projects.length > 0) {
-      for (let i = 0; i < (this.state.projects > 3 ? 3 : this.state.projects.length); i++) {
-
+      for (let i = 0; i < (this.state.projects.length > 3 ? 3 : this.state.projects.length); i++) {
         this.projects.push(this.state.projects[this.state.projects.length - i - 1]);
       }
       _display = this.projects.map((project,idx) => {

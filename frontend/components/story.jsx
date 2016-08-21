@@ -30,6 +30,7 @@ const Story = React.createClass({
 
   componentWillUnmount () {
     this.listener.remove();
+    this._saveProject();
   },
 
   _onChange () {

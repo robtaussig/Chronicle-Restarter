@@ -273,6 +273,37 @@ h2.under-construction {
 
 /*--------------------------Project-index-show-page---------------------------*/
 
+div.index-container {
+  min-height: 800px;
+}
+
+div.index-container ul.categories-list {
+  color:black;
+  max-width:1000px;
+  margin:0 auto;
+  display: flex;
+  justify-content: center
+}
+
+ul.categories-list li {
+  color: white;
+  border: 1px solid #ccc;
+  float: left;
+  width: 100px;
+  height: 60px;
+  margin: 0 40px 40px 40px;
+  text-align: center;
+  line-height: 60px;
+  cursor: pointer;
+  font-weight: bold;
+  background-color: #46c76b;
+  border-radius: 5px;
+}
+
+ul.categories-list li:hover {
+  background-color: #02a654;
+}
+
 div.project-index-wrapper {
   width: 100%;
   margin: 0 auto;
@@ -1451,8 +1482,8 @@ div.preview-project-image {
 
 div.preview-project-image img {
   display: block;
-  max-width: 600px;
-  max-height: 600px;
+  width: 600px;
+  height: 600px;
   margin: 0 auto;
 }
 
@@ -1900,8 +1931,8 @@ div.project-preview-image img {
   display: block;
   max-width: 350px;
   margin: 0 auto;
-  width: auto;
-  height: auto;
+  width: 100%;
+  height: 100%;
 }
 
 div.preview-bottom-half {
@@ -2114,8 +2145,8 @@ div.user-biography {
   margin: 0 auto;
   padding: 20px 10px;
   border-radius: 10px;
-  box-shadow: -11px 19px 12px #ccc;
-  top: -86px;
+  box-shadow: -11px -11px 12px #ccc;
+  top: 190px;
   left: 2px;
   line-height: 21px;
   background-color: white;
@@ -2136,8 +2167,8 @@ div.user-email {
   text-align: center;
   padding: 20px 10px;
   border-radius: 10px;
-  box-shadow: -11px 19px 12px #ccc;
-  top: 40px;
+  box-shadow: -10px -10px 12px #ccc;
+  top: 190px;
   left: -2px;
   line-height: 21px;
   background-color: white;

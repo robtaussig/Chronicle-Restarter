@@ -82,11 +82,11 @@ const ProjectShow = React.createClass({
   },
 
   _emailAuthor (event) {
-    this.setState({email: "revealed"});
+    this.setState({userBio: "", email: "revealed"});
   },
 
   _seeBio (event) {
-    this.setState({userBio: "revealed"});
+    this.setState({email: "", userBio: "revealed"});
   },
 
   _resetReveals (event) {

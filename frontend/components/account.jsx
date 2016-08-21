@@ -26,6 +26,10 @@ const Account = React.createClass({
 
   componentWillUnmount () {
     this.listener.remove();
+    if (this.state.verification_status === "pending") {
+      UserActions.saveUser('account', {id: this.state.id,
+        email: this.state.email, verified: "verified"});
+    }
   },
 
   _deleteProject () {
@@ -63,9 +67,9 @@ const Account = React.createClass({
   },
 
   render: function() {
-    let text = "You do not have to enter your email for purposes of this " +
-    "demonstration, but if you do, you will receive a confirmation email, " +
-    "as well as be notified if your project is ever fully funded.";
+    let text = "For demonstration purposes, you will not actually receive " +
+    "an email, but instead your account will be verified upon creation of " +
+    "your project.";
 
     let verifiedStatus = this.state.verified === "verified" ? "verified" :
       (this.state.verification_status === "pending" ? "pending" : "unverified");
@@ -82,9 +86,14 @@ const Account = React.createClass({
                   <input id="account" type="text" className="user-email"
                     onChange={this._setEmail} value={this.state.email || ""}/>
                 </div>
-                <div className={`status ${verifiedStatus}`}>{verifiedStatus}</div>
-                <div className={`email-button ${this.state.verification_status}`}><button
-                  onClick={this._handleVerification}>Send Confirmation</button>
+                <div className={`status ${verifiedStatus}`}>
+                  {verifiedStatus}
+                </div>
+                <div className=
+                  {`email-button ${this.state.verification_status}`}>
+                  <button onClick={this._handleVerification}>
+                    Send Confirmation
+                  </button>
                 </div>
               </div>
             </li>

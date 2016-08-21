@@ -1,6 +1,7 @@
 const React = require('react');
 const ProjectStore = require('../stores/project_store.js');
 const ProjectActions = require('../actions/project_actions.js');
+const ProjectCategoryIds = require('../constants/project_category_ids');
 const ProjectShow = require('./project_show.jsx');
 const ProjectPreview = require('./project_preview.jsx');
 
@@ -15,8 +16,9 @@ const ProjectIndex = React.createClass({
     if (this.props.params.projectId) {
       this._showProject();
     } else {
-      this._showProjects();
+      this._showProjects("none");
     }
+    ProjectActions.fetchAllProjects('index');
   },
 
   componentWillUnmount () {
@@ -27,8 +29,15 @@ const ProjectIndex = React.createClass({
     this.setState({flex: "", projects: ProjectStore.find(parseInt(this.props.params.projectId))});
   },
 
-  _showProjects () {
-    this.setState({flex: "flex", projects: ProjectStore.allProjects()});
+  _showProjects (category) {
+    this.setState({flex: "flex", projects: ProjectStore.allProjects(category)});
+  },
+
+  _handleCategory (event) {
+    let categoryId = ProjectCategoryIds.filter(projectCat=>{
+      return projectCat.label === event.target.innerHTML;
+    })[0].value - 1;
+    this._showProjects(categoryId);
   },
 
   render () {
@@ -41,8 +50,17 @@ const ProjectIndex = React.createClass({
       });
     }
     return (
-      <div className={`project-index-wrapper group ${this.state.flex}`}>
-        {_display}
+      <div className="index-container">
+        <ul className="categories-list group">
+          <li className="category-item" onClick={this._handleCategory}>Before Time</li>
+          <li className="category-item" onClick={this._handleCategory}>Stone Age</li>
+          <li className="category-item" onClick={this._handleCategory}>Middle Ages</li>
+          <li className="category-item" onClick={this._handleCategory}>Present</li>
+          <li className="category-item" onClick={this._handleCategory}>Future</li>
+        </ul>
+        <div className={`project-index-wrapper group ${this.state.flex}`}>
+          {_display}
+        </div>
       </div>
     );
   }

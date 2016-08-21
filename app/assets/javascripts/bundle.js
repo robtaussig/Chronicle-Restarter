@@ -27189,7 +27189,7 @@
 	        Link,
 	        { className: 'user-link',
 	          to: '/userProfile' },
-	        this.state.user.pic_url || React.createElement('img', { id: 'nav-prof-pic', src: window.profile_pic })
+	        React.createElement('img', { id: 'nav-prof-pic', src: this.state.user.pic_url || window.profile_pic })
 	      )
 	    ), React.createElement(
 	      'li',
@@ -36042,6 +36042,7 @@
 	  },
 	  componentWillUnmount: function componentWillUnmount() {
 	    this.listener.remove();
+	    this._saveProject();
 	  },
 	  _onChange: function _onChange() {
 	    this.setState(SavedProjectStore.currentProject());
@@ -36572,8 +36573,14 @@
 	  return _project;
 	};
 	
-	ProjectStore.allProjects = function () {
-	  return _projects;
+	ProjectStore.allProjects = function (category) {
+	  if (category || category === 0) {
+	    return _projects.filter(function (project) {
+	      return project.category_id === category;
+	    });
+	  } else {
+	    return _projects;
+	  }
 	};
 	
 	ProjectStore.find = function (projectId) {
@@ -37116,6 +37123,7 @@
 	  },
 	  componentWillUnmount: function componentWillUnmount() {
 	    this.listener.remove();
+	    this._saveProject();
 	  },
 	  _onChange: function _onChange() {
 	    this.setState(SavedProjectStore.currentProject());
@@ -37320,9 +37328,25 @@
 	  },
 	  componentWillUnmount: function componentWillUnmount() {
 	    this.listener.remove();
+	    this._saveUserInfo();
 	  },
 	  _onChange: function _onChange() {
 	    this.setState(UserStore.currentUser());
+	  },
+	  _setUserPic: function _setUserPic(e) {
+	    var _this2 = this;
+	
+	    e.preventDefault();
+	    cloudinary.openUploadWidget(window.CLOUDINARY_OPTIONS, function (error, img) {
+	      if (error === null) {
+	        _this2._setImage(img[0].url);
+	      } else {
+	        return;
+	      }
+	    });
+	  },
+	  _setImage: function _setImage(img_url) {
+	    this.setState({ pic_url: img_url });
 	  },
 	  _resetSavedStatus: function _resetSavedStatus() {
 	    this.setState({ saved: 'unsaved', errorMessage: "", visibility: "visible" });
@@ -37397,7 +37421,7 @@
 	                  { className: 'field-wrapper' },
 	                  React.createElement(
 	                    'button',
-	                    { id: 'about-you-image', className: 'about-you-image' },
+	                    { onClick: this._setUserPic, id: 'about-you-image', className: 'about-you-image' },
 	                    'Choose an image from your computer'
 	                  )
 	                )
@@ -37540,6 +37564,7 @@
 	var React = __webpack_require__(3);
 	var ProjectStore = __webpack_require__(290);
 	var ProjectActions = __webpack_require__(300);
+	var ProjectCategoryIds = __webpack_require__(281);
 	var ProjectShow = __webpack_require__(301);
 	var ProjectPreview = __webpack_require__(282);
 	
@@ -37553,8 +37578,9 @@
 	    if (this.props.params.projectId) {
 	      this._showProject();
 	    } else {
-	      this._showProjects();
+	      this._showProjects("none");
 	    }
+	    ProjectActions.fetchAllProjects('index');
 	  },
 	  componentWillUnmount: function componentWillUnmount() {
 	    this.listener.remove();
@@ -37562,8 +37588,14 @@
 	  _showProject: function _showProject() {
 	    this.setState({ flex: "", projects: ProjectStore.find(parseInt(this.props.params.projectId)) });
 	  },
-	  _showProjects: function _showProjects() {
-	    this.setState({ flex: "flex", projects: ProjectStore.allProjects() });
+	  _showProjects: function _showProjects(category) {
+	    this.setState({ flex: "flex", projects: ProjectStore.allProjects(category) });
+	  },
+	  _handleCategory: function _handleCategory(event) {
+	    var categoryId = ProjectCategoryIds.filter(function (projectCat) {
+	      return projectCat.label === event.target.innerHTML;
+	    })[0].value - 1;
+	    this._showProjects(categoryId);
 	  },
 	  render: function render() {
 	    var _display = void 0;
@@ -37576,8 +37608,41 @@
 	    }
 	    return React.createElement(
 	      'div',
-	      { className: 'project-index-wrapper group ' + this.state.flex },
-	      _display
+	      { className: 'index-container' },
+	      React.createElement(
+	        'ul',
+	        { className: 'categories-list group' },
+	        React.createElement(
+	          'li',
+	          { className: 'category-item', onClick: this._handleCategory },
+	          'Before Time'
+	        ),
+	        React.createElement(
+	          'li',
+	          { className: 'category-item', onClick: this._handleCategory },
+	          'Stone Age'
+	        ),
+	        React.createElement(
+	          'li',
+	          { className: 'category-item', onClick: this._handleCategory },
+	          'Middle Ages'
+	        ),
+	        React.createElement(
+	          'li',
+	          { className: 'category-item', onClick: this._handleCategory },
+	          'Present'
+	        ),
+	        React.createElement(
+	          'li',
+	          { className: 'category-item', onClick: this._handleCategory },
+	          'Future'
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'project-index-wrapper group ' + this.state.flex },
+	        _display
+	      )
 	    );
 	  }
 	});
@@ -37727,10 +37792,10 @@
 	    }, 1500);
 	  },
 	  _emailAuthor: function _emailAuthor(event) {
-	    this.setState({ email: "revealed" });
+	    this.setState({ userBio: "", email: "revealed" });
 	  },
 	  _seeBio: function _seeBio(event) {
-	    this.setState({ userBio: "revealed" });
+	    this.setState({ email: "", userBio: "revealed" });
 	  },
 	  _resetReveals: function _resetReveals(event) {
 	    if (event.target.innerHTML === "See full bio" || event.target.innerHTML === "Contact me") {
@@ -38214,8 +38279,7 @@
 	    var _display = void 0;
 	
 	    if (this.state.projects.length > 0) {
-	      for (var i = 0; i < (this.state.projects > 3 ? 3 : this.state.projects.length); i++) {
-	
+	      for (var i = 0; i < (this.state.projects.length > 3 ? 3 : this.state.projects.length); i++) {
 	        this.projects.push(this.state.projects[this.state.projects.length - i - 1]);
 	      }
 	      _display = this.projects.map(function (project, idx) {
@@ -38312,6 +38376,10 @@
 	  },
 	  componentWillUnmount: function componentWillUnmount() {
 	    this.listener.remove();
+	    if (this.state.verification_status === "pending") {
+	      UserActions.saveUser('account', { id: this.state.id,
+	        email: this.state.email, verified: "verified" });
+	    }
 	  },
 	  _deleteProject: function _deleteProject() {
 	    var _this2 = this;
@@ -38346,7 +38414,7 @@
 	
 	
 	  render: function render() {
-	    var text = "You do not have to enter your email for purposes of this " + "demonstration, but if you do, you will receive a confirmation email, " + "as well as be notified if your project is ever fully funded.";
+	    var text = "For demonstration purposes, you will not actually receive " + "an email, but instead your account will be verified upon creation of " + "your project.";
 	
 	    var verifiedStatus = this.state.verified === "verified" ? "verified" : this.state.verification_status === "pending" ? "pending" : "unverified";
 	
@@ -38391,8 +38459,7 @@
 	                { className: 'email-button ' + this.state.verification_status },
 	                React.createElement(
 	                  'button',
-	                  {
-	                    onClick: this._handleVerification },
+	                  { onClick: this._handleVerification },
 	                  'Send Confirmation'
 	                )
 	              )

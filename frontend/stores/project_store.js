@@ -35,8 +35,12 @@ ProjectStore.currentProject = () => {
   return _project;
 };
 
-ProjectStore.allProjects = () => {
-  return _projects;
+ProjectStore.allProjects = (category) => {
+  if (category || category === 0) {
+    return _projects.filter(project => project.category_id === category);
+  } else {
+    return _projects;
+  }
 };
 
 ProjectStore.find = (projectId) => {
