@@ -40,8 +40,8 @@ const RewardItem = React.createClass({
 
   _onProjectChange () {
     let projectsByUser = SavedProjectStore.allCurrentProjects();
-    let lastProject = projectsByUser[projectsByUser.length - 1];
-    if (lastProject.length > 0) {
+    if (projectsByUser.length > 0) {
+      let lastProject = projectsByUser[projectsByUser.length - 1];
       this.setState({project_id: lastProject.id});
     }
   },
