@@ -21,9 +21,11 @@ const Rewards = React.createClass({
   },
 
   componentDidMount () {
-    this._prepopulate();
     this.timer = window.setTimeout(() => {this.setState({appearance: 'entered'});},100);
     this.projectId = SavedProjectStore.currentProject().id;
+    this.rewards = SavedProjectStore.currentProject().rewards;
+    debugger
+    this._prepopulate();
     this._addReward();
     this.forceUpdate();
   },
@@ -33,9 +35,9 @@ const Rewards = React.createClass({
   },
 
   _prepopulate () {
-    if (RewardStore.currentRewards().length > 0) {
-      this.rewardItems = RewardStore.currentRewards().map((reward,i)=>{
-        if (reward.project_id === SavedProjectStore.currentProject().id) {
+    if (this.rewards.length > 0) {
+      this.rewardItems = this.rewards.map((reward,i)=>{
+        if (reward.project_id === this.projectId) {
           return <RewardItem amount={reward.amount}
             description={reward.description}
             project_id={reward.project_id}
