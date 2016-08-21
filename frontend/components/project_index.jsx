@@ -25,6 +25,10 @@ const ProjectIndex = React.createClass({
     this.listener.remove();
   },
 
+  componentWillUpdate () {
+    console.log(this.props.params);
+  },
+
   _showProject () {
     this.setState({flex: "", projects: ProjectStore.find(parseInt(this.props.params.projectId))});
   },

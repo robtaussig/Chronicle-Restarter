@@ -25,7 +25,7 @@ const ProjectPreview = React.createClass({
       SavedProjectActions.updateSavedProject('savedProject', this.props.project);
       browserHistory.push('/finalizeProject');
     } else {
-      browserHistory.push('/projects/' + this.props.project.id);
+      browserHistory.push('/projectItem/' + this.props.project.id);
     }
   },
 
