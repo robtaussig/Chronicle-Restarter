@@ -17,7 +17,7 @@ const ProjectPreview = React.createClass({
       this.props.project.funded / this.props.project.goal;
     this.fundedWidth = (335 * this.fundedPercentage) > 335 ? 335 :
       (335 * this.fundedPercentage);
-    this.setState({progressWidth: this.fundedWidth, user: this.props.project.author_full_name || this.props.project.author.username});
+    this.setState({progressWidth: this.fundedWidth, user: this.props.project.author_full_name || this.props.project.author.full_name || this.props.project.author.username});
   },
 
   _goToPage () {

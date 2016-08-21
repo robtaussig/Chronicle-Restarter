@@ -7,8 +7,12 @@ import { browserHistory } from 'react-router';
 
 const FocusProject = React.createClass({
 
-  componentDidMount () {
+  getInitialState () {
+    return ({user: ""});
+  },
 
+  componentDidMount () {
+    this.setState({user: this.props.project.author.full_name || this.props.project.author.username});
   },
 
   _goToPage () {
@@ -25,7 +29,7 @@ const FocusProject = React.createClass({
           <div className="focal-project-image"><img id="default-pic" src={this.props.project.image === "" ? window.default_pic : this.props.project.image}></img></div>
           <div className="focal-right-half">
             <h3 className="focal-project-title">{this.props.project.title || ""}</h3>
-            <p className="focal-project-username">by <b>{SessionStore.currentUser().full_name || window.myApp.username}</b></p>
+            <p className="focal-project-username">by <b>{this.state.user}</b></p>
             <br></br>
             <p className="focal-project-blurb">{this.props.project.blurb || "Empty Blurb"}</p>
             <br></br>

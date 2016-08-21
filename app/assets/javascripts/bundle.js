@@ -34715,51 +34715,68 @@
 /* 269 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	var React = __webpack_require__(3);
+	var Link = __webpack_require__(1).Link;
 	
 	var Footer = React.createClass({
-	  displayName: "Footer",
+	  displayName: 'Footer',
 	
 	
 	  render: function render() {
 	    var message = "Wait, this isn't actually Kickstarter? Here's a link.";
 	
 	    return React.createElement(
-	      "div",
-	      { className: "footer-wrapper" },
+	      'div',
+	      { className: 'footer-wrapper' },
 	      React.createElement(
-	        "a",
-	        { href: "http://www.kickstarter.com" },
+	        'a',
+	        { href: 'http://www.kickstarter.com' },
 	        React.createElement(
-	          "h2",
-	          { className: "click-joke" },
+	          'h2',
+	          { className: 'click-joke' },
 	          message
 	        )
 	      ),
 	      React.createElement(
-	        "ul",
-	        { id: "footer", className: "footer-bottom group" },
+	        'ul',
+	        { id: 'footer', className: 'footer-bottom group' },
 	        React.createElement(
-	          "li",
+	          'li',
 	          null,
-	          "LinkedIn"
+	          React.createElement(
+	            'a',
+	            { href: 'http://www.robtaussig.com', target: '_blank' },
+	            'Portfolio Site'
+	          )
 	        ),
 	        React.createElement(
-	          "li",
+	          'li',
 	          null,
-	          "Facebook"
+	          React.createElement(
+	            'a',
+	            { href: 'https://github.com/robtaussig', target: '_blank' },
+	            'Github'
+	          )
 	        ),
 	        React.createElement(
-	          "li",
+	          'li',
 	          null,
-	          "Github"
+	          React.createElement(
+	            'a',
+	            { href: 'https://www.linkedin.com/in/robert-taussig-9439426', target: '_blank' },
+	            'LinkedIn'
+	          )
 	        ),
 	        React.createElement(
-	          "li",
+	          'li',
 	          null,
-	          "Portfolio Site"
+	          React.createElement(
+	            'a',
+	            { href: 'https://angel.co/robert-taussig', target: '_blank' },
+	            'AngelList'
+	          )
 	        )
 	      )
 	    );
@@ -35377,7 +35394,12 @@
 	
 	var FocusProject = React.createClass({
 	  displayName: 'FocusProject',
-	  componentDidMount: function componentDidMount() {},
+	  getInitialState: function getInitialState() {
+	    return { user: "" };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    this.setState({ user: this.props.project.author.full_name || this.props.project.author.username });
+	  },
 	  _goToPage: function _goToPage() {
 	    SavedProjectActions.updateSavedProject('savedProject', this.props.project);
 	    _reactRouter.browserHistory.push('/finalizeProject');
@@ -35415,7 +35437,7 @@
 	            React.createElement(
 	              'b',
 	              null,
-	              SessionStore.currentUser().full_name || window.myApp.username
+	              this.state.user
 	            )
 	          ),
 	          React.createElement('br', null),
@@ -35536,7 +35558,7 @@
 	  componentDidMount: function componentDidMount() {
 	    this.fundedPercentage = this.props.project.funded === 0 ? 0 : this.props.project.funded / this.props.project.goal;
 	    this.fundedWidth = 335 * this.fundedPercentage > 335 ? 335 : 335 * this.fundedPercentage;
-	    this.setState({ progressWidth: this.fundedWidth, user: this.props.project.author_full_name || this.props.project.author.username });
+	    this.setState({ progressWidth: this.fundedWidth, user: this.props.project.author_full_name || this.props.project.author.full_name || this.props.project.author.username });
 	  },
 	  _goToPage: function _goToPage() {
 	    if (window.location.pathname === "/savedProjects") {
