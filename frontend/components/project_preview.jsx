@@ -9,15 +9,12 @@ import { browserHistory } from 'react-router';
 const ProjectPreview = React.createClass({
 
   getInitialState () {
-    return({progressWidth: 0, user: ""});
+    return ({user: ""});
   },
 
   componentDidMount () {
-    this.fundedPercentage = this.props.project.funded === 0 ? 0 :
-      this.props.project.funded / this.props.project.goal;
-    this.fundedWidth = (335 * this.fundedPercentage) > 335 ? 335 :
-      (335 * this.fundedPercentage);
-    this.setState({progressWidth: this.fundedWidth, user: this.props.project.author_full_name || this.props.project.author.full_name || this.props.project.author.username});
+
+    this.setState({user: this.props.project.author_full_name || this.props.project.author.full_name || this.props.project.author.username});
   },
 
   _goToPage () {
@@ -32,8 +29,9 @@ const ProjectPreview = React.createClass({
   render: function() {
     let _user;
     let _width;
-    if (this.state.progressWidth) {
-      _width = this.state.progressWidth;
+    if (this.props.project.progress) {
+      _width = (335 * this.props.project.progress) > 335 ? 335 :
+        (335 * this.props.project.progress);
     } else {
       _width = 0;
     }

@@ -42,7 +42,7 @@ class Api::ProjectsController < ApplicationController
     params.require(:project).permit(
     :title, :content, :author_id, :category_id, :blurb, :duration,
     :goal, :project_due_date, :location, :saved_project_id,
-    :author_full_name, :risks, :website, :image
+    :author_full_name, :risks, :website, :image, :total
     )
   end
 end

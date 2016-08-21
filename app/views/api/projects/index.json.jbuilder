@@ -20,6 +20,9 @@ json.array! @projects do |project|
   end
 
   total = amount_array.inject(0){|sum,x| sum + x }
-
+  if project.goal > 0
+    progress = total.fdiv(project.goal)
+    json.progress progress
+  end
   json.funded total
 end

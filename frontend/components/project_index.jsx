@@ -26,7 +26,6 @@ const ProjectIndex = React.createClass({
   },
 
   componentWillUpdate () {
-    console.log(this.props.params);
   },
 
   _showProject () {
