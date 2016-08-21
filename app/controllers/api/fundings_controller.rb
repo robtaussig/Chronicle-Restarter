@@ -13,7 +13,6 @@ class Api::FundingsController < ApplicationController
   end
 
   def show
-    debugger
     @funding = Api::Funding.find(params[:funding][:reward_id].to_i)
     @reward = Api::Reward.find(params[:rewardId])
     @fundings = @reward.fundings

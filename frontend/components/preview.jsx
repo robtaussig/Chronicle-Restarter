@@ -57,9 +57,6 @@ const Preview = React.createClass({
     let project = SavedProjectStore.currentProject();
     let rewards = RewardStore.currentRewards();
     let user = UserStore.currentUser().hasOwnProperty('id') ? UserStore.currentUser() : window.myApp;
-    console.log(project);
-    console.log(rewards);
-    console.log(user);
 
     this.setState({
       rewards: rewards,

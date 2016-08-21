@@ -30,7 +30,6 @@ function _addReward (data) {
       data: {reward: data},
       success: (resp) => {
         _rewards.push(resp);
-        console.log('post success!');
       },
       error: (resp) => {
         ErrorActions.receiveError('rewards',resp);
@@ -54,7 +53,6 @@ function _updateReward (data) {
     type: 'PATCH',
     data: {reward: rewardUpdate},
     success: (resp) => {
-      console.log('update success!');
     },
     error: (resp) => {
       ErrorActions.receiveError('rewards',resp);
@@ -81,7 +79,6 @@ function _saveRewards () {
       type: 'POST',
       data: {reward: reward},
       success: (resp) => {
-        console.log('success!');
       },
       error: (resp) => {
         ErrorActions.receiveError('rewards',resp);

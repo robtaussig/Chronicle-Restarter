@@ -27,7 +27,6 @@ const FrontPage = React.createClass({
 
   _onProjectChange () {
     this.setState({projects: ProjectStore.allProjects()});
-    console.log(this.state);
   },
 
   _onUserChange () {

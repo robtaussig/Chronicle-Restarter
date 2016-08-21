@@ -131,7 +131,6 @@ const Basics = React.createClass({
   },
 
   _handleSave () {
-    console.log(this.state);
     if (this.state.saved === 'saved') {
       this.setState({errorMessage: "Your project is already up-to-date"});
     } else {
