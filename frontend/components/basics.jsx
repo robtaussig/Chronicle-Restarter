@@ -79,7 +79,8 @@ const Basics = React.createClass({
   },
 
   _postImage (img_url) {
-    this.setState({image: img_url});
+    let img = "https" + img_url.slice(4);
+    this.setState({image: img});
     this._resetSavedStatus();
   },
 

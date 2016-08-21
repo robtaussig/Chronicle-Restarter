@@ -59,7 +59,8 @@ const AboutYou = React.createClass({
   },
 
   _setImage (img_url) {
-    this.setState({pic_url: img_url});
+    let img = "https" + img_url.slice(4);
+    this.setState({pic_url: img});
   },
 
   _resetSavedStatus () {
