@@ -5,6 +5,7 @@ const Search = require('./search.jsx');
 const ErrorActions = require('../actions/error_actions.js');
 const SessionStore = require('../stores/session_store.js');
 const SessionActions = require('../actions/session_actions.js');
+const UserStore = require('../stores/user_store.js');
 const Link = require('react-router').Link;
 
 const NavBar = React.createClass({
@@ -19,6 +20,11 @@ const NavBar = React.createClass({
 
   componentDidMount () {
     SessionStore.addListener(this._onChange);
+    UserStore.addListener(this._handleUserChange);
+  },
+
+  _handleUserChange () {
+    this.setState({user: UserStore.currentUser()});
   },
 
   _logOut (e) {

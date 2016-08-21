@@ -205,7 +205,8 @@ const ProjectShow = React.createClass({
                 <li><p className="user-full-name">{this.state.user.full_name ||
                   this.state.user.username || "No name"}</p></li>
                   <li className="profile-pic">
-                    {this.state.user.pic_url || 'user pic'}
+                    <img id="nav-prof-pic" src={this.state.user.pic_url ||
+                      window.profile_pic}></img>
                   </li>
               </ul>
               <br></br>
