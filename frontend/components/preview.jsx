@@ -149,7 +149,9 @@ const Preview = React.createClass({
             <div className="user-info">
               <ul className="user-name-pic">
                 <li><p className="user-full-name">{this.state.author_full_name}</p></li>
-                  <li className="profile-pic">{this.state.user_pic_url}
+                  <li className="profile-pic">
+                    <img id="nav-prof-pic" src={this.state.user.pic_url ||
+                      window.profile_pic}></img>
                   </li>
               </ul>
               <br></br>
