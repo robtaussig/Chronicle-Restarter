@@ -8,7 +8,6 @@ const Footer = React.createClass({
 
     return (
       <div className="footer-wrapper">
-        <a href="http://www.kickstarter.com"><h2 className="click-joke">{message}</h2></a>
         <ul id="footer" className="footer-bottom group">
           <li><a href="http://www.robtaussig.com" target="_blank">Portfolio Site</a></li>
           <li><a href="https://github.com/robtaussig" target="_blank">Github</a></li>
