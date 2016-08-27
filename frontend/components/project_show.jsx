@@ -153,7 +153,7 @@ const ProjectShow = React.createClass({
 
     let _deleteProject;
     if (this.state.user.email === _currentUser ||
-       _currentUser === 'rob@gmail.com' ) {
+       _currentUser === 'rob@gmail.com' || _currentUser === 'admin@gmail.com') {
       _deleteProject = <DeleteProject delete={this.onDelete} project={this.props.project} />;
     } else {
       _deleteProject = <DeleteProject project="wrong user" />;
