@@ -13,7 +13,8 @@ const DeleteProject = React.createClass({
     let _message = this.props.project ===
       "wrong user" ? "" : "Delete your project";
     return (
-      <div onClick={this.props.delete}>
+      <div className={this.props.project === "wrong user" ? "" :
+        "delete-project"} onClick={this.props.delete}>
         {_message}
       </div>
     );

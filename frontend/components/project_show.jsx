@@ -198,7 +198,7 @@ const ProjectShow = React.createClass({
                 Back this project
               </div>
             </a>
-            <div className="delete-project">
+            <div>
               {_deleteProject}
             </div>
           </div>
