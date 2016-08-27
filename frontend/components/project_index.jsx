@@ -44,14 +44,22 @@ const ProjectIndex = React.createClass({
   },
 
   _showProjects (category) {
-    this.setState({flex: "flex", projects: ProjectStore.allProjects(category)});
+    if (category === "all") {
+      this.setState({flex: "flex", projects: ProjectStore.allProjects()});
+    } else {
+      this.setState({flex: "flex", projects: ProjectStore.allProjects(category)});
+    }
   },
 
   _handleCategory (event) {
-    let categoryId = ProjectCategoryIds.filter(projectCat=>{
-      return projectCat.label === event.target.innerHTML;
-    })[0].value - 1;
-    this._showProjects(categoryId);
+    if (event.target.innerHTML === "All projects") {
+      this._showProjects("all");
+    } else {
+      let categoryId = ProjectCategoryIds.filter(projectCat=>{
+        return projectCat.label === event.target.innerHTML;
+      })[0].value - 1;
+      this._showProjects(categoryId);
+    }
   },
 
   render () {
@@ -61,12 +69,20 @@ const ProjectIndex = React.createClass({
     } else {
       _display = [
         <ul className="categories-list group">
+        <li className="category-item" onClick={this._handleCategory}>All projects</li>
         <li className="category-item" onClick={this._handleCategory}>Before Time</li>
         <li className="category-item" onClick={this._handleCategory}>Stone Age</li>
         <li className="category-item" onClick={this._handleCategory}>Middle Ages</li>
         <li className="category-item" onClick={this._handleCategory}>Present</li>
         <li className="category-item" onClick={this._handleCategory}>Future</li>
-        </ul>].concat(this.shuffle(this.state.projects.concat(this.state.projects.concat(this.state.projects)).map((project,idx) => {
+        </ul>].concat(this.shuffle(
+          this.state.projects.concat(
+            this.state.projects.concat(
+              this.state.projects.concat(
+                this.state.projects.concat(
+                  this.state.projects.concat(
+                    this.state.projects
+                  ))))).map((project,idx) => {
           return <ProjectPreview key={idx} project={project} />;
         })));
 
