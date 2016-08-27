@@ -25,6 +25,17 @@ const ProjectIndex = React.createClass({
     this.listener.remove();
   },
 
+  shuffle (array) {
+    let j, x, i;
+    for (i = array.length; i; i--) {
+        j = Math.floor(Math.random() * i);
+        x = array[i - 1];
+        array[i - 1] = array[j];
+        array[j] = x;
+    }
+    return array;
+  },
+
   componentWillUpdate () {
   },
 
@@ -55,9 +66,9 @@ const ProjectIndex = React.createClass({
         <li className="category-item" onClick={this._handleCategory}>Middle Ages</li>
         <li className="category-item" onClick={this._handleCategory}>Present</li>
         <li className="category-item" onClick={this._handleCategory}>Future</li>
-        </ul>].concat(this.state.projects.map((project,idx) => {
+        </ul>].concat(this.shuffle(this.state.projects.concat(this.state.projects.concat(this.state.projects)).map((project,idx) => {
           return <ProjectPreview key={idx} project={project} />;
-        }));
+        })));
 
     }
     return (
