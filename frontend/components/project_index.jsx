@@ -16,7 +16,7 @@ const ProjectIndex = React.createClass({
     if (this.props.params.projectId) {
       this._showProject();
     } else {
-      this._showProjects("none");
+      this._showProjects();
     }
     ProjectActions.fetchAllProjects('index');
   },
