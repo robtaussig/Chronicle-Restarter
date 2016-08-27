@@ -2,7 +2,7 @@ module.exports = {
   'basics header': "Let's get started.",
   'basics': "The title of your project will impact its role in history. Pick a title, image, goal, campaign duration, and category.",
   'rewards header': "Add as many rewards as you wish.",
-  'rewards': "You can delete them at any time. Don't forget to save them before moving on by clicking on the checkmark.",
+  'rewards': "You can delete them at any time. Don't forget to save them before moving on.",
   'story header': "If history is written by the victors...",
   'story': "Be the victor? Here's your chance to convince potential funders why they should support your cause.",
   'about_you header': "Tell us about yourself.",
