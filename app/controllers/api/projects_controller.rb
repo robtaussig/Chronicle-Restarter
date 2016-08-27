@@ -23,7 +23,7 @@ class Api::ProjectsController < ApplicationController
   def destroy
     @project = Api::Project.find(params[:id])
     @project.destroy!
-    redirect_to root_url
+    render :show
   end
 
   def index

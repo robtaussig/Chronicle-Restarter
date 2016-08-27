@@ -2036,12 +2036,30 @@ li#preview-basic-amount {
   color: #2bde73;
 }
 
-/*----------------------------- Submit-page ----------------------------------*/
+/*----------------------------- Submit-page/show -----------------------------*/
 
 div.pending-wrapper {
   margin-top: -140px;
   font-size: 36px;
   text-align:center;
+}
+
+div.delete-project {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  width: 150px;
+  text-align: center;
+  border-radius: 5px;
+  background-color: red;
+  color: white;
+  font-weight: 700;
+  box-shadow: 2px 2px 5px #ccc;
+  cursor: pointer;
+}
+
+div.delete-project:hover {
+  background-color: #a90808;
 }
 
 li.funders-num-final {

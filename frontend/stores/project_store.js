@@ -20,7 +20,8 @@ function _resetProjects(projects) {
 }
 
 function _removeProject(project) {
-  _projects = _projects.slice(_projects.indexOf(project),1);
+  let removed = _projects.splice(_projects.indexOf(project),1);
+  _projects = removed;
   ProjectStore.__emitChange();
 }
 

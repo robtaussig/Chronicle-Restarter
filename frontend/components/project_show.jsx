@@ -1,5 +1,6 @@
 const React = require('react');
 const ProjectCategories = require('../constants/project_category_ids.js');
+const ProjectActions = require('../actions/project_actions.js');
 const ProjectStore = require('../stores/project_store.js');
 const RewardActions = require('../actions/reward_actions.js');
 const RewardStore = require('../stores/reward_store.js');
@@ -9,6 +10,7 @@ const Updates = require('./updates.jsx');
 const UserStore = require('../stores/user_store.js');
 const SessionStore = require('../stores/session_store.js');
 const UserActions = require('../actions/user_actions.js');
+const DeleteProject = require('./delete_project.jsx');
 import { browserHistory } from 'react-router';
 
 const ProjectShow = React.createClass({
@@ -41,6 +43,11 @@ const ProjectShow = React.createClass({
     this.projectListener.remove();
     this.userListener.remove();
     clearTimeout(this.timeout);
+  },
+
+  onDelete () {
+    ProjectActions.deleteProject('show',this.props.project.id);
+    browserHistory.push('/');
   },
 
   _onUserChange () {
@@ -142,7 +149,15 @@ const ProjectShow = React.createClass({
       <Community revealed={this.state.reveal} />
     ][this.state.bottomPage || 0];
 
+    let _currentUser = window.myApp.email || SessionStore.currentUser().email;
 
+    let _deleteProject;
+    if (this.state.user.email === _currentUser ||
+       _currentUser === 'rob@gmail.com' ) {
+      _deleteProject = <DeleteProject delete={this.onDelete} project={this.props.project} />;
+    } else {
+      _deleteProject = <DeleteProject project="wrong user" />;
+    }
 
     return (
       <div onClick={this._resetReveals}>
@@ -183,6 +198,9 @@ const ProjectShow = React.createClass({
                 Back this project
               </div>
             </a>
+            <div className="delete-project">
+              {_deleteProject}
+            </div>
           </div>
           <div id="era-wrapper" className="era-field"><b>{'Era: '}</b>
             {ProjectCategories[this.props.project.category_id].label}</div>

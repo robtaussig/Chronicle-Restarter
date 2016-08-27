@@ -57,7 +57,6 @@ const Preview = React.createClass({
     let project = SavedProjectStore.currentProject();
     let rewards = RewardStore.currentRewards();
     let user = UserStore.currentUser().hasOwnProperty('id') ? UserStore.currentUser() : window.myApp;
-
     this.setState({
       rewards: rewards,
       project_title: project.title || "Title was left empty",
@@ -72,7 +71,7 @@ const Preview = React.createClass({
       project_blurb: project.blurb || "",
       project_category_id: project.category_id || 0,
       user_project_total: user.project_totals || 0,
-      user_pic_url: user.pic_url || <img id="prof-pic" src={window.profile_pic}></img>,
+      user_pic_url: typeof user.pic_url === 'string' ? user.pic_url : window.profile_pic,
       project_content: project.content || "",
       project_risks: project.risks || ""
     });
@@ -150,8 +149,7 @@ const Preview = React.createClass({
               <ul className="user-name-pic">
                 <li><p className="user-full-name">{this.state.author_full_name}</p></li>
                   <li className="profile-pic">
-                    <img id="nav-prof-pic" src={this.state.user_pic_url ||
-                      window.profile_pic}></img>
+                    <img id="nav-prof-pic" src={this.state.user_pic_url}></img>
                   </li>
               </ul>
               <br></br>
