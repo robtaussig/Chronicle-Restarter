@@ -4,6 +4,7 @@ const ProjectActions = require('../actions/project_actions.js');
 const ProjectCategoryIds = require('../constants/project_category_ids');
 const ProjectShow = require('./project_show.jsx');
 const ProjectPreview = require('./project_preview.jsx');
+import { browserHistory } from 'react-router';
 
 const ProjectIndex = React.createClass({
 
@@ -54,6 +55,8 @@ const ProjectIndex = React.createClass({
   _handleCategory (event) {
     if (event.target.innerHTML === "All projects") {
       this._showProjects("all");
+    } else if (event.target.innerHTML === "Future") {
+      browserHistory.push('/future');
     } else {
       let categoryId = ProjectCategoryIds.filter(projectCat=>{
         return projectCat.label === event.target.innerHTML;
