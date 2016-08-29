@@ -34,6 +34,7 @@ SavedProjectStore.currentProject = () => {
 
 function _resetSavedProject (project) {
   _savedProject = project;
+  if (_savedProjects.indexOf(project) === -1) _savedProjects.push(project);
   SavedProjectStore.__emitChange();
 }
 

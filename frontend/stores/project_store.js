@@ -8,14 +8,12 @@ let _project = {};
 
 function _resetProject(project) {
   _project = project;
-  _projects.push(project);
+  if (_projects.indexOf(project) === -1) _projects.push(project);
   ProjectStore.__emitChange();
 }
 
 function _resetProjects(projects) {
-  if (projects) {
     _projects = projects;
-  }
   ProjectStore.__emitChange();
 }
 

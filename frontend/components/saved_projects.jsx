@@ -18,8 +18,8 @@ const SavedProjects = React.createClass({
   componentDidMount () {
     let userId = window.myApp.id || SessionStore.currentUser().id;
     if (userId) {
-      SavedProjectActions.fetchAllSavedProjects('start', userId);
       this.listener = SavedProjectStore.addListener(this._onChange);
+      SavedProjectActions.fetchAllSavedProjects('start', userId);
     } else {
       this._checkStatus();
     }

@@ -19,7 +19,9 @@ const ProjectIndex = React.createClass({
     } else {
       this._showProjects();
     }
-    ProjectActions.fetchAllProjects('index');
+    if (ProjectStore.allProjects().length === 0) {
+      ProjectActions.fetchAllProjects('index');
+    }
   },
 
   componentWillUnmount () {

@@ -40,6 +40,7 @@ const Preview = React.createClass({
     this.projectListener = SavedProjectStore.addListener(this._onProjectChange);
     this.userListener = UserStore.addListener(this._onUserChange);
     SavedProjectActions.fetchAllSavedProjects ('preview', this.state.user_id);
+
     window.setTimeout(() => {this.setState({appearance: 'entered'});},100);
   },
 

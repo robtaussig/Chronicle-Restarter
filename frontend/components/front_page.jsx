@@ -16,8 +16,17 @@ const FrontPage = React.createClass({
   componentDidMount () {
     this.listener = ProjectStore.addListener(this._onProjectChange);
     this.userListener = UserStore.addListener(this._onUserChange);
-    UserActions.fetchAllUsers('front');
-    ProjectActions.fetchAllProjects('front');
+    if (UserStore.allUsers().length === 0) {
+      UserActions.fetchAllUsers('front');
+    } else {
+      this.setState({users: UserStore.allUsers()});
+    }
+
+    if (ProjectStore.allProjects().length === 0) {
+      ProjectActions.fetchAllProjects('front');
+    } else {
+      this.setState({projects: ProjectStore.allProjects()});
+    }
   },
 
   componentWillUnmount () {

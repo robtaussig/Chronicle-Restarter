@@ -36,7 +36,12 @@ const ProjectShow = React.createClass({
     this.projectListener = ProjectStore.addListener(this._onProjectChange);
     let user = this.props.project.author_id;
     this.userListener = UserStore.addListener(this._onUserChange);
-    UserActions.fetchAllUsers();
+    if (UserStore.allUsers().length === 0) {
+      UserActions.fetchAllUsers('front');
+    } else {
+      let thisUser = UserStore.find(this.props.project.author_id);
+      this.setState({user: thisUser, userProjects: thisUser.projects});
+    }
   },
 
   componentWillUnmount () {
