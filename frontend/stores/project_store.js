@@ -43,13 +43,14 @@ ProjectStore.filteredProjects = () => {
 };
 
 function _matches (projects, params) {
+  let searchParams = params.toLowerCase();
   return projects.filter(project => {
     return (
-      project.title.includes(params) ||
-      project.author_full_name.includes(params) ||
-      project.content.includes(params) ||
-      project.blurb.includes(params) ||
-      project.risks.includes(params)
+      project.title.toLowerCase().includes(params) ||
+      project.author_full_name.toLowerCase().includes(params) ||
+      project.content.toLowerCase().includes(params) ||
+      project.blurb.toLowerCase().includes(params) ||
+      project.risks.toLowerCase().includes(params)
     );
   });
 }
