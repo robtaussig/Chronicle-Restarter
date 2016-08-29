@@ -114,6 +114,9 @@ const ProjectShow = React.createClass({
     if (this.props.project.author_id === _userId) {
       this.setState({selected: this.positions[idx],
         message: "You can't back your own project"});
+    } else if (!_userId){
+      this.setState({selected: this.positions[idx],
+        message: "You must be signed in to back a project"});
     } else {
       let reward = this.props.project.rewards[idx];
       RewardActions.fundProject('show', reward.id, _userId);
