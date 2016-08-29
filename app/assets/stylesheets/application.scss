@@ -319,6 +319,10 @@ input.search {
   border-radius: 5px;
 }
 
+input.search:focus {
+  border: 1px solid blue;
+}
+
 /*--------------------------Project-index-show-page---------------------------*/
 
 div.index-container {

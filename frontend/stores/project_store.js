@@ -6,6 +6,7 @@ const ProjectStore = new Store(AppDispatcher);
 let _projects = [];
 let _project = {};
 let _params = "";
+let _filteredProjects = [];
 
 function _resetProject(project) {
   _project = project;
@@ -37,17 +38,28 @@ ProjectStore.currentProject = () => {
 };
 
 ProjectStore.filteredProjects = () => {
-  return _projects.filter(project => {
-    return _matches(project);
-  });
+  console.log(_filteredProjects);
+  return _filteredProjects;
 };
 
-function _matches (project) {
-  return true;
+function _matches (projects, params) {
+  return projects.filter(project => {
+    return (
+      project.title.includes(params) ||
+      project.author_full_name.includes(params) ||
+      project.content.includes(params) ||
+      project.blurb.includes(params) ||
+      project.risks.includes(params)
+    );
+  });
 }
 
 function _filterBy (searchParams) {
-  _params = searchParams;
+  if (searchParams === "") {
+    _filteredProjects = _projects;
+  } else {
+    _filteredProjects = _matches(_projects,searchParams);
+  }
   ProjectStore.__emitChange();
 }
 
