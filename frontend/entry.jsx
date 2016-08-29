@@ -10,6 +10,7 @@ const CreateProject = require('./components/create_project.jsx');
 const SavedProjects = require('./components/saved_projects.jsx');
 const Basics = require('./components/basics.jsx');
 const Comments = require('./components/comments.jsx');
+const AboutUs = require('./components/about_us.jsx');
 const Updates = require('./components/updates.jsx');
 const Rewards = require('./components/rewards.jsx');
 const Story = require('./components/story.jsx');
@@ -45,6 +46,7 @@ const routes = (
     <Route path="savedProjects" component={SavedProjects} />
     <Route path="future" component={Future} />
     <Route path="startProject" component={StartProject} />
+    <Route path="about" component={AboutUs} />
     <Route path="createProject" component={CreateProject} />
     <Route path="finalizeProject" component={FinalizeProject} >
       <IndexRoute component={Basics} />

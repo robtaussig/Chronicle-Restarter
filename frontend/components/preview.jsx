@@ -56,7 +56,7 @@ const Preview = React.createClass({
 
   _populate () {
     let project = SavedProjectStore.currentProject();
-    let rewards = RewardStore.currentRewards();
+    let rewards = RewardStore.currentRewards().filter(el=>el.project_id === project.id);
     let user = UserStore.currentUser().hasOwnProperty('id') ? UserStore.currentUser() : window.myApp;
     this.setState({
       rewards: rewards,

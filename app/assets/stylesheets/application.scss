@@ -287,6 +287,38 @@ div.future p {
   margin-top: 20px;
 }
 
+/*------------------------------- About -------------------------------------*/
+
+div.about-page {
+  min-height: 1000px;
+}
+
+div.about-page h1 {
+  font-size: 36px;
+  text-align: center;
+}
+
+div.about-page p {
+  font-size: 18px;
+  margin: 2em 10em;
+}
+
+div.about-page p.email {
+  text-align: center;
+}
+
+/*------------------------------- Search -------------------------------------*/
+
+li.x-icon {
+  padding-right: 0;
+}
+
+input.search {
+  border: 1px solid #ccc;
+  width: 20em;
+  border-radius: 5px;
+}
+
 /*--------------------------Project-index-show-page---------------------------*/
 
 div.index-container {

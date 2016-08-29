@@ -32,6 +32,13 @@ const ProjectActions = {
     });
   },
 
+  filterBy (params) {
+    AppDispatcher.dispatch({
+      actionType: ProjectConstants.PARAMS_RECEIVED,
+      params: params
+    });
+  },
+
   receiveAllProjects (data) {
     AppDispatcher.dispatch({
       actionType: ProjectConstants.PROJECTS_RECEIVED,

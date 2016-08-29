@@ -5,6 +5,7 @@ const ProjectStore = new Store(AppDispatcher);
 
 let _projects = [];
 let _project = {};
+let _params = "";
 
 function _resetProject(project) {
   _project = project;
@@ -13,13 +14,14 @@ function _resetProject(project) {
 }
 
 function _resetProjects(projects) {
-    _projects = projects;
+  _projects = projects;
   ProjectStore.__emitChange();
 }
 
 function _removeProject(project) {
-  let removed = _projects.splice(_projects.indexOf(project),1);
-  _projects = removed;
+  let newProject = _projects.filter(el=>el.id === project.id)[0];
+  let idx = _projects.indexOf(newProject);
+  _projects.splice(idx,1);
   ProjectStore.__emitChange();
 }
 
@@ -27,12 +29,27 @@ function _updateProject(project) {
   let _toRemove = _projects.filter(oldProject => oldProject.id === project.id);
   _projects = _projects.slice(_projects.indexOf(_toRemove),1);
   _projects.push(project);
-  ProjectStore.emitChange();
+  ProjectStore.__emitChange();
 }
 
 ProjectStore.currentProject = () => {
   return _project;
 };
+
+ProjectStore.filteredProjects = () => {
+  return _projects.filter(project => {
+    return _matches(project);
+  });
+};
+
+function _matches (project) {
+  return true;
+}
+
+function _filterBy (searchParams) {
+  _params = searchParams;
+  ProjectStore.__emitChange();
+}
 
 ProjectStore.allProjects = (category) => {
   if (category || category === 0) {
@@ -59,6 +76,9 @@ ProjectStore.__onDispatch = (payload) => {
     break;
     case ProjectConstants.PROJECT_UPDATED:
       _updateProject(payload.data);
+    break;
+    case ProjectConstants.PARAMS_RECEIVED:
+      _filterBy(payload.params);
     break;
   }
 };
