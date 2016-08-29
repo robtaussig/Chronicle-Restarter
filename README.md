@@ -1,6 +1,6 @@
 # Chronicle ReStarter
 
-[Live][heroku]
+[Live][Live]
 
 [Live]: http://www.chronicle-restarter.com
 
