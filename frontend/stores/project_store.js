@@ -5,7 +5,6 @@ const ProjectStore = new Store(AppDispatcher);
 
 let _projects = [];
 let _project = {};
-let _params = "";
 let _filteredProjects = [];
 
 function _resetProject(project) {

@@ -86,7 +86,7 @@ const FrontPage = React.createClass({
           </div>
         </div>
         <h2 className="front-page-navigation">
-          Check out our absolute three favorite projects at this very moment:
+          Check out the three most recent campaigns:
         </h2>
         <ul className="three-random-projects">
           {_display}
