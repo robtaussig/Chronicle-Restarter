@@ -1,8 +1,8 @@
 # Chronicle ReStarter
 
-[Heroku link][heroku]
+[Live][heroku]
 
-[heroku]: http://chronicle-restarter.herokuapp.com
+[Live]: http://www.chronicle-restarter.com
 
 ## Minimum Viable Product
 
