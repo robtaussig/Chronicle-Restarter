@@ -42,18 +42,22 @@ Users of Chronicle Restarter can launch, delete, browse, search for, and back pr
 ### Features
 
 - Reusable, hand-rolled CSS transitions driven by a series of event listeners and asynchronous callbacks.
+
 ![StartProject]
 [StartProject]: docs/readme/saveProjectGif.gif
 
 - The client-side retrieves projects and fundings through a single query by utilizing ActiveRecord associations on the server-side, streamlining the user experience with instantaneous search and indexing, while minimizing the load on the server by reducing overall number of queries.
+
 ![Search]
 [Search]: docs/readme/search.gif
 
 - Authentication process remembers where the user was redirected from after prompted to sign in.
+
 ![Auth]
 [Auth]: docs/readme/auth.gif
 
 - Backing a project instantaneously records the funding on the server-side while updating the client-side, all without having to refresh the page.
+
 ![Funding]
 [Funding]: docs/readme/funding.gif
 
