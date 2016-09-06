@@ -39,10 +39,10 @@ Chronicle ReStarter is a tongue-in-cheek adaptation of Kickstarter that will be 
 * [API endpoints][api-endpoints]
 * [DB schema][schema]
 
-[views]: /views.md
-[components]: /components.md
-[flux-cycles]: /flux-cycles.md
-[api-endpoints]: /api-endpoints.md
+[views]: views.md
+[components]: components.md
+[flux-cycles]: flux-cycles.md
+[api-endpoints]: api-endpoints.md
 [schema]: schema.md
 
 ## Implementation Timeline
