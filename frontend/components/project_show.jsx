@@ -217,10 +217,10 @@ const ProjectShow = React.createClass({
             <div className="social-links-wrapper">
               <ul className="social-links group">
                 <li><b>Share:</b> </li>
-                <li>[Tweet]</li>
-                <li>[Facebook]</li>
-                <li>[Embed]</li>
-                <li>[Email]</li>
+                <li><img src={window.twitter}/></li>
+                <li><img src={window.facebook}/></li>
+                <li><img src={window.email}/></li>
+                <li><img src={window.embed}/></li>
               </ul>
             </div>
             <div className="preview-project-blurb">

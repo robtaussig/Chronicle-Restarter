@@ -1606,6 +1606,12 @@ ul.social-links li {
   color: black;
   float: left;
   margin: 20px 20px 0 0;
+  height: 20px;
+  width: 20px;
+}
+
+ul.social-links li:not(:first-child) {
+  margin: 20px 20px 0 20px;
 }
 
 div.user-info {
