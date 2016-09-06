@@ -81,7 +81,7 @@ Users of Chronicle Restarter can launch, delete, browse, search for, and back pr
 
 #### How Chronicle Restarter uses this technology
 
-Chronicle Restarter utilizes the Flux cycle at every level: user sessions, projects, saved projects, rewards, and fundings are all created and retrieved through the flux cycle. Notable implementations include:
+Chronicle Restarter utilizes the Flux cycle at every level: user sessions, projects, saved projects, rewards, and fundings are all created and retrieved through the flux cycle. Notable implementations of React and ActiveRecord include:
 
 - *Saved Projects into Published Projects:* When the user initially picks the era for his or her project, a saved project is immediately created with a foreign key pointing to that user. At every step of the creation process, the saved project is updated whenever a component unmounts, and for additional security (against losing progress), the user can specifically save (or clear) changes via buttons that become available when applicable (after a change is made). Saved projects are available from the same screen that the user begins a project, and upon selecting a saved project, its information will automatically prepopulate applicable fields in the series of FinalizeProject pages. When the user is ready to publish a project, the information from the currentSavedProject (from the SavedProjectStore) is used to create a project, with the published project holding the foreign key to the saved project.
 
