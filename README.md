@@ -87,7 +87,7 @@ Chronicle Restarter utilizes the Flux cycle at every level: user sessions, proje
 
 - *Rewards:* When a user creates rewards for the saved project, the rewards are saved under a separate table with a foreign key pointing to the saved project. When the saved project is eventually published, rewards are accessed through the ActiveRecord association between Projects and Rewards through Saved Projects which has an association with both.
 
-- *Fundings:* A project is funded when a user makes a pledge that corresponds with an offered reward. Each reward is of a certain value, and so a project's total funding can be measured quite easily as the product of a reward's value and the amount of "pledges" for that reward (and, where a project has multiple rewards, along with the sum of other rewards multiplied by their amount of pledges). Fundings are thus handled as a join table between users and rewards, holding a foreign key to both, which with the help of jbuilder allows the front-end to retrieve all relevant funding information alongside the projects in a single query.
+- *Fundings:* A project is funded when a user makes a pledge that corresponds with an offered reward. Each reward is of a certain value, and so a project's total funding can be measured quite easily as the product of a reward's value and the amount of "pledges" for that reward (and, where a project has multiple rewards, along with the sum of other rewards multiplied by their amount of pledges). Fundings are thus handled as a join table between users and rewards, holding a foreign key to both, which with the help of jbuilder allows the frontend to get both funding and project information from the backend in a single query.
 
 ![Jbuilder]
 [Jbuilder]: docs/readme/jbuilder.png
