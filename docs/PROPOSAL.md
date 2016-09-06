@@ -39,11 +39,11 @@ Chronicle ReStarter is a tongue-in-cheek adaptation of Kickstarter that will be 
 * [API endpoints][api-endpoints]
 * [DB schema][schema]
 
-[views]: docs/views.md
-[components]: docs/components.md
-[flux-cycles]: docs/flux-cycles.md
-[api-endpoints]: docs/api-endpoints.md
-[schema]: docs/schema.md
+[views]: /views.md
+[components]: /components.md
+[flux-cycles]: /flux-cycles.md
+[api-endpoints]: /api-endpoints.md
+[schema]: schema.md
 
 ## Implementation Timeline
 
@@ -133,8 +133,8 @@ Phase 3 adds organization to the Projects. Projects belong to a Category, which 
 - [ ] Multiple sessions
 - [ ] A project's edit page will render a preview pane in real-time.
 
-[phase-one]: docs/phases/phase1.md
-[phase-two]: docs/phases/phase2.md
-[phase-three]: docs/phases/phase3.md
-[phase-four]: docs/phases/phase4.md
-[phase-five]: docs/phases/phase5.md
+[phase-one]: phases/phase1.md
+[phase-two]: phases/phase2.md
+[phase-three]: phases/phase3.md
+[phase-four]: phases/phase4.md
+[phase-five]: phases/phase5.md
