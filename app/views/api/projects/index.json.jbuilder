@@ -5,7 +5,7 @@ json.array! @projects do |project|
   json.author_id project.author_id
   json.category_id project.category_id
   json.goal project.goal
-  json.image asset_path(project.image.url)
+
   json.duration project.duration
   json.location project.location
   json.content project.content
@@ -18,7 +18,11 @@ json.array! @projects do |project|
   project.fundings.each do |funding|
     amount_array << Api::Reward.find(funding.reward_id).amount
   end
-
+  if project.image.class === 'string'
+    json.project_img_urls project.project_img_urls
+  else
+    json.image asset_path(project.image.url)
+  end
   total = amount_array.inject(0){|sum,x| sum + x }
   if project.goal > 0
     progress = total.fdiv(project.goal)
