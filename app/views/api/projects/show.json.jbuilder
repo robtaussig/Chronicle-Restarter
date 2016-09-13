@@ -6,7 +6,11 @@ json.extract! @project,
   json.rewards @project.rewards
   json.funders @project.fundings.length
 
-  json.project_img_urls asset_path(@project.image.url)
+  if @project.image.class === 'string'
+    json.project_img_urls @project.image
+  else
+    json.project_img_urls asset_path(@project.image.url)
+  end
   amount_array = []
   @project.fundings.each do |funding|
     amount_array << Api::Reward.find(funding.reward_id).amount
