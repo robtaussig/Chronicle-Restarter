@@ -67,7 +67,7 @@ Users of Chronicle Restarter can launch, delete, browse, search for, and back pr
 
 - The Discover page utilizes the CSS flexbox property so that the number of projects per line increases and decreases depending on the current width of the user's window, providing a much more responsive experience.
 
-- File upload handled through the Cloudinary API, combined with the gon gem to keep the api key private on the server-side.
+- File upload handled through the Amazon Web Services, combined with the figaro gem to keep the api key private on the server-side.
 
 - Full authentication process built from the ground up, utilizing BCrypt to hash and salt passwords.
 

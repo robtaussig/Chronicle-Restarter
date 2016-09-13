@@ -8,12 +8,7 @@
   <%= stylesheet_link_tag    'application', media: 'all' %>
   <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
-  <script src="//widget.cloudinary.com/global/all.js" type="text/javascript"></script>
   <script type="text/javascript">
-    window.CLOUDINARY_OPTIONS = {
-      cloud_name: "<%=ENV['CLOUD_NAME']%>",
-      upload_preset: "<%= ENV['UPLOAD_PRESET'] %>"
-    };
     window.left_arrow = '<%= image_url('left_arrow.svg') %>';
     window.x_mark = '<%= image_url('x_mark.jpg') %>';
     window.right_arrow = '<%= image_url('right_arrow.svg') %>';
