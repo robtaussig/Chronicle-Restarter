@@ -42,7 +42,7 @@ class Api::UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:username, :password, :email, :location,
-    :website, :pic_url, :biography, :full_name, :verified, :verification_status)
+    :website, :pic_url, :biography, :image, :full_name, :verified, :verification_status)
   end
 
 end

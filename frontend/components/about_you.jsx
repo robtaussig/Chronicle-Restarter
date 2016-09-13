@@ -1,7 +1,8 @@
 const React = require('react');
 const UserStore = require('../stores/user_store.js');
 const UserActions = require('../actions/user_actions.js');
-const SavedProjectStore = require('../stores/saved_project_store');
+const SavedProjectStore = require('../stores/saved_project_store.js');
+const SavedProjectActions = require('../actions/saved_project_actions.js');
 const SessionStore = require('../stores/session_store.js');
 
 const AboutYou = React.createClass({
@@ -48,19 +49,14 @@ const AboutYou = React.createClass({
   },
 
   _setUserPic (e) {
-    e.preventDefault();
-    cloudinary.openUploadWidget(window.CLOUDINARY_OPTIONS,(error,img) => {
-      if (error === null) {
-        this._setImage(img[0].url);
-      } else {
-        return;
-      }
-    });
-  },
-
-  _setImage (img_url) {
-    let img = "https" + img_url.slice(4);
-    this.setState({pic_url: img});
+    let file = e.currentTarget.files[0];
+    let fileReader = new FileReader();
+    fileReader.onloadend = function () {
+      this.setState({imageFile : file, imageUrl: fileReader.result});
+    }.bind(this);
+    if (file) {
+      fileReader.readAsDataURL(file);
+    }
   },
 
   _resetSavedStatus () {
@@ -111,7 +107,15 @@ const AboutYou = React.createClass({
   },
 
   _saveUserInfo () {
-    UserActions.saveUser('about', this.state);
+    let formData = new FormData();
+    if (this.state.imageFile) {
+      formData.append("user[image]", this.state.imageFile);
+    }
+    formData.append("user[location]", this.state.location);
+    formData.append("user[biography]", this.state.biography);
+    formData.append("user[full_name]", this.state.full_name);
+    formData.append("id", this.state.id);
+    UserActions.saveUser('about', formData);
   },
 
   render: function() {
@@ -124,9 +128,7 @@ const AboutYou = React.createClass({
                 <div className="grey-field">
                   <div className="attribute-field">Profile photo</div>
                   <div className="field-wrapper">
-                    <button onClick={this._setUserPic} id="about-you-image" className="about-you-image">
-                      Choose an image from your computer
-                    </button>
+                    <input type="file" onChange={this._setUserPic} />
                   </div>
                 </div>
               </li>

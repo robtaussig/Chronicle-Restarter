@@ -5,7 +5,7 @@ json.array! @projects do |project|
   json.author_id project.author_id
   json.category_id project.category_id
   json.goal project.goal
-  json.image project.image
+  json.image asset_path(project.image.url)
   json.duration project.duration
   json.location project.location
   json.content project.content

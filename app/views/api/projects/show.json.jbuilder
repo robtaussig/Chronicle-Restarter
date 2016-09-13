@@ -1,11 +1,12 @@
 json.extract! @project,
   :id, :title, :content, :author_id, :category_id, :blurb, :duration,
-  :goal, :project_img_urls, :location, :saved_project_id,
+  :goal, :location, :saved_project_id,
   :author_full_name, :risks, :website
 
   json.rewards @project.rewards
   json.funders @project.fundings.length
 
+  json.project_img_urls asset_path(@project.image.url)
   amount_array = []
   @project.fundings.each do |funding|
     amount_array << Api::Reward.find(funding.reward_id).amount

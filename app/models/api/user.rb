@@ -20,6 +20,8 @@ class Api::User < ActiveRecord::Base
   validates :password, length: {minimum: 6, allow_nil: true}
   attr_reader :password
   after_initialize :ensure_session_token
+  has_attached_file :image, default_url: "default_pic.png"
+  validates_attachment_content_type :image, content_type: /\Aimage\/.*\Z/
 
 
   has_many :saved_projects, foreign_key: 'author_id'

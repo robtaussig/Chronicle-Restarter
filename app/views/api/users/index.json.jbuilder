@@ -4,7 +4,7 @@ json.array! @users do |user|
   json.email user.email
   json.location user.location
   json.website user.website
-  json.pic_url user.pic_url
+  json.pic_url asset_path(user.image.url)
   json.biography user.biography
   json.full_name user.full_name
   json.verified user.verified

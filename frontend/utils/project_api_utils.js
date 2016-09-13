@@ -84,17 +84,33 @@ const ProjectApiUtil = {
   },
 
   updateSavedProject (form, data, successCB, errorCB) {
-    $.ajax({
-      url: '/api/saved_projects/' + data.id,
-      type: 'PATCH',
-      data: {saved_project: data},
-      success: (resp) => {
-        successCB(resp);
-      },
-      error: (resp) => {
-        errorCB(form, resp);
-      }
-    });
+    if (data.id) {
+      $.ajax({
+        url: '/api/saved_projects/' + data.id,
+        type: 'PATCH',
+        data: {saved_project: data},
+        success: (resp) => {
+          successCB(resp);
+        },
+        error: (resp) => {
+          errorCB(form, resp);
+        }
+      });
+    } else {
+      $.ajax({
+        url: '/api/saved_projects/' + data.get('id'),
+        type: 'PATCH',
+        processData: false,
+        contentType: false,
+        data: data,
+        success: (resp) => {
+          successCB(resp);
+        },
+        error: (resp) => {
+          errorCB(form, resp);
+        }
+      });
+    }
   },
 
   removeSavedProject (form, id, success, errorCB) {

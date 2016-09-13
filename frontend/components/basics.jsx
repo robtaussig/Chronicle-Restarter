@@ -20,7 +20,8 @@ const Basics = React.createClass({
       errorMessage: "",
       appearance: "entering",
       visibility: "",
-      image: ""
+      imageFile: null,
+      imageUrl: null
     });
   },
 
@@ -78,21 +79,15 @@ const Basics = React.createClass({
     }
   },
 
-  _postImage (img_url) {
-    let img = "https" + img_url.slice(4);
-    this.setState({image: img});
-    this._resetSavedStatus();
-  },
-
   _setImage (e) {
-    e.preventDefault();
-    cloudinary.openUploadWidget(window.CLOUDINARY_OPTIONS,(error,img) => {
-      if (error === null) {
-        this._postImage(img[0].url);
-      } else {
-        return;
-      }
-    });
+    let file = e.currentTarget.files[0];
+    let fileReader = new FileReader();
+    fileReader.onloadend = function () {
+      this.setState({imageFile : file, imageUrl: fileReader.result});
+    }.bind(this);
+    if (file) {
+      fileReader.readAsDataURL(file);
+    }
   },
 
   _setBlurb (e) {
@@ -132,6 +127,7 @@ const Basics = React.createClass({
   },
 
   _handleSave () {
+
     if (this.state.saved === 'saved') {
       this.setState({errorMessage: "Your project is already up-to-date"});
     } else {
@@ -141,10 +137,23 @@ const Basics = React.createClass({
   },
 
   _saveProject () {
+    let formData = new FormData();
+    if (this.state.imageFile) {
+      formData.append("saved_project[image]", this.state.imageFile);
+    }
+    formData.append("saved_project[author_id]", this.state.author_id);
+    formData.append("saved_project[title]", this.state.title);
+    formData.append("saved_project[blurb]", this.state.blurb);
+    formData.append("saved_project[category_id]", this.state.category_id);
+    formData.append("saved_project[location]", this.state.location);
+    formData.append("saved_project[duration]", this.state.duration);
+    formData.append("saved_project[goal]", this.state.goal);
+    formData.append("saved_project[author_id]", this.state.author_id);
+    formData.append("id", SavedProjectStore.currentProject().id);
     if (SavedProjectStore.currentProject().id) {
-      SavedProjectActions.updateSavedProject('basics', this.state);
+      SavedProjectActions.updateSavedProject('basics', formData);
     } else {
-      SavedProjectActions.submitSavedProject('basics', this.state);
+      SavedProjectActions.submitSavedProject('basics', formData);
     }
 
     UserActions.saveUser('basics',{id: SessionStore.currentUser().id,
@@ -163,10 +172,9 @@ const Basics = React.createClass({
               <li className="project-image">
                 <div className="grey-field">
                   <div className="attribute-field">Project image</div>
+                  <img src={this.state.imageUrl}/>
                   <div className="field-wrapper">
-                    <button onClick={this._setImage} id="project-image" className="project-image">
-                      Choose an image from your computer
-                    </button>
+                    <input type="file" onChange={this._setImage} />
                   </div>
                 </div>
               </li>

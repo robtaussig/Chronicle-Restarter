@@ -19,6 +19,8 @@
 class Api::Project < ActiveRecord::Base
 
   validates :title, :author_id, presence: true
+  has_attached_file :image, default_url: "default_pic.png"
+  validates_attachment_content_type :image, content_type: /\Aimage\/.*\Z/
 
   belongs_to :author, class_name: 'User', foreign_key: 'author_id'
   belongs_to :saved_project, class_name: 'SavedProject', foreign_key: 'saved_project_id'

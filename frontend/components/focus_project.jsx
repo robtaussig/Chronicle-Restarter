@@ -16,7 +16,7 @@ const FocusProject = React.createClass({
   },
 
   _goToPage () {
-    SavedProjectActions.updateSavedProject('savedProject', this.props.project);
+    SavedProjectActions.setSavedProject('savedProject', this.props.project.id);
     browserHistory.push('/finalizeProject');
   },
 

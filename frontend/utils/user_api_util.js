@@ -1,17 +1,33 @@
 const UserApiUtil = {
 
   saveUser (form, userInfo, successCB, errorCB) {
-    $.ajax({
-      url: '/api/users/' + userInfo.id,
-      type: 'PATCH',
-      data: {user: userInfo},
-      success: (resp) => {
-        successCB(resp);
-      },
-      error: (resp) => {
-        errorCB(form, resp);
-      }
-    });
+    if (userInfo.id) {
+      $.ajax({
+        url: '/api/users/' + userInfo.id,
+        type: 'PATCH',
+        data: {user: userInfo},
+        success: (resp) => {
+          successCB(resp);
+        },
+        error: (resp) => {
+          errorCB(form, resp);
+        }
+      });
+    } else {
+      $.ajax({
+        url: '/api/users/' + userInfo.get('id'),
+        type: 'PATCH',
+        processData: false,
+        contentType: false,
+        data: userInfo,
+        success: (resp) => {
+          successCB(resp);
+        },
+        error: (resp) => {
+          errorCB(form, resp);
+        }
+      });
+    }
   },
 
   fetchAllUsers (form,success,error) {

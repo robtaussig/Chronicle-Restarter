@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160827205100) do
+ActiveRecord::Schema.define(version: 20160912221242) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,14 +27,14 @@ ActiveRecord::Schema.define(version: 20160827205100) do
   add_index "api_fundings", ["user_id"], name: "index_api_fundings_on_user_id", using: :btree
 
   create_table "api_projects", force: :cascade do |t|
-    t.string   "title",            null: false
+    t.string   "title",                        null: false
     t.text     "content"
-    t.integer  "author_id",        null: false
+    t.integer  "author_id",                    null: false
     t.integer  "category_id"
     t.integer  "goal"
     t.string   "project_img_urls"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
     t.text     "blurb"
     t.integer  "duration"
     t.string   "location"
@@ -43,6 +43,14 @@ ActiveRecord::Schema.define(version: 20160827205100) do
     t.string   "website"
     t.text     "risks"
     t.string   "image"
+    t.string   "project_picture_file_name"
+    t.string   "project_picture_content_type"
+    t.integer  "project_picture_file_size"
+    t.datetime "project_picture_updated_at"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
   end
 
   add_index "api_projects", ["author_id"], name: "index_api_projects_on_author_id", using: :btree
@@ -69,13 +77,17 @@ ActiveRecord::Schema.define(version: 20160827205100) do
     t.integer  "category_id"
     t.integer  "goal"
     t.string   "project_img_urls"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
     t.text     "blurb"
     t.integer  "duration"
     t.string   "location"
     t.text     "risks"
     t.string   "image"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
   end
 
   create_table "api_sessions", force: :cascade do |t|
@@ -97,6 +109,14 @@ ActiveRecord::Schema.define(version: 20160827205100) do
     t.string   "full_name"
     t.string   "verified"
     t.string   "verification_status"
+    t.string   "photo_file_name"
+    t.string   "photo_content_type"
+    t.integer  "photo_file_size"
+    t.datetime "photo_updated_at"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
   end
 
   add_index "api_users", ["email"], name: "index_api_users_on_email", using: :btree

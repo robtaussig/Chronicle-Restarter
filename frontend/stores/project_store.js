@@ -9,7 +9,7 @@ let _filteredProjects = [];
 
 function _resetProject(project) {
   _project = project;
-  if (_projects.indexOf(project) === -1) _projects.push(project);
+  _projects = [];
   ProjectStore.__emitChange();
 }
 

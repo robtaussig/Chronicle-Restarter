@@ -63,7 +63,7 @@ const Preview = React.createClass({
       project_title: project.title || "Title was left empty",
       author_full_name: user.full_name || user.username,
       user_website: user.website || "",
-      image: project.image || "",
+      image: project.project_img_urls || "",
       project_funders: project.funders || 0,
       project_funded: project.funded || 0,
       project_goal: project.goal || 0,
