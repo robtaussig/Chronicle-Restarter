@@ -13403,3 +13403,104 @@ Processing by Api::UsersController#create as JSON
   [1m[35mApi::Project Load (1.4ms)[0m  SELECT "api_projects".* FROM "api_projects" INNER JOIN "api_saved_projects" ON "api_projects"."saved_project_id" = "api_saved_projects"."id" INNER JOIN "api_rewards" ON "api_saved_projects"."id" = "api_rewards"."project_id" INNER JOIN "api_fundings" ON "api_rewards"."id" = "api_fundings"."reward_id" WHERE "api_fundings"."user_id" = $1  [["user_id", 32]]
   Rendered api/users/show.json.jbuilder (5.6ms)
 Completed 200 OK in 91ms (Views: 5.8ms | ActiveRecord: 4.9ms)
+
+
+Started GET "/" for ::1 at 2016-09-13 18:03:28 -0400
+Processing by StaticPagesController#root as HTML
+  [1m[36mApi::User Load (0.3ms)[0m  [1mSELECT  "api_users".* FROM "api_users" WHERE "api_users"."session_token" = $1 LIMIT 1[0m  [["session_token", "pF0_G5Co98WP3zmfVLGnpA"]]
+  Rendered api/users/_user.json.jbuilder (0.3ms)
+  Rendered static_pages/root.html within layouts/application (1.4ms)
+Completed 200 OK in 99ms (Views: 76.5ms | ActiveRecord: 4.2ms)
+
+
+Started GET "/api/users" for ::1 at 2016-09-13 18:03:29 -0400
+Processing by Api::UsersController#index as JSON
+  [1m[35mApi::User Load (0.7ms)[0m  SELECT "api_users".* FROM "api_users"
+  [1m[36mApi::Project Load (0.3ms)[0m  [1mSELECT "api_projects".* FROM "api_projects" WHERE "api_projects"."author_id" = $1[0m  [["author_id", 31]]
+  [1m[35mApi::Project Load (0.3ms)[0m  SELECT "api_projects".* FROM "api_projects" WHERE "api_projects"."author_id" = $1  [["author_id", 16]]
+  [1m[36mApi::Project Load (0.3ms)[0m  [1mSELECT "api_projects".* FROM "api_projects" WHERE "api_projects"."author_id" = $1[0m  [["author_id", 1]]
+  [1m[35mApi::Project Load (0.4ms)[0m  SELECT "api_projects".* FROM "api_projects" WHERE "api_projects"."author_id" = $1  [["author_id", 27]]
+  [1m[36mApi::Project Load (0.3ms)[0m  [1mSELECT "api_projects".* FROM "api_projects" WHERE "api_projects"."author_id" = $1[0m  [["author_id", 32]]
+  [1m[35mApi::Project Load (0.4ms)[0m  SELECT "api_projects".* FROM "api_projects" WHERE "api_projects"."author_id" = $1  [["author_id", 17]]
+  [1m[36mApi::Project Load (0.3ms)[0m  [1mSELECT "api_projects".* FROM "api_projects" WHERE "api_projects"."author_id" = $1[0m  [["author_id", 2]]
+  [1m[35mApi::Project Load (0.7ms)[0m  SELECT "api_projects".* FROM "api_projects" WHERE "api_projects"."author_id" = $1  [["author_id", 10]]
+  [1m[36mApi::Project Load (0.3ms)[0m  [1mSELECT "api_projects".* FROM "api_projects" WHERE "api_projects"."author_id" = $1[0m  [["author_id", 3]]
+  [1m[35mApi::Project Load (0.3ms)[0m  SELECT "api_projects".* FROM "api_projects" WHERE "api_projects"."author_id" = $1  [["author_id", 4]]
+  [1m[36mApi::Project Load (0.4ms)[0m  [1mSELECT "api_projects".* FROM "api_projects" WHERE "api_projects"."author_id" = $1[0m  [["author_id", 5]]
+  [1m[35mApi::Project Load (0.4ms)[0m  SELECT "api_projects".* FROM "api_projects" WHERE "api_projects"."author_id" = $1  [["author_id", 18]]
+  [1m[36mApi::Project Load (0.4ms)[0m  [1mSELECT "api_projects".* FROM "api_projects" WHERE "api_projects"."author_id" = $1[0m  [["author_id", 6]]
+  [1m[35mApi::Project Load (0.5ms)[0m  SELECT "api_projects".* FROM "api_projects" WHERE "api_projects"."author_id" = $1  [["author_id", 29]]
+  [1m[36mApi::Project Load (0.4ms)[0m  [1mSELECT "api_projects".* FROM "api_projects" WHERE "api_projects"."author_id" = $1[0m  [["author_id", 11]]
+  [1m[35mApi::Project Load (0.4ms)[0m  SELECT "api_projects".* FROM "api_projects" WHERE "api_projects"."author_id" = $1  [["author_id", 7]]
+  [1m[36mApi::Project Load (0.3ms)[0m  [1mSELECT "api_projects".* FROM "api_projects" WHERE "api_projects"."author_id" = $1[0m  [["author_id", 8]]
+  [1m[35mApi::Project Load (0.3ms)[0m  SELECT "api_projects".* FROM "api_projects" WHERE "api_projects"."author_id" = $1  [["author_id", 19]]
+  [1m[36mApi::Project Load (0.3ms)[0m  [1mSELECT "api_projects".* FROM "api_projects" WHERE "api_projects"."author_id" = $1[0m  [["author_id", 9]]
+  [1m[35mApi::Project Load (0.3ms)[0m  SELECT "api_projects".* FROM "api_projects" WHERE "api_projects"."author_id" = $1  [["author_id", 12]]
+  [1m[36mApi::Project Load (0.3ms)[0m  [1mSELECT "api_projects".* FROM "api_projects" WHERE "api_projects"."author_id" = $1[0m  [["author_id", 20]]
+  [1m[35mApi::Project Load (0.3ms)[0m  SELECT "api_projects".* FROM "api_projects" WHERE "api_projects"."author_id" = $1  [["author_id", 13]]
+  [1m[36mApi::Project Load (0.3ms)[0m  [1mSELECT "api_projects".* FROM "api_projects" WHERE "api_projects"."author_id" = $1[0m  [["author_id", 21]]
+  [1m[35mApi::Project Load (0.3ms)[0m  SELECT "api_projects".* FROM "api_projects" WHERE "api_projects"."author_id" = $1  [["author_id", 14]]
+  [1m[36mApi::Project Load (0.3ms)[0m  [1mSELECT "api_projects".* FROM "api_projects" WHERE "api_projects"."author_id" = $1[0m  [["author_id", 15]]
+  [1m[35mApi::Project Load (0.3ms)[0m  SELECT "api_projects".* FROM "api_projects" WHERE "api_projects"."author_id" = $1  [["author_id", 26]]
+  [1m[36mApi::Project Load (0.3ms)[0m  [1mSELECT "api_projects".* FROM "api_projects" WHERE "api_projects"."author_id" = $1[0m  [["author_id", 30]]
+  [1m[35mApi::Project Load (0.2ms)[0m  SELECT "api_projects".* FROM "api_projects" WHERE "api_projects"."author_id" = $1  [["author_id", 28]]
+  Rendered api/users/index.json.jbuilder (165.7ms)
+Completed 200 OK in 181ms (Views: 167.6ms | ActiveRecord: 13.2ms)
+
+
+Started GET "/api/projects" for ::1 at 2016-09-13 18:03:29 -0400
+Processing by Api::ProjectsController#index as JSON
+  [1m[36mApi::Project Load (0.7ms)[0m  [1mSELECT "api_projects".* FROM "api_projects"[0m
+  [1m[35mApi::Funding Load (0.4ms)[0m  SELECT "api_fundings".* FROM "api_fundings" INNER JOIN "api_rewards" ON "api_fundings"."reward_id" = "api_rewards"."id" INNER JOIN "api_saved_projects" ON "api_rewards"."project_id" = "api_saved_projects"."id" WHERE "api_saved_projects"."id" = $1  [["id", 177]]
+  [1m[36mApi::Funding Load (0.4ms)[0m  [1mSELECT "api_fundings".* FROM "api_fundings" INNER JOIN "api_rewards" ON "api_fundings"."reward_id" = "api_rewards"."id" INNER JOIN "api_saved_projects" ON "api_rewards"."project_id" = "api_saved_projects"."id" WHERE "api_saved_projects"."id" = $1[0m  [["id", 178]]
+  [1m[35mApi::Funding Load (0.4ms)[0m  SELECT "api_fundings".* FROM "api_fundings" INNER JOIN "api_rewards" ON "api_fundings"."reward_id" = "api_rewards"."id" INNER JOIN "api_saved_projects" ON "api_rewards"."project_id" = "api_saved_projects"."id" WHERE "api_saved_projects"."id" = $1  [["id", 179]]
+  [1m[36mApi::Funding Load (1.3ms)[0m  [1mSELECT "api_fundings".* FROM "api_fundings" INNER JOIN "api_rewards" ON "api_fundings"."reward_id" = "api_rewards"."id" INNER JOIN "api_saved_projects" ON "api_rewards"."project_id" = "api_saved_projects"."id" WHERE "api_saved_projects"."id" = $1[0m  [["id", 180]]
+  [1m[35mApi::Funding Load (0.3ms)[0m  SELECT "api_fundings".* FROM "api_fundings" INNER JOIN "api_rewards" ON "api_fundings"."reward_id" = "api_rewards"."id" INNER JOIN "api_saved_projects" ON "api_rewards"."project_id" = "api_saved_projects"."id" WHERE "api_saved_projects"."id" = $1  [["id", 186]]
+  [1m[36mApi::Funding Load (0.5ms)[0m  [1mSELECT "api_fundings".* FROM "api_fundings" INNER JOIN "api_rewards" ON "api_fundings"."reward_id" = "api_rewards"."id" INNER JOIN "api_saved_projects" ON "api_rewards"."project_id" = "api_saved_projects"."id" WHERE "api_saved_projects"."id" = $1[0m  [["id", 187]]
+  [1m[35mApi::Funding Load (0.4ms)[0m  SELECT "api_fundings".* FROM "api_fundings" INNER JOIN "api_rewards" ON "api_fundings"."reward_id" = "api_rewards"."id" INNER JOIN "api_saved_projects" ON "api_rewards"."project_id" = "api_saved_projects"."id" WHERE "api_saved_projects"."id" = $1  [["id", 188]]
+  [1m[36mApi::Funding Load (0.4ms)[0m  [1mSELECT "api_fundings".* FROM "api_fundings" INNER JOIN "api_rewards" ON "api_fundings"."reward_id" = "api_rewards"."id" INNER JOIN "api_saved_projects" ON "api_rewards"."project_id" = "api_saved_projects"."id" WHERE "api_saved_projects"."id" = $1[0m  [["id", 189]]
+  [1m[35mApi::Funding Load (0.6ms)[0m  SELECT "api_fundings".* FROM "api_fundings" INNER JOIN "api_rewards" ON "api_fundings"."reward_id" = "api_rewards"."id" INNER JOIN "api_saved_projects" ON "api_rewards"."project_id" = "api_saved_projects"."id" WHERE "api_saved_projects"."id" = $1  [["id", 190]]
+  [1m[36mApi::Funding Load (0.5ms)[0m  [1mSELECT "api_fundings".* FROM "api_fundings" INNER JOIN "api_rewards" ON "api_fundings"."reward_id" = "api_rewards"."id" INNER JOIN "api_saved_projects" ON "api_rewards"."project_id" = "api_saved_projects"."id" WHERE "api_saved_projects"."id" = $1[0m  [["id", 191]]
+  [1m[35mApi::Funding Load (0.4ms)[0m  SELECT "api_fundings".* FROM "api_fundings" INNER JOIN "api_rewards" ON "api_fundings"."reward_id" = "api_rewards"."id" INNER JOIN "api_saved_projects" ON "api_rewards"."project_id" = "api_saved_projects"."id" WHERE "api_saved_projects"."id" = $1  [["id", 193]]
+  [1m[36mApi::Funding Load (0.5ms)[0m  [1mSELECT "api_fundings".* FROM "api_fundings" INNER JOIN "api_rewards" ON "api_fundings"."reward_id" = "api_rewards"."id" INNER JOIN "api_saved_projects" ON "api_rewards"."project_id" = "api_saved_projects"."id" WHERE "api_saved_projects"."id" = $1[0m  [["id", 192]]
+  [1m[35mApi::Reward Load (0.3ms)[0m  SELECT "api_rewards".* FROM "api_rewards" INNER JOIN "api_saved_projects" ON "api_rewards"."project_id" = "api_saved_projects"."id" WHERE "api_saved_projects"."id" = $1  [["id", 177]]
+  [1m[36mApi::Reward Load (0.3ms)[0m  [1mSELECT "api_rewards".* FROM "api_rewards" INNER JOIN "api_saved_projects" ON "api_rewards"."project_id" = "api_saved_projects"."id" WHERE "api_saved_projects"."id" = $1[0m  [["id", 178]]
+  [1m[35mApi::Reward Load (0.3ms)[0m  SELECT "api_rewards".* FROM "api_rewards" INNER JOIN "api_saved_projects" ON "api_rewards"."project_id" = "api_saved_projects"."id" WHERE "api_saved_projects"."id" = $1  [["id", 179]]
+  [1m[36mApi::Reward Load (0.4ms)[0m  [1mSELECT "api_rewards".* FROM "api_rewards" INNER JOIN "api_saved_projects" ON "api_rewards"."project_id" = "api_saved_projects"."id" WHERE "api_saved_projects"."id" = $1[0m  [["id", 180]]
+  [1m[35mApi::Reward Load (0.4ms)[0m  SELECT "api_rewards".* FROM "api_rewards" INNER JOIN "api_saved_projects" ON "api_rewards"."project_id" = "api_saved_projects"."id" WHERE "api_saved_projects"."id" = $1  [["id", 186]]
+  [1m[36mApi::Reward Load (0.3ms)[0m  [1mSELECT "api_rewards".* FROM "api_rewards" INNER JOIN "api_saved_projects" ON "api_rewards"."project_id" = "api_saved_projects"."id" WHERE "api_saved_projects"."id" = $1[0m  [["id", 187]]
+  [1m[35mApi::Reward Load (0.4ms)[0m  SELECT "api_rewards".* FROM "api_rewards" INNER JOIN "api_saved_projects" ON "api_rewards"."project_id" = "api_saved_projects"."id" WHERE "api_saved_projects"."id" = $1  [["id", 188]]
+  [1m[36mApi::Reward Load (0.3ms)[0m  [1mSELECT "api_rewards".* FROM "api_rewards" INNER JOIN "api_saved_projects" ON "api_rewards"."project_id" = "api_saved_projects"."id" WHERE "api_saved_projects"."id" = $1[0m  [["id", 189]]
+  [1m[35mApi::Reward Load (0.3ms)[0m  SELECT "api_rewards".* FROM "api_rewards" INNER JOIN "api_saved_projects" ON "api_rewards"."project_id" = "api_saved_projects"."id" WHERE "api_saved_projects"."id" = $1  [["id", 190]]
+  [1m[36mApi::Reward Load (0.3ms)[0m  [1mSELECT "api_rewards".* FROM "api_rewards" INNER JOIN "api_saved_projects" ON "api_rewards"."project_id" = "api_saved_projects"."id" WHERE "api_saved_projects"."id" = $1[0m  [["id", 191]]
+  [1m[35mApi::Reward Load (0.4ms)[0m  SELECT "api_rewards".* FROM "api_rewards" INNER JOIN "api_saved_projects" ON "api_rewards"."project_id" = "api_saved_projects"."id" WHERE "api_saved_projects"."id" = $1  [["id", 193]]
+  [1m[36mApi::Reward Load (0.3ms)[0m  [1mSELECT "api_rewards".* FROM "api_rewards" INNER JOIN "api_saved_projects" ON "api_rewards"."project_id" = "api_saved_projects"."id" WHERE "api_saved_projects"."id" = $1[0m  [["id", 192]]
+  Rendered api/projects/index.json.jbuilder (106.9ms)
+Completed 200 OK in 118ms (Views: 98.7ms | ActiveRecord: 18.4ms)
+
+
+Started DELETE "/api/session" for ::1 at 2016-09-13 18:03:30 -0400
+Processing by Api::SessionsController#destroy as JSON
+  [1m[35mApi::User Load (0.4ms)[0m  SELECT  "api_users".* FROM "api_users" WHERE "api_users"."session_token" = $1 LIMIT 1  [["session_token", "pF0_G5Co98WP3zmfVLGnpA"]]
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mApi::User Exists (0.8ms)[0m  SELECT  1 AS one FROM "api_users" WHERE ("api_users"."email" = 'guest1672' AND "api_users"."id" != 32) LIMIT 1
+  [1m[36mSQL (4.0ms)[0m  [1mUPDATE "api_users" SET "session_token" = $1, "updated_at" = $2 WHERE "api_users"."id" = $3[0m  [["session_token", "Ke2qvTFrH82AEY_wZSOeTw"], ["updated_at", "2016-09-13 22:03:30.530164"], ["id", 32]]
+  [1m[35m (0.4ms)[0m  COMMIT
+Completed 200 OK in 21ms (Views: 0.3ms | ActiveRecord: 5.8ms)
+
+
+Started POST "/api/users" for ::1 at 2016-09-13 18:03:32 -0400
+Processing by Api::UsersController#create as JSON
+  Parameters: {"user"=>{"username"=>"guest5527", "password"=>"[FILTERED]", "email"=>"guest5527"}}
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mApi::User Exists (0.4ms)[0m  SELECT  1 AS one FROM "api_users" WHERE "api_users"."email" = 'guest5527' LIMIT 1
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "api_users" ("username", "password_digest", "email", "session_token", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["username", "guest5527"], ["password_digest", "$2a$10$El6IrYU0dK3MGNIAe4a7yuyIyJyYzZux.yVK/KOHMRHvfwKaqmUrK"], ["email", "guest5527"], ["session_token", "11lVZWISA-Jxwf073R7dgQ"], ["created_at", "2016-09-13 22:03:32.937887"], ["updated_at", "2016-09-13 22:03:32.937887"]]
+  [1m[35m (0.5ms)[0m  COMMIT
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mApi::User Exists (0.4ms)[0m  SELECT  1 AS one FROM "api_users" WHERE ("api_users"."email" = 'guest5527' AND "api_users"."id" != 33) LIMIT 1
+  [1m[36mSQL (0.7ms)[0m  [1mUPDATE "api_users" SET "session_token" = $1, "updated_at" = $2 WHERE "api_users"."id" = $3[0m  [["session_token", "PvbwkvSUQopcZLP1G8ccsw"], ["updated_at", "2016-09-13 22:03:32.942419"], ["id", 33]]
+  [1m[35m (0.5ms)[0m  COMMIT
+  [1m[36mApi::Project Load (0.3ms)[0m  [1mSELECT "api_projects".* FROM "api_projects" WHERE "api_projects"."author_id" = $1[0m  [["author_id", 33]]
+  [1m[35mApi::Project Load (0.8ms)[0m  SELECT "api_projects".* FROM "api_projects" INNER JOIN "api_saved_projects" ON "api_projects"."saved_project_id" = "api_saved_projects"."id" INNER JOIN "api_rewards" ON "api_saved_projects"."id" = "api_rewards"."project_id" INNER JOIN "api_fundings" ON "api_rewards"."id" = "api_fundings"."reward_id" WHERE "api_fundings"."user_id" = $1  [["user_id", 33]]
+  Rendered api/users/show.json.jbuilder (12.6ms)
+Completed 200 OK in 115ms (Views: 13.8ms | ActiveRecord: 4.3ms)

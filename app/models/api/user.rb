@@ -15,8 +15,8 @@
 
 class Api::User < ActiveRecord::Base
 
-  has_attached_file :image, default_url: "default_pic.png"
-  validates_attachment_content_type :image, content_type: /\Aimage\/.*\Z/
+  # has_attached_file :image, default_url: "default_pic.png"
+  # validates_attachment_content_type :image, content_type: /\Aimage\/.*\Z/
   validates :username, :password_digest, :session_token, :email, presence: true
   validates :email, uniqueness: true
   validates :password, length: {minimum: 6, allow_nil: true}
