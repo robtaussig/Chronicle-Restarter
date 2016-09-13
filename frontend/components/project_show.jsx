@@ -126,6 +126,24 @@ const ProjectShow = React.createClass({
     }
   },
 
+  changePicture (file, results) {
+    let formData = new FormData();
+    formData.append("project[image]", file);
+    formData.append("id", this.props.project.id);
+    ProjectActions.updateProject('show',formData);
+  },
+
+  onChangePic (e) {
+    let file = e.currentTarget.files[0];
+    let fileReader = new FileReader();
+    fileReader.onloadend = function () {
+      this.changePicture(file, fileReader.result);
+    }.bind(this);
+    if (file) {
+      fileReader.readAsDataURL(file);
+    }
+  },
+
   render: function() {
 
     this.positions = ['zero', 'one', 'two', 'three'];
@@ -162,11 +180,18 @@ const ProjectShow = React.createClass({
     let _deleteProject;
     if (this.state.user.email === _currentUser ||
        _currentUser === 'rob@gmail.com' || _currentUser === 'admin@gmail.com') {
-      _deleteProject = <DeleteProject delete={this.onDelete} project={this.props.project} />;
+      _deleteProject = <DeleteProject action="delete" callback={this.onDelete} project={this.props.project} />;
     } else {
       _deleteProject = <DeleteProject project="wrong user" />;
     }
 
+    let _changePicture;
+    if (this.state.user.email === _currentUser ||
+       _currentUser === 'rob@gmail.com' || _currentUser === 'admin@gmail.com') {
+       _changePicture = <input type="file" onChange={this.onChangePic} />;
+    } else {
+      _changePicture = "";
+    }
     return (
       <div onClick={this._resetReveals}>
         <div id="top" className="preview-wrapper">
@@ -181,6 +206,7 @@ const ProjectShow = React.createClass({
             <br></br>
           </div>
           <div className="preview-project-image">
+          {_changePicture}
             <div><img id="default-pic"
               src={this.props.project.image}></img></div>
           </div>
