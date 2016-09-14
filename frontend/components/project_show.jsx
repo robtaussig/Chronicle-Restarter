@@ -188,7 +188,7 @@ const ProjectShow = React.createClass({
     let _changePicture;
     if (this.state.user.email === _currentUser ||
        _currentUser === 'rob@gmail.com' || _currentUser === 'admin@gmail.com') {
-       _changePicture = <input type="file" onChange={this.onChangePic} />;
+       _changePicture = ['Change picture', <input type="file" onChange={this.onChangePic} />];
     } else {
       _changePicture = "";
     }
@@ -205,8 +205,8 @@ const ProjectShow = React.createClass({
               </p>
             <br></br>
           </div>
+          <div className="change-picture">{_changePicture}</div>
           <div className="preview-project-image">
-          {_changePicture}
             <div><img id="default-pic"
               src={this.props.project.image}></img></div>
           </div>

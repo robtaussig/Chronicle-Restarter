@@ -2120,6 +2120,17 @@ div.delete-project:hover {
   background-color: #a90808;
 }
 
+div.change-picture {
+  margin: 0 auto;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+div.change-picture input {
+  margin-left: 20px;
+}
+
 li.funders-num-final {
   color: #181819;
   font-size: 50px;
