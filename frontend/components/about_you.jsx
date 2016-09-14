@@ -127,8 +127,11 @@ const AboutYou = React.createClass({
               <li className="user-image-field">
                 <div className="grey-field">
                   <div className="attribute-field">Profile photo</div>
-                  <div className="field-wrapper">
+                  <div className="picture-thumbnail-field">
                     <input type="file" onChange={this._setUserPic} />
+                    <div className="picture-thumbnail" >
+                      <img src={this.state.imageUrl}/>
+                    </div>
                   </div>
                 </div>
               </li>

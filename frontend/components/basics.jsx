@@ -172,9 +172,11 @@ const Basics = React.createClass({
               <li className="project-image">
                 <div className="grey-field">
                   <div className="attribute-field">Project image</div>
-                  <img src={this.state.imageUrl}/>
-                  <div className="field-wrapper">
+                  <div className="picture-thumbnail-field">
                     <input type="file" onChange={this._setImage} />
+                    <div className="picture-thumbnail" >
+                      <img src={this.state.imageUrl}/>
+                    </div>
                   </div>
                 </div>
               </li>

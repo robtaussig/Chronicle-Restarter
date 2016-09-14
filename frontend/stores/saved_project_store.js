@@ -29,7 +29,11 @@ SavedProjectStore.allCurrentProjects = () => {
 };
 
 SavedProjectStore.currentProject = () => {
-  return _savedProject;
+  if (typeof _savedProject === 'number') {
+    return _savedProjects.filter(project => project.id === _savedProject);
+  } else {
+    return _savedProject;
+  }
 };
 
 function _resetSavedProject (project) {

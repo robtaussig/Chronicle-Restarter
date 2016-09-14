@@ -11,7 +11,7 @@ const SavedProjectActions = {
   },
 
   setSavedProject (form, projectId) {
-    this.receiveSavedProject(project);
+    this.receiveSavedProject(projectId);
   },
 
   fetchAllSavedProjects (form, userId) {
