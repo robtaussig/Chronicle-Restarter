@@ -1,4 +1,5 @@
 class Api::ProjectsController < ApplicationController
+  expires_in 5.minutes, :public => true
 
   def create
     @project = Api::Project.new(project_params)

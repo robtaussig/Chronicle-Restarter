@@ -1,4 +1,5 @@
 class Api::RewardsController < ApplicationController
+  expires_in 5.minutes, :public => true
   def create
     @reward = Api::Reward.new(reward_params)
     if @reward.save
