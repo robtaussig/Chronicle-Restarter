@@ -1,6 +1,5 @@
 class Api::FundingsController < ApplicationController
-  expires_in 5.minutes, :public => true
-  
+
   def create
     @funding = Api::Funding.new(funding_params)
     if @funding.save
