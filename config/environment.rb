@@ -6,9 +6,7 @@ Rails.application.configure do
   config.middleware.use Rack::Cache,
      verbose:     true,
      metastore:   'file:/var/cache/rack/meta',
-     entitystore: 'file:/var/cache/rack/body',
-     :allow_reload     => false,
-     :allow_revalidate => false
+     entitystore: 'file:/var/cache/rack/body'
 end
 # Initialize the Rails application.
 Rails.application.initialize!
