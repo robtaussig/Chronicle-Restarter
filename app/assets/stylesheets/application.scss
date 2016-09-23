@@ -311,12 +311,20 @@ div.about-page p.email {
 
 li.x-icon {
   padding-right: 0;
+  cursor: pointer;
 }
 
 input.search {
-  border: 1px solid #ccc;
-  width: 20em;
+  border: 2px solid #000;
+  width: 55vmax;
+  position: absolute;
+  right: 200px;
+  top: 5px;
+  background-color: white;
+  height: 50px;
   border-radius: 5px;
+  line-height: 50px;
+  font-size: 30px;
 }
 
 input.search:focus {
@@ -466,6 +474,7 @@ div.footer-wrapper ul.footer-bottom li{
 .search img {
   height: 20px;
   width: auto;
+  cursor: pointer;
 }
 
 .search img:hover {
