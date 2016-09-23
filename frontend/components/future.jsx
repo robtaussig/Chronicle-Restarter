@@ -6,8 +6,8 @@ const Future = React.createClass({
   render() {
     return (
       <div className="future">
-        <h1>Future</h1>
-        <p>Coming Soon...</p>
+        <h1>Future...</h1>
+        <p>Coming soon to an Era near you</p>
       </div>
     );
   }
