@@ -51,6 +51,7 @@ const ProjectShow = React.createClass({
   },
 
   onDelete () {
+
     ProjectActions.deleteProject('show',this.props.project.id);
     browserHistory.push('/');
   },
