@@ -11,10 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160912221242) do
+ActiveRecord::Schema.define(version: 20161003144856) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "api_comments", force: :cascade do |t|
+    t.string   "body",        null: false
+    t.string   "title"
+    t.integer  "user_id"
+    t.integer  "campaign_id", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "api_comments", ["campaign_id"], name: "index_api_comments_on_campaign_id", using: :btree
 
   create_table "api_fundings", force: :cascade do |t|
     t.integer  "reward_id"
@@ -121,6 +132,17 @@ ActiveRecord::Schema.define(version: 20160912221242) do
 
   add_index "api_users", ["email"], name: "index_api_users_on_email", using: :btree
   add_index "api_users", ["username"], name: "index_api_users_on_username", using: :btree
+
+  create_table "comments", force: :cascade do |t|
+    t.string   "body",        null: false
+    t.string   "title"
+    t.integer  "user_id"
+    t.integer  "campaign_id", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "comments", ["campaign_id"], name: "index_comments_on_campaign_id", using: :btree
 
   create_table "stories", force: :cascade do |t|
     t.string   "title",      null: false

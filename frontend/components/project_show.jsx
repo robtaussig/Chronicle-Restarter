@@ -11,6 +11,9 @@ const UserStore = require('../stores/user_store.js');
 const SessionStore = require('../stores/session_store.js');
 const UserActions = require('../actions/user_actions.js');
 const DeleteProject = require('./delete_project.jsx');
+const CommentActions = require('../actions/comment_actions.js');
+const CommentStore = require('../stores/comment_store.js');
+
 import { browserHistory } from 'react-router';
 
 const ProjectShow = React.createClass({
@@ -42,12 +45,19 @@ const ProjectShow = React.createClass({
       let thisUser = UserStore.find(this.props.project.author_id);
       this.setState({user: thisUser, userProjects: thisUser.projects});
     }
+    this.commentListener = CommentStore.addListener(this._onCommentChange);
+    CommentActions.fetchAllComments('project',this.props.project.id);
   },
 
   componentWillUnmount () {
     this.projectListener.remove();
     this.userListener.remove();
+    this.commentListener.remove();
     clearTimeout(this.timeout);
+  },
+
+  _onCommentChange () {
+    this.setState({comments: CommentStore.allComments()});
   },
 
   onDelete () {
@@ -169,9 +179,12 @@ const ProjectShow = React.createClass({
       </div>;
     });
 
+    let _comments = this.state.comments || [];
+
     let _currentBottomPage = [
       [],
-      <Comments revealed={this.state.reveal} />,
+      <Comments revealed={this.state.reveal} comments={_comments}
+        project={this.props.project}/>,
       <Updates revealed={this.state.reveal} />,
       <Community revealed={this.state.reveal} />
     ][this.state.bottomPage || 0];
@@ -325,7 +338,6 @@ const ProjectShow = React.createClass({
           </div>
         </div>
         <div className="bottom-page-wrapper">
-
         </div>
       </div>
     );

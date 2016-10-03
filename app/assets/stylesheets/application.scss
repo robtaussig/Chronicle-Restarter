@@ -380,6 +380,61 @@ div.project-index-wrapper.flex {
   justify-content: center;
 }
 
+/*---------------------------------- comments --------------------------------*/
+
+ul.comments {
+  color: black;
+}
+
+.comment-input {
+  border: 1px solid black;
+  border-radius: 5px;
+  width: 30%;
+  float: left;
+  margin-right: 10px;
+  font-size: 14px;
+  height: 30px;
+}
+
+.comment-input.body {
+  width: 50%;
+}
+
+div.comment-create-button {
+  color: white;
+  height: 30px;
+  width: 100px;
+  font-size: 18px;
+  line-height: 30px;
+  float: right;
+  border-radius: 5px;
+  background-color: #46c76b;
+  cursor: pointer;
+}
+
+span.new-comment-header {
+  font-size: 24px;
+  text-align: center;
+  display: block;
+  margin-bottom: 20px;
+}
+
+div.indiv-comment {
+  color: black;
+}
+
+h1.comment-title {
+  text-align: left;
+  font-size: 24px;
+}
+
+p.comment-body {
+  font-size: 16px;
+  font-weight: normal;
+  text-align: left;
+  margin-bottom: 20px;
+}
+
 /*---------------------------------- error box -------------------------------*/
 .errors {
   position: relative;
@@ -2319,7 +2374,7 @@ div.bottom-page-wrapper {
 
 div.bottom-page-item {
   position: absolute;
-  height: 100%;
+  height: auto;
   width: 100%;
   top: 0;
   background-color: #fff;

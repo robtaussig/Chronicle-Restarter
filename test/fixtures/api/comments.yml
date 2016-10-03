@@ -1,12 +1,14 @@
 # == Schema Information
 #
-# Table name: api_fundings
+# Table name: api_comments
 #
-#  id         :integer          not null, primary key
-#  reward_id  :integer
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  user_id    :integer
+#  id          :integer          not null, primary key
+#  body        :string           not null
+#  title       :string
+#  user_id     :integer
+#  campaign_id :integer          not null
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
