@@ -1042,6 +1042,16 @@ p.delete-message {
   border-right: 1px solid #ccc;
 }
 
+.project-nav-bar span.finished {
+  color: #44c66a;
+  font-weight: 700;
+}
+
+.project-nav-bar span.disabled {
+  color: #aaa;
+  font-weight: 300;
+}
+
 .project-nav-bar #basics.basics {
   color: #0927e2;
   font-weight: 700;

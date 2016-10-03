@@ -78,7 +78,7 @@ const CreateProject = React.createClass({
       let projectInfo = {title: this.state.title, category_id: catId};
       SavedProjectActions.submitSavedProject ('create', projectInfo);
       ErrorActions.mustBeSignedIn('finalizeProject');
-      browserHistory.push('signUp');
+      browserHistory.push('logIn');
     }
   },
 
