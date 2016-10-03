@@ -10,12 +10,18 @@ const Errors  = React.createClass({
   },
 
   _onChange () {
-    debugger
     this.setState({error_message: ErrorStore.currentError()[1]});
+    this.timeOut = window.setTimeout(() => {
+      ErrorActions.clearErrors();
+    },3000);
   },
 
   componentDidMount () {
-    ErrorStore.addListener(this._onChange);
+    this.listener = ErrorStore.addListener(this._onChange);
+  },
+
+  componentWillUnmount () {
+    this.listener.remove();
   },
 
   _dismissError () {

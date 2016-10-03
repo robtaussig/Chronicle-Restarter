@@ -24,6 +24,7 @@ const FrontPage = require('./components/front_page.jsx');
 const Account = require('./components/account.jsx');
 const SubmitProject = require('./components/submit.jsx');
 const Future = require('./components/future.jsx');
+const ErrorActions = require('./actions/error_actions.js');
 const Preview = require('./components/preview.jsx');
 const RewardStore = require('./stores/reward_store.js');
 const SavedProjectStore = require('./stores/saved_project_store.js');

@@ -272,6 +272,7 @@ h2.under-construction {
 /*------------------------------- Future -------------------------------------*/
 
 div.future {
+  margin-top: 50px;
   min-height: 1400px;
 }
 
@@ -290,6 +291,7 @@ div.future p {
 
 div.about-page {
   min-height: 1000px;
+  margin-top: 50px;
 }
 
 div.about-page h1 {
@@ -358,7 +360,16 @@ ul.categories-list li {
   cursor: pointer;
   font-weight: bold;
   background-color: #46c76b;
-  border-radius: 5px;
+}
+
+ul.categories-list li:first-child {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+ul.categories-list li:last-child {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 ul.categories-list li:hover {
@@ -507,6 +518,11 @@ p.update-body {
   background-color: white;
   border: 1px solid #ccc;
   border-radius: 10px;
+  position:absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  box-shadow: 3px 3px 3px #ccc;
 }
 
 #email.email {
