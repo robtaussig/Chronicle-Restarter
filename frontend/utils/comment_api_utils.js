@@ -46,17 +46,20 @@ const CommentApiUtil = {
   },
 
   removeComment (form, id, successCB, errorCB) {
-    $.ajax({
-      url: '/api/comments/' + id,
-      type: 'DELETE',
-      data: {params: id},
-      success: (resp) => {
-        successCB(resp);
-      },
-      error: (resp) => {
-        errorCB(form, resp);
-      }
-    });
+    if (id) {
+      $.ajax({
+        url: '/api/comments/' + id,
+        type: 'DELETE',
+        data: {params: id},
+        success: (resp) => {
+          debugger
+          successCB(resp);
+        },
+        error: (resp) => {
+          errorCB(form, resp);
+        }
+      });
+    }
   },
 
   fetchAllComments (form, campaignId, successCB, errorCB) {

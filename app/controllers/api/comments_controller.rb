@@ -11,7 +11,7 @@ class Api::CommentsController < ApplicationController
   end
 
   def update
-    @comment = Api::Project.find(params[:id])
+    @comment = Api::Comment.find(params[:id])
     if @comment.update(comment_params)
       render :show
     else
@@ -21,7 +21,7 @@ class Api::CommentsController < ApplicationController
   end
 
   def destroy
-    @comment = Api::Project.find(params[:id])
+    @comment = Api::Comment.find(params[:id])
     @comment.destroy!
     render :show
   end

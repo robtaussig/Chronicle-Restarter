@@ -257,17 +257,17 @@ const ProjectShow = React.createClass({
             <div className="social-links-wrapper">
               <ul className="social-links group">
                 <li><b>Share:</b> </li>
-                <li><a class="twitter-share-button"
+                <li><a className="twitter-share-button"
                   target="_blank"
                   href="https://twitter.com/intent/tweet?text=Check%20out%20this%20awesome%20project!"
                   text="Check out this awesome project!">
                   <img src={window.twitter}/></a></li>
                   <div id="fb-root"></div>
-              	<li><div class="fb-share-button"
+              	<li><div className="fb-share-button"
                   data-href="http://www.chronicle-restarter.com"
                   data-layout="button" data-size="large"
                   data-mobile-iframe="true">
-                <a class="fb-xfbml-parse-ignore" target="_blank"
+                <a className="fb-xfbml-parse-ignore" target="_blank"
                   href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fwww.chronicle-restarter.com%2F&amp;src=sdkpreparse">
                 <img src={window.facebook}/></a></div></li>
               </ul>
