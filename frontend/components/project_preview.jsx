@@ -46,7 +46,7 @@ const ProjectPreview = React.createClass({
           <div className="project-preview-image"><img id="default-pic" src={this.props.project.image === "" ? window.default_pic : this.props.project.image}></img></div>
           <div className="preview-bottom-half">
             <h3 className="project-preview-title">{this.props.project.title || ""}</h3>
-            <p className="project-preview-username">by <b>{_user}</b></p>
+            <p className="project-preview-username">{_user}</p>
             <br></br>
             <p className="project-preview-blurb">{this.props.project.blurb || "Empty Blurb"}</p>
             <br></br>
