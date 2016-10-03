@@ -81,7 +81,7 @@ const FrontPage = React.createClass({
             <h2>Feeling Lucky?</h2>
             <h3>Or just too lazy to navigate around? Click below to transport yourself to a random campaign.</h3>
             <div className="front-page-button" onClick={this._randomPage}>
-              Go.
+              Go
             </div>
           </div>
         </div>
