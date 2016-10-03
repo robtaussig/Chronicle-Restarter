@@ -10,6 +10,7 @@ const Errors  = React.createClass({
   },
 
   _onChange () {
+    debugger
     this.setState({error_message: ErrorStore.currentError()[1]});
   },
 

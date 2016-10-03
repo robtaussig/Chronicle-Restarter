@@ -5,12 +5,13 @@ const ProjectStore = require('../stores/project_store.js');
 const RewardActions = require('../actions/reward_actions.js');
 const RewardStore = require('../stores/reward_store.js');
 const Comments = require('./comments.jsx');
-const Community = require('./community.jsx');
 const Updates = require('./updates.jsx');
 const UserStore = require('../stores/user_store.js');
 const SessionStore = require('../stores/session_store.js');
 const UserActions = require('../actions/user_actions.js');
 const DeleteProject = require('./delete_project.jsx');
+const UpdateStore = require('../stores/update_store.js');
+const UpdateActions = require('../actions/update_actions.js');
 const CommentActions = require('../actions/comment_actions.js');
 const CommentStore = require('../stores/comment_store.js');
 
@@ -31,7 +32,9 @@ const ProjectShow = React.createClass({
       highlight: "",
       bottomPage: 0,
       reveal: "campaign",
-      image: ""
+      image: "",
+      comments: [],
+      updates: []
     });
   },
 
@@ -47,10 +50,13 @@ const ProjectShow = React.createClass({
     }
     this.commentListener = CommentStore.addListener(this._onCommentChange);
     CommentActions.fetchAllComments('project',this.props.project.id);
+    this.updateListener = UpdateStore.addListener(this._onUpdateChange);
+    UpdateActions.fetchAllUpdates('project',this.props.project.id);
   },
 
   componentWillUnmount () {
     this.projectListener.remove();
+    this.updateListener.remove();
     this.userListener.remove();
     this.commentListener.remove();
     clearTimeout(this.timeout);
@@ -60,8 +66,11 @@ const ProjectShow = React.createClass({
     this.setState({comments: CommentStore.allComments()});
   },
 
-  onDelete () {
+  _onUpdateChange () {
+    this.setState({updates: UpdateStore.allUpdates()});
+  },
 
+  onDelete () {
     ProjectActions.deleteProject('show',this.props.project.id);
     browserHistory.push('/');
   },
@@ -86,13 +95,6 @@ const ProjectShow = React.createClass({
     this.setState({bottomPage: 1});
     window.setTimeout(() => {
       this.setState({reveal: "comments"});
-    },100);
-  },
-
-  _switchToCommunity (event) {
-    this.setState({bottomPage: 3});
-    window.setTimeout(() => {
-      this.setState({reveal: "community"});
     },100);
   },
 
@@ -180,13 +182,14 @@ const ProjectShow = React.createClass({
     });
 
     let _comments = this.state.comments || [];
+    let _updates = this.state.updates || [];
 
     let _currentBottomPage = [
       [],
       <Comments revealed={this.state.reveal} comments={_comments}
         project={this.props.project}/>,
-      <Updates revealed={this.state.reveal} />,
-      <Community revealed={this.state.reveal} />
+      <Updates updates={_updates} project={this.props.project}
+        revealed={this.state.reveal} />
     ][this.state.bottomPage || 0];
 
     let _currentUser = window.myApp.email || SessionStore.currentUser().email;
@@ -312,10 +315,16 @@ const ProjectShow = React.createClass({
         <div className="preview-bottom-page group">
           <div id="back-project" className="project-content-bar">
             <ul className="project-content-nav-bar final group">
-              <li id="campaign" className={this.state.reveal} onClick={this._switchToCampaign}>Campaign</li>
-              <li id="updates" className={this.state.reveal} onClick={this._switchToUpdates}>Updates</li>
-              <li id="comments" className={this.state.reveal} onClick={this._switchToComments}>Comments</li>
-              <li id="community" className={this.state.reveal} onClick={this._switchToCommunity}>Community</li>
+              <li id="campaign" className={this.state.reveal}
+                onClick={this._switchToCampaign}>Campaign</li>
+              <li id="updates" className={this.state.reveal}
+                onClick={this._switchToUpdates}>
+                {`Updates (${this.state.updates.length || "0"})`}
+              </li>
+              <li id="comments" className={this.state.reveal}
+                onClick={this._switchToComments}>
+                {`Comments (${this.state.comments.length || "0"})`}
+              </li>
             </ul>
           </div>
 

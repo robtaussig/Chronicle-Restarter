@@ -16,7 +16,7 @@ const Comments = React.createClass({
   },
 
   componentDidMount () {
-    this.currentUser = window.myApp || SessionStore.currentUser();
+    this.currentUser = SessionStore.currentUser() || window.myApp;
     if (this.currentUser.id) {
       this.setState({loggedIn: true});
     }

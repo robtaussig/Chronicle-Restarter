@@ -206,7 +206,6 @@ div.splash {
   background-position: 50% 50%;
   border-bottom: 1px solid #ccc;
   background-size: cover;
-  top: -54px;
 }
 
 h2.front-page-navigation {
@@ -341,6 +340,7 @@ div.index-container {
 div.index-container ul.categories-list {
   width: 100%;
   margin: 0 auto;
+  margin-top: 50px;
   display: flex;
   justify-content: center;
 }
@@ -380,13 +380,13 @@ div.project-index-wrapper.flex {
   justify-content: center;
 }
 
-/*---------------------------------- comments --------------------------------*/
+/*------------------------------ comments/updates ----------------------------*/
 
-ul.comments {
+ul.comments, ul.updates {
   color: black;
 }
 
-.comment-input {
+.comment-input, .update-input {
   border: 1px solid black;
   border-radius: 5px;
   width: 30%;
@@ -401,11 +401,11 @@ ul.comments {
   color: red;
 }
 
-.comment-input.body {
+.comment-input.body, .update-input.body {
   width: 50%;
 }
 
-div.comment-create-button {
+div.comment-create-button, div.update-create-button {
   color: white;
   height: 30px;
   width: 100px;
@@ -416,22 +416,22 @@ div.comment-create-button {
   cursor: pointer;
 }
 
-div.comment-create-button.enabled {
+div.comment-create-button.enabled, div.update-create-button.enabled {
   background-color: #46c76b;
 }
 
-div.comment-create-button.disabled {
+div.comment-create-button.disabled, div.update-create-button.disabled {
   background-color: #aaa;
 }
 
-span.new-comment-header {
+span.new-comment-header, span.new-update-header {
   font-size: 24px;
   text-align: center;
   display: block;
   margin-bottom: 20px;
 }
 
-div.indiv-comment {
+div.indiv-comment, div.indiv-update {
   color: black;
 }
 
@@ -440,14 +440,27 @@ h1.comment-title {
   font-size: 20px;
 }
 
-p.comment-body {
+h1.update-title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: normal;
+}
+
+p.comment-body, p.update-body {
   font-size: 16px;
   font-weight: normal;
   text-align: left;
   margin-bottom: 20px;
 }
 
-.delete-comment {
+p.update-body {
+  text-align: justify;
+  width: 80%;
+  margin: 0 auto;
+  margin-bottom: 30px;
+}
+
+.delete-comment, .delete-update {
   font-size: 12px;
   position: absolute;
   transform: translate(-150%,-390%);
@@ -482,10 +495,12 @@ p.comment-body {
 
 .dismissError.empty {
   color: transparent;
+  position: absolute;
 }
 
 .errors.empty {
   color: transparent;
+  position: absolute;
 }
 
 .errors.present {
@@ -565,18 +580,16 @@ div.footer-wrapper ul.footer-bottom li{
   position: relative;
   left: 50%;
   top: 300px;
-  margin-bottom: 167px;
+  margin-bottom: 350px;
   transform: perspective(1px) translate(-50%, -50%);
   border: 0.5px solid #ccc;
   background-color: white;
 
 }
 
-
 .login-form {
   height: 385px;
   top: 248px;
-  margin-bottom: 300px;
 }
 
 .sign-up-form input, .login-form input  {
@@ -632,8 +645,7 @@ div.footer-wrapper ul.footer-bottom li{
   background-repeat: no-repeat;
   overflow: hidden;
   background-position: 50% 50%;
-  top: -54px;
-  margin-bottom: 85px;
+  margin-bottom: 200px;
 }
 
 .start-project ul:first-child {
@@ -738,8 +750,7 @@ ul.buttons-wrapper li.new-project-button:hover {
   background-position: 50% 50%;
   border-bottom: 1px solid #ccc;
   background-size: cover;
-  top: -54px;
-  margin-bottom: 85px;
+  margin-bottom: 200px;
 }
 
 .select-era img {
@@ -928,7 +939,7 @@ button.submit-button:hover {
   position: absolute;
   min-width: 630px;
   left: 50%;
-  top: 30px;
+  top: 60px;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
   border-left: 1px solid #ccc;
@@ -1121,13 +1132,21 @@ div.picture-thumbnail-field input {
   left: 100%;
   position:absolute;
   font:none;
+  color: transparent;
+}
+
+p.thumbnail-image {
+  left: 200%;
+  position: absolute;
 }
 
 div.picture-thumbnail img {
-  width:50px;
-  height:auto;
-  position:absolute;
+  height: 100px;
+  width: auto;
+  position: absolute;
   right: -200%;
+  top: 0;
+  transform: translateY(-25%);
 }
 
 div.field-wrapper {
@@ -1818,6 +1837,8 @@ div.project-content-bar {
   position: absolute;
   top: 1335px;
   padding: 15px 0;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 div.project-content-bar ul {

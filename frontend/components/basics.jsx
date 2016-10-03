@@ -174,6 +174,7 @@ const Basics = React.createClass({
                   <div className="attribute-field">Project image</div>
                   <div className="picture-thumbnail-field">
                     <input type="file" onChange={this._setImage} />
+                    <p className="thumbnail-image">Preview:</p>
                     <div className="picture-thumbnail" >
                       <img src={this.state.imageUrl}/>
                     </div>

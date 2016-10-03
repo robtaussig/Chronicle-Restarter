@@ -137,13 +137,19 @@ const Preview = React.createClass({
           <div className="project-location">{this.state.project_location}</div>
           <div className="preview-sub-info">
             <div className="social-links-wrapper">
-              <ul className="social-links group">
-                <li><b>Share:</b> </li>
-                <li>[Tweet]</li>
-                <li>[Facebook]</li>
-                <li>[Embed]</li>
-                <li>[Email]</li>
-              </ul>
+            <ul className="social-links group">
+              <li><b>Share:</b> </li>
+              <li><a className="twitter-share-button"
+                href="#">
+                <img src={window.twitter}/></a></li>
+                <div id="fb-root"></div>
+              <li><div className="fb-share-button"
+                href="#">
+              <a className="fb-xfbml-parse-ignore"
+                href="#">
+              <img src={window.facebook}/></a>
+              </div></li>
+            </ul>
             </div>
             <div className="preview-project-blurb">{this.state.project_blurb}</div>
             <div className="user-info">
@@ -174,7 +180,6 @@ const Preview = React.createClass({
               <li>Campaign</li>
               <li>Updates</li>
               <li>Comments</li>
-              <li>Community</li>
             </ul>
           </div>
           <div className="project-content-field">

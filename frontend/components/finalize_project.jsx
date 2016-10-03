@@ -29,8 +29,11 @@ const FinalizeProject = React.createClass({
     this._handleLogin();
     this.forceUpdate();
     this.deleteMessage="";
-    this.header = ProjectMessages[`${window.location.pathname.split('/')[2]} header`];
-    this.message = ProjectMessages[window.location.pathname.split('/')[2]];
+    this.header =
+      ProjectMessages[`${window.location.pathname.split('/')[2]} header`] ||
+      ProjectMessages[`basics header`];
+    this.message = ProjectMessages[window.location.pathname.split('/')[2]] ||
+    ProjectMessages['basics'];
   },
 
   componentWillUnmount () {

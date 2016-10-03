@@ -1,10 +1,10 @@
-const CommentApiUtil = {
+const UpdateApiUtil = {
 
-  submitComment (form, data, successCB, errorCB) {
+  submitUpdate (form, data, successCB, errorCB) {
     $.ajax({
-      url: '/api/comments',
+      url: '/api/updates',
       type: 'POST',
-      data: {comment: data},
+      data: {update: data},
       success: (resp) => {
         successCB(resp);
       },
@@ -14,12 +14,12 @@ const CommentApiUtil = {
     });
   },
 
-  updateComment (form, data, successCB, errorCB) {
+  updateUpdate (form, data, successCB, errorCB) {
     if (data.id) {
       $.ajax({
-        url: '/api/comments/' + data.id,
+        url: '/api/updates/' + data.id,
         type: 'PATCH',
-        data: {comment: data},
+        data: {update: data},
         success: (resp) => {
           successCB(resp);
         },
@@ -29,7 +29,7 @@ const CommentApiUtil = {
       });
     } else {
       $.ajax({
-        url: '/api/comments/' + data.get('id'),
+        url: '/api/updates/' + data.get('id'),
         type: 'PATCH',
         processData: false,
         contentType: false,
@@ -45,10 +45,10 @@ const CommentApiUtil = {
 
   },
 
-  removeComment (form, id, successCB, errorCB) {
+  removeUpdate (form, id, successCB, errorCB) {
     if (id) {
       $.ajax({
-        url: '/api/comments/' + id,
+        url: '/api/updates/' + id,
         type: 'DELETE',
         data: {params: id},
         success: (resp) => {
@@ -61,9 +61,9 @@ const CommentApiUtil = {
     }
   },
 
-  fetchAllComments (form, campaignId, successCB, errorCB) {
+  fetchAllUpdates (form, campaignId, successCB, errorCB) {
     $.ajax({
-      url: '/api/comments',
+      url: '/api/updates',
       type: 'GET',
       data: {campaign_id: campaignId},
       success: (resp) => {
@@ -77,4 +77,4 @@ const CommentApiUtil = {
 
 };
 
-module.exports = CommentApiUtil;
+module.exports = UpdateApiUtil;

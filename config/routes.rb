@@ -32,5 +32,6 @@ Rails.application.routes.draw do
     resources :rewards
     resources :fundings
     resources :comments
+    resources :updates
   end
 end
