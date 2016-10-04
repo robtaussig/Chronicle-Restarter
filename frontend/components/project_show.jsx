@@ -210,6 +210,9 @@ const ProjectShow = React.createClass({
     } else {
       _changePicture = "";
     }
+
+    let _picture = this.props.project.image === "/assets/default_pic.png" ?
+      window.default_pic : this.props.project.image;
     return (
       <div onClick={this._resetReveals}>
         <div id="top" className="preview-wrapper">
@@ -226,7 +229,7 @@ const ProjectShow = React.createClass({
           <div className="change-picture">{_changePicture}</div>
           <div className="preview-project-image">
             <div><img id="default-pic"
-              src={this.props.project.image}></img></div>
+              src={_picture || window.default_pic}></img></div>
           </div>
           <div className="preview-project-summary">
             <ul className="funders group">

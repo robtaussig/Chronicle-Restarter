@@ -43,12 +43,15 @@ const ProjectPreview = React.createClass({
       _user = this.state.user;
     }
 
+    let _picture = this.props.project.image === "/assets/default_pic.png" ?
+      window.default_pic : this.props.project.image;
+
     return (
+
       <div>
         <div onClick={this._goToPage} className="project-preview-wrapper">
           <div className="project-preview-image"><img id="default-pic"
-          src={this.props.project.image ? this.props.project.image :
-            window.default_pic}></img></div>
+          src={_picture || window.default_pic}></img></div>
           <div className="preview-bottom-half">
             <h3 className="project-preview-title">{this.props.project.title ===
               'null' ? "" : this.props.project.title}</h3>

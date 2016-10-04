@@ -25,14 +25,14 @@ const FocusProject = React.createClass({
   },
 
   render () {
-
+    let _picture = this.props.project.image === "/assets/default_pic.png" ?
+      window.default_pic : this.props.project.image;
     return (
       <div>
         <h1 className="focal-project-header">Your Latest Saved Project</h1>
         <div onClick={this._goToPage} className="focal-project-wrapper">
           <div className="focal-project-image"><img id="default-pic"
-            src={this.props.project.image === ""? window.default_pic :
-            this.props.project.image}></img></div>
+            src={_picture || window.default_pic}></img></div>
           <div className="focal-right-half">
             <h3 className="focal-project-title">{this.props.project.title ===
               'null' ? "" : this.props.project.title}</h3>
