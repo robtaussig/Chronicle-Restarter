@@ -38,7 +38,7 @@ class Api::SavedProjectsController < ApplicationController
 
   def index
     @user = Api::User.find(params[:user_id])
-    @saved_projects = @user.saved_projects
+    @saved_projects = @user.saved_projects.includes(:author)
     render :index
   end
 

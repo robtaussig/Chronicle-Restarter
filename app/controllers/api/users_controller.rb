@@ -22,7 +22,7 @@ class Api::UsersController < ApplicationController
   end
 
   def index
-    @users = Api::User.all
+    @users = Api::User.includes(:projects).all
     render :index
   end
 

@@ -32,7 +32,7 @@ class Api::ProjectsController < ApplicationController
   end
 
   def index
-    @projects = Api::Project.all()
+    @projects = Api::Project.includes(:fundings,:rewards).all
     render :index
   end
 
