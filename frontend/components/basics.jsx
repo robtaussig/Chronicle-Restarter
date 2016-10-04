@@ -186,7 +186,7 @@ const Basics = React.createClass({
                   <div className="attribute-field">Project title</div>
                   <div className="field-wrapper">
                     <input type="text" className="title"
-                      onChange={this._setTitle} value={this.state.title || ""}/>
+                      onChange={this._setTitle} value={this.state.title === 'null' ? "" : this.state.title}/>
                   </div>
                 </div>
               </li>
@@ -194,7 +194,7 @@ const Basics = React.createClass({
                 <div className="grey-field">
                   <div className="attribute-field">Short blurb</div>
                   <div className="field-wrapper">
-                    <textarea rows="3" value={this.state.blurb || ""}
+                    <textarea rows="3" value={this.state.blurb === 'null' ? "" : this.state.blurb}
                       wrap="hard" className="short-blurb-field"
                       onChange={this._setBlurb} />
                   </div>
@@ -220,7 +220,7 @@ const Basics = React.createClass({
                   <div className="field-wrapper">
                     <input type="text" className="location"
                       onChange={this._setLocation}
-                      value={this.state.location || ""}/>
+                      value={this.state.location === 'null' ? "" : this.state.location}/>
                   </div>
                 </div>
               </li>
@@ -229,7 +229,7 @@ const Basics = React.createClass({
                   <div className="attribute-field">Funding duration</div>
                   <div className="field-wrapper">
                     <div className="num-days">
-                      <input value={this.state.duration || ""}
+                      <input value={this.state.duration === 'null' ? "" : this.state.duration}
                         className="duration-field" type="number"
                         onChange={this._setDuration} placeholder="(in days)"/>
                     </div>
@@ -242,7 +242,7 @@ const Basics = React.createClass({
                   <div className="field-wrapper">
                     <input type="number" className="goal"
                       onChange={this._setGoal}
-                      value={this.state.goal || ""}
+                      value={this.state.goal === 'null' ? "" : this.state.goal}
                       placeholder="$0"/>USD
                   </div>
                 </div>

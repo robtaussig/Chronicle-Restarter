@@ -12,11 +12,11 @@ import { browserHistory } from 'react-router';
 const SavedProjects = React.createClass({
 
   getInitialState () {
-    return({savedProjects: []});
+    return({savedProjects: [], focusProject: []});
   },
 
   componentDidMount () {
-    let userId = window.myApp.id || SessionStore.currentUser().id;
+    let userId = SessionStore.currentUser().id || window.myApp.id;
     if (userId) {
       this.listener = SavedProjectStore.addListener(this._onChange);
       SavedProjectActions.fetchAllSavedProjects('start', userId);
@@ -39,6 +39,7 @@ const SavedProjects = React.createClass({
     this.setState({savedProjects: SavedProjectStore.allCurrentProjects()});
     this.focusProject = this.state.savedProjects[this.state.savedProjects.length - 1];
     this.savedProjects = this.state.savedProjects.splice(0, this.state.savedProjects.length - 1);
+    this.setState({focusProject: this.focusProject});
     this.forceUpdate();
   },
 
@@ -52,7 +53,7 @@ const SavedProjects = React.createClass({
     let _savedProjects;
 
     if (this.focusProject) {
-      _focusProject = <FocusProject project={this.focusProject} />;
+      _focusProject = <FocusProject project={this.state.focusProject} />;
     } else {
       _focusProject = (<div><h2 className="no-saved-projects-message">{"Sorry, but you don't have any saved projects"}</h2>
     <button className="new-project-button" onClick={this._newProject}>New Project</button></div>);

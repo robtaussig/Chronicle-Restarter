@@ -1,7 +1,7 @@
 json.extract! @project,
   :id, :title, :content, :author_id, :category_id, :blurb, :duration,
   :goal, :location, :saved_project_id,
-  :author_full_name, :risks, :website
+  :author_full_name, :risks, :website, :image
 
   json.rewards @project.rewards
   json.funders @project.fundings.length

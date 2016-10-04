@@ -32,7 +32,7 @@
 class Api::Project < ActiveRecord::Base
 
   validates :title, :author_id, presence: true
-  has_attached_file :image, default_url: "default_pic.png"
+  has_attached_file :image, default_url: "/assets/medium/default_pic.png"
   validates_attachment_content_type :image, content_type: /\Aimage\/.*\Z/
 
   belongs_to :author, class_name: 'User', foreign_key: 'author_id'
