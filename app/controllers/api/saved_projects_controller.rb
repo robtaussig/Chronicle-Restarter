@@ -13,7 +13,7 @@ class Api::SavedProjectsController < ApplicationController
   def update
     @saved_project = Api::SavedProject.find(params[:id])
     if project_params[:image] === 'null' ||
-      project_params[:image] === "/assets/medium/default_pic.png"
+      project_params[:image] === "/assets/default_pic.png"
       if @saved_project.update(no_image_params)
         render :show
       else

@@ -2,7 +2,7 @@ class Api::ProjectsController < ApplicationController
 
   def create
     if project_params[:image] === 'null' ||
-      project_params[:image] === "/assets/medium/default_pic.png"
+      project_params[:image] === "/assets/default_pic.png"
       @project = Api::Project.new(no_image_params)
     else
       @project = Api::Project.new(project_params)

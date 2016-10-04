@@ -23,7 +23,7 @@
 #
 
 class Api::SavedProject < ActiveRecord::Base
-  has_attached_file :image, default_url: "/assets/medium/default_pic.png"
+  has_attached_file :image, default_url: "/assets/default_pic.png"
   validates_attachment_content_type :image, content_type: /\Aimage\/.*\Z/
   belongs_to :author, class_name: 'User', foreign_key: 'author_id'
   has_many :rewards, foreign_key: 'project_id'
