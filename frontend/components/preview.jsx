@@ -137,7 +137,9 @@ const Preview = React.createClass({
           </div>
           <div id="era-wrapper" className="era-field"><b>{'Era: '}</b>
             {ProjectCategories[this.state.project_category_id].label}</div>
-          <div className="project-location">{this.state.project_location}</div>
+          <div className="project-location">{
+            this.state.project_location === 'null' ? 'No location' :
+            this.state.project_location}</div>
           <div className="preview-sub-info">
             <div className="social-links-wrapper">
             <ul className="social-links group">
@@ -154,10 +156,13 @@ const Preview = React.createClass({
               </div></li>
             </ul>
             </div>
-            <div className="preview-project-blurb">{this.state.project_blurb}</div>
+            <div className="preview-project-blurb">{this.state.project_blurb ===
+              'null' ? 'No blurb' : this.state.project_blurb}</div>
             <div className="user-info">
               <ul className="user-name-pic">
-                <li><p className="user-full-name">{this.state.author_full_name}</p></li>
+                <li><p className="user-full-name">
+                  {this.state.author_full_name}
+                </p></li>
                   <li className="profile-pic">
                     <img id="nav-prof-pic" src={this.state.user_pic_url}></img>
                   </li>

@@ -259,7 +259,8 @@ const ProjectShow = React.createClass({
           </div>
           <div id="era-wrapper" className="era-field"><b>{'Era: '}</b>
             {ProjectCategories[this.props.project.category_id].label}</div>
-          <div className="project-location">{this.state.location}</div>
+          <div className="project-location">{this.state.location === 'null' ?
+            'No blurb' : this.state.location}</div>
           <div className="preview-sub-info">
             <div className="social-links-wrapper">
               <ul className="social-links group">
@@ -280,7 +281,8 @@ const ProjectShow = React.createClass({
               </ul>
             </div>
             <div className="preview-project-blurb">
-              {this.props.project.blurb}
+              {this.props.project.blurb === 'null' ? 'No blurb' :
+                this.props.project.blurb}
             </div>
             <div className="user-info">
               <ul className="user-name-pic">
