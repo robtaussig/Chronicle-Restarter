@@ -85,6 +85,7 @@ const RewardItem = React.createClass({
           this.state.description !== "" && this.state.title !== "") {
           RewardActions.createReward(this.state);
           this.setState({saved: 'saved'});
+          this.props.added();
     } else {
       this._handleError();
     }

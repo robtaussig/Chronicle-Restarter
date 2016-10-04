@@ -955,7 +955,7 @@ button.submit-button:hover {
 
 .project-nav-bar {
   position: absolute;
-  min-width: 630px;
+  min-width: 825px;
   left: 50%;
   top: 60px;
   border-top-left-radius: 5px;
@@ -1002,6 +1002,8 @@ p.delete-message {
   float: left;
   height: 50px;
   width: 85px;
+  padding-left: 10px;
+  padding-right: 10px;
   border-top: 1px solid #ccc;
   border-right: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
@@ -1011,7 +1013,7 @@ p.delete-message {
 }
 
 .project-nav-bar li:hover:not(:last-child) {
-  color: #0927e2;
+  color: #000;
   font-weight: 700;
 }
 
@@ -1055,39 +1057,39 @@ p.delete-message {
 }
 
 .project-nav-bar #basics.basics {
-  color: #0927e2;
+  border-bottom: 3px solid green;
+  border-radius: 0px;
   font-weight: 700;
 }
 
 .project-nav-bar #rewards.rewards {
+  border-bottom: 3px solid green;
   border-radius: 0px;
-  color: #0927e2;
   font-weight: 700;
 }
 
 .project-nav-bar #story.story {
+  border-bottom: 3px solid green;
   border-radius: 0px;
-  color: #0927e2;
   font-weight: 700;
 }
 
 .project-nav-bar #about_you.about_you {
+  border-bottom: 3px solid green;
   border-radius: 0px;
-  color: #0927e2;
   font-weight: 700;
 }
 
 .project-nav-bar #account.account {
-  border-top-left-radius: 0px;
-  border-bottom-left-radius: 0px;
-  color: #0927e2;
+  border-bottom: 3px solid green;
+  border-radius: 0px;
   font-weight: 700;
 }
 
 .project-nav-bar #preview.preview {
-  color: #0927e2;
+  border-bottom: 3px solid green;
+  border-radius: 0px;
   font-weight: 700;
-  border-radius: 5px;
 }
 
 .project-nav-bar li.prev-li {
@@ -1100,14 +1102,12 @@ p.delete-message {
 .project-nav-bar li.submit-li {
   border-radius: 5px;
   border: 1px solid #ccc;
+  width:120px;
 }
 
 .project-nav-bar span.submit-span {
   border-radius: 5px;
-}
-
-.project-nav-bar span.submit-span:hover {
-  background-color: #46c76b;
+  width:120px;
 }
 
 .nav-bar-box h1 {
@@ -1367,17 +1367,23 @@ div.rewards-wrapper textarea:focus {
 button.add-reward-button {
   position: fixed;
   top: 300px;
-  right: 0;
+  right: -300px;
   width: 100px;
   height:60px;
   border: 1px solid #00e673;
   border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
   font-size: 14px;
   font-weight: 700;
   text-align: center;
   background-color: #00e673;
   color: white;
   line-height: 60px;
+}
+
+button.add-reward-button.addable {
+  transition: 0.3s;
+  right: 0;
 }
 
 button.add-reward-button:hover {

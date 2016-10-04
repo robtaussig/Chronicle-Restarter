@@ -8,7 +8,7 @@ const RewardActions = require('../actions/reward_actions.js');
 const Rewards = React.createClass({
 
   getInitialState () {
-    return({appearance: 'entering'});
+    return({appearance: 'entering', addable: 'addable'});
   },
 
   _addReward () {
@@ -16,8 +16,13 @@ const Rewards = React.createClass({
     this.rewardItems.push(<RewardItem projectId={this.projectId}
       key={this.uniqueKey} project_reward_key={this.uniqueKey}
       idx={this.uniqueKey} _delete={this._deleteReward}
-      count={this.rewardItems.length} />);
+      count={this.rewardItems.length} added={this._enableAdd}/>);
     this.forceUpdate();
+    this.setState({addable: ''});
+  },
+
+  _enableAdd () {
+    this.setState({addable: 'addable'});
   },
 
   componentDidMount () {
@@ -50,23 +55,9 @@ const Rewards = React.createClass({
       });
     } else {
       this.rewardItems = [];
+      this._addReward();
     }
     this.uniqueKey = this.rewardItems.length;
-  },
-
-  _deleteProject () {
-    SavedProjectActions.deleteSavedProject('finalizeProject',
-      SavedProjectStore.currentProject());
-    if (SavedProjectStore.currentProject().id) {
-      this.setState({deleteMessage: "Project deleted"});
-    } else {
-      this.setState({deleteMessage: "No project to delete"});
-    }
-
-    let that = this;
-    window.setTimeout(()=> {
-      this.setState({deleteMessage: ""});
-    },2000);
   },
 
   _findReward (rewardId) {
@@ -81,20 +72,15 @@ const Rewards = React.createClass({
   },
 
   render: function() {
-
+    let _addable = this.state.addable || "";
     return (
       <div>
         <div className={this.state.appearance}>
           <div>
-            <button className="add-reward-button"
+            <button className={`add-reward-button ${_addable}`}
               onClick={this._addReward}>Add Reward</button>
             {this.rewardItems}
           </div>
-        </div>
-        <div className="delete-wrapper">
-          <button className="delete-project" onClick={this._deleteProject}>
-            Clear</button>
-          <p className="delete-message">{this.state.deleteMessage}</p>
         </div>
       </div>
     );
