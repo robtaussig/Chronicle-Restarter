@@ -1,8 +1,12 @@
 class Api::ProjectsController < ApplicationController
 
   def create
-    debugger
-    @project = Api::Project.new(project_params)
+    if project_params[:image] === 'null' ||
+      project_params[:image] === "/assets/medium/default_pic.png"
+      @project = Api::Project.new(no_image_params)
+    else
+      @project = Api::Project.new(project_params)
+    end
     if @project.save
       render :show
     else
@@ -41,9 +45,17 @@ class Api::ProjectsController < ApplicationController
 
   def project_params
     params.require(:project).permit(
-    :title, :content, :author_id, :category_id, :blurb, :duration,
-    :goal, :project_due_date, :location, :saved_project_id,
-    :author_full_name, :risks, :website, :image, :total
+      :title, :content, :author_id, :category_id, :blurb, :duration,
+      :goal, :project_due_date, :location, :saved_project_id,
+      :author_full_name, :risks, :website, :total, :image
+    )
+  end
+
+  def no_image_params
+    params.require(:project).permit(
+      :title, :content, :author_id, :category_id, :blurb, :duration,
+      :goal, :project_due_date, :location, :saved_project_id,
+      :author_full_name, :risks, :website, :total
     )
   end
 end

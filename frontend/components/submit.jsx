@@ -21,13 +21,14 @@ const SubmitProject = React.createClass({
 
   componentDidMount () {
     this.positions = ["left", "middle", "right"];
-    this._populate();
     this.listener = ProjectStore.addListener(this._onChange);
-    window.setTimeout(() => {this.setState({appearance: 'entered'});},100);
+    let that = this;
+    this.timeOut = window.setTimeout(() => {that.setState({appearance: 'entered'});},100);
+    this._populate();
   },
 
   componentWillUnmount () {
-    window.clearTimeout(this.timeOut);
+    clearTimeout(this.timeOut);
     this.listener.remove();
   },
 
@@ -60,17 +61,17 @@ const SubmitProject = React.createClass({
       risks: project.risks || "",
       saved_project_id: project.id
     });
+    let that = this;
     window.setTimeout(() => {
-      ProjectActions.submitProject('submit', this.state);
+      ProjectActions.submitProject('submit', that.state);
     },500);
-
   },
 
   render: function() {
     let _display;
 
     if (this.state.display === "pending") {
-      <div>Hi</div>
+      _display = [<div className="loading">Loading...</div>];
     } else {
       _display = <ProjectShow project={this.state} />;
     }

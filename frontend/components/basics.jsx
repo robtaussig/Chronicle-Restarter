@@ -140,6 +140,8 @@ const Basics = React.createClass({
     let formData = new FormData();
     if (this.state.imageFile) {
       formData.append("saved_project[image]", this.state.imageFile);
+    } else {
+      formData.append("saved_project[image]", null);
     }
     formData.append("saved_project[author_id]", this.state.author_id);
     formData.append("saved_project[title]", this.state.title);

@@ -12,11 +12,21 @@ class Api::SavedProjectsController < ApplicationController
 
   def update
     @saved_project = Api::SavedProject.find(params[:id])
-    if @saved_project.update(project_params)
-      render :show
+    if project_params[:image] === 'null' ||
+      project_params[:image] === "/assets/medium/default_pic.png"
+      if @saved_project.update(no_image_params)
+        render :show
+      else
+        @errors = @saved_project.errors.full_messages
+        render json: @errors, status: 401
+      end
     else
-      @errors = @saved_project.errors.full_messages
-      render json: @errors, status: 401
+      if @saved_project.update(project_params)
+        render :show
+      else
+        @errors = @saved_project.errors.full_messages
+        render json: @errors, status: 401
+      end
     end
   end
 
@@ -43,6 +53,13 @@ class Api::SavedProjectsController < ApplicationController
     params.require(:saved_project).permit(
       :title, :content, :author_id, :category_id, :blurb, :duration,
       :goal, :project_due_date, :location, :risks, :image
+    )
+  end
+
+  def no_image_params
+    params.require(:saved_project).permit(
+      :title, :content, :author_id, :category_id, :blurb, :duration,
+      :goal, :project_due_date, :location, :risks
     )
   end
 end

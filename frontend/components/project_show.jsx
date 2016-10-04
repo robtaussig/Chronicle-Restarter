@@ -27,6 +27,7 @@ const ProjectShow = React.createClass({
       funded: this.props.project.funded,
       selected: "",
       message: "",
+      location: this.props.project.location,
       userBio: "hidden",
       email: "hidden",
       highlight: "",
@@ -255,7 +256,7 @@ const ProjectShow = React.createClass({
           </div>
           <div id="era-wrapper" className="era-field"><b>{'Era: '}</b>
             {ProjectCategories[this.props.project.category_id].label}</div>
-          <div className="project-location">{this.props.project.location}</div>
+          <div className="project-location">{this.state.location}</div>
           <div className="preview-sub-info">
             <div className="social-links-wrapper">
               <ul className="social-links group">
