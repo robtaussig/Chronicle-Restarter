@@ -94,6 +94,9 @@ const Preview = React.createClass({
       </div>;
     });
 
+    let _picture = this.state.image === "/assets/default_pic.png" ?
+      window.default_pic : this.state.image;
+
     return (
       <div className={this.state.appearance}>
         <div className="preview-wrapper">
@@ -106,7 +109,7 @@ const Preview = React.createClass({
           </div>
           <div className="preview-project-image">
             <div>{<img id="default-pic"
-              src={this.state.image === "" ? window.default_pic : this.state.image}></img>}</div>
+              src={_picture || window.default_pic}></img>}</div>
           </div>
           <div className="preview-project-summary">
             <ul className="funders group">
