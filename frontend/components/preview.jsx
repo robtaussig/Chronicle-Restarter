@@ -90,7 +90,7 @@ const Preview = React.createClass({
         <p className="reward-description">{reward.description}</p>
         <br></br>
         <p className="reward-availability">{`Available for ${reward.quantity}
-          backers`}</p>
+          ${ reward.quantity === 1 ? "backer" : "backers"}`}</p>
       </div>;
     });
 
@@ -114,7 +114,8 @@ const Preview = React.createClass({
           <div className="preview-project-summary">
             <ul className="funders group">
               <li className="funders-num">{this.state.project_funders}</li>
-              <li className="funders-text">backers</li>
+              <li className="funders-text">{this.state.project_funders === 1 ?
+                 'backer' : 'backers'}</li>
             </ul>
             <ul className="funded group">
               <li className="funded-num">${this.state.project_funded}</li>

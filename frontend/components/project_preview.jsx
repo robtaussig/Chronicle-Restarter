@@ -99,7 +99,8 @@ const ProjectPreview = React.createClass({
                 <ul className="project-preview-funders">
                   <li id="preview-basic-amount">{this.props.project.funders ===
                     'null' ? "" : this.props.project.funders}</li>
-                  <li id="preview-basic-text">backers</li>
+                  <li id="preview-basic-text">{this.props.project.funders === 1 ?
+                     'backer' : 'backers'}</li>
                 </ul>
               </li>
             </ul>

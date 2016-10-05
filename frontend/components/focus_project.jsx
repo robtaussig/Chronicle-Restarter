@@ -73,7 +73,8 @@ const FocusProject = React.createClass({
                 <ul className="focal-project-funders">
                   <li id="focal-basic-amount">{this.props.project.funders ===
                     'null' ? 0 : this.props.project.funders}</li>
-                  <li id="focal-basic-text">backers</li>
+                  <li id="focal-basic-text">{this.props.project.funders === 1 ?
+                     'backer' : 'backers'}</li>
                 </ul>
               </li>
             </ul>

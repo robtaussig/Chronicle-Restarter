@@ -175,7 +175,7 @@ const ProjectShow = React.createClass({
         <p className="reward-description">{reward.description}</p>
         <br></br>
         <p className="reward-availability">{`Available for ${reward.quantity}
-          backers`}</p>
+          ${reward.quantity === 1 ? "backer" : "backers"}`}</p>
         <div id={this.positions[idx] || idx}
           className={`${this.state.selected ||
           idx} funded-message`}>{this.state.message}</div>
@@ -234,7 +234,8 @@ const ProjectShow = React.createClass({
           <div className="preview-project-summary">
             <ul className="funders group">
               <li className="funders-num-final">{this.state.backers || 0}</li>
-              <li className="funders-text">backers</li>
+              <li className="funders-text">{this.state.backers === 1 ?
+                 'backer' : 'backers'}</li>
             </ul>
             <ul className="funded group">
               <li className="funded-num-final">${this.state.funded || 0}</li>
