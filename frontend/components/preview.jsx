@@ -126,7 +126,7 @@ const Preview = React.createClass({
               {this.state.project_duration}
             </div>
             <div className="preview-project-remaining">
-              days to go
+              {this.state.project_duration === 1 ? 'day to go' : 'days to go'}
             </div>
             <div className="preview-warning">
               <p>THIS PROJECT IS NOT LIVE</p>

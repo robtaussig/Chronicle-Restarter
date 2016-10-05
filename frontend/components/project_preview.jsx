@@ -89,7 +89,10 @@ const ProjectPreview = React.createClass({
                 <ul className="project-preview-duration">
                   <li id="preview-basic-amount">{this.props.project.duration ===
                     'null' ? "" : this.props.project.duration}</li>
-                  <li id="preview-basic-text">days to go</li>
+                  <li id="preview-basic-text">{
+                    this.props.project.duration === 1 ?
+                     'day to go' : 'days to go'
+                   }</li>
                 </ul>
               </li>
               <li className="preview-summary-cat">

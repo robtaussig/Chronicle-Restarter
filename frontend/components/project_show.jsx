@@ -246,7 +246,7 @@ const ProjectShow = React.createClass({
               {this.props.project.duration}
             </div>
             <div className="preview-project-remaining">
-              days to go
+              {this.props.project.duration === 1 ? 'day to go' : 'days to go'}
             </div>
             <a href="#back-project" onClick={this._highlightRewards}>
               <div className="back-project">

@@ -65,7 +65,8 @@ const FocusProject = React.createClass({
                 <ul className="focal-project-duration">
                   <li id="focal-basic-amount">{this.props.project.duration ===
                     'null' ? 0 : this.props.project.duration}</li>
-                  <li id="focal-basic-text">days to go</li>
+                  <li id="focal-basic-text">{this.props.project.duration === 1 ?
+                    'day to go' : 'days to go'}</li>
                 </ul>
               </li>
               <li className="summary-cat">
