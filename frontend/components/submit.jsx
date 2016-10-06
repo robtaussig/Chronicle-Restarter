@@ -71,7 +71,7 @@ const SubmitProject = React.createClass({
     let _display;
 
     if (this.state.display === "pending") {
-      _display = [<div className="loading">Loading...</div>];
+      _display = <div className="loading">Loading...</div>;
     } else {
       _display = <ProjectShow project={this.state} />;
     }

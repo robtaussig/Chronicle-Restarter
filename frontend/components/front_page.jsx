@@ -68,7 +68,7 @@ const FrontPage = React.createClass({
         this.projects.push(this.state.projects[this.state.projects.length - i - 1]);
       }
       _display = this.projects.map((project,idx) => {
-        return <li><ProjectPreview project={project} key={idx} /></li>;
+        return <li key={idx}><ProjectPreview project={project} /></li>;
       });
     } else {
       _display = <div className="loading">Loading...</div>;

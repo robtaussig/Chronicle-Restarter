@@ -97,12 +97,12 @@ const Updates = React.createClass({
       this.currentUser.id === this.props.project.author_id ||
       this.currentUser.email === 'admin@gmail.com' ||
       this.currentUser.email === 'rob@gmail.com'?
-      [<span className="new-update-header">New Update</span>,
-      <input className="update-input" type="text" onChange={this._setTitle}
+      [<span key="1" className="new-update-header">New Update</span>,
+      <input key="2" className="update-input" type="text" onChange={this._setTitle}
       value={this.state.title || ""} placeholder="Title" />,
-      <input className="update-input body" type="text" onChange={this._setBody}
+      <input key="3" className="update-input body" type="text" onChange={this._setBody}
       value={this.state.body || ""} placeholder="Your update" />,
-      <div className={`update-create-button ${_enabled}`}
+      <div key="4" className={`update-create-button ${_enabled}`}
       onClick={this._createUpdate}>Create</div>] : ''
     ) : '';
 

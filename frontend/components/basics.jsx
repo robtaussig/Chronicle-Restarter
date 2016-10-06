@@ -196,7 +196,7 @@ const Basics = React.createClass({
                 <div className="grey-field">
                   <div className="attribute-field">Short blurb</div>
                   <div className="field-wrapper">
-                    <textarea rows="3" value={this.state.blurb === 'null' ? "" : this.state.blurb}
+                    <textarea rows="3" value={this.state.blurb === "null" ? "" : this.state.blurb}
                       wrap="hard" className="short-blurb-field"
                       onChange={this._setBlurb} />
                   </div>

@@ -206,7 +206,7 @@ const ProjectShow = React.createClass({
     let _changePicture;
     if (this.state.user.email === _currentUser ||
        _currentUser === 'rob@gmail.com' || _currentUser === 'admin@gmail.com') {
-       _changePicture = ['Change picture', <input type="file" onChange={this.onChangePic} />];
+       _changePicture = ['Change picture', <input key="98" type="file" onChange={this.onChangePic} />];
     } else {
       _changePicture = "";
     }

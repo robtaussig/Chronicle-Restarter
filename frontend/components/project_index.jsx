@@ -73,10 +73,10 @@ const ProjectIndex = React.createClass({
     let _display;
     if (this.state.projects.length === 1) {
       _display = [
-        <ProjectShow key="solo" project={this.state.projects[0]} />];
+        <ProjectShow key="1" project={this.state.projects[0]} />];
     } else {
       _display = [
-        <ul className="categories-list group">
+        <ul key="999" className="categories-list group">
         <li className="category-item" onClick={this._handleCategory}>All projects</li>
         <li className="category-item" onClick={this._handleCategory}>Before Time</li>
         <li className="category-item" onClick={this._handleCategory}>Stone Age</li>

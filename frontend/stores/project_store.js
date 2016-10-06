@@ -37,7 +37,6 @@ ProjectStore.currentProject = () => {
 };
 
 ProjectStore.filteredProjects = () => {
-  console.log(_filteredProjects);
   return _filteredProjects;
 };
 
