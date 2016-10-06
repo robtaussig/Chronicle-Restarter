@@ -23,7 +23,6 @@ const ProjectShow = require('./components/project_show.jsx');
 const FrontPage = require('./components/front_page.jsx');
 const Account = require('./components/account.jsx');
 const SubmitProject = require('./components/submit.jsx');
-const Future = require('./components/future.jsx');
 const ErrorActions = require('./actions/error_actions.js');
 const Preview = require('./components/preview.jsx');
 const RewardStore = require('./stores/reward_store.js');
@@ -45,7 +44,6 @@ const routes = (
       <Route path=":projectId" component={ProjectItem}/>
     </Route>
     <Route path="savedProjects" component={SavedProjects} />
-    <Route path="future" component={Future} />
     <Route path="startProject" component={StartProject} />
     <Route path="about" component={AboutUs} />
     <Route path="createProject" component={CreateProject} />

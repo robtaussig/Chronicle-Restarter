@@ -70,9 +70,7 @@ const CreateProject = React.createClass({
   _handleSubmit () {
     let catId = this.state.category !== "" ? this._getCatId() - 1 : 0;
     let userId = SessionStore.currentUser().id;
-    if (catId === 4) {
-      browserHistory.push('future');
-    } else if (userId > 0 || window.myApp.loggedIn) {
+    if (userId > 0 || window.myApp.loggedIn) {
       this._advanceToProjectCreation(userId, catId);
     } else {
       let projectInfo = {title: this.state.title, category_id: catId};

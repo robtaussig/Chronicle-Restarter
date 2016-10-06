@@ -57,8 +57,6 @@ const ProjectIndex = React.createClass({
   _handleCategory (event) {
     if (event.target.innerHTML === "All projects") {
       this._showProjects("all");
-    } else if (event.target.innerHTML === "Future") {
-      browserHistory.push('/future');
     } else {
       let categoryId = ProjectCategoryIds.filter(projectCat=>{
         return projectCat.label === event.target.innerHTML;
@@ -84,7 +82,6 @@ const ProjectIndex = React.createClass({
         <li className="category-item" onClick={this._handleCategory}>Stone Age</li>
         <li className="category-item" onClick={this._handleCategory}>Middle Ages</li>
         <li className="category-item" onClick={this._handleCategory}>Present</li>
-        <li className="category-item" onClick={this._handleCategory}>Future</li>
         </ul>].concat(this.shuffle(
           this.state.projects.concat(
             this.state.projects.concat(
