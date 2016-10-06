@@ -50,7 +50,7 @@ const FrontPage = React.createClass({
       }
       let _randomPageNum = Math.floor(Math.random()*this.state.projects.length);
       let _project = this.state.projects[_randomPageNum];
-      browserHistory.push('/projects/' + _project.id);
+      browserHistory.push('/project/' + _project.id);
     } else {
       this.timeout = setTimeout(()=>{
         that._randomPage ();

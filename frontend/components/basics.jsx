@@ -27,6 +27,7 @@ const Basics = React.createClass({
 
   componentDidMount () {
     this.listener = SavedProjectStore.addListener(this._onChange);
+    UserActions.fetchAllUsers('front');
     this.blankState = {
       author_id: SessionStore.currentUser().id,
       image: "",

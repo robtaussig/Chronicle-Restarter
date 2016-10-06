@@ -23,11 +23,14 @@ const ProjectShow = React.createClass({
     return ({
       user: "",
       userProjects: [],
-      backers: this.props.project.funders,
-      funded: this.props.project.funded,
+      backers: Array.isArray(this.props.project) ?
+        this.props.project[0].funders : this.props.project.funders,
+      funded: Array.isArray(this.props.project) ?
+        this.props.project[0].funded : this.props.project.funded,
       selected: "",
       message: "",
-      location: this.props.project.location,
+      location: Array.isArray(this.props.project) ?
+        this.props.project[0].location : this.props.project.location,
       userBio: "hidden",
       email: "hidden",
       highlight: "",
@@ -40,19 +43,23 @@ const ProjectShow = React.createClass({
   },
 
   componentDidMount () {
+    this.project = Array.isArray(this.props.project) ?
+      this.props.project[0] : this.props.project;
     this.projectListener = ProjectStore.addListener(this._onProjectChange);
-    let user = this.props.project.author_id;
+    let user = this.project.author_id;
     this.userListener = UserStore.addListener(this._onUserChange);
+    UserActions.fetchAllUsers('front');
     if (UserStore.allUsers().length === 0) {
       UserActions.fetchAllUsers('front');
     } else {
-      let thisUser = UserStore.find(this.props.project.author_id);
+      debugger
+      let thisUser = UserStore.find(this.project.author_id);
       this.setState({user: thisUser, userProjects: thisUser.projects});
     }
     this.commentListener = CommentStore.addListener(this._onCommentChange);
-    CommentActions.fetchAllComments('project',this.props.project.id);
+    CommentActions.fetchAllComments('project',this.project.id);
     this.updateListener = UpdateStore.addListener(this._onUpdateChange);
-    UpdateActions.fetchAllUpdates('project',this.props.project.id);
+    UpdateActions.fetchAllUpdates('project',this.project.id);
   },
 
   componentWillUnmount () {
@@ -72,12 +79,12 @@ const ProjectShow = React.createClass({
   },
 
   onDelete () {
-    ProjectActions.deleteProject('show',this.props.project.id);
+    ProjectActions.deleteProject('show',this.project.id);
     browserHistory.push('/');
   },
 
   _onUserChange () {
-    let user = UserStore.find(this.props.project.author_id);
+    let user = UserStore.find(this.project.author_id);
     this.setState({user: user, userProjects: user.projects});
   },
 
@@ -125,14 +132,14 @@ const ProjectShow = React.createClass({
 
   _selectReward (idx, event) {
     let _userId = SessionStore.currentUser().id || window.myApp.id;
-    if (this.props.project.author_id === _userId) {
+    if (this.project.author_id === _userId) {
       this.setState({selected: this.positions[idx],
         message: "You can't back your own project"});
     } else if (!_userId){
       this.setState({selected: this.positions[idx],
         message: "You must be signed in to back a project"});
     } else {
-      let reward = this.props.project.rewards[idx];
+      let reward = this.project.rewards[idx];
       RewardActions.fundProject('show', reward.id, _userId);
       this.setState({backers: this.state.backers + 1, funded: this.state.funded
         + reward.amount, selected: this.positions[idx], message:
@@ -143,7 +150,7 @@ const ProjectShow = React.createClass({
   changePicture (file, results) {
     let formData = new FormData();
     formData.append("project[image]", file);
-    formData.append("id", this.props.project.id);
+    formData.append("id", this.project.id);
     ProjectActions.updateProject('show',formData);
   },
 
@@ -162,8 +169,9 @@ const ProjectShow = React.createClass({
 
     this.positions = ['zero', 'one', 'two', 'three'];
     let _revealReward = this.state.reveal === 'campaign' ? 'reveal-reward' : "";
-
-    let _rewards = this.props.project.rewards.slice(0,4).map((reward,idx) => {
+    let _project = Array.isArray(this.props.project) ?
+      this.props.project[0] : this.props.project;
+    let _rewards = _project.rewards.slice(0,4).map((reward,idx) => {
       return <div onClick={(event) => this._selectReward(idx, event)}
         className={`single-reward-wrapper final ${this.state.highlight} ${_revealReward}`}
           key={idx}>
@@ -188,8 +196,8 @@ const ProjectShow = React.createClass({
     let _currentBottomPage = [
       [],
       <Comments revealed={this.state.reveal} comments={_comments}
-        project={this.props.project}/>,
-      <Updates updates={_updates} project={this.props.project}
+        project={_project}/>,
+      <Updates updates={_updates} project={_project}
         revealed={this.state.reveal} />
     ][this.state.bottomPage || 0];
 
@@ -198,7 +206,7 @@ const ProjectShow = React.createClass({
     let _deleteProject;
     if (this.state.user.email === _currentUser ||
        _currentUser === 'rob@gmail.com' || _currentUser === 'admin@gmail.com') {
-      _deleteProject = <DeleteProject action="delete" callback={this.onDelete} project={this.props.project} />;
+      _deleteProject = <DeleteProject action="delete" callback={this.onDelete} project={_project} />;
     } else {
       _deleteProject = <DeleteProject project="wrong user" />;
     }
@@ -211,14 +219,14 @@ const ProjectShow = React.createClass({
       _changePicture = "";
     }
 
-    let _picture = this.props.project.image === "/assets/default_pic.png" ?
-      window.default_pic : this.props.project.image;
+    let _picture = _project.image === "/assets/default_pic.png" ?
+      window.default_pic : _project.image;
     return (
       <div onClick={this._resetReveals}>
         <div id="top" className="preview-wrapper">
           <div className="preview-header">
             <h3 className="preview-project-title">
-              {this.props.project.title}
+              {_project.title}
             </h3>
               <p className="preview-project-name">
                 by <b>{this.state.user.full_name || this.state.user.username ||
@@ -240,14 +248,14 @@ const ProjectShow = React.createClass({
             <ul className="funded group">
               <li className="funded-num-final">${this.state.funded || 0}</li>
               <li className="funded-goal">
-                pledged of ${this.props.project.goal} goal
+                pledged of ${_project.goal} goal
               </li>
             </ul>
             <div className="preview-project-duration-final">
-              {this.props.project.duration}
+              {_project.duration}
             </div>
             <div className="preview-project-remaining">
-              {this.props.project.duration === 1 ? 'day to go' : 'days to go'}
+              {_project.duration === 1 ? 'day to go' : 'days to go'}
             </div>
             <a href="#back-project" onClick={this._highlightRewards}>
               <div className="back-project">
@@ -259,7 +267,7 @@ const ProjectShow = React.createClass({
             </div>
           </div>
           <div id="era-wrapper" className="era-field"><b>{'Era: '}</b>
-            {ProjectCategories[this.props.project.category_id].label}</div>
+            {ProjectCategories[_project.category_id].label}</div>
           <div className="project-location">{this.state.location === 'null' ?
             'No blurb' : this.state.location}</div>
           <div className="preview-sub-info">
@@ -282,8 +290,8 @@ const ProjectShow = React.createClass({
               </ul>
             </div>
             <div className="preview-project-blurb">
-              {this.props.project.blurb === 'null' ? 'No blurb' :
-                this.props.project.blurb}
+              {_project.blurb === 'null' ? 'No blurb' :
+                _project.blurb}
             </div>
             <div className="user-info">
               <ul className="user-name-pic">
@@ -339,12 +347,12 @@ const ProjectShow = React.createClass({
             <h3 className="preview-about-field">About this project</h3>
             <div className="project-content">
               <h4>Background</h4>
-              {this.props.project.content || "Test Text"}</div>
+              {_project.content || "Test Text"}</div>
             <br></br>
             <div className="project-risks">
               <h4>Risks</h4>
               <div className="project-risk-content">
-                {this.props.project.risks}
+                {_project.risks}
               </div>
             </div>
             <div className="project-rewards-sidebar">

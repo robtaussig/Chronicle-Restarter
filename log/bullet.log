@@ -1,0 +1,13 @@
+2016-10-06 15:25:10[WARN] user: robtaussig
+GET http://localhost:3000/api/comments?campaign_id=120
+N+1 Query detected
+  Api::Comment => [:author]
+  Add to your finder: :includes => [:author]
+N+1 Query method call stack
+  /Users/robtaussig/Desktop/Chronicle-Restarter/Chronicle-Restarter/app/views/api/comments/index.json.jbuilder:7:in `block in _app_views_api_comments_index_json_jbuilder__1823642151387197850_70338722749140'
+  /Users/robtaussig/Desktop/Chronicle-Restarter/Chronicle-Restarter/app/views/api/comments/index.json.jbuilder:1:in `_app_views_api_comments_index_json_jbuilder__1823642151387197850_70338722749140'
+  /Users/robtaussig/Desktop/Chronicle-Restarter/Chronicle-Restarter/app/controllers/api/comments_controller.rb:31:in `index'
+
+/Users/robtaussig/Desktop/Chronicle-Restarter/Chronicle-Restarter/app/views/api/comments/index.json.jbuilder:7:in `block in _app_views_api_comments_index_json_jbuilder__1823642151387197850_70338722749140'
+/Users/robtaussig/Desktop/Chronicle-Restarter/Chronicle-Restarter/app/views/api/comments/index.json.jbuilder:1:in `_app_views_api_comments_index_json_jbuilder__1823642151387197850_70338722749140'
+/Users/robtaussig/Desktop/Chronicle-Restarter/Chronicle-Restarter/app/controllers/api/comments_controller.rb:31:in `index'

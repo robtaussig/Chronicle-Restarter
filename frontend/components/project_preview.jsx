@@ -25,7 +25,7 @@ const ProjectPreview = React.createClass({
       );
       browserHistory.push('/finalizeProject');
     } else {
-      browserHistory.push('/projectItem/' + this.props.project.id);
+      browserHistory.push('/project/' + this.props.project.id);
     }
   },
 

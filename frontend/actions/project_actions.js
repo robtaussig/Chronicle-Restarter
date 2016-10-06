@@ -25,6 +25,11 @@ const ProjectActions = {
       this.receiveAllProjects, ErrorActions.receiveError);
   },
 
+  fetchProject (form, projectId) {
+    ProjectApiUtil.fetchProject (form, projectId,
+      this.receiveProject, ErrorActions.receiveError);
+  },
+
   receiveProject (data) {
     AppDispatcher.dispatch({
       actionType: ProjectConstants.PROJECT_RECEIVED,

@@ -37,10 +37,8 @@ const routes = (
     <Route path="signUp" component={SignUp} />
     <Route path="logIn" component={LogIn} />
     <Route path="userProfile" component={UserProfile} />
-    <Route path="projects" component={ProjectIndex}>
-      <Route path=":projectId" component={ProjectShow}/>
-    </Route>
-    <Route path="projectItem" component={ProjectItem}>
+    <Route path="projects" component={ProjectIndex} />
+    <Route path="project" component={ProjectItem}>
       <Route path=":projectId" component={ProjectItem}/>
     </Route>
     <Route path="savedProjects" component={SavedProjects} />

@@ -43,7 +43,8 @@ const ProjectIndex = React.createClass({
   },
 
   _showProject () {
-    this.setState({flex: "", projects: ProjectStore.find(parseInt(this.props.params.projectId))});
+    browserHistory.push('/project/' + this.props.params.projectId);
+    // this.setState({flex: "", projects: ProjectStore.find(parseInt(this.props.params.projectId))});
   },
 
   _showProjects (category) {

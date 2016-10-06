@@ -71,7 +71,12 @@ ProjectStore.allProjects = (category) => {
 };
 
 ProjectStore.find = (projectId) => {
-  return _projects.filter(project => project.id === projectId);
+  let proj =  _projects.filter(project => project.id === projectId);
+  if (proj.length > 0) {
+    return proj;
+  } else {
+    return null;
+  }
 };
 
 ProjectStore.__onDispatch = (payload) => {

@@ -11,6 +11,8 @@ Rails.application.routes.draw do
   get "/projects", to: 'static_pages#root'
   get "/about", to: 'static_pages#root'
   get "/projects/:projectId", to: 'static_pages#root'
+  get "/project/:projectId", to: 'static_pages#root'
+  get "/projectItem/:projectId", to: 'static_pages#root'
   get "/finalizeProject/createProject", to: 'static_pages#root'
   get "/finalizeProject/startProject", to: 'static_pages#root'
   get "/finalizeProject/basics", to: 'static_pages#root'

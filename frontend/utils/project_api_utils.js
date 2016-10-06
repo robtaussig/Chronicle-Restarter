@@ -72,6 +72,20 @@ const ProjectApiUtil = {
     });
   },
 
+  fetchProject (form, projectId, successCB, errorCB) {
+    $.ajax({
+      url: '/api/projects/' + projectId,
+      type: 'GET',
+      data: {params: projectId},
+      success: (resp) => {
+        successCB(resp);
+      },
+      error: (resp) => {
+        errorCB(form, resp);
+      }
+    });
+  },
+
   saveSavedProject (form, data, successCB, errorCB) {
     $.ajax({
       url: '/api/saved_projects',
