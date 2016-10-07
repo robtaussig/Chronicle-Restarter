@@ -12,12 +12,6 @@ const ProjectPreview = React.createClass({
     return ({user: ""});
   },
 
-  // componentDidMount () {
-  //   this.setState({user: this.props.project.author_full_name ||
-  //     this.props.project.author.full_name ||
-  //     this.props.project.author.username});
-  // },
-
   _goToPage () {
     if (window.location.pathname === "/savedProjects") {
       SavedProjectActions.updateSavedProject(
@@ -38,10 +32,6 @@ const ProjectPreview = React.createClass({
     } else {
       _width = 0;
     }
-
-    // if (this.state.user) {
-    //   _user = this.state.user;
-    // }
 
     let _picture = this.props.project.image === "/assets/default_pic.png" ?
       window.default_pic : this.props.project.image;
