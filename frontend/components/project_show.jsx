@@ -52,7 +52,6 @@ const ProjectShow = React.createClass({
     if (UserStore.allUsers().length === 0) {
       UserActions.fetchAllUsers('front');
     } else {
-      debugger
       let thisUser = UserStore.find(this.project.author_id);
       this.setState({user: thisUser, userProjects: thisUser.projects});
     }
