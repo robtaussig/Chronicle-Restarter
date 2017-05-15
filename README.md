@@ -10,8 +10,7 @@ Chronicle Restarter is a tongue-in-cheek adaptation of Kickstarter built in Reac
 
 ### Front page
 
-[Front page](docs/readme/front_page.png)
-[img]docs/readme/front_page.png[/img]
+![Front Page](docs/readme/front_page.png "Front Page")
 
 ### Discover page
 
