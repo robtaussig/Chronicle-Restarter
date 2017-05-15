@@ -44,7 +44,7 @@ Users of Chronicle Restarter can launch, delete, browse, search for, and back pr
 
 - Authentication process remembers where the user was redirected from after prompted to sign in.
 
-![Auth](docs/readme/uth.gif "Auth")
+![Auth](docs/readme/auth.gif "Auth")
 
 - Backing a project instantaneously records the funding on the server-side while updating the client-side, all without having to refresh the page.
 
