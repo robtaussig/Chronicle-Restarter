@@ -12,27 +12,27 @@ Chronicle Restarter is a tongue-in-cheek adaptation of Kickstarter built in Reac
 
 ### Front page
 
-<kbd>![Front page]</kbd>
+<kbd>[Front page]</kbd>
 [Front page]: docs/readme/front_page.png
 
 ### Discover page
 
-<kbd>![Discover page]</kbd>
+<kbd>[Discover page]</kbd>
 [Discover page]: docs/readme/discover.png
 
 ### Project Show page
 
-<kbd>![Show page]</kbd>
+<kbd>[Show page]</kbd>
 [Show page]: docs/readme/show.png
 
 ### Project Create page
 
-<kbd>![Create page]</kbd>
+<kbd>[Create page]</kbd>
 [Create page]: docs/readme/create.png
 
 ### Signup page
 
-<kbd>![Signup page]</kbd>
+<kbd>[Signup page]</kbd>
 [Signup page]: docs/readme/sign_up.png
 
 ## Overview
@@ -43,22 +43,22 @@ Users of Chronicle Restarter can launch, delete, browse, search for, and back pr
 
 - Reusable, hand-rolled CSS transitions driven by a series of event listeners and asynchronous callbacks.
 
-![StartProject]
+[StartProject]
 [StartProject]: docs/readme/saveProjectGif.gif
 
 - The client-side retrieves projects and fundings through a single query by utilizing ActiveRecord associations on the server-side, streamlining the user experience with instantaneous search and indexing, while minimizing the load on the server by reducing overall number of queries.
 
-![Search]
+[Search]
 [Search]: docs/readme/search.gif
 
 - Authentication process remembers where the user was redirected from after prompted to sign in.
 
-![Auth]
+[Auth]
 [Auth]: docs/readme/auth.gif
 
 - Backing a project instantaneously records the funding on the server-side while updating the client-side, all without having to refresh the page.
 
-![Funding]
+[Funding]
 [Funding]: docs/readme/funding.gif
 
 #### Other features
@@ -89,5 +89,5 @@ Chronicle Restarter utilizes the Flux cycle at every level: user sessions, proje
 
 - *Fundings:* A project is funded when a user makes a pledge that corresponds with an offered reward. Each reward is of a certain value, and so a project's total funding can be measured quite easily as the product of a reward's value and the amount of "pledges" for that reward (and, where a project has multiple rewards, along with the sum of other rewards multiplied by their amount of pledges). Fundings are thus handled as a join table between users and rewards, holding a foreign key to both, which with the help of jbuilder allows the frontend to get both funding and project information from the backend in a single query.
 
-![Jbuilder]
+[Jbuilder]
 [Jbuilder]: docs/readme/jbuilder.png
